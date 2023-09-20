@@ -11,8 +11,9 @@ import GuestDashboard from './pages/guest/dashboard'
 import Login from './pages/auth/login/login'
 import { ADMIN_PATH, GUEST_PATH, PUBLIC_PATH } from './constants/path'
 import { ProSidebarProvider } from 'react-pro-sidebar'
-import AdminProfile from './pages/admin/profile'
+
 import AdminChanagePassword from './pages/common/change-password'
+import Profile from './pages/common/profile'
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
     element: <AdminChanagePassword />
   },
   {
+    path: PUBLIC_PATH.PROFILE,
+    element: <Profile />
+  },
+  {
     path: ADMIN_PATH.LAYOUT,
     element: <AdminLayout />,
     children: [
@@ -31,11 +36,6 @@ const router = createBrowserRouter([
         index: true,
         element: <AdminDashboard />
       },
-
-      {
-        path: ADMIN_PATH.PROFILE,
-        element: <AdminProfile />
-      }
     ]
   },
   {
