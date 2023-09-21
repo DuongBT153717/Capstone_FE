@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material";
-
+import {} from '@mui/lab/themeAugmentation';
 export const theme = createTheme({
   typography: {
     allVariants: {
@@ -10,4 +10,13 @@ export const theme = createTheme({
       fontWeightMedium: 500,
     },
   },
+  components: {
+    MuiTabPanel: {
+      styleOverrides: {
+        root: {
+          padding: 0
+        }
+      }
+    }
+  }
 });
