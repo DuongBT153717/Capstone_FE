@@ -1,52 +1,60 @@
-import { Box, CardContent, Grid, TextField } from "@mui/material"
+import { Box, CardContent, Grid, Typography, styled,Divider,CardActions,Button } from "@mui/material"
+import { Link } from "react-router-dom";
 
+const TypoOverView = styled(Typography)(({ theme }) => ({
+  fontSize: '18px'
+
+}));
 
 const Overview = () => {
   return (
-    <CardContent>
-         <Box sx={{ mb: 1 }}>
-          <Grid item container spacing={3}>
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                helperText="Please specify the first name"
-                label="First name"
-                name="firstName"
-                required
-                value="Anika"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField fullWidth label="Last name" name="lastName" required value="Visser" />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Email Address"
-                name="email"
-                required
-                value="demo@devias.io"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Phone Number"
-                name="phone"
-                type="number"
-                value="0987212912"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField fullWidth label="Country" name="country" required value="USA" />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField fullWidth label="Select State" name="state"></TextField>
-            </Grid>
+    <>
+    <CardContent >
+      <Box sx={{ mb: 1 }}>
+        <Grid item container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <TypoOverView fullWidth>
+              First name: Anika
+            </TypoOverView>
           </Grid>
-        </Box>
-    </CardContent>
+          <Grid item xs={12} md={6}>
+            <TypoOverView fullWidth>
+              Last name: Visser
+            </TypoOverView>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TypoOverView fullWidth>
+              Email Address: demo@devias.io
+            </TypoOverView>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TypoOverView fullWidth>
+              Phone Number: 0987212912
+            </TypoOverView>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TypoOverView fullWidth>
+              Country: USA
+            </TypoOverView>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TypoOverView fullWidth>
+              Select State: (Text for state)
+            </TypoOverView>
+          </Grid>
+        </Grid>
+      </Box>
+    </CardContent> 
+      <Divider />
+      <Link to='/admin'>
+      <CardActions sx={{ justifyContent: 'flex-start' }}>
+        <Button  variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+          Back to Dashboard
+        </Button>
+      </CardActions>
+      </Link>
+    </>
   )
 }
 
-export default Overview
+export default Overview;
