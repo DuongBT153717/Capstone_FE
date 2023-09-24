@@ -3,11 +3,9 @@ import {} from '@mui/lab/themeAugmentation';
 export const theme = createTheme({
   typography: {
     allVariants: {
-      fontFamily: '"Quicksand", sans-serif',
+      fontFamily: ['Quicksand','sans-serif'].join(','),
       fontSize: 16,
-      fontWeightLight: 300,
-      fontWeightRegular: 400,
-      fontWeightMedium: 500,
+      fontWeight: '600'
     },
   },
   components: {

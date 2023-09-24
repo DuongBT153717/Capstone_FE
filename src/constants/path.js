@@ -9,6 +9,6 @@ export const ADMIN_PATH = {
     DEVICE_CONFIG:'device-config'
 }
 
-export const GUEST_PATH = {
-    LAYOUT: "/guest",
+export const EMPLOYEE_PATH = {
+    LAYOUT: "/employee",
 }

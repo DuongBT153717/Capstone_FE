@@ -1,20 +1,17 @@
-import { RouterProvider } from 'react-router-dom'
-import './App.css'
-import { theme } from './themes/theme'
 import { ThemeProvider } from '@mui/material'
-import { createBrowserRouter } from 'react-router-dom'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import './App.css'
 import AdminLayout from './layouts/admin'
+import { theme } from './themes/theme'
 
-import AdminDashboard from './pages/admin/dashboard'
-import GuestLayout from './layouts/guest'
-import GuestDashboard from './pages/guest/dashboard'
-import Login from './pages/auth/login/login'
-import { ADMIN_PATH, GUEST_PATH, PUBLIC_PATH } from './constants/path'
 import { ProSidebarProvider } from 'react-pro-sidebar'
+import { ADMIN_PATH, PUBLIC_PATH } from './constants/path'
+import AdminDashboard from './pages/admin/dashboard'
+import Login from './pages/auth/login/login'
 
 import AdminChanagePassword from './pages/common/change-password'
 import Profile from './pages/common/profile'
-import DeviceConfig from './pages/admin/device-config'
+import CreateStaff from './pages/admin/create-staff'
 
 const router = createBrowserRouter([
   {
@@ -30,6 +27,10 @@ const router = createBrowserRouter([
     element: <Profile />
   },
   {
+    path: 'create-staff',
+    element: <CreateStaff />
+  },
+  {
     path: ADMIN_PATH.LAYOUT,
     element: <AdminLayout />,
     children: [
@@ -37,22 +38,10 @@ const router = createBrowserRouter([
         index: true,
         element: <AdminDashboard />
       },
-      {
-        path:ADMIN_PATH.DEVICE_CONFIG,
-        element: <DeviceConfig/>
-      }
+      
     ]
   },
-  {
-    path: GUEST_PATH.LAYOUT,
-    element: <GuestLayout />,
-    children: [
-      {
-        index: true,
-        element: <GuestDashboard />
-      }
-    ]
-  }
+  
 ])
 function App() {
   return (
