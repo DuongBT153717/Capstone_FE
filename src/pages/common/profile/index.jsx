@@ -8,12 +8,13 @@ import {
   Divider,
   Grid,
   Tab,
-  Typography
+  Typography,
 } from '@mui/material'
 import { useState } from 'react'
 import Header from '../../../components/Header'
 import EditProfile from './components/EditProfile'
 import Overview from './components/Overview'
+
 
 const Profile = () => {
   const [isHovered, setIsHovered] = useState(false)

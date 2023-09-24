@@ -8,6 +8,6 @@ export const ADMIN_PATH = {
     LAYOUT: "/admin",   
 }
 
-export const GUEST_PATH = {
-    LAYOUT: "/guest",
+export const EMPLOYEE_PATH = {
+    LAYOUT: "/employee",
 }
