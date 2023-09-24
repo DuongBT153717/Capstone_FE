@@ -1,8 +1,10 @@
 import React from 'react'
+import Header from '../../../components/Header'
 
 const DeviceConfig = () => {
   return (
-    <div>DeviceConfig</div>
+  <Header/>
+
   )
 }
 

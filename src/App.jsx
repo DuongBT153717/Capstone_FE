@@ -12,6 +12,7 @@ import Login from './pages/auth/login/login'
 import AdminChanagePassword from './pages/common/change-password'
 import Profile from './pages/common/profile'
 import CreateStaff from './pages/admin/create-staff'
+import DeviceConfig from './pages/admin/device-config'
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
         index: true,
         element: <AdminDashboard />
       },
+      {
+        path:ADMIN_PATH.DEVICE_CONFIG,
+        element: <DeviceConfig />
+      }
       
     ]
   },
