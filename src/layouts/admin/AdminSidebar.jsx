@@ -3,6 +3,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard'
 import MenuIcon from '@mui/icons-material/Menu'
 import SourceIcon from '@mui/icons-material/Source'
 import StyleIcon from '@mui/icons-material/Style'
+import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt';
 import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
 import { Menu, MenuItem, Sidebar, SubMenu, useProSidebar } from 'react-pro-sidebar'
 
@@ -15,7 +16,8 @@ const AdminSidebar = () => {
   const [activeIndex, setActiveIndex] = useState(() => { 
     const initialIndex = 
       window.location.pathname === '/admin' ? 0 
-      : window.location.pathname === '/admin/profile' ? 4 : 
+      : window.location.pathname === '/admin/device-config' ? 2 : 
+      window.location.pathname === '/admin/profile' ? 4 : 
       window.location.pathname === '/admin/change-password' ? 5  
           : 0; 
     return initialIndex; 
@@ -109,9 +111,9 @@ const AdminSidebar = () => {
               {' '}
               Dashboard{' '}
             </MenuItem>
-            <MenuItem icon={<SourceIcon />} component={<Link to="/admin/contact"  />}>
+            <MenuItem active={activeIndex === 2} icon={<AppSettingsAltIcon />} component={<Link to="/admin/device-config"  onClick={() => setActiveIndex(2)} />}>
               {' '}
-              Contact{' '}
+              Device Config{' '}
             </MenuItem>
             <MenuItem icon={<AnalyticsIcon />}> Analytics </MenuItem>
             <MenuItem active={activeIndex === 4} icon={<StyleIcon />} component={<Link to="/admin/profile" onClick={() => setActiveIndex(4)} />}>

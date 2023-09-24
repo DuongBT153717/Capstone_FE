@@ -2,7 +2,8 @@ import { Box, CardContent, Grid, Typography, styled,Divider,CardActions,Button }
 import { Link } from "react-router-dom";
 
 const TypoOverView = styled(Typography)(({ theme }) => ({
-  fontSize: '18px'
+  fontSize: '18px',
+  textAlign:'Left'
 
 }));
 
@@ -10,7 +11,7 @@ const Overview = () => {
   return (
     <>
     <CardContent >
-      <Box sx={{ mb: 1 }}>
+      <Box sx={{ mb: 1   }}>
         <Grid item container spacing={3}>
           <Grid item xs={12} md={6}>
             <TypoOverView fullWidth>
@@ -46,13 +47,13 @@ const Overview = () => {
       </Box>
     </CardContent> 
       <Divider />
-      <Link to='/admin'>
       <CardActions sx={{ justifyContent: 'flex-start' }}>
+      <Link to='/admin'>
         <Button  variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
           Back to Dashboard
         </Button>
-      </CardActions>
       </Link>
+      </CardActions>
     </>
   )
 }

@@ -6,6 +6,7 @@ export const PUBLIC_PATH = {
 
 export const ADMIN_PATH = {
     LAYOUT: "/admin",   
+    DEVICE_CONFIG:'device-config'
 }
 
 export const GUEST_PATH = {

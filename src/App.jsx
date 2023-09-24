@@ -14,6 +14,7 @@ import { ProSidebarProvider } from 'react-pro-sidebar'
 
 import AdminChanagePassword from './pages/common/change-password'
 import Profile from './pages/common/profile'
+import DeviceConfig from './pages/admin/device-config'
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
         index: true,
         element: <AdminDashboard />
       },
+      {
+        path:ADMIN_PATH.DEVICE_CONFIG,
+        element: <DeviceConfig/>
+      }
     ]
   },
   {
