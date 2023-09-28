@@ -12,3 +12,7 @@ export const ADMIN_PATH = {
 export const EMPLOYEE_PATH = {
     LAYOUT: "/employee",
 }
+
+export const DIRECTOR_PATH = {
+    LAYOUT: "/director",
+}

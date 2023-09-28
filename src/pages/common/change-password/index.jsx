@@ -8,9 +8,46 @@ import {
   Grid,
   TextField
 } from '@mui/material'
-import Header from '../../../components/Header'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Header from '../../../components/Header'
+import authApi from '../../../services/authApi'
+import { toast } from 'react-toastify'
+import { LoadingButton } from '@mui/lab'
 const AdminChanagePassword = () => {
+  const [oldPassword, setOldPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const accountId = localStorage.getItem('ACCOUNTID')
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    let data = {
+      accountId: accountId,
+      oldPassword: oldPassword,
+      newPassword: newPassword
+    }
+
+    try {
+      setIsLoading(true)
+      await authApi.changePassword(data)
+      setIsLoading(false)
+      setOldPassword('')
+      setNewPassword('')
+      setConfirmPassword('')
+      toast.success('Change password sucessfully!')
+    } catch (error) {
+      if (error.response.status === 400) {
+        toast.error('Password wrong, please try again!')
+        setIsLoading(false)
+      }
+      if (error.response.status === 403) {
+        toast.error('Your account has been blocked')
+        setIsLoading(false)
+      }
+    }
+  }
+
   return (
     <Box height="100vh" bgcolor="seashell">
       <Box
@@ -30,10 +67,22 @@ const AdminChanagePassword = () => {
                   <Box sx={{ mb: 1 }}>
                     <Grid item container spacing={3}>
                       <Grid item xs={7}>
-                        <TextField fullWidth label="Old Password" name="oldPassword" required />
+                        <TextField
+                          fullWidth
+                          label="Old Password"
+                          onChange={(e) => setOldPassword(e.target.value)}
+                          name="oldPassword"
+                          required
+                        />
                       </Grid>
                       <Grid item xs={7}>
-                        <TextField fullWidth label="New Password" name="newPassword" required />
+                        <TextField
+                          fullWidth
+                          label="New Password"
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          name="newPassword"
+                          required
+                        />
                       </Grid>
                       <Grid item xs={7}>
                         <TextField
@@ -41,6 +90,7 @@ const AdminChanagePassword = () => {
                           label="Confirm New Password"
                           name="confirmPassword"
                           required
+                          onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                       </Grid>
                     </Grid>
@@ -53,9 +103,13 @@ const AdminChanagePassword = () => {
                       Back to Dashboard
                     </Button>
                   </Link>
-                  <Button variant="contained" sx={{ bgcolor: 'rgb(94, 53, 177)' }}>
+                  <LoadingButton
+                    onClick={handleSubmit}
+                    loading={isLoading}
+                    variant="contained"
+                    sx={{ bgcolor: 'rgb(94, 53, 177)' }}>
                     Save
-                  </Button>
+                  </LoadingButton>
                 </CardActions>
               </Card>
             </form>

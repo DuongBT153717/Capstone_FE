@@ -13,9 +13,12 @@ import {
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AVATAR from '../assets/images/user.png'
+import useAuth from '../hooks/useAuth'
+import { toast } from 'react-toastify'
 const AccountPopover = () => {
+  const navigate = useNavigate()
   const [open, setOpen] = useState(null)
-
+  const { auth, setAuth } = useAuth()
   const handleOpen = (event) => {
     setOpen(event.currentTarget)
   }
@@ -23,7 +26,12 @@ const AccountPopover = () => {
   const handleClose = () => {
     setOpen(null)
   }
-  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    localStorage.clear()
+    navigate('/login')
+    toast.success('Logout successfully!');
+  }
   return (
     <>
       <IconButton sx={{ color: 'rgb(94, 53, 177)' }} onClick={handleOpen} size="small">
@@ -81,8 +89,8 @@ const AccountPopover = () => {
             <Typography>Change Password</Typography>
           </Box>
         </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleClose}>
+        <Divider sx={{m: '0 !important'}} />
+        <MenuItem onClick={handleLogout}>
           <Box display="flex" gap={1.5} alignItems="center">
             <LogoutIcon sx={{ height: '30px', width: '30px' }} /> <Typography>Logout</Typography>
           </Box>
