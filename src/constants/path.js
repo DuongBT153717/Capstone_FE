@@ -16,3 +16,7 @@ export const EMPLOYEE_PATH = {
 export const DIRECTOR_PATH = {
     LAYOUT: "/director",
 }
+
+export const HR_PATH = {
+    LAYOUT: "/hr",
+}

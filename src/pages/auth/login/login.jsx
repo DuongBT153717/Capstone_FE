@@ -43,6 +43,8 @@ export default function Login() {
         navigate('/admin')
       }else if(response.data.role === 'director'){
         navigate('/director')
+      }else if(response.data.role === 'hr'){
+        navigate('/hr')
       }
       setIsLoading(false)
     } catch (error) {

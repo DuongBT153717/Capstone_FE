@@ -8,10 +8,12 @@ import DirectorDashboard from '../pages/director'
 import RequireAuth from '../components/RequireAuth'
 import { useRoutes } from 'react-router-dom'
 import AdminLayout from '../layouts/admin'
-import { ADMIN_PATH, DIRECTOR_PATH, PUBLIC_PATH } from '../constants/path'
+import { ADMIN_PATH, DIRECTOR_PATH, HR_PATH, PUBLIC_PATH } from '../constants/path'
 import AdminDashboard from '../pages/admin/dashboard'
 import UnAuthorized from '../components/UnAuthorized'
 import { ROLES } from '../constants/role'
+import HrLayout from '../layouts/hr'
+import HrDashBoard from '../pages/hr'
 export default function Router() {
   let router = useRoutes([
     {
@@ -67,7 +69,22 @@ export default function Router() {
           ]
         }
       ]
-    }
+    },
+    {
+      path: HR_PATH.LAYOUT,
+      element: <HrLayout />,
+      children: [
+        {
+          element: <RequireAuth allowedRoles={ROLES.HR} />,
+          children: [
+            {
+              index: true,
+              element: <HrDashBoard />
+            }
+          ]
+        }
+      ]
+    },
   ])
   return router
 }
