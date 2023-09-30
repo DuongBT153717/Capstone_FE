@@ -2,6 +2,7 @@
 import axios from 'axios'
 import queryString from 'query-string'
 import { BASE_URL } from '../services/constraint';
+import { useSelector } from 'react-redux';
 
 // Set up default config for http requests here
 
@@ -15,7 +16,7 @@ const axiosClient = axios.create({
 })
 
 axiosClient.interceptors.request.use(async (config) => {
-    const accessToken = localStorage.getItem('TOKEN');
+    const accessToken = localStorage.getItem('token')
     if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
     }

@@ -2,23 +2,24 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import LogoutIcon from '@mui/icons-material/Logout'
 import PasswordIcon from '@mui/icons-material/Password'
 import {
-    Avatar,
-    Box,
-    Divider,
-    IconButton,
-    MenuItem,
-    Popover,
-    Typography
+  Avatar,
+  Box,
+  Divider,
+  IconButton,
+  MenuItem,
+  Popover,
+  Typography
 } from '@mui/material'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import AVATAR from '../assets/images/user.png'
-import useAuth from '../hooks/useAuth'
 import { toast } from 'react-toastify'
+import AVATAR from '../assets/images/user.png'
+import { logOutSuccess } from '../redux/authSlice'
 const AccountPopover = () => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(null)
-  const { auth, setAuth } = useAuth()
+  const dispatch = useDispatch()
   const handleOpen = (event) => {
     setOpen(event.currentTarget)
   }
@@ -28,6 +29,7 @@ const AccountPopover = () => {
   }
 
   const handleLogout = () => {
+    dispatch(logOutSuccess())
     localStorage.clear()
     navigate('/login')
     toast.success('Logout successfully!');

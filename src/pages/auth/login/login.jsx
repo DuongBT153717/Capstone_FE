@@ -1,7 +1,7 @@
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { LoadingButton } from '@mui/lab'
-import { IconButton, Link } from '@mui/material'
+import { IconButton } from '@mui/material'
 import Box from '@mui/material/Box'
 import Checkbox from '@mui/material/Checkbox'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -9,58 +9,32 @@ import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+import { Base64 } from 'js-base64'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import useAuth from '../../../hooks/useAuth'
 import authApi from '../../../services/authApi'
-import { Base64 } from 'js-base64';
+import { useDispatch, useSelector } from 'react-redux'
 export default function Login() {
   // const [open, setOpen] = useState(false);
   const [remember, setRemember] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const isLoading = useSelector((state) => state.auth.login.isFetching)
+  console.log(isLoading);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword)
   }
   const navigate = useNavigate()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const dispatch = useDispatch()
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setIsLoading(true)
     let data = {
       username: username,
       password: password
     }
-
-    try {
-      const response = await authApi.signIn(data)
-      localStorage.setItem('TOKEN', response.data.jwtToken)
-      localStorage.setItem('ROLE', Base64.btoa(response.data.role))
-      localStorage.setItem('ACCOUNTID', response.data.accountId)
-      if(response.data.role === 'admin'){
-        navigate('/admin')
-      }else if(response.data.role === 'director'){
-        navigate('/director')
-      }else if(response.data.role === 'hr'){
-        navigate('/hr')
-      }
-      setIsLoading(false)
-    } catch (error) {
-      if (error.response.status === 400) {
-        toast.error('Password wrong, please try again!')
-        setIsLoading(false)
-      }
-      if (error.response.status === 404) {
-        toast.error('Username wrong, please try again!')
-        setIsLoading(false)
-      }
-      if (error.response.status === 403) {
-        toast.error('Your account has been blocked')
-        setIsLoading(false)
-      }
-    }
+    authApi.loginUser(data, dispatch, navigate)
   }
   return (
     <>
