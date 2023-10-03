@@ -1,5 +1,4 @@
 const AdminDashboard = () => {
-  console.log(auth)
   return <div>AdminDashboard</div>
 }
 

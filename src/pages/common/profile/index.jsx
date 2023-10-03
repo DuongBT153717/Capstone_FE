@@ -10,14 +10,29 @@ import {
   Tab,
   Typography
 } from '@mui/material'
+import dayjs from 'dayjs'
+import { getDownloadURL, ref } from 'firebase/storage'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import USER from '../../../assets/images/user.jpg'
 import Header from '../../../components/Header'
+import { storage } from '../../../firebase/config'
+import useAuth from '../../../hooks/useAuth'
+import userApi from '../../../services/userApi'
 import EditProfile from './components/EditProfile'
 import Overview from './components/Overview'
-import USER from '../../../assets/images/user.png'
 const Profile = () => {
   const [isHovered, setIsHovered] = useState(false)
-
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [gender, setGender] = useState('')
+  const [email, setEmail] = useState('')
+  const [city, setCity] = useState('')
+  const [country, setCountry] = useState('')
+  const [birth, setBirth] = useState(dayjs('2022-04-17'))
+  const [phone, setPhone] = useState('')
+  const [userProfileImage, setUserProfileImage] = useState("")
+  const userInfo = useAuth()
   const handleMouseEnter = () => {
     setIsHovered(true)
   }
@@ -47,6 +62,43 @@ const Profile = () => {
     setValue(newValue)
   }
 
+  console.log(userInfo.image);
+  const imgurl = async () => {
+    const storageRef = ref(storage, `/${userInfo.image}`);
+    try {
+      const url = await getDownloadURL(storageRef);
+      setUserProfileImage(url);
+    } catch (error) {
+      console.error('Error getting download URL:', error);
+    }
+  };
+
+  if (userInfo && userInfo.image) {
+    imgurl();
+  }
+  console.log(userProfileImage);
+
+  const accountId = useSelector((state) => state.auth.login?.currentUser?.accountId)
+  const dispatch = useDispatch()
+  const handleSubmit = () => {
+    let formData = new FormData()
+    const data = {
+      userId: accountId,
+      firstName: firstName,
+      lastName: lastName,
+      gender: gender,
+      dateOfBirth: birth.format('DD/MM/YYYY'),
+      telephoneNumber: phone,
+      country: country,
+      city: city,
+      email: email
+    }
+    formData.append('data', JSON.stringify(data))
+    formData.append('image', userImage.file)
+    console.log([...formData])
+    userApi.updateProfile(formData, dispatch)
+  }
+  
   return (
     <Box textAlign="center" bgcolor="seashell" height="100vh">
       <Box pt={5}>
@@ -56,7 +108,7 @@ const Profile = () => {
           <form autoComplete="off" noValidate>
             <Grid container spacing={3}>
               <Grid item xs={12} md={6} lg={4}>
-                {value == '2' ? (
+                {value === '2' ? (
                   <>
                     <Card>
                       <CardContent>
@@ -69,6 +121,15 @@ const Profile = () => {
                           {userImage.filepreview !== null ? (
                             <Avatar
                               src={userImage.filepreview}
+                              sx={{
+                                height: 80,
+                                mb: 2,
+                                width: 80
+                              }}
+                            />
+                          ) : userProfileImage !== null ? (
+                            <Avatar
+                              src={userProfileImage}
                               sx={{
                                 height: 80,
                                 mb: 2,
@@ -130,14 +191,25 @@ const Profile = () => {
                           display: 'flex',
                           flexDirection: 'column'
                         }}>
-                        <Avatar
-                          src={`${USER}`}
-                          sx={{
-                            height: 80,
-                            mb: 2,
-                            width: 80
-                          }}
-                        />
+                        {userProfileImage !== null ? (
+                            <Avatar
+                              src={userProfileImage}
+                              sx={{
+                                height: 80,
+                                mb: 2,
+                                width: 80
+                              }}
+                            />
+                          ) : (
+                            <Avatar
+                              src={`${USER}`}
+                              sx={{
+                                height: 80,
+                                mb: 2,
+                                width: 80
+                              }}
+                            />
+                          )}
 
                         <Typography gutterBottom fontSize="20px" fontWeight="700">
                           Anika Visser
@@ -160,10 +232,28 @@ const Profile = () => {
                       </TabList>
                     </Box>
                     <TabPanel value="1">
-                      <Overview />
+                      <Overview userInfo={userInfo} />
                     </TabPanel>
                     <TabPanel value="2">
-                      <EditProfile />
+                      <EditProfile
+                        firstName={firstName}
+                        setFirstName={setFirstName}
+                        lastName={lastName}
+                        setLastName={setLastName}
+                        city={city}
+                        setCity={setCity}
+                        birth={birth}
+                        setBirth={setBirth}
+                        phone={phone}
+                        setPhone={setPhone}
+                        email={email}
+                        setEmail={setEmail}
+                        country={country}
+                        setCountry={setCountry}
+                        setGender={setGender}
+                        gender={gender}
+                        handleSubmit={handleSubmit}
+                      />
                     </TabPanel>
                   </TabContext>
                 </Card>

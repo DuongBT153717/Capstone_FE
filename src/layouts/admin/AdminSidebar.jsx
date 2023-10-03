@@ -1,16 +1,15 @@
 import AnalyticsIcon from '@mui/icons-material/Analytics'
+import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import MenuIcon from '@mui/icons-material/Menu'
-import SourceIcon from '@mui/icons-material/Source'
 import StyleIcon from '@mui/icons-material/Style'
-import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt';
 import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
 import { Menu, MenuItem, Sidebar, SubMenu, useProSidebar } from 'react-pro-sidebar'
 
-import AVATAR from '../../assets/images/user.png';
 import SettingsIcon from '@mui/icons-material/Settings'
-import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import AVATAR from '../../assets/images/user.png'
 const AdminSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => { 

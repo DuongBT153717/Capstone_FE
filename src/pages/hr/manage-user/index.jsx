@@ -1,47 +1,99 @@
+import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew'
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
-import LockOpenIcon from '@mui/icons-material/LockOpen'
-import SecurityIcon from '@mui/icons-material/Security'
-import { Box, Grid, IconButton, Typography } from '@mui/material'
-import React from 'react'
-import Header from '../../../components/Header'
-import DataTable from '../../../components/DataTable'
-import { mockDataTeam } from '../../../services/mockData'
+import BlockIcon from '@mui/icons-material/Block'
+import CheckIcon from '@mui/icons-material/Check'
 import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
+import ManIcon from '@mui/icons-material/Man'
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
+import SecurityIcon from '@mui/icons-material/Security'
+import { Box, IconButton, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import Header from '../../../components/Header'
+import { BASE_URL } from '../../../services/constraint'
+import userApi from '../../../services/userApi'
+import axiosClient from '../../../utils/axios-config'
+import CreateAccountModal from './components/CreateAccountModal'
+import DataTableManageUser from './components/DataTable'
+import RoleModal from './components/RoleModal'
 const ManageUser = () => {
+  const userId = useSelector((state) => state.auth.login.currentUser.accountId)
+  const dispatch = useDispatch()
+  const [allUser, setAllUser] = useState([])
+  const [user, setUser] = useState('')
+  const [open, setOpen] = useState(false)
+  const [openCreateAccount, setOpenCreateAccount] = useState(false)
+  const navigate = useNavigate()
+  const handleOpen = (data) => {
+    setOpen(true)
+    setUser(data)
+  }
+  const handleClose = () => setOpen(false)
+  const handleOpenCreateAccount = () => {
+    setOpenCreateAccount(true)
+  }
+  const handleCloseCreateAccount = () => setOpenCreateAccount(false)
+
+  useEffect(() => {
+    const fetchAllUser = async () => {
+      const response = await axiosClient.get(`${BASE_URL}/getAllAccount`, userId)
+      setAllUser(response)
+    }
+    fetchAllUser()
+  }, [])
+  console.log(allUser)
+  const handleChangeStatus = (user) => {
+    Swal.fire({
+      title: "Are you sure to change this status?",
+      icon: "info",
+      cancelButtonText: 'Cancel!',
+      showCancelButton: true,
+      cancelButtonColor: 'red',
+      confirmButtonColor: 'green'
+    })
+    .then(result => {
+      if (result.isConfirmed) {
+        let data = {
+          accountId: user.accountId,
+          statusName: user.statusName === 'active' ? 'inactive' : 'active'
+        }
+        userApi.changeUserStatus(data, dispatch)
+        setAllUser((prevUser) =>
+          prevUser.map((userInfo) => {
+            if (userInfo.accountId === user.accountId) {
+              return {
+                ...userInfo,
+                statusName: user.statusName === 'active' ? 'inactive' : 'active'
+              }
+            } else {
+              return userInfo
+            }
+          })
+        )
+      }else {
+        navigate('/manage-user')
+      }
+    });
+  }
+  
   const columns = [
-    { field: 'id', headerName: 'ID', width: 40 },
     {
-      field: 'name',
-      headerName: 'Name',
+      field: 'username',
+      headerName: 'Username',
       cellClassName: 'name-column--cell',
+      headerAlign: 'center',
+      align: 'center',
       flex: 1
     },
     {
-      field: 'age',
-      headerName: 'Age',
-      type: 'number',
-      headerAlign: 'left',
-      align: 'left',
-      width: 60
-    },
-    {
-      field: 'phone',
-      headerName: 'Phone Number',
-      width: 200
-    },
-    {
-      field: 'email',
-      headerName: 'Email',
-      width: 300
-    },
-    {
-      field: 'access',
+      field: 'roleName',
       headerName: 'Access Level',
       headerAlign: 'center',
       align: 'center',
       flex: 1,
-      renderCell: ({ row: { access } }) => {
+      renderCell: (params) => {
         return (
           <Box
             width="80%"
@@ -50,13 +102,42 @@ const ManageUser = () => {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            bgcolor={access === 'admin' ? '#3da58a' : '#2e7c67'}
+            bgcolor={params.row.roleName === 'admin' ? '#3da58a' : '#2e7c67'}
             borderRadius="4px">
-            {access === 'admin' && <AdminPanelSettingsIcon />}
-            {access === 'manager' && <SecurityIcon />}
-            {access === 'user' && <LockOpenIcon />}
+            {params.row.roleName === 'admin' && <AdminPanelSettingsIcon />}
+            {params.row.roleName === 'manager' && <ManageAccountsIcon />}
+            {params.row.roleName === 'hr' && <ManIcon />}
+            {params.row.roleName === 'director' && <AccessibilityNewIcon />}
+            {params.row.roleName === 'security' && <SecurityIcon />}
+            {params.row.roleName === 'employee' && <ManIcon />}
             <Typography color="#d0d1d5" sx={{ ml: '5px' }}>
-              {access}
+              {params.row.roleName}
+            </Typography>
+          </Box>
+        )
+      }
+    },
+    {
+      field: 'statusName',
+      headerName: 'Status',
+      headerAlign: 'center',
+      align: 'center',
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <Box
+            width="80%"
+            margin="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            bgcolor={params.row.statusName === 'active' ? 'green' : 'red'}
+            borderRadius="4px">
+            {params.row.statusName === 'active' && <AdminPanelSettingsIcon />}
+            {params.row.statusName === 'inactive' && <SecurityIcon />}
+            <Typography color="#d0d1d5" sx={{ ml: '5px' }}>
+              {params.row.statusName}
             </Typography>
           </Box>
         )
@@ -68,7 +149,7 @@ const ManageUser = () => {
       headerAlign: 'center',
       align: 'center',
       flex: 1,
-      renderCell: () => {
+      renderCell: (params) => {
         return (
           <Box
             margin="0 auto"
@@ -77,12 +158,18 @@ const ManageUser = () => {
             justifyContent="center"
             alignItems="center"
             borderRadius="4px">
-            <IconButton>
-              <EditIcon sx={{color: '#00FF00'}} />
+            <IconButton onClick={() => handleOpen(params.row)}>
+              <EditIcon sx={{ color: '#00FF00' }} />
             </IconButton>
-            <IconButton>
-              <DeleteIcon sx={{color: 'red'}}/>
-            </IconButton>
+            {params.row.statusName === 'active' ? (
+              <IconButton onClick={() => handleChangeStatus(params.row)}>
+                <BlockIcon sx={{ color: 'red' }} />
+              </IconButton>
+            ) : (
+              <IconButton onClick={() => handleChangeStatus(params.row)}>
+                <CheckIcon sx={{ color: '#00FF00' }} />
+              </IconButton>
+            )}
           </Box>
         )
       }
@@ -91,7 +178,15 @@ const ManageUser = () => {
   return (
     <>
       <Header title="TEAM" subtitle="Managing the team Members" />
-      <DataTable rows={mockDataTeam} columns={columns} x />
+      <DataTableManageUser rows={allUser} columns={columns} handleOpenCreateAccount={handleOpenCreateAccount} />
+      <RoleModal setAllUser={setAllUser} user={user} open={open} handleClose={handleClose} />
+      <CreateAccountModal
+        setAllUser={setAllUser}
+        allUser={allUser}
+        openCreateAccount={openCreateAccount}
+        handleCloseCreateAccount={handleCloseCreateAccount}
+        
+      />
     </>
   )
 }

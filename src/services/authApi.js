@@ -1,29 +1,10 @@
 import axios from 'axios'
-import { Base64 } from 'js-base64'
 import { loginFailed, loginStart, loginSuccess } from '../redux/authSlice'
-import axiosClient from '../utils/axios-config'
-import { BASE_URL } from './constraint'
+
 import { toast } from 'react-toastify'
-import { changePaswordFailed, changePaswordStart, changePaswordSuccess } from '../redux/userSlice'
+import { BASE_URL } from './constraint'
 
 const authApi = {
-  changePassword: async (data, dispatch) => {
-    dispatch(changePaswordStart()) 
-    try {
-      await axiosClient.post(`${BASE_URL}/changePassword`, data)
-      changePaswordSuccess()
-      toast.success('Change password sucessfully!')
-    } catch (error) {
-      if (error.response.status === 400) {
-        toast.error('Password wrong, please try again!')
-        changePaswordFailed(false)
-      }
-      if (error.response.status === 403) {
-        toast.error('Your account has been blocked')
-        changePaswordFailed(false)
-      }
-    }
-  },
   loginUser: async (data, dispatch, navigate) => {
     dispatch(loginStart())
     try {
@@ -43,7 +24,15 @@ const authApi = {
         dispatch(loginFailed())
       }
     }
-  }
+  },
+  resetPassword: async (data) => {
+    try {
+      await axios.post(`${BASE_URL}/resetPassword`, data)
+      toast.success('Your new password will be sent your gmail!')
+    } catch (error) {
+      console.log(error);
+    }
+  },
 }
 
 export default authApi

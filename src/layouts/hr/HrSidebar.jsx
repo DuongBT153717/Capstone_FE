@@ -3,17 +3,34 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material';
 import { Menu, MenuItem, Sidebar, useProSidebar } from 'react-pro-sidebar';
 
+import { getDownloadURL, ref } from 'firebase/storage';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import AVATAR from '../../assets/images/user.png';
+import { storage } from '../../firebase/config';
+import useAuth from '../../hooks/useAuth';
 const HrSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => { 
     const initialIndex = 
-      window.location.pathname === '/director' ? 0 
-          : 0; 
+      window.location.pathname === '/manage-user' ? 0 
+          : window.location.pathname === '/manage-profile' ? 1: 0; 
     return initialIndex; 
   });
+  const [userProfileImage, setUserProfileImage] = useState("")
+  const currentUser = useAuth()
+  const imgurl = async () => {
+    const storageRef = ref(storage, `/${currentUser.image}`);
+    try {
+      const url = await getDownloadURL(storageRef);
+      setUserProfileImage(url);
+    } catch (error) {
+      console.error('Error getting download URL:', error);
+    }
+  };
+
+  if (currentUser && currentUser.image) {
+    imgurl();
+  }
   return (
     <>
       <Sidebar
@@ -46,9 +63,9 @@ const HrSidebar = () => {
                 height: 40,
                 width: 40
               }}
-              src={AVATAR}
+              src={`${userProfileImage}`}
             />
-              <Typography fontSize='15px' fontWeight='600'>Cristiano Ronaldo</Typography>
+              <Typography fontSize='15px' fontWeight='600'>{currentUser.firstName}</Typography>
         </Box>
         <Divider />
         {/* <Box mb="25px">
@@ -99,9 +116,16 @@ const HrSidebar = () => {
             <MenuItem
               active={activeIndex === 0}
               icon={<DashboardIcon />}
-              component={<Link to="/director" onClick={() => setActiveIndex(0)} />}>
+              component={<Link to="/manage-user" onClick={() => setActiveIndex(0)} />}>
               {' '}
-              Dashboard{' '}
+              Manage User
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 1}
+              icon={<DashboardIcon />}
+              component={<Link to="/manage-profile" onClick={() => setActiveIndex(1)} />}>
+              {' '}
+              Manage Profile
             </MenuItem>
           </Menu>
           

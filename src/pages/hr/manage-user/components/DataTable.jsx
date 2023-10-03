@@ -1,26 +1,26 @@
 import { Box, Button, Typography } from "@mui/material";
 import {
-  DataGrid,
-  GridToolbarContainer,
-  GridToolbarExport,
-  GridToolbarFilterButton,
+  DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton
 } from "@mui/x-data-grid";
 
 
-const DataTable = ({ rows, columns }) => {
+const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount }) => {
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
-        <Box></Box>
-        <Box display="flex" gap={1}>
-          <GridToolbarFilterButton />
-          <GridToolbarExport />
-          <Button variant="contained"><Typography sx={{fontSize: '13px'}}>Add User</Typography></Button>
+        <Box display="flex" justifyContent="space-between" width="100%">
+          <Box display="flex" gap={1}>
+            <GridToolbarFilterButton />
+            <GridToolbarExport />
+          </Box>
+          <Button variant="contained" onClick={handleOpenCreateAccount}>
+            <Typography>Add Account</Typography>
+          </Button>
         </Box>
       </GridToolbarContainer>
-    );
+    )
   }
-  return (
+  return (   
     <Box
       sx={{
         "& .MuiDataGrid-root": {
@@ -56,7 +56,7 @@ const DataTable = ({ rows, columns }) => {
         },
         "& .MuiDataGrid-toolbarContainer": {
           marginBottom: "10px",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
         },
         // "& .MuiButtonBase-root ": {
         //   bgcolor: "#fff",
@@ -73,14 +73,16 @@ const DataTable = ({ rows, columns }) => {
         autoHeight  
         rows={rows}
         columns={columns}
+        slots={{ toolbar: CustomToolbar }}
         initialState={{
           pagination: { paginationModel: { pageSize: 5 } },
         }}
         pageSizeOptions={[5, 10, 20, 50]}
-        slots={{ toolbar: CustomToolbar }}
+        
+        getRowId={(row) => row.username}
       />
     </Box>
   );
 };
 
-export default DataTable;
+export default DataTableManageUser;

@@ -1,7 +1,8 @@
 export const PUBLIC_PATH = {
     LOGIN: "/login",
     CHANGE_PASSWORD: 'change-password',
-    PROFILE: 'profile'
+    PROFILE: 'profile',
+    RESET_PASSWORD: '/reset-password'
 }
 
 export const ADMIN_PATH = {
@@ -18,5 +19,7 @@ export const DIRECTOR_PATH = {
 }
 
 export const HR_PATH = {
-    LAYOUT: "/manage-user",
+    LAYOUT: "/",
+    MANAGE_USER: "/manage-user",
+    MANAGE_PROFILE: '/manage-profile'
 }

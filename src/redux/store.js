@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import authReducer from './authSlice'
 import userReducer from './userSlice'
+import profileReducer from './profileSlice'
 import {
     persistStore,
     persistReducer,
@@ -18,7 +19,7 @@ const persistConfig = {
     storage,
     whitelist: ['auth']
   };
-  const rootReducer = combineReducers({ auth: authReducer, user: userReducer});
+  const rootReducer = combineReducers({ auth: authReducer, user: userReducer, profile: profileReducer});
   const persistedReducer = persistReducer(persistConfig, rootReducer);
   
   export const store = configureStore({

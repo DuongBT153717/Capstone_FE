@@ -10,11 +10,13 @@ import {
   Popover,
   Typography
 } from '@mui/material'
+import { getDownloadURL, ref } from 'firebase/storage'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import AVATAR from '../assets/images/user.png'
+import { storage } from '../firebase/config'
+import useAuth from '../hooks/useAuth'
 import { logOutSuccess } from '../redux/authSlice'
 const AccountPopover = () => {
   const navigate = useNavigate()
@@ -34,6 +36,22 @@ const AccountPopover = () => {
     navigate('/login')
     toast.success('Logout successfully!');
   }
+
+  const [userProfileImage, setUserProfileImage] = useState("")
+  const currentUser = useAuth()
+  const imgurl = async () => {
+    const storageRef = ref(storage, `/${currentUser.image}`);
+    try {
+      const url = await getDownloadURL(storageRef);
+      setUserProfileImage(url);
+    } catch (error) {
+      console.error('Error getting download URL:', error);
+    }
+  };
+
+  if (currentUser && currentUser.image) {
+    imgurl();
+  }
   return (
     <>
       <IconButton sx={{ color: 'rgb(94, 53, 177)' }} onClick={handleOpen} size="small">
@@ -43,7 +61,7 @@ const AccountPopover = () => {
             height: 40,
             width: 40
           }}
-          src={AVATAR}
+          src={`${userProfileImage}`}
         />
       </IconButton>
       <Popover

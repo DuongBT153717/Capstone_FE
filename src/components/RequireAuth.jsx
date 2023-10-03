@@ -1,6 +1,5 @@
-import { useLocation, Navigate, Outlet } from 'react-router-dom'
-import { Base64 } from 'js-base64'
 import { useSelector } from 'react-redux'
+import { Navigate, Outlet } from 'react-router-dom'
 const RequireAuth = ({ allowedRoles }) => {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   if (currentUser) {

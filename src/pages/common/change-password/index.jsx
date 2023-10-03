@@ -13,7 +13,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Header from '../../../components/Header'
-import authApi from '../../../services/authApi'
+import userApi from '../../../services/userApi'
 const AdminChanagePassword = () => {
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -29,7 +29,7 @@ const AdminChanagePassword = () => {
       oldPassword: oldPassword,
       newPassword: newPassword
     }      
-      authApi.changePassword(data, dispatch)
+      userApi.changePassword(data, dispatch)
       setOldPassword('')
       setNewPassword('')
       setConfirmPassword('')
@@ -59,6 +59,7 @@ const AdminChanagePassword = () => {
                           label="Old Password"
                           onChange={(e) => setOldPassword(e.target.value)}
                           name="oldPassword"
+                          value={oldPassword}
                           required
                         />
                       </Grid>
@@ -67,6 +68,7 @@ const AdminChanagePassword = () => {
                           fullWidth
                           label="New Password"
                           onChange={(e) => setNewPassword(e.target.value)}
+                          value={newPassword}
                           name="newPassword"
                           required
                         />
@@ -77,6 +79,7 @@ const AdminChanagePassword = () => {
                           label="Confirm New Password"
                           name="confirmPassword"
                           required
+                          value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                       </Grid>

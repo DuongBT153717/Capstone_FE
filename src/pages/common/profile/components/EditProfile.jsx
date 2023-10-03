@@ -13,25 +13,18 @@ import {
 } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { useState } from 'react'
-import dayjs from 'dayjs'
-const EditProfile = () => {
-  const [gender, setGender] = useState('')
-  const [value, setValue] = useState(dayjs('2022-04-17'))
-  console.log(value.format('DD/MM/YYYY'));
-  const handleChange = (e) => {
-    setGender(e.target.value)
-  }
+const EditProfile = (props) => {
+  
   return (
     <>
       <CardContent>
         <Box sx={{ mb: 1 }}>
           <Grid item container spacing={3}>
             <Grid item xs={12} md={6}>
-              <TextField fullWidth label="First name" name="firstName" required value="Anika" />
+              <TextField fullWidth label="First name" onChange={(e) => props.setFirstName(e.target.value)} name="firstName"  />
             </Grid>
             <Grid item xs={12} md={6}>
-              <TextField fullWidth label="Last name" name="lastName" required value="Visser" />
+              <TextField fullWidth label="Last name" onChange={(e) => props.setLastName(e.target.value)} name="lastName" />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
@@ -39,7 +32,7 @@ const EditProfile = () => {
                 label="Email Address"
                 name="email"
                 required
-                value="demo@devias.io"
+                onChange={(e) => props.setEmail(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -48,7 +41,7 @@ const EditProfile = () => {
                 label="Phone Number"
                 name="phone"
                 type="number"
-                value="0987212912"
+                onChange={(e) => props.setPhone(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -56,25 +49,25 @@ const EditProfile = () => {
                 <DatePicker
                   sx={{ width: '100%' }}
                   label="Date of birth"
-                  value={value}
-                  onChange={(newValue) => setValue(newValue)}
+                  value={props.birth}
+                  onChange={(newValue) => props.setBirth(newValue)}
                 />
               </LocalizationProvider>
             </Grid>
             <Grid item xs={12} md={6}>
-              <TextField fullWidth label="Country" name="country"></TextField>
+              <TextField fullWidth label="Country" name="country" onChange={(e) => props.setCountry(e.target.value)}></TextField>
             </Grid>
             <Grid item xs={12} md={6}>
-              <TextField fullWidth label="City" name="city"></TextField>
+              <TextField fullWidth label="City" name="city" onChange={(e) => props.setCity(e.target.value)}></TextField>
             </Grid>
             <Grid item xs={12} md={6}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Gender</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
-                  value={gender}
+                  value={props.gender}
                   label="Gender"
-                  onChange={handleChange}>
+                  onChange={(e) => props.setGender(e.target.value)}>
                   <MenuItem value="male">Male</MenuItem>
                   <MenuItem value="female">Female</MenuItem>
                 </Select>
@@ -85,7 +78,7 @@ const EditProfile = () => {
       </CardContent>
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-end' }}>
-        <Button variant="contained" sx={{ bgcolor: 'rgb(94, 53, 177)' }}>
+        <Button onClick={props.handleSubmit} variant="contained" sx={{ bgcolor: 'rgb(94, 53, 177)' }}>
           Save details
         </Button>
       </CardActions>

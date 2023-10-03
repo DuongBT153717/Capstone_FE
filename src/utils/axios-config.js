@@ -1,8 +1,6 @@
 // api/axiosClient.js
-import axios from 'axios'
-import queryString from 'query-string'
+import axios from 'axios';
 import { BASE_URL } from '../services/constraint';
-import { useSelector } from 'react-redux';
 
 // Set up default config for http requests here
 
@@ -10,10 +8,12 @@ import { useSelector } from 'react-redux';
 
 const axiosClient = axios.create({
     baseURL: BASE_URL,
-    headers: {
-        'content-type': 'application/json'
-    },
 })
+
+axiosClient.defaults.headers = {
+    "Content-Type": "application/json",
+  };
+
 
 axiosClient.interceptors.request.use(async (config) => {
     const accessToken = localStorage.getItem('token')

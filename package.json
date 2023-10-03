@@ -20,6 +20,7 @@
     "@reduxjs/toolkit": "^1.9.6",
     "axios": "^1.5.0",
     "dayjs": "^1.11.10",
+    "firebase": "^10.4.0",
     "js-base64": "^3.7.5",
     "query-string": "^8.1.0",
     "react": "^18.2.0",
@@ -28,7 +29,8 @@
     "react-redux": "^8.1.2",
     "react-router-dom": "^6.16.0",
     "react-toastify": "^9.1.3",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "sweetalert2": "^11.7.31"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

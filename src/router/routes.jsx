@@ -14,6 +14,8 @@ import AdminChanagePassword from '../pages/common/change-password'
 import Profile from '../pages/common/profile'
 import DirectorDashboard from '../pages/director'
 import { Suspense, lazy } from 'react'
+import ManageProfile from '../pages/hr/manage-profile'
+import ResetPassword from '../pages/auth/resetpassword'
 const ManageUser = lazy(() => import('../pages/hr/manage-user')) 
 export default function Router() {
   let router = useRoutes([
@@ -28,6 +30,10 @@ export default function Router() {
     {
       path: PUBLIC_PATH.PROFILE,
       element: <Profile />
+    },
+    {
+      path: PUBLIC_PATH.RESET_PASSWORD,
+      element: <ResetPassword />
     },
     {
       path: '/unauthorized',
@@ -79,10 +85,18 @@ export default function Router() {
           element: <RequireAuth allowedRoles={ROLES.HR} />,
           children: [
             {
-              index: true,
+              path: HR_PATH.MANAGE_USER,
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <ManageUser />
+                </Suspense>
+              )
+            },
+            {
+              path: HR_PATH.MANAGE_PROFILE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ManageProfile />
                 </Suspense>
               )
             }
