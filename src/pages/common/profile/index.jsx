@@ -62,7 +62,6 @@ const Profile = () => {
     setValue(newValue)
   }
 
-  console.log(userInfo.image);
   const imgurl = async () => {
     const storageRef = ref(storage, `/${userInfo.image}`);
     try {
@@ -95,7 +94,6 @@ const Profile = () => {
     }
     formData.append('data', JSON.stringify(data))
     formData.append('image', userImage.file)
-    console.log([...formData])
     userApi.updateProfile(formData, dispatch)
   }
   

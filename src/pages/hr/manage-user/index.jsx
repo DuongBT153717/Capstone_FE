@@ -25,6 +25,7 @@ const ManageUser = () => {
   const [user, setUser] = useState('')
   const [open, setOpen] = useState(false)
   const [openCreateAccount, setOpenCreateAccount] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const handleOpen = (data) => {
     setOpen(true)
@@ -37,13 +38,15 @@ const ManageUser = () => {
   const handleCloseCreateAccount = () => setOpenCreateAccount(false)
 
   useEffect(() => {
+    setIsLoading(true)
     const fetchAllUser = async () => {
       const response = await axiosClient.get(`${BASE_URL}/getAllAccount`, userId)
       setAllUser(response)
+      setIsLoading(false)
     }
     fetchAllUser()
   }, [])
-  console.log(allUser)
+  
   const handleChangeStatus = (user) => {
     Swal.fire({
       title: "Are you sure to change this status?",
@@ -178,7 +181,7 @@ const ManageUser = () => {
   return (
     <>
       <Header title="TEAM" subtitle="Managing the team Members" />
-      <DataTableManageUser rows={allUser} columns={columns} handleOpenCreateAccount={handleOpenCreateAccount} />
+      <DataTableManageUser rows={allUser} columns={columns} handleOpenCreateAccount={handleOpenCreateAccount} isLoading={isLoading} />
       <RoleModal setAllUser={setAllUser} user={user} open={open} handleClose={handleClose} />
       <CreateAccountModal
         setAllUser={setAllUser}

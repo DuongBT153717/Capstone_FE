@@ -1,10 +1,10 @@
-import { Box } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
 import {
   DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton
 } from "@mui/x-data-grid";
 
 
-const DataTableManageProfile = ({ rows, columns }) => {
+const DataTableManageProfile = ({ rows, columns, isLoading }) => {
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -70,7 +70,8 @@ const DataTableManageProfile = ({ rows, columns }) => {
         autoHeight  
         rows={rows}
         columns={columns}
-        slots={{ toolbar: CustomToolbar }}
+        loading={isLoading}
+        slots={{ toolbar: CustomToolbar, loadingOverlay: LinearProgress }}
         initialState={{
           pagination: { paginationModel: { pageSize: 5 } },
         }}

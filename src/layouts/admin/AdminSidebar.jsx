@@ -31,9 +31,9 @@ const AdminSidebar = () => {
         }}
         breakPoint="md"
         backgroundColor="#fff">
-        <Box display="flex" justifyContent="space-between" alignItems="center" ml="15px" mb="25px">
+        <Box display="flex" justifyContent="flex-end" alignItems="center" height='65px'>
           {!collapsed ? (
-            <Typography variant="h3" color="#000">
+            <Typography variant="h3" color="#000" sx={{cursor: 'pointer'}}>
               ADMINIS
             </Typography>
           ) : null}

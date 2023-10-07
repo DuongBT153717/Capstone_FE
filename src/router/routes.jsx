@@ -16,6 +16,7 @@ import DirectorDashboard from '../pages/director'
 import { Suspense, lazy } from 'react'
 import ManageProfile from '../pages/hr/manage-profile'
 import ResetPassword from '../pages/auth/resetpassword'
+import Chat from '../pages/common/chat'
 const ManageUser = lazy(() => import('../pages/hr/manage-user')) 
 export default function Router() {
   let router = useRoutes([
@@ -34,6 +35,10 @@ export default function Router() {
     {
       path: PUBLIC_PATH.RESET_PASSWORD,
       element: <ResetPassword />
+    },
+    {
+      path: PUBLIC_PATH.CHAT,
+      element: <Chat />
     },
     {
       path: '/unauthorized',

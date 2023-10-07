@@ -2,7 +2,8 @@ export const PUBLIC_PATH = {
     LOGIN: "/login",
     CHANGE_PASSWORD: 'change-password',
     PROFILE: 'profile',
-    RESET_PASSWORD: '/reset-password'
+    RESET_PASSWORD: '/reset-password',
+    CHAT: 'chat'
 }
 
 export const ADMIN_PATH = {

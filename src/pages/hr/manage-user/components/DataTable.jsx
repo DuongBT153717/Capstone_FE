@@ -1,10 +1,10 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, LinearProgress, Typography } from "@mui/material";
 import {
   DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton
 } from "@mui/x-data-grid";
 
 
-const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount }) => {
+const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount, isLoading }) => {
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -73,12 +73,12 @@ const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount }) => {
         autoHeight  
         rows={rows}
         columns={columns}
-        slots={{ toolbar: CustomToolbar }}
+        slots={{ toolbar: CustomToolbar, loadingOverlay: LinearProgress }}
         initialState={{
           pagination: { paginationModel: { pageSize: 5 } },
         }}
         pageSizeOptions={[5, 10, 20, 50]}
-        
+        loading={isLoading}
         getRowId={(row) => row.username}
       />
     </Box>

@@ -17,10 +17,13 @@ const ManageProfile = () => {
   const navigate = useNavigate()
   const [usersImage, setUsersImage] = useState('')
   const [usersProfile, setUsersProfile] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true)
       const res = await axiosClient.get(`${BASE_URL}/getAllUserInfoPending`)
       setUsersProfile(res)
+      setIsLoading(false)
     }
     fetchData()
   }, [])
@@ -133,7 +136,7 @@ const ManageProfile = () => {
   return (
     <>
       <Header title="TEAM" subtitle="Managing the team Members" />
-      <DataTableManageProfile rows={usersProfile} columns={columns}  />
+      <DataTableManageProfile rows={usersProfile} columns={columns} isLoading={isLoading}  />
     </>
   )
 }
