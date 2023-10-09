@@ -25,13 +25,12 @@ import { BASE_URL } from '../../../services/constraint'
 import axiosClient from '../../../utils/axios-config'
 import './components/Chat.css'
 import ChatTopbar from './components/ChatTopbar'
+import useDebounce from '../../../hooks/useDebounce'
 
 const Chat = () => {
   const [newMessage, setNewMessage] = useState('')
   const [allUser, setAllUser] = useState([])
-  const [usersImage, setUsersImage] = useState('')
   const [isActiveUser, setIsActiveUser] = useState('')
-  const [indexImage, setIndexImage] = useState(0)
   const [messages, setMessages] = useState([])
   const [arrivalMessage, setArrivalMessage] = useState('')
   const [file, setFile] = useState()
@@ -41,6 +40,7 @@ const Chat = () => {
   const socket = useRef()
   const imageRef = useRef()
   const scroll = useRef()
+  const debouncedSearch = useDebounce(searchTerm, 500)
   useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
@@ -69,7 +69,7 @@ const Chat = () => {
     }
     getMessage()
   }, [isActiveUser?.accountId])
-
+  
   const imgurlAvatar = async () => {
     try {
       const downloadURLPromises = allUser.map((item) => {
@@ -80,8 +80,13 @@ const Chat = () => {
       })
 
       const downloadURLs = await Promise.all(downloadURLPromises)
-      console.log(downloadURLs);
-      setUsersImage(downloadURLs)
+      const result = allUser.map((obj, index) => {
+        return {
+          ...obj,
+          imgUrl: downloadURLs[index]
+        };
+      });
+      setAllUser(result)
     } catch (error) {
       console.error('Error getting download URLs:', error)
     }
@@ -89,16 +94,14 @@ const Chat = () => {
   useEffect(() => {
     imgurlAvatar()
   }, [allUser])
-
+  console.log(allUser);
   const handleChange = (newMessage) => {
     setNewMessage(newMessage)
     console.log(newMessage)
   }
 
-  const handleActiveUser = (item, index) => {
-    console.log(item)
+  const handleActiveUser = (item) => {
     setIsActiveUser(item)
-    setIndexImage(index)
   }
 
   const handleSendMessage = async () => {
@@ -250,7 +253,7 @@ const Chat = () => {
             </FormControl>
             {allUser
               .filter((user) =>
-                user.firstName.concat(user.lastName).toLowerCase().includes(searchTerm)
+                user.firstName.concat(' '+user.lastName).toLowerCase().includes(debouncedSearch)
               )
               .map((item, index) => (
                 <>
@@ -265,7 +268,7 @@ const Chat = () => {
                       <Stack p={1} display="flex" direction="row" spacing={1} mb={1}>
                         {item?.image !== 'unknown' ? (
                           <Avatar
-                            src={`${usersImage[index]}`}
+                            src={`${item?.imgUrl}`}
                             sx={{ width: '50px', height: '50px' }}
                           />
                         ) : (
@@ -312,7 +315,7 @@ const Chat = () => {
                     <Box display="flex" alignItems="center" gap="10px" mb={2}>
                       {isActiveUser?.image !== 'unknown' ? (
                         <Avatar
-                          src={`${usersImage[indexImage]}`}
+                          src={`${isActiveUser?.imgUrl}`}
                           sx={{ width: '50px', height: '50px' }}
                         />
                       ) : (

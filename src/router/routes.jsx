@@ -1,7 +1,7 @@
 import { useRoutes } from 'react-router-dom'
 import RequireAuth from '../components/RequireAuth'
 import UnAuthorized from '../components/UnAuthorized'
-import { ADMIN_PATH, DIRECTOR_PATH, HR_PATH, PUBLIC_PATH } from '../constants/path'
+import { ADMIN_PATH, DIRECTOR_PATH, EMPLOYEE_PATH, HR_PATH, PUBLIC_PATH } from '../constants/path'
 import { ROLES } from '../constants/role'
 import AdminLayout from '../layouts/admin'
 import DirectorLayout from '../layouts/director'
@@ -17,6 +17,8 @@ import { Suspense, lazy } from 'react'
 import ManageProfile from '../pages/hr/manage-profile'
 import ResetPassword from '../pages/auth/resetpassword'
 import Chat from '../pages/common/chat'
+import EmployeeLayout from '../layouts/employee'
+import CheckAttendance from '../pages/employee/check-attendance'
 const ManageUser = lazy(() => import('../pages/hr/manage-user')) 
 export default function Router() {
   let router = useRoutes([
@@ -94,6 +96,33 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <ManageUser />
+                </Suspense>
+              )
+            },
+            {
+              path: HR_PATH.MANAGE_PROFILE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ManageProfile />
+                </Suspense>
+              )
+            }
+          ]
+        }
+      ]
+    },
+    {
+      path: EMPLOYEE_PATH.LAYOUT,
+      element: <EmployeeLayout />,
+      children: [
+        {
+          element: <RequireAuth allowedRoles={ROLES.EMPLOYEE} />,
+          children: [
+            {
+              path: EMPLOYEE_PATH.CHECK_ATTENDACE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <CheckAttendance />
                 </Suspense>
               )
             },

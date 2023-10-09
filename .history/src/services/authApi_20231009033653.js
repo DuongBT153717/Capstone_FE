@@ -25,14 +25,6 @@ const authApi = {
         toast.error('Password wrong, please try again!')
         dispatch(loginFailed())
       }
-      if (error.response.status === 403) {
-        toast.error('Your account has blocked!')
-        dispatch(loginFailed())
-      }
-      if (error.response.status === 404) {
-        toast.error('Username not found!')
-        dispatch(loginFailed())
-      }
     }
   },
   resetPassword: async (data) => {
