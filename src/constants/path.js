@@ -20,3 +20,7 @@ export const DIRECTOR_PATH = {
 export const HR_PATH = {
     LAYOUT: "/manage-user",
 }
+
+    export const MANAGER_PATH={
+        LAYOUT: "/managerrole"
+    }
