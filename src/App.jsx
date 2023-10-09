@@ -6,19 +6,19 @@ import { ProSidebarProvider } from 'react-pro-sidebar'
 
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { AuthProvider } from './contexts/AuthContext'
 import Router from './router/routes'
+import { BrowserRouter } from 'react-router-dom'
 
 function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <AuthProvider>
+        <BrowserRouter>
           <ProSidebarProvider>
             <Router />
           </ProSidebarProvider>
-        </AuthProvider>
-        <ToastContainer />
+          <ToastContainer />
+        </BrowserRouter>
       </ThemeProvider>
     </>
   )

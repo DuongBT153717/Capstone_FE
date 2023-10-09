@@ -1,3 +1,4 @@
+import { LoadingButton } from '@mui/lab'
 import {
   Box,
   Button,
@@ -9,44 +10,30 @@ import {
   TextField
 } from '@mui/material'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Header from '../../../components/Header'
 import authApi from '../../../services/authApi'
-import { toast } from 'react-toastify'
-import { LoadingButton } from '@mui/lab'
 const AdminChanagePassword = () => {
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const accountId = localStorage.getItem('ACCOUNTID')
-  const handleSubmit = async (e) => {
+  const isLoading = useSelector((state) => state.user.changePassword?.isFetching)
+  const accountId = useSelector((state) => state.auth.login?.currentUser?.accountId)
+  console.log(accountId);
+  const dispatch = useDispatch()
+  const handleSubmit = (e) => {
     e.preventDefault()
     let data = {
       accountId: accountId,
       oldPassword: oldPassword,
       newPassword: newPassword
-    }
-
-    try {
-      setIsLoading(true)
-      await authApi.changePassword(data)
-      setIsLoading(false)
+    }      
+      authApi.changePassword(data, dispatch)
       setOldPassword('')
       setNewPassword('')
       setConfirmPassword('')
-      toast.success('Change password sucessfully!')
-    } catch (error) {
-      if (error.response.status === 400) {
-        toast.error('Password wrong, please try again!')
-        setIsLoading(false)
-      }
-      if (error.response.status === 403) {
-        toast.error('Your account has been blocked')
-        setIsLoading(false)
-      }
     }
-  }
 
   return (
     <Box height="100vh" bgcolor="seashell">

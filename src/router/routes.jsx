@@ -1,19 +1,24 @@
-import Login from '../pages/auth/login/login'
+import { useRoutes } from 'react-router-dom'
+import RequireAuth from '../components/RequireAuth'
+import UnAuthorized from '../components/UnAuthorized'
+import { ADMIN_PATH, DIRECTOR_PATH, HR_PATH, MANAGER_PATH, PUBLIC_PATH } from '../constants/path'
+import { ROLES } from '../constants/role'
+import AdminLayout from '../layouts/admin'
 import DirectorLayout from '../layouts/director'
+import HrLayout from '../layouts/hr'
 import CreateStaff from '../pages/admin/create-staff'
+import AdminDashboard from '../pages/admin/dashboard'
 import DeviceConfig from '../pages/admin/device-config'
+import Login from '../pages/auth/login/login'
 import AdminChanagePassword from '../pages/common/change-password'
 import Profile from '../pages/common/profile'
 import DirectorDashboard from '../pages/director'
-import RequireAuth from '../components/RequireAuth'
-import { useRoutes } from 'react-router-dom'
-import AdminLayout from '../layouts/admin'
-import { ADMIN_PATH, DIRECTOR_PATH, HR_PATH, PUBLIC_PATH } from '../constants/path'
-import AdminDashboard from '../pages/admin/dashboard'
-import UnAuthorized from '../components/UnAuthorized'
-import { ROLES } from '../constants/role'
-import HrLayout from '../layouts/hr'
-import HrDashBoard from '../pages/hr'
+import { Suspense, lazy } from 'react'
+import ManagerSideBar from '../layouts/manager/ManagerSideBar'
+import ManagerLayout from '../layouts/manager'
+
+const ManagerDashboard = lazy(() => import('../pages/manager')) 
+const ManageUser = lazy(() => import('../pages/hr/manage-user')) 
 export default function Router() {
   let router = useRoutes([
     {
@@ -75,11 +80,34 @@ export default function Router() {
       element: <HrLayout />,
       children: [
         {
-          element: <RequireAuth allowedRoles={ROLES.HR} />,
+          
           children: [
             {
               index: true,
-              element: <HrDashBoard />
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ManageUser />
+                </Suspense>
+              )
+            }
+          ]
+        }
+      ]
+    },
+    {
+      path: MANAGER_PATH.LAYOUT,
+      element: <ManagerLayout />,
+      children: [
+        {
+          // element: <RequireAuth allowedRoles={ROLES.MANAGER} />,
+          children: [
+            {
+              index: true,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ManagerDashboard />
+                </Suspense>
+              )
             }
           ]
         }
