@@ -3,8 +3,7 @@ export const PUBLIC_PATH = {
     CHANGE_PASSWORD: 'change-password',
     PROFILE: 'profile',
     RESET_PASSWORD: '/reset-password',
-    CHAT: 'chat',
-    TICKET_DETAIL: 'ticket-detail'
+    CHAT: 'chat'
 }
 
 export const ADMIN_PATH = {
@@ -14,8 +13,7 @@ export const ADMIN_PATH = {
 
 export const EMPLOYEE_PATH = {
     LAYOUT: "/",
-    CHECK_ATTENDACE: '/check-attendance',
-    CHECK_ATTENDACE2: '/check-attendance2'
+    CHECK_ATTENDACE: '/check-attendance'
 }
 
 export const DIRECTOR_PATH = {

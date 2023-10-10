@@ -36,7 +36,7 @@ const AttendanceDetailModal = ({ open, handleClose, date, userId }) => {
       console.log(error)
       setIsLoading(false)
     }
-  }, [date])
+  }, [])
 
   console.log(attendanceDetail)
   return (
@@ -110,7 +110,6 @@ const AttendanceDetailModal = ({ open, handleClose, date, userId }) => {
                 </Typography>
               </Grid>
             </Grid>
-            
           </>
         )}
       </Box>

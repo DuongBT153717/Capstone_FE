@@ -145,7 +145,7 @@ const Chat = () => {
           type: 'image'
         })
         setNewMessage('')
-        setFile()
+        
       } catch (error) {
         if (error.response.status === 400) {
           toast.error('User not found!')
@@ -172,8 +172,6 @@ const Chat = () => {
       }
     }
   }
-
-  console.log(allUser);
   useEffect(() => {
     if (isActiveUser === '') {
       socket.current = io('https://socket-jkx5.onrender.com')

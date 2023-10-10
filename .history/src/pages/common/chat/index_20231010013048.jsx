@@ -172,8 +172,6 @@ const Chat = () => {
       }
     }
   }
-
-  console.log(allUser);
   useEffect(() => {
     if (isActiveUser === '') {
       socket.current = io('https://socket-jkx5.onrender.com')

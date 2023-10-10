@@ -16,7 +16,7 @@ const CheckAttendance = () => {
   const [date, setDate] = useState('')
   const handleOpen = (data) => {
     setOpen(true)
-    setDate(data.date)
+    setDate(data)
   }
   const handleClose = () => setOpen(false)
   useEffect(() => {
@@ -83,7 +83,7 @@ const CheckAttendance = () => {
             justifyContent="center"
             alignItems="center"
             borderRadius="4px">
-            <IconButton onClick={() => handleOpen(params.row)}>
+            <IconButton onClick={() => handleOpen(params.row.date)}>
               <RemoveRedEyeIcon sx={{ color: 'rgb(0, 150, 255)' }} />
             </IconButton>
           </Box>

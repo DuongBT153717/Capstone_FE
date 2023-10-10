@@ -145,7 +145,7 @@ const Chat = () => {
           type: 'image'
         })
         setNewMessage('')
-        setFile()
+        setFile('')
       } catch (error) {
         if (error.response.status === 400) {
           toast.error('User not found!')

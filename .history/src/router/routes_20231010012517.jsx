@@ -19,7 +19,6 @@ import Profile from '../pages/common/profile'
 import DirectorDashboard from '../pages/director'
 import CheckAttendance from '../pages/employee/check-attendance'
 import ManageProfile from '../pages/hr/manage-profile'
-import TicketDetail from '../pages/common/ticket-detail'
 const ManageUser = lazy(() => import('../pages/hr/manage-user')) 
 export default function Router() {
   let router = useRoutes([
@@ -50,10 +49,6 @@ export default function Router() {
     {
       path: 'create-staff',
       element: <CreateStaff />
-    },
-    {
-      path: 'ticket-detail',
-      element: <TicketDetail />
     },
     {
       path: ADMIN_PATH.LAYOUT,

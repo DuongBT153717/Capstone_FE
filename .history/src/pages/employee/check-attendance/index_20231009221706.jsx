@@ -16,7 +16,8 @@ const CheckAttendance = () => {
   const [date, setDate] = useState('')
   const handleOpen = (data) => {
     setOpen(true)
-    setDate(data.date)
+    console.log(data);
+    setDate(data)
   }
   const handleClose = () => setOpen(false)
   useEffect(() => {

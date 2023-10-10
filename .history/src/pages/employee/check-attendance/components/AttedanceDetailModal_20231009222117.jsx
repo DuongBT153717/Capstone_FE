@@ -110,7 +110,6 @@ const AttendanceDetailModal = ({ open, handleClose, date, userId }) => {
                 </Typography>
               </Grid>
             </Grid>
-            
           </>
         )}
       </Box>
