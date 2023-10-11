@@ -19,6 +19,7 @@ import ResetPassword from '../pages/auth/resetpassword'
 import Chat from '../pages/common/chat'
 import EmployeeLayout from '../layouts/employee'
 import CheckAttendance from '../pages/employee/check-attendance'
+import CreateTicketRequest from '../pages/common/create-ticket'
 const ManageUser = lazy(() => import('../pages/hr/manage-user')) 
 export default function Router() {
   let router = useRoutes([
@@ -49,6 +50,10 @@ export default function Router() {
     {
       path: 'create-staff',
       element: <CreateStaff />
+    },
+    {
+      path: 'create-ticket',
+      element: <CreateTicketRequest />
     },
     {
       path: ADMIN_PATH.LAYOUT,
