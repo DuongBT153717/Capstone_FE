@@ -20,6 +20,7 @@ import DirectorDashboard from '../pages/director'
 import CheckAttendance from '../pages/employee/check-attendance'
 import ManageProfile from '../pages/hr/manage-profile'
 import TicketDetail from '../pages/common/ticket-detail'
+import TicketList from '../pages/common/ticket-list'
 const ManageUser = lazy(() => import('../pages/hr/manage-user')) 
 export default function Router() {
   let router = useRoutes([
@@ -54,6 +55,10 @@ export default function Router() {
     {
       path: 'ticket-detail',
       element: <TicketDetail />
+    },
+    {
+      path: 'ticket-list',
+      element: <TicketList />
     },
     {
       path: ADMIN_PATH.LAYOUT,
@@ -121,7 +126,7 @@ export default function Router() {
       element: <EmployeeLayout />,
       children: [
         {
-          element: <RequireAuth allowedRoles={ROLES.EMPLOYEE} />,
+          element: <RequireAuth  />,
           children: [
             {
               path: EMPLOYEE_PATH.CHECK_ATTENDACE,

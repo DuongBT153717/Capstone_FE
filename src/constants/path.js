@@ -4,7 +4,8 @@ export const PUBLIC_PATH = {
     PROFILE: 'profile',
     RESET_PASSWORD: '/reset-password',
     CHAT: 'chat',
-    TICKET_DETAIL: 'ticket-detail'
+    TICKET_DETAIL: 'ticket-detail',
+    TICKET_LIST: 'ticket-list',
 }
 
 export const ADMIN_PATH = {
