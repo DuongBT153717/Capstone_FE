@@ -5,18 +5,18 @@ import { styled } from '@mui/system'
 import { useEffect, useRef } from 'react'
 import './components/style.css'
 import ChatTopbar from '../chat/components/ChatTopbar'
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
-  margin: theme.spacing(2),
-  backgroundColor: theme.palette.background.paper
-}))
-
-const StyledPaperAns = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
-  margin: theme.spacing(2),
-  backgroundColor: 'lightblue'
-}))
 const TicketDetail = () => {
+  const StyledPaper = styled(Paper)(({ theme }) => ({
+    padding: theme.spacing(2),
+    margin: theme.spacing(2),
+    backgroundColor: theme.palette.background.paper
+  }))
+
+  const StyledPaperAns = styled(Paper)(({ theme }) => ({
+    padding: theme.spacing(2),
+    margin: theme.spacing(2),
+    backgroundColor: 'lightblue'
+  }))
 
   const scrollbarsRef = useRef()
   const inputRef = useRef()
@@ -100,6 +100,8 @@ const TicketDetail = () => {
             của bạn !!
           </Typography>
         </StyledPaperAns>
+
+
       </div>
         <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column'}}>
           <CKEditor editor={ClassicEditor} onInit={() => {}} />

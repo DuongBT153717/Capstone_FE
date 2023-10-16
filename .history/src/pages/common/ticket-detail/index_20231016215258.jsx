@@ -5,18 +5,18 @@ import { styled } from '@mui/system'
 import { useEffect, useRef } from 'react'
 import './components/style.css'
 import ChatTopbar from '../chat/components/ChatTopbar'
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
-  margin: theme.spacing(2),
-  backgroundColor: theme.palette.background.paper
-}))
-
-const StyledPaperAns = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
-  margin: theme.spacing(2),
-  backgroundColor: 'lightblue'
-}))
 const TicketDetail = () => {
+  const StyledPaper = styled(Paper)(({ theme }) => ({
+    padding: theme.spacing(2),
+    margin: theme.spacing(2),
+    backgroundColor: theme.palette.background.paper
+  }))
+
+  const StyledPaperAns = styled(Paper)(({ theme }) => ({
+    padding: theme.spacing(2),
+    margin: theme.spacing(2),
+    backgroundColor: 'lightblue'
+  }))
 
   const scrollbarsRef = useRef()
   const inputRef = useRef()
@@ -26,18 +26,24 @@ const TicketDetail = () => {
     const input = inputRef.current
     if (input.value.trim() !== '') {
       input.value = ''
+
+      scrollToBottom()
     }
   }
 
+  const scrollToBottom = () => {
+    scrollbarsRef.current.scrollTop = scrollbarsRef.current.scrollHeight
+  }
+
   useEffect(() => {
-    scrollbarsRef.current?.scrollIntoView({ behavior: 'smooth' })
+    scrollToBottom()
   }, [])
   return (
     <Box height='100vh'>
       <ChatTopbar />
       <div
         ref={scrollbarsRef}
-        style={{ overflow: 'auto', backgroundColor: '#f5f7f9', maxHeight: '420px' }}>
+        style={{ overflow: 'auto', backgroundColor: '#f5f7f9', maxHeight: '400px' }}>
         <StyledPaper>
           <Box display="flex" gap={1} alignItems="center" mb={2}>
             <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
@@ -100,6 +106,8 @@ const TicketDetail = () => {
             của bạn !!
           </Typography>
         </StyledPaperAns>
+
+
       </div>
         <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column'}}>
           <CKEditor editor={ClassicEditor} onInit={() => {}} />

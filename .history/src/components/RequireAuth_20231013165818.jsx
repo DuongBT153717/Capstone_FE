@@ -10,8 +10,6 @@ const RequireAuth = ({ allowedRoles }) => {
     } else {
       return <Navigate to="/unauthorized" />;
     }
-  }else{
-    return <Navigate to="/unauthorized" />;
   }
 };
 

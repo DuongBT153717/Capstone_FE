@@ -54,7 +54,7 @@ export default function Router() {
     {
       path: PUBLIC_PATH.TICKET_DETAIL,
       element: <TicketDetail />
-    },
+    }
     {
       element: <RequireAuth allowedRoles={[ROLES.HR, ROLES.EMPLOYEE]} />,
       children: [

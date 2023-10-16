@@ -100,6 +100,8 @@ const TicketDetail = () => {
             của bạn !!
           </Typography>
         </StyledPaperAns>
+
+
       </div>
         <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column'}}>
           <CKEditor editor={ClassicEditor} onInit={() => {}} />

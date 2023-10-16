@@ -20,7 +20,7 @@ import TicketDetail from '../pages/common/ticket-detail'
 import DirectorDashboard from '../pages/director'
 import CheckAttendance from '../pages/employee/check-attendance'
 import ManageProfile from '../pages/hr/manage-profile'
-const ManageUser = lazy(() => import('../pages/hr/manage-user'))
+const ManageUser = lazy(() => import('../pages/hr/manage-user')) 
 export default function Router() {
   let router = useRoutes([
     {
@@ -48,18 +48,28 @@ export default function Router() {
       element: <UnAuthorized />
     },
     {
-      path: PUBLIC_PATH.CREATE_TICKET,
-      element: <CreateTicketRequest />
-    },
-    {
-      path: PUBLIC_PATH.TICKET_DETAIL,
-      element: <TicketDetail />
-    },
-    {
-      element: <RequireAuth allowedRoles={[ROLES.HR, ROLES.EMPLOYEE]} />,
+      path: ADMIN_PATH.LAYOUT,
+      element: <AdminLayout />,
       children: [
-
+        {
+          element: <RequireAuth allowedRoles={ROLES.ADMIN} />,
+          children: [
+            {
+              path: PUBLIC_PATH.CREATE_TICKET,
+              element: <CreateTicketRequest />
+            },
+            {
+              path: PUBLIC_PATH.TICKET_DETAIL,
+              element: <TicketDetail />
+            },
+          ]
+        }
       ]
+    },
+    
+    {
+      path: 'create-ticket',
+      element: <CreateTicketRequest />
     },
     {
       path: ADMIN_PATH.LAYOUT,
@@ -136,11 +146,11 @@ export default function Router() {
                   <CheckAttendance />
                 </Suspense>
               )
-            }
+            },
           ]
         }
       ]
-    }
+    },
   ])
   return router
 }

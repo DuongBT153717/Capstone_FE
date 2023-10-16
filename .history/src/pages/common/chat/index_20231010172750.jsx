@@ -386,7 +386,7 @@ const Chat = () => {
                                 }}
                                 className="messageText">
                                 {item?.type === 'text' ? (
-                                  <Typography color='#fff' sx={{ lineHeight: 1.3, letterSpacing: 0 }}>
+                                  <Typography sx={{ lineHeight: 1.3, letterSpacing: 0 }}>
                                     {item?.message}
                                   </Typography>
                                 ) : item?.type === 'image' ? (

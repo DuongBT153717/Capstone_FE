@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux'
 import { Navigate, Outlet } from 'react-router-dom'
 const RequireAuth = ({ allowedRoles }) => {
   const currentUser = useSelector((state) => state.auth.login?.currentUser);
-  if (currentUser !== null) {
+  if (currentUser) {
     const role = currentUser.role;
     const token = currentUser.jwtToken;
     if (token && allowedRoles.includes(role)) {
@@ -10,8 +10,6 @@ const RequireAuth = ({ allowedRoles }) => {
     } else {
       return <Navigate to="/unauthorized" />;
     }
-  }else{
-    return <Navigate to="/unauthorized" />;
   }
 };
 

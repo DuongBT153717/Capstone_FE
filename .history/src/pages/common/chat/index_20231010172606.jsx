@@ -341,11 +341,11 @@ const Chat = () => {
                             <div className="messageTop">
                               <div
                                 style={{
-                                  backgroundColor: item?.type === 'image' ? '#f5f7f9' : '#1877f2'
+                                  backgroundColor: item?.type === 'image' ? '#444' : '#1877f2'
                                 }}
                                 className="messageText">
                                 {item?.type === 'text' ? (
-                                  <Typography color='#fff' sx={{ lineHeight: 1.3, letterSpacing: 0 }}>
+                                  <Typography sx={{ lineHeight: 1.3, letterSpacing: 0 }}>
                                     {item?.message}
                                   </Typography>
                                 ) : item?.type === 'image' ? (
@@ -381,12 +381,12 @@ const Chat = () => {
                               <div
                                 style={{
                                   backgroundColor:
-                                    item?.type === 'image' ? '#f5f7f9' : 'rgb(245, 241, 241)',
+                                    item?.type === 'image' ? '#444' : 'rgb(245, 241, 241)',
                                   color: '#000'
                                 }}
                                 className="messageText">
                                 {item?.type === 'text' ? (
-                                  <Typography color='#fff' sx={{ lineHeight: 1.3, letterSpacing: 0 }}>
+                                  <Typography sx={{ lineHeight: 1.3, letterSpacing: 0 }}>
                                     {item?.message}
                                   </Typography>
                                 ) : item?.type === 'image' ? (

@@ -48,17 +48,17 @@ export default function Router() {
       element: <UnAuthorized />
     },
     {
-      path: PUBLIC_PATH.CREATE_TICKET,
-      element: <CreateTicketRequest />
-    },
-    {
-      path: PUBLIC_PATH.TICKET_DETAIL,
-      element: <TicketDetail />
-    },
-    {
-      element: <RequireAuth allowedRoles={[ROLES.HR, ROLES.EMPLOYEE]} />,
+      path: '/',
+      element: <RequireAuth allowedRoles={ROLES.HR || ROLES.EMPLOYEE} />,
       children: [
-
+        {
+          path: PUBLIC_PATH.CREATE_TICKET,
+          element: <CreateTicketRequest />
+        },
+        {
+          path: PUBLIC_PATH.TICKET_DETAIL,
+          element: <TicketDetail />
+        }
       ]
     },
     {

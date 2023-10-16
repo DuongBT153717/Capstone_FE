@@ -8,19 +8,20 @@ import AdminLayout from '../layouts/admin'
 import DirectorLayout from '../layouts/director'
 import EmployeeLayout from '../layouts/employee'
 import HrLayout from '../layouts/hr'
+import CreateStaff from '../pages/admin/create-staff'
 import AdminDashboard from '../pages/admin/dashboard'
 import DeviceConfig from '../pages/admin/device-config'
 import Login from '../pages/auth/login/login'
 import ResetPassword from '../pages/auth/resetpassword'
 import AdminChanagePassword from '../pages/common/change-password'
 import Chat from '../pages/common/chat'
-import CreateTicketRequest from '../pages/common/create-ticket'
 import Profile from '../pages/common/profile'
-import TicketDetail from '../pages/common/ticket-detail'
 import DirectorDashboard from '../pages/director'
 import CheckAttendance from '../pages/employee/check-attendance'
 import ManageProfile from '../pages/hr/manage-profile'
-const ManageUser = lazy(() => import('../pages/hr/manage-user'))
+import TicketDetail from '../pages/common/ticket-detail'
+import CreateTicketRequest from '../pages/common/create-ticket'
+const ManageUser = lazy(() => import('../pages/hr/manage-user')) 
 export default function Router() {
   let router = useRoutes([
     {
@@ -48,18 +49,17 @@ export default function Router() {
       element: <UnAuthorized />
     },
     {
-      path: PUBLIC_PATH.CREATE_TICKET,
-      element: <CreateTicketRequest />
+      path: 'create-staff',
+      element: <CreateStaff />
     },
     {
       path: PUBLIC_PATH.TICKET_DETAIL,
       element: <TicketDetail />
+
     },
     {
-      element: <RequireAuth allowedRoles={[ROLES.HR, ROLES.EMPLOYEE]} />,
-      children: [
-
-      ]
+      path: 'create-ticket',
+      element: <CreateTicketRequest />
     },
     {
       path: ADMIN_PATH.LAYOUT,
@@ -136,11 +136,11 @@ export default function Router() {
                   <CheckAttendance />
                 </Suspense>
               )
-            }
+            },
           ]
         }
       ]
-    }
+    },
   ])
   return router
 }
