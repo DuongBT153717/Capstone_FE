@@ -26,24 +26,18 @@ const TicketDetail = () => {
     const input = inputRef.current
     if (input.value.trim() !== '') {
       input.value = ''
-
-      scrollToBottom()
     }
   }
 
-  const scrollToBottom = () => {
-    scrollbarsRef.current.scrollTop = scrollbarsRef.current.scrollHeight
-  }
-
   useEffect(() => {
-    scrollToBottom()
+    scrollbarsRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [])
   return (
-    <>
+    <Box height='100vh'>
       <ChatTopbar />
       <div
         ref={scrollbarsRef}
-        style={{ overflow: 'auto', backgroundColor: '#f5f7f9', maxHeight: '400px' }}>
+        style={{ overflow: 'auto', backgroundColor: '#f5f7f9', maxHeight: '420px' }}>
         <StyledPaper>
           <Box display="flex" gap={1} alignItems="center" mb={2}>
             <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
@@ -116,7 +110,7 @@ const TicketDetail = () => {
             Send
           </Button>
         </form>
-    </>
+    </Box>
   )
 }
 

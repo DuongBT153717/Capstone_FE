@@ -4,9 +4,8 @@ export const PUBLIC_PATH = {
     PROFILE: 'profile',
     RESET_PASSWORD: '/reset-password',
     CHAT: 'chat',
-    REQUEST_DETAIL: '/request-detail',
-    CREATE_REQUEST: '/create-request',
-    REQUEST_LIST: '/request-list',
+    TICKET_DETAIL: '/ticket-detail',
+    CREATE_TICKET: '/create-ticket',
 }
 
 export const ADMIN_PATH = {

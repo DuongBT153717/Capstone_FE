@@ -14,14 +14,13 @@ import Login from '../pages/auth/login/login'
 import ResetPassword from '../pages/auth/resetpassword'
 import AdminChanagePassword from '../pages/common/change-password'
 import Chat from '../pages/common/chat'
-import CreateTicketRequest from '../pages/common/create-request'
+import CreateTicketRequest from '../pages/common/create-ticket'
 import Profile from '../pages/common/profile'
-import TicketDetail from '../pages/common/request-detail'
+import TicketDetail from '../pages/common/ticket-detail'
 import DirectorDashboard from '../pages/director'
 import CheckAttendance from '../pages/employee/check-attendance'
 import ManageProfile from '../pages/hr/manage-profile'
-import TicketList from '../pages/common/request-list'
-const ManageUser = lazy(() => import('../pages/hr/manage-user')) 
+const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 export default function Router() {
   let router = useRoutes([
     {
@@ -49,16 +48,18 @@ export default function Router() {
       element: <UnAuthorized />
     },
     {
-      path: PUBLIC_PATH.CREATE_REQUEST,
+      path: PUBLIC_PATH.CREATE_TICKET,
       element: <CreateTicketRequest />
     },
     {
-      path: PUBLIC_PATH.REQUEST_DETAIL,
+      path: PUBLIC_PATH.TICKET_DETAIL,
       element: <TicketDetail />
-    },
+    }
     {
-path: PUBLIC_PATH.REQUEST_LIST,
-element: <TicketList />
+      element: <RequireAuth allowedRoles={[ROLES.HR, ROLES.EMPLOYEE]} />,
+      children: [
+
+      ]
     },
     {
       path: ADMIN_PATH.LAYOUT,
@@ -126,7 +127,7 @@ element: <TicketList />
       element: <EmployeeLayout />,
       children: [
         {
-          element: <RequireAuth  />,
+          element: <RequireAuth allowedRoles={ROLES.EMPLOYEE} />,
           children: [
             {
               path: EMPLOYEE_PATH.CHECK_ATTENDACE,

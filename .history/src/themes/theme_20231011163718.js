@@ -10,7 +10,7 @@ export const theme = createTheme({
   },
   palette:{
     bgColorPrimary: {
-      main: '#f5f7f9'
+      
     }
   },
   components: {

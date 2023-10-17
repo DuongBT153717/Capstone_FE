@@ -5,13 +5,13 @@ const RequireAuth = ({ allowedRoles }) => {
   if (currentUser !== null) {
     const role = currentUser.role;
     const token = currentUser.jwtToken;
-    if (token && allowedRoles.includes(role)) {
+    if (!token) {
+      return <Navigate to="/login" />;
+    } else if (allowedRoles.includes(role)) {
       return <Outlet />;
     } else {
       return <Navigate to="/unauthorized" />;
     }
-  }else{
-    return <Navigate to="/unauthorized" />;
   }
 };
 

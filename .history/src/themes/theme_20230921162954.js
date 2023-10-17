@@ -8,11 +8,6 @@ export const theme = createTheme({
       fontWeight: '600'
     },
   },
-  palette:{
-    bgColorPrimary: {
-      main: '#f5f7f9'
-    }
-  },
   components: {
     MuiTabPanel: {
       styleOverrides: {
