@@ -59,7 +59,7 @@ const EditProfile = (props) => {
                     label="Date of birth"
                     value={props.birth}
                     onChange={(newValue) => props.setBirth(newValue)}
-                    renderInput={(props) => <TextField sx={{width: '100%'}} {...props} />}
+                    renderInput={(props) => <TextField {...props} />}
                   />
                 </LocalizationProvider>
             </Grid>

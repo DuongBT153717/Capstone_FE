@@ -1,6 +1,8 @@
-import { Box, Grid, MenuItem, Paper, Select, TextField, Typography, useTheme } from '@mui/material'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import { CKEditor } from '@ckeditor/ckeditor5-react'
+import { Box, Button, Grid, MenuItem, Paper, Select, TextField, Typography, useTheme } from '@mui/material'
 import { useState } from 'react'
-import { AttendenceFrom, DepartmentRequest, LeaveRequest, OtRequest, RoomRequestForm } from './DataFrom'
+import { AttendenceFrom, RoomRequestForm, OtRequest, DepartmentRequest, LeaveRequest } from './DataFrom'
 
 const Data = () => {
 
@@ -57,7 +59,7 @@ const Data = () => {
         </Box>
         <Box p={3}>
           <Paper elevation={2} sx={{ p: 2 }}>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <Typography fontWeight="500">Service</Typography>
               <Select
                 value={selectedValue}

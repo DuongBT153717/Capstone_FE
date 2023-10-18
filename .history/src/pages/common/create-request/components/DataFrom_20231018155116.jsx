@@ -1,9 +1,6 @@
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import { CKEditor } from '@ckeditor/ckeditor5-react'
-import { Box, Button, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
-import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
-import { useState } from 'react'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import { Box, Button, Grid, MenuItem, Select, TextField, Typography } from '@mui/material';
 
 const AttendenceFrom = () => (
   <Box p={3} pl={0}>
@@ -66,18 +63,18 @@ const RoomRequestForm = () => (
       <TextField sx={{ width: '100%' }} size="small" placeholder="Enter the request title" />
     </Grid>
 
-    <Grid item xs={3}>
+    <Grid item xs={6}>
       <Typography fontWeight="500">From</Typography>
       <TextField
        sx={{ width: '100%', height: '38px' }}
-      type={"time"}
+      type="time"
     />
     </Grid>
-    <Grid item xs={3}>
+    <Grid item xs={6}>
       <Typography fontWeight="500">To</Typography>
       <TextField
        sx={{ width: '100%', height: '38px' }}
-      type={"time"}
+      type="time"
     />
     </Grid>
     <Grid item xs={12}>
@@ -92,17 +89,22 @@ const RoomRequestForm = () => (
 );
 
 const OtRequest = () => (
-  <Box p={3}>
+  <Box p={3} pl={0}>
     Ot Request From
   </Box>
-)
+);
 
 const DepartmentRequest = () => (
-  <Box p={3}>
+  <Box p={3} pl={0}>
     Department Request From
   </Box>
-)
+);
 
-const LeaveRequest = () => <Box p={3}>Leave Request</Box>
+
+const LeaveRequest = () => (
+  <Box p={3}>
+    Leave Request
+  </Box>
+);
 
 export { AttendenceFrom, DepartmentRequest, LeaveRequest, OtRequest, RoomRequestForm };
