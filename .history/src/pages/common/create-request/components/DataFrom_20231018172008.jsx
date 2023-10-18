@@ -47,8 +47,7 @@ const AttendenceFrom = () => (
 
 const RoomRequestForm = () => {
   const [content, setContent] = useState('')
-  const [date, setDate] = useState('')
-  console.log(date.format('DD/MM/YYYY HH:mm'))
+  console.log(content)
   return (
     <Box p={3} pl={0}>
       <Grid container spacing={2}>
@@ -65,7 +64,7 @@ const RoomRequestForm = () => {
         <Grid item xs={6} mb={2}>
           <Typography fontWeight="500">From</Typography>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <TimePicker value={date} onChange={(e) => setDate(e)} renderInput={(props) => <TextField sx={{width: '100%'}} {...props} />}/>
+          <TimePicker views={['hours', 'minutes', 'seconds']} />
           </LocalizationProvider>
         </Grid>
         <Grid item xs={6} mb={2}>

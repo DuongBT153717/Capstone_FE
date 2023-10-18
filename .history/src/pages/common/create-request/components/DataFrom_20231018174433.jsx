@@ -48,7 +48,7 @@ const AttendenceFrom = () => (
 const RoomRequestForm = () => {
   const [content, setContent] = useState('')
   const [date, setDate] = useState('')
-  console.log(date.format('DD/MM/YYYY HH:mm'))
+  console.log(date.format('hh'))
   return (
     <Box p={3} pl={0}>
       <Grid container spacing={2}>

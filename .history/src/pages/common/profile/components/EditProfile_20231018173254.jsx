@@ -54,14 +54,16 @@ const EditProfile = (props) => {
               />
             </Grid>
             <Grid item xs={12} md={6}>
+              <Box width="100%">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="Date of birth"
                     value={props.birth}
                     onChange={(newValue) => props.setBirth(newValue)}
-                    renderInput={(props) => <TextField sx={{width: '100%'}} {...props} />}
+                    renderInput={(props) => <TextField {...props} />}
                   />
                 </LocalizationProvider>
+              </Box>
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
