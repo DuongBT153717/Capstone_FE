@@ -22,6 +22,30 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   margin: theme.spacing(2),
   backgroundColor: theme.palette.background.paper
 }))
+function createData(name, calories, fat, carbs, protein, price) {
+  return {
+    name,
+    calories,
+    fat,
+    carbs,
+    protein,
+    price,
+    request_list: [
+      {
+        request_id: 'REQ_01',
+        request_status: '11091700',
+        curator: 'ThinhNQ',
+        req_create_date: '2023-10-11'
+      },
+      {
+        request_id: 'REQ_02',
+        request_status: 'Anonymous',
+        curator: 'DuongBT',
+        req_create_date: '2023-10-11'
+      },
+    ],
+  };
+}
 
 function Row(props) {
   const { row } = props;
@@ -66,18 +90,15 @@ function Row(props) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {row.requestTicketDtos.map((request_row) => (
+                    {row.request_list.map((request_row) => (
                       <TableRow key={request_row.request_id}>
                         <TableCell component="th" scope="row">
-                          {request_row.requestId}
+                          {request_row.request_id}
                         </TableCell>
-                        <TableCell>{request_row.requestStatus}</TableCell>
-                        <TableCell align="right"></TableCell>
+                        <TableCell>{request_row.request_status}</TableCell>
+                        <TableCell align="right">{request_row.curator}</TableCell>
                         <TableCell align="right">
-                        {request_row.requestCreateDate}
-                        </TableCell>
-                        <TableCell align="right">
-                        {request_row.requestUpdateDate}
+                        {request_row.req_create_date}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -94,7 +115,7 @@ function Row(props) {
 
 
 export default function RequestList() {
-  const [listRequestAndTicket, setListRequestAndTicket] = useState([])
+  const [listRequestAndTicket, setListRequestAndTicket] = useState('')
 
   useEffect(() => {
     const fetchListRequestAndTicket = async () => {

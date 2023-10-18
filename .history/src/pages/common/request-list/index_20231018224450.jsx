@@ -22,6 +22,30 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   margin: theme.spacing(2),
   backgroundColor: theme.palette.background.paper
 }))
+function createData(name, calories, fat, carbs, protein, price) {
+  return {
+    name,
+    calories,
+    fat,
+    carbs,
+    protein,
+    price,
+    request_list: [
+      {
+        request_id: 'REQ_01',
+        request_status: '11091700',
+        curator: 'ThinhNQ',
+        req_create_date: '2023-10-11'
+      },
+      {
+        request_id: 'REQ_02',
+        request_status: 'Anonymous',
+        curator: 'DuongBT',
+        req_create_date: '2023-10-11'
+      },
+    ],
+  };
+}
 
 function Row(props) {
   const { row } = props;
@@ -77,7 +101,7 @@ function Row(props) {
                         {request_row.requestCreateDate}
                         </TableCell>
                         <TableCell align="right">
-                        {request_row.requestUpdateDate}
+                        {request_row.requestUpdateDate.format('HH/mm')}
                         </TableCell>
                       </TableRow>
                     ))}
