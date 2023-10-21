@@ -145,6 +145,33 @@ const ManageUser = () => {
           </Box>
         )
       }
+    }
+    ,
+    {
+      field: 'department',
+      headerName: 'departmentName',
+      headerAlign: 'center',
+      align: 'center',
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <Box
+            width="80%"
+            margin="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            // bgcolor={params.row.statusName === 'active' ? 'green' : 'red'}
+            borderRadius="4px">
+            {/* {params.row.statusName === 'active' && <AdminPanelSettingsIcon />}
+            {params.row.statusName === 'inactive' && <SecurityIcon />} */}
+            <Typography color="#d0d1d5" sx={{ ml: '5px' }}>
+              {params.row.departmentName}
+            </Typography>
+          </Box>
+        )
+      }
     },
     {
       field: 'action',

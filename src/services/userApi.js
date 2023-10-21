@@ -14,6 +14,16 @@ const userApi = {
       dispatch(changePaswordFailed())
     }
   },
+
+  getAllDepartment: () => {
+    try {
+    const res =  axiosClient.get(`${BASE_URL}/getAllDepartment`)
+    return res;
+    } catch (error) {
+      console.log(error)
+    }
+  },
+
   updateProfile: async (data, dispatch) => {
     dispatch(updateProfileStart())
     try {

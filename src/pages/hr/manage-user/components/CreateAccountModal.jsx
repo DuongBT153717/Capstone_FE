@@ -10,7 +10,7 @@ import {
   TextField,
   Typography
 } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import userApi from '../../../../services/userApi'
 
@@ -28,30 +28,68 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
   }
 
   const dispatch = useDispatch()
-
+  const [listDepartment, setListDepartment] = useState([])
   const [role, setRole] = useState('')
+  const [department, setDepartment] = useState('')
   const [username, setUsername] = useState('')
-  const handleChange = (e) => {
+
+  const handleChangeRole = (e) => {
     setRole(e.target.value)
   }
+  const handleChangeDepartment = (e) => {
+    setDepartment(e.target.value)
+  }
+
+  useEffect(() => {
+    const getAllDepartment = async () => {
+      let res = await userApi.getAllDepartment();
+      setListDepartment(res)
+    }
+    getAllDepartment()
+  }, [])
+
   const handleSubmit = (e) => {
     e.preventDefault()
     let data = {
-        username: username,
-        password: '123',
-        role: role
+      username: username,
+      password: '123',
+      role: role,
+      departmentName : department
     }
     userApi.createAccount(data, dispatch)
     let dataInfo = {
-        username: username,
-        statusId: "1",
-        statusName: "active",
-        roleName: role
+      username: username,
+      statusId: "1",
+      statusName: "active",
+      roleName: role,
     }
     setAllUser(prevUser => [...prevUser, dataInfo])
     handleCloseCreateAccount()
   }
-  
+
+  const handleSetRole =()=>{
+    if(department === ""){
+      return (<></>)
+    }
+    else if( department === "human resources"){
+      return (
+        <>
+         <FormControl fullWidth sx={{ mb: 2 }}>
+            <InputLabel id="demo-simple-select-label">Role</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={role}
+              label="Age"
+              onChange={handleChangeRole}>
+              <MenuItem value="hr">HR</MenuItem>
+            </Select>
+          </FormControl>
+        </>
+      )
+    }
+  }
+
   return (
     <Modal
       open={openCreateAccount}
@@ -72,14 +110,31 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
               onChange={(e) => setUsername(e.target.value)}
             />
           </Stack>
+
+        
           <FormControl fullWidth sx={{ mb: 2 }}>
+            <InputLabel id="demo-simple-select-label">Department</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={department}
+              onChange={handleChangeDepartment}>
+              {listDepartment.map((item) => (
+                <MenuItem sx={{textTransform: 'capitalize'}} value={item.departmentName}>{item.departmentName}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {handleSetRole()}
+
+          {/* <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel id="demo-simple-select-label">Role</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={role}
               label="Age"
-              onChange={handleChange}>
+              onChange={handleChangeRole}>
               <MenuItem value="admin">Admin</MenuItem>
               <MenuItem value="hr">HR</MenuItem>
               <MenuItem value="director">Director</MenuItem>
@@ -87,7 +142,8 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
               <MenuItem value="employee">Employee</MenuItem>
               <MenuItem value="manager">Manager</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
+
           <Box width="100%" display="flex" justifyContent="flex-end">
             <LoadingButton
               variant="contained"
