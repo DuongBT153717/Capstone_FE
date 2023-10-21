@@ -2,7 +2,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
 import { Menu, MenuItem, Sidebar, useProSidebar } from 'react-pro-sidebar'
-
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -16,7 +16,9 @@ const HrSidebar = () => {
         ? 0
         : window.location.pathname === '/manage-profile'
         ? 1
-        : 0
+        : window.location.pathname === '/request-list'
+        ? 2
+        :0
     return initialIndex
   })
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -30,7 +32,6 @@ const HrSidebar = () => {
       console.error('Error getting download URL:', error)
     }
   }
-
   if (currentUser && currentUser.image) {
     imgurl()
   }
@@ -139,10 +140,16 @@ const HrSidebar = () => {
             {' '}
             Manage Profile
           </MenuItem>
+          <MenuItem
+            active={activeIndex === 1}
+            icon={<AssignmentTurnedInIcon />}
+            component={<Link to="/request-list" onClick={() => setActiveIndex(2)} />}>
+            {' '}
+            Ticket Management
+          </MenuItem>
         </Menu>
       </Sidebar>
     </>
   )
 }
-
 export default HrSidebar

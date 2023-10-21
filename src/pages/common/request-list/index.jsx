@@ -7,6 +7,7 @@ import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -19,10 +20,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import requestApi from '../../../services/requestApi';
 import TablePagination from '@mui/material/TablePagination';
-import {
-  DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton
-} from "@mui/x-data-grid";
-
+import CheckIcon from '@mui/icons-material/Check'
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   margin: theme.spacing(2),
@@ -48,10 +46,13 @@ function Row(props) {
         <TableCell component="th" scope="row">
           {row.ticketId}
         </TableCell>
-          <TableCell >{row.requestTicketDtos[row.requestTicketDtos.length - 1].title}</TableCell>
+        <TableCell >{row.requestTicketDtos[row.requestTicketDtos.length - 1].title}</TableCell>
         <TableCell >{row.createDate}</TableCell>
         <TableCell >{row.updateDate}</TableCell>
         <TableCell >{row.status}</TableCell>
+        <TableCell > <IconButton>
+          <RemoveRedEyeIcon sx={{ color: '#1565c0' }} />
+        </IconButton></TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -68,6 +69,7 @@ function Row(props) {
                     <TableCell align="center">Curator</TableCell>
                     <TableCell align="center">Create Date</TableCell>
                     <TableCell align="center">Update Date</TableCell>
+
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -140,13 +142,15 @@ export default function RequestList() {
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
-                <TableCell />
-                <TableCell>TicketID</TableCell>
-                <TableCell>Title</TableCell>
-                <TableCell>Create Date</TableCell>
-                <TableCell>Update Date</TableCell>
-                <TableCell>Status</TableCell>
+                <TableCell style={{ width: '10px' }} /> {/* Adjust the width as needed */}
+                <TableCell style={{ width: '160px' }}>TicketID</TableCell>
+                <TableCell style={{ width: '200px' }}>Title</TableCell>
+                <TableCell style={{ width: '150px' }}>Create Date</TableCell>
+                <TableCell style={{ width: '150px' }}>Update Date</TableCell>
+                <TableCell style={{ width: '100px' }}>Status</TableCell>
+                <TableCell style={{ width: '100px' }}>Action</TableCell>
               </TableRow>
+
             </TableHead>
             <TableBody>
               {listRequestAndTicket
