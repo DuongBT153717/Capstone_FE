@@ -48,9 +48,7 @@ function Row(props) {
         <TableCell component="th" scope="row">
           {row.ticketId}
         </TableCell>
-        {row.requestTicketDtos.map((request_row) => (
-          <TableCell >{request_row.title}</TableCell>
-        ))}
+          <TableCell >{row.requestTicketDtos[row.requestTicketDtos.length - 1].title}</TableCell>
         <TableCell >{row.createDate}</TableCell>
         <TableCell >{row.updateDate}</TableCell>
         <TableCell >{row.status}</TableCell>
@@ -137,6 +135,7 @@ export default function RequestList() {
             <Typography>Create Ticket</Typography>
           </Button>
         </Box>
+
         <TableContainer component={Paper} sx={{ marginTop: '16px' }}>
           <Table aria-label="collapsible table">
             <TableHead>
