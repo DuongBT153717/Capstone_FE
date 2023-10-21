@@ -50,9 +50,7 @@ function Row(props) {
         <TableCell >{row.createDate}</TableCell>
         <TableCell >{row.updateDate}</TableCell>
         <TableCell >{row.status}</TableCell>
-        <TableCell > <IconButton>
-          <RemoveRedEyeIcon sx={{ color: '#1565c0' }} />
-        </IconButton></TableCell>
+
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -69,7 +67,7 @@ function Row(props) {
                     <TableCell align="center">Curator</TableCell>
                     <TableCell align="center">Create Date</TableCell>
                     <TableCell align="center">Update Date</TableCell>
-
+                    <TableCell style={{ width: '100px' }}>Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -86,6 +84,9 @@ function Row(props) {
                       <TableCell align="right">
                         {request_row.requestUpdateDate}
                       </TableCell>
+                      <TableCell > <IconButton>
+                        <RemoveRedEyeIcon sx={{ color: '#1565c0' }} />
+                      </IconButton></TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -123,6 +124,7 @@ export default function RequestList() {
 
   return (
     <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">
+
       <Box flex={1} sx={{ overflowX: 'hidden' }}>
         <Paper elevation={3} sx={{ padding: '16px' }}>
           <TextField
@@ -142,13 +144,13 @@ export default function RequestList() {
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
-                <TableCell style={{ width: '10px' }} /> {/* Adjust the width as needed */}
+                <TableCell style={{ width: '10px' }} />
                 <TableCell style={{ width: '160px' }}>TicketID</TableCell>
                 <TableCell style={{ width: '200px' }}>Title</TableCell>
                 <TableCell style={{ width: '150px' }}>Create Date</TableCell>
                 <TableCell style={{ width: '150px' }}>Update Date</TableCell>
                 <TableCell style={{ width: '100px' }}>Status</TableCell>
-                <TableCell style={{ width: '100px' }}>Action</TableCell>
+
               </TableRow>
 
             </TableHead>
@@ -180,6 +182,8 @@ export default function RequestList() {
           />
         </TableContainer>
       </Box>
+
     </Box>
+
   );
 }
