@@ -57,7 +57,19 @@ export default function Router() {
       path: PUBLIC_PATH.REQUEST_DETAIL,
       element: <TicketDetail />
     },
-   
+    {
+      element: <RequireAuth />,
+      children: [
+        {
+          path: EMPLOYEE_PATH.CHECK_ATTENDACE,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <CheckAttendance />
+            </Suspense>
+          )
+        }
+      ]
+    }
     
     {
       path: ADMIN_PATH.LAYOUT,
@@ -136,19 +148,7 @@ export default function Router() {
       path: EMPLOYEE_PATH.LAYOUT,
       element: <EmployeeLayout />,
       children: [
-        {
-          element: <RequireAuth />,
-          children: [
-            {
-              path: EMPLOYEE_PATH.CHECK_ATTENDACE,
-              element: (
-                <Suspense fallback={<>Loading...</>}>
-                  <CheckAttendance />
-                </Suspense>
-              )
-            }
-          ]
-        }
+        
       ]
     }
   ])

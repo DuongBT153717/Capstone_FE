@@ -19,52 +19,48 @@ const AttendenceFrom = () => (
       </Grid>
       <Grid item xs={5}>
         <Typography fontWeight="500">Position</Typography>
-        <Select
-          sx={{ width: '100%', height: '56px' }}
-          displayEmpty>
+        <Select sx={{ width: '100%', height: '56px' }} displayEmpty>
           <MenuItem value="">
             <em>HR</em>
           </MenuItem>
           <MenuItem value={20}>Manager</MenuItem>
         </Select>
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={6}>
         <Typography fontWeight="500">From</Typography>
-        <TextField
-         sx={{ width: '100%', height: '38px' }}
-        type={"time"}
-      />
+        <TextField sx={{ width: '100%', height: '38px' }} type={'time'} />
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={6}>
         <Typography fontWeight="500">To</Typography>
-        <TextField
-         sx={{ width: '100%', height: '38px' }}
-        type={"time"}
-      />
+        <TextField sx={{ width: '100%', height: '38px' }} type={'time'} />
       </Grid>
       <Grid item xs={12}>
         <Typography fontWeight="500">Content</Typography>
-        <CKEditor editor={ClassicEditor} onInit={() => { }} />
+        <CKEditor editor={ClassicEditor} onInit={() => {}} />
       </Grid>
     </Grid>
     <Box pt={2} display="flex" alignItems="flex-end" justifyContent="flex-end">
       <Button variant="contained">Save</Button>
     </Box>
   </Box>
-);
+)
 
-const RoomRequestForm = () => (
-  <Box p={3} pl={0}>
-  <Grid container spacing={2}>
-    <Grid item xs={12}>
-      <Typography fontWeight="700" fontSize="18px">
-        Request details{' '}
-      </Typography>
-    </Grid>
-    <Grid item xs={12}>
-      <Typography fontWeight="500">Title</Typography>
-      <TextField sx={{ width: '100%' }} size="small" placeholder="Enter the request title" />
-    </Grid>
+const RoomRequestForm = () => {
+  const [content, setContent] = useState('')
+  const [date, setDate] = useState('')
+  console.log(date.format('DD/MM/YYYY HH:mm'))
+  return (
+    <Box p={3} pl={0}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography fontWeight="700" fontSize="20px">
+            Room Request
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography fontWeight="500">Title</Typography>
+          <TextField sx={{ width: '100%' }} size="small" placeholder="Enter the request title" />
+        </Grid>
 
         <Grid item xs={6} mb={2}>
           <Typography fontWeight="500">From</Typography>
@@ -92,7 +88,7 @@ const RoomRequestForm = () => (
       </Box>
     </Box>
   )
-
+}
 
 
 const OtRequest = () => (

@@ -16,13 +16,36 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import requestApi from '../../../services/requestApi';
-import TablePagination from '@mui/material/TablePagination';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   margin: theme.spacing(2),
   backgroundColor: theme.palette.background.paper
 }))
+function createData(name, calories, fat, carbs, protein, price) {
+  return {
+    name,
+    calories,
+    fat,
+    carbs,
+    protein,
+    price,
+    request_list: [
+      {
+        request_id: 'REQ_01',
+        request_status: '11091700',
+        curator: 'ThinhNQ',
+        req_create_date: '2023-10-11'
+      },
+      {
+        request_id: 'REQ_02',
+        request_status: 'Anonymous',
+        curator: 'DuongBT',
+        req_create_date: '2023-10-11'
+      },
+    ],
+  };
+}
 
 function Row(props) {
   const { row } = props;
@@ -30,6 +53,7 @@ function Row(props) {
 
   return (
     <>
+      <React.Fragment>
         <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
           <TableCell>
             <IconButton
@@ -43,12 +67,10 @@ function Row(props) {
           <TableCell component="th" scope="row">
             {row.ticketId}
           </TableCell>
-          {row.requestTicketDtos.map((request_row) => (
-            <TableCell >{request_row.title}</TableCell>
-          ))}
-          <TableCell >{row.createDate}</TableCell>
-          <TableCell >{row.updateDate}</TableCell>
-          <TableCell >{row.status}</TableCell>
+          <TableCell align="right">{row.requestTicketDtos.title}</TableCell>
+          <TableCell align="right">{row.createDate}</TableCell>
+          <TableCell align="right">{row.updateDate}</TableCell>
+          <TableCell align="right">{row.status}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -62,9 +84,9 @@ function Row(props) {
                     <TableRow>
                       <TableCell>Request ID</TableCell>
                       <TableCell>Status</TableCell>
-                      <TableCell align="center">Curator</TableCell>
-                      <TableCell align="center">Create Date</TableCell>
-                      <TableCell align="center">Update Date</TableCell>
+                      <TableCell align="right">Curator</TableCell>
+                      <TableCell align="right">Create Date</TableCell>
+                      <TableCell align="right">Update Date</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -74,12 +96,9 @@ function Row(props) {
                           {request_row.requestId}
                         </TableCell>
                         <TableCell>{request_row.requestStatus}</TableCell>
-                        <TableCell align="right" >{request_row.userId}</TableCell>
+                        <TableCell align="right"></TableCell>
                         <TableCell align="right">
-                          {request_row.requestCreateDate}
-                        </TableCell>
-                        <TableCell align="right">
-                          {request_row.requestUpdateDate}
+                        {request_row.requestCreateDate}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -89,72 +108,52 @@ function Row(props) {
             </Collapse>
           </TableCell>
         </TableRow>
+      </React.Fragment>
     </>
   );
 }
 
+
 export default function RequestList() {
-  const [listRequestAndTicket, setListRequestAndTicket] = useState([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  const [listRequestAndTicket, setListRequestAndTicket] = useState([])
 
   useEffect(() => {
     const fetchListRequestAndTicket = async () => {
-      const response = await requestApi.getAllRequestAndTicket();
-      setListRequestAndTicket(response);
-    };
-    fetchListRequestAndTicket();
-  }, []);
+      const response = await requestApi.getAllRequestAndTicket()
+      setListRequestAndTicket(response)
+    }
+    fetchListRequestAndTicket()
+  },[])
 
   console.log(listRequestAndTicket);
-  
   return (
     <>
       <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">
         <Box flex={1} sx={{ overflowX: 'hidden' }}>
           <StyledPaper>
-            <TableContainer>
+            <TableContainer component={Paper}>
               <Table aria-label="collapsible table">
                 <TableHead>
                   <TableRow>
                     <TableCell />
-                    <TableCell>TicketID</TableCell>
-                    <TableCell>Title</TableCell>
-                    <TableCell>Create Date</TableCell>
-                    <TableCell>Update Date</TableCell>
-                    <TableCell>Status</TableCell>
+                    <TableCell align="left" >TicketID</TableCell>
+                    <TableCell align="right">Topic</TableCell>
+                    <TableCell align="right">Title</TableCell>
+                    <TableCell align="right">Create Date</TableCell>
+                    <TableCell align="right">Update Date</TableCell>
+                    <TableCell align="right">Status</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {listRequestAndTicket
-                    .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-                    .map((row) => (
-                      <Row key={row.ticketId} row={row} />
-                    ))}
+                  {listRequestAndTicket.map((row) => (
+                    <Row key={row.ticketId} row={row} />
+                  ))}
                 </TableBody>
               </Table>
-            </TableContainer>    
-            <TablePagination
-              component="div"
-              count={listRequestAndTicket.length}
-              page={page}
-              onPageChange={handleChangePage}
-              rowsPerPage={rowsPerPage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            </TableContainer>
           </StyledPaper>
         </Box>
       </Box>
     </>
   );
 }
-
