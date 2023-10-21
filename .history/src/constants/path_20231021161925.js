@@ -7,7 +7,7 @@ export const PUBLIC_PATH = {
     REQUEST_DETAIL: '/request-detail',
     CREATE_REQUEST: '/create-request',
     BOOK_ROOM: '/book-room',
-    NOT_FOUND: '*'
+    NOT_FOUND: '/*'
 }
 
 export const ADMIN_PATH = {
@@ -18,6 +18,7 @@ export const ADMIN_PATH = {
 export const EMPLOYEE_PATH = {
     LAYOUT: "/",
     CHECK_ATTENDACE: '/check-attendance',
+    CHECK_ATTENDACE2: '/check-attendance2'
 }
 
 export const DIRECTOR_PATH = {

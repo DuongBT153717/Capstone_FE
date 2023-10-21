@@ -1,10 +1,11 @@
 import ChatIcon from '@mui/icons-material/Chat'
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box, IconButton, Paper, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import AccountPopover from '../../../../components/AccountPopover'
 import NotificationsPopover from '../../../../components/NotificationsPopover'
 const ChatTopbar = () => {
   return (
+    <Paper elevation={2} >
       <Box
         display="flex"
         justifyContent="space-between"
@@ -27,6 +28,7 @@ const ChatTopbar = () => {
           <AccountPopover />
         </Box>
       </Box>
+    </Paper>
   )
 }
 

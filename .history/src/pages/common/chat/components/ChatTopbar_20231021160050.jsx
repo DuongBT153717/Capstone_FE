@@ -1,10 +1,11 @@
-import ChatIcon from '@mui/icons-material/Chat'
-import { Box, IconButton, Typography } from '@mui/material'
-import { Link } from 'react-router-dom'
-import AccountPopover from '../../../../components/AccountPopover'
+import { AppBar, Box, IconButton, Typography } from '@mui/material'
 import NotificationsPopover from '../../../../components/NotificationsPopover'
+import AccountPopover from '../../../../components/AccountPopover'
+import { Link } from 'react-router-dom'
+import ChatIcon from '@mui/icons-material/Chat'
 const ChatTopbar = () => {
   return (
+    // <AppBar position='static'>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -27,6 +28,7 @@ const ChatTopbar = () => {
           <AccountPopover />
         </Box>
       </Box>
+    {/* </AppBar> */}
   )
 }
 
