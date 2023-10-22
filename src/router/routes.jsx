@@ -33,6 +33,7 @@ import BookListDetail from '../pages/admin/request-list/components/BookRoomDetai
 import ManagerLayout from '../layouts/manager'
 import RequestListManager from '../pages/manager/request-list'
 import ManageTicketListAdmin from '../pages/admin/manage-ticket-list'
+import RequestListEmployee from '../pages/employee/request-list'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 export default function Router() {
   let router = useRoutes([
@@ -183,7 +184,15 @@ export default function Router() {
                   <CheckAttendance />
                 </Suspense>
               )
-            }
+            },
+            {
+              path: EMPLOYEE_PATH.REQUEST_LIST_EMPLOYEE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <RequestListEmployee />
+                </Suspense>
+              )
+            },
           ]
         }
       ]
