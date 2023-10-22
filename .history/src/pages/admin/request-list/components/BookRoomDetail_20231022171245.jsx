@@ -32,21 +32,20 @@ const BookListDetail = () => {
     fetchGetRequestDetailByAdmin()
   }, [])
 
-  console.log(bookRoomDetail[0]?.Detail?.object?.roomBookingRequestId)
+  console.log(bookRoomDetail[0]?.Detail?.object?.roomBookingRequestId);
 
   const handleAcceptBookRoom = async () => {
-    if (bookRoomDetail) {
-      let data = {
-        roomBookingFormRoomId: bookRoomDetail[0]?.Detail?.object?.roomBookingRequestId
-      }
-      try {
-        setIsLoadingAccept(true)
-        await axiosClient.post(`${BASE_URL}/acceptBookRoom`, data)
-        setIsLoadingAccept(false)
-        toast.success('Accept book room successfully!')
-      } catch (error) {
-        console.log(error)
-      }
+    try {
+      setIsLoadingAccept(true)
+      await axiosClient.put(`${BASE_URL}/acceptBookRoom`, {
+        params: {
+          room_form_id: bookRoomDetail[0]?.Detail?.object?.roomBookingRequestId
+        }
+      })
+      setIsLoadingAccept(false)
+      toast.success('Accept book room successfully!')
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -69,13 +68,13 @@ const BookListDetail = () => {
                   <Box sx={{ mb: 1 }}>
                     <Grid container spacing={2.5}>
                       <Grid item xs={12} md={6}>
-                        <Typography>Title: {bookRoomDetail[0]?.Detail?.object?.title}</Typography>
+                        <Typography>
+                          Title: {bookRoomDetail[0]?.Detail?.object?.title}
+                          </Typography>
                       </Grid>
                       <Grid item xs={12} md={6}>
                         <Typography textAlign="right">
-                          Sender Name:{' '}
-                          {bookRoomDetail[0]?.Detail?.requestMessageResponse?.senderFirstName}{' '}
-                          {bookRoomDetail[0]?.Detail?.requestMessageResponse?.senderLastName}
+                          Sender Name: {bookRoomDetail[0]?.Detail?.requestMessageResponse?.senderFirstName} {bookRoomDetail[0]?.Detail?.requestMessageResponse?.senderLastName}
                         </Typography>
                       </Grid>
                       <Grid item xs={12} md={6}>
@@ -86,7 +85,8 @@ const BookListDetail = () => {
                       </Grid>
                       <Grid item xs={12} md={6}>
                         <Typography textAlign="right">
-                          Booking Date: {bookRoomDetail[0]?.Detail?.object?.bookingDate}
+                          Booking Date:{' '}
+                          {bookRoomDetail[0]?.Detail?.object?.bookingDate}
                         </Typography>
                       </Grid>
                       <Grid item xs={12} md={6}>
@@ -118,11 +118,7 @@ const BookListDetail = () => {
                     <LoadingButton variant="contained" sx={{ bgcolor: 'red' }}>
                       Reject
                     </LoadingButton>
-                    <LoadingButton
-                      loading={isLoadingAccept}
-                      onClick={handleAcceptBookRoom}
-                      variant="contained"
-                      sx={{ bgcolor: 'green' }}>
+                    <LoadingButton loading={isLoadingAccept} onClick={handleAcceptBookRoom} variant="contained" sx={{ bgcolor: 'green' }}>
                       Accept
                     </LoadingButton>
                   </Box>

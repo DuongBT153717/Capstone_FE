@@ -109,7 +109,6 @@ const requestApi = {
       console.log(error);
     }
   },
-  
   acceptBookRoom: async (data) => {
     try {
       await axiosClient.put(`${BASE_URL}/acceptBookRoom`, {

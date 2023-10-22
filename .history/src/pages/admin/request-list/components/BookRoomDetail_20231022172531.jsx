@@ -36,12 +36,9 @@ const BookListDetail = () => {
 
   const handleAcceptBookRoom = async () => {
     if (bookRoomDetail) {
-      let data = {
-        roomBookingFormRoomId: bookRoomDetail[0]?.Detail?.object?.roomBookingRequestId
-      }
       try {
         setIsLoadingAccept(true)
-        await axiosClient.post(`${BASE_URL}/acceptBookRoom`, data)
+        await axiosClient.put(`${BASE_URL}/acceptBookRoom`, bookRoomDetail[0]?.Detail?.object?.roomBookingRequestId)
         setIsLoadingAccept(false)
         toast.success('Accept book room successfully!')
       } catch (error) {

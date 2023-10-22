@@ -137,7 +137,15 @@ const BookRoom = () => {
           departmentReceiverId: '9'
         }
 
-
+        let dataAdd = {
+          id: currentUser?.accountId,
+          startDate: dateStart.format('YYYY-MM-DD HH:mm'),
+          endDate: dateEnd.format('YYYY-MM-DD HH:mm'),
+          title: added.title,
+          roomId: added.roomId,
+          departmentId: added.departmentId.toString(),
+          content: added.content
+        }
         requestApi.createRoomBookingTicket(data)
       }
       if (changed) {

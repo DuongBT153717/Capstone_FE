@@ -77,7 +77,7 @@ function Row(props) {
                         <IconButton
                           sx={{ color: '#1565c0' }}
                           onClick={() =>
-                            navigate(`/room-detail/${request_row.requestId}`)
+                            navigate('/room-detail/RB_c4db0674-5ade-4de0-bab8-1727e144d63a')
                           }>
                           <RemoveRedEyeIcon />
                         </IconButton>

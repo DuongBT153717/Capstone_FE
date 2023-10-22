@@ -74,10 +74,12 @@ function Row(props) {
                       <TableCell>{request_row.requestCreateDate}</TableCell>
                       <TableCell>{request_row.requestUpdateDate}</TableCell>
                       <TableCell>
+                        {' '}
                         <IconButton
+                        disabled
                           sx={{ color: '#1565c0' }}
                           onClick={() =>
-                            navigate(`/room-detail/${request_row.requestId}`)
+                            navigate(`/request-detail/${request_row.requestId}`)
                           }>
                           <RemoveRedEyeIcon />
                         </IconButton>
@@ -122,7 +124,7 @@ const TableRowsLoader = ({ rowsNum }) => {
   ))
 }
 
-export default function RequestListAdmin() {
+export default function RequestListManager() {
   const [listRequestAndTicket, setListRequestAndTicket] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
@@ -186,6 +188,9 @@ export default function RequestListAdmin() {
                 </TableCell>
                 <TableCell style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
                   Status
+                </TableCell>
+                <TableCell style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
+                  Action
                 </TableCell>
               </TableRow>
             </TableHead>

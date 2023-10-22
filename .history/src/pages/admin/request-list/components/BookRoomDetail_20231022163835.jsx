@@ -13,15 +13,11 @@ import { Link, useParams } from 'react-router-dom'
 import Header from '../../../../components/Header'
 import { useEffect, useState } from 'react'
 import requestApi from '../../../../services/requestApi'
-import axiosClient from '../../../../utils/axios-config'
-import { BASE_URL } from '../../../../services/constraint'
-import { toast } from 'react-toastify'
 
 const BookListDetail = () => {
   const { ticketId } = useParams()
-  const [bookRoomDetail, setBookRoomDetail] = useState([])
+  const [bookRoomDetail, setBookRoomDetail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [isLoadingAccept, setIsLoadingAccept] = useState(false)
   useEffect(() => {
     setIsLoading(true)
     const fetchGetRequestDetailByAdmin = async () => {
@@ -30,25 +26,8 @@ const BookListDetail = () => {
       setIsLoading(false)
     }
     fetchGetRequestDetailByAdmin()
-  }, [])
+  }, [ticketId])
 
-  console.log(bookRoomDetail[0]?.Detail?.object?.roomBookingRequestId)
-
-  const handleAcceptBookRoom = async () => {
-    if (bookRoomDetail) {
-      let data = {
-        roomBookingFormRoomId: bookRoomDetail[0]?.Detail?.object?.roomBookingRequestId
-      }
-      try {
-        setIsLoadingAccept(true)
-        await axiosClient.post(`${BASE_URL}/acceptBookRoom`, data)
-        setIsLoadingAccept(false)
-        toast.success('Accept book room successfully!')
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }
 
   return (
     <Box height="100vh" bgcolor="seashell">
@@ -69,39 +48,40 @@ const BookListDetail = () => {
                   <Box sx={{ mb: 1 }}>
                     <Grid container spacing={2.5}>
                       <Grid item xs={12} md={6}>
-                        <Typography>Title: {bookRoomDetail[0]?.Detail?.object?.title}</Typography>
+                        <Typography>Title: {bookRoomDetail[0].Detail.object.title}</Typography>
                       </Grid>
                       <Grid item xs={12} md={6}>
                         <Typography textAlign="right">
                           Sender Name:{' '}
-                          {bookRoomDetail[0]?.Detail?.requestMessageResponse?.senderFirstName}{' '}
-                          {bookRoomDetail[0]?.Detail?.requestMessageResponse?.senderLastName}
+                          {bookRoomDetail[0].Detail.requestMessageResponse.senderFirstName}{' '}
+                          {bookRoomDetail[0].Detail.requestMessageResponse.senderLastName}
                         </Typography>
                       </Grid>
                       <Grid item xs={12} md={6}>
                         <Typography>
                           Sender Department:{' '}
-                          {bookRoomDetail[0]?.Detail?.object?.senderDepartment?.departmentName}
+                          {bookRoomDetail[0].Detail.object.senderDepartment.departmentName}
                         </Typography>
                       </Grid>
                       <Grid item xs={12} md={6}>
                         <Typography textAlign="right">
-                          Booking Date: {bookRoomDetail[0]?.Detail?.object?.bookingDate}
+                          Booking Date:{' '}
+                          {bookRoomDetail[0].Detail.object.senderDepartment.bookingDate}
                         </Typography>
                       </Grid>
                       <Grid item xs={12} md={6}>
                         <Typography>
-                          Start time: {bookRoomDetail[0]?.Detail.object?.startDate}
+                          Start time: {bookRoomDetail[0].Detail.object.senderDepartment.startDate}
                         </Typography>
                       </Grid>
                       <Grid item xs={12} md={6}>
                         <Typography textAlign="right">
-                          End Time: {bookRoomDetail[0]?.Detail?.object?.endDate}
+                          End Time: {bookRoomDetail[0].Detail.object.senderDepartment.endDate}
                         </Typography>
                       </Grid>
                       <Grid item xs={12} md={12}>
                         <Typography>
-                          Content: {bookRoomDetail[0]?.Detail?.object?.content}
+                          Content: {bookRoomDetail[0].Detail.object.senderDepartment.content}
                         </Typography>
                       </Grid>
                     </Grid>
@@ -118,11 +98,7 @@ const BookListDetail = () => {
                     <LoadingButton variant="contained" sx={{ bgcolor: 'red' }}>
                       Reject
                     </LoadingButton>
-                    <LoadingButton
-                      loading={isLoadingAccept}
-                      onClick={handleAcceptBookRoom}
-                      variant="contained"
-                      sx={{ bgcolor: 'green' }}>
+                    <LoadingButton variant="contained" sx={{ bgcolor: 'green' }}>
                       Accept
                     </LoadingButton>
                   </Box>

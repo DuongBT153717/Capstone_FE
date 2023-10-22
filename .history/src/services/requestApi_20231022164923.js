@@ -109,7 +109,6 @@ const requestApi = {
       console.log(error);
     }
   },
-  
   acceptBookRoom: async (data) => {
     try {
       await axiosClient.put(`${BASE_URL}/acceptBookRoom`, {
@@ -117,7 +116,6 @@ const requestApi = {
           room_form_id: data
         }
       })
-      toast.success('Accept book room successfully!')
     } catch (error) {
       console.log(error);
     }
