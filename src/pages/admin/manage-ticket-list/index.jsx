@@ -22,9 +22,6 @@ import { useNavigate } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
 import AddIcon from '@mui/icons-material/Add';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
-import CloseIcon from '@mui/icons-material/Close';
-import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors';
-import CheckIcon from '@mui/icons-material/Check';
 function Row(props) {
   const { row } = props
   const [open, setOpen] = React.useState(false)
@@ -104,7 +101,7 @@ function Row(props) {
                             bgcolor={'#2e7c67'}
                             borderRadius="4px"
                           >
-                            <CheckIcon />
+                            <AccessTimeFilledIcon />
                             <Typography color="#fff">{request_row.requestStatus}</Typography>
                           </Box>
                         ) : request_row.requestStatus === 'EXECUTING' ? (
@@ -118,10 +115,10 @@ function Row(props) {
                             bgcolor={'#6495ED'}
                             borderRadius="4px"
                           >
-                            <RunningWithErrorsIcon />
+                            <AccessTimeFilledIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
-                        ) : request_row.requestStatus === 'CLOSED' ? (
+                        ) : request_row.requestStatus === 'EXECUTING' ? (
                           <Box
                             width="80%"
                             margin="0 auto"
@@ -132,7 +129,7 @@ function Row(props) {
                             bgcolor={'#C0C0C0'}
                             borderRadius="4px"
                           >
-                            <CloseIcon />
+                            <AccessTimeFilledIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
                         ) : null }
@@ -188,7 +185,7 @@ const TableRowsLoader = ({ rowsNum }) => {
     </TableRow>
   ))
 }
-export default function RequestListAdmin() {
+export default function ManageTicketListAdmin() {
   const [listRequestAndTicket, setListRequestAndTicket] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)

@@ -87,6 +87,15 @@ export default function Router() {
                   <RequestListAdmin />
                 </Suspense>
               )
+            },
+            { 
+              index: true,
+              path: ADMIN_PATH.MANAGE_LIST_TICKET_ADMIN,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <RequestListAdmin />
+                </Suspense>
+              )
             }
           ]
         }

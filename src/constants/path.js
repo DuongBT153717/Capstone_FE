@@ -4,7 +4,6 @@ export const PUBLIC_PATH = {
     PROFILE: '/profile',
     RESET_PASSWORD: '/reset-password',
     CHAT: '/chat',
-    
     CREATE_REQUEST: '/create-request',
     BOOK_ROOM: '/book-room',
     NOT_FOUND: '*'
@@ -13,7 +12,8 @@ export const PUBLIC_PATH = {
 export const ADMIN_PATH = {
     LAYOUT: "/",   
     REQUEST_LIST_ADMIN:'/request-list-admin',
-    BOOK_ROOM_DETAIL: '/room-detail/:ticketId'
+    BOOK_ROOM_DETAIL: '/room-detail/:ticketId',
+    MANAGE_LIST_TICKET_ADMIN: '/manage-list-admin'
 }
 
 export const MANAGER_PATH = {

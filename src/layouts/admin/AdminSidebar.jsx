@@ -110,7 +110,7 @@ const AdminSidebar = () => {
               active={activeIndex === 0}
               icon={<AssignmentTurnedInIcon />}
               component={<Link to="/request-list-admin" onClick={() => setActiveIndex(0)} />}>
-              Ticket Management
+              Check Your Ticket
             </MenuItem>
             <MenuItem active={activeIndex === 2} icon={<AppSettingsAltIcon />} component={<Link to="/admin/device-config"  onClick={() => setActiveIndex(2)} />}>
               {' '}

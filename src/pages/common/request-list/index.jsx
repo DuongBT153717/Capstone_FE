@@ -71,7 +71,7 @@ function Row(props) {
                 </TableHead>
                 <TableBody>
                   {row.requestTickets.map((request_row) => (
-                    <TableRow key={request_row.request_id}>
+                    <TableRow key={request_row.requestId}>
                       <TableCell component="th" scope="row">
                         {request_row.requestId}
                       </TableCell>

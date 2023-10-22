@@ -3,15 +3,19 @@ import axiosClient from '../utils/axios-config'
 import { BASE_URL } from './constraint'
 
 const requestApi = {
-  getAllRequestAndTicket: () => {
+  getAllRequestAndTicket: (data) => {
     try {
-      const response = axiosClient.get(`${BASE_URL}/getTicketHr`)
+      const response = axiosClient.get(`${BASE_URL}/getTicketByUser`, {
+        params: {
+          sender_id: data
+        }
+      })
       return response
     } catch (error) {
       console.log(error);
     }
+  
   },
-
   getReceiveIdAndDepartment: (data) => {
     try {
       const response = axiosClient.post(`${BASE_URL}/getReceiveIdAndDepartmentId`, data)
@@ -109,7 +113,7 @@ const requestApi = {
       console.log(error);
     }
   },
-  
+
   acceptBookRoom: async (data) => {
     try {
       await axiosClient.put(`${BASE_URL}/acceptBookRoom`, {
