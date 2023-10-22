@@ -29,7 +29,7 @@ const TicketDetail = () => {
   const inputRef = useRef()
   const [request, setRequest] = useState([])
   const [roleReceive, setRoleReceive] = useState(null);
-  const { requestId } = useParams()
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const input = inputRef.current
@@ -42,7 +42,7 @@ const TicketDetail = () => {
     const getMessageDetail = async () => {
       const res = await requestApi.getDetailAttendanceMessageById(requestId);
       console.log(res);
-      setRequest(res)
+      setRequest((prevDetails) => [...prevDetails, res])
     }
     getMessageDetail()
   }, [])
@@ -50,17 +50,17 @@ const TicketDetail = () => {
   useEffect(() => {
     if (request.length !== 0) {
       const getRoleByID = async () => {
-        const res = await userApi.getRoleByUserId(request[0]?.requestMessageResponse?.senderId);
+        const res = await userApi.getRoleByUserId(request[0]?.Detail?.requestMessageResponse?.senderId);
         setRoleReceive(res.roleName)
         console.log(res);
       }
       getRoleByID()
     }
-  }, [request[0]?.requestMessageResponse?.senderId])
+  }, [request[0]?.Detail?.requestMessageResponse?.senderId])
 
 
-  console.log(">>>" + request[0]?.requestMessageResponse?.senderId);
-  
+  console.log(">>>" + request[0]?.Detail?.requestMessageResponse?.senderId);
+  const { requestId } = useParams()
   const userRole = useSelector((state) => state.auth.login?.currentUser.role);
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
   const userInfo = useAuth();
@@ -84,21 +84,21 @@ const TicketDetail = () => {
             style={{ overflow: 'auto', backgroundColor: '#f5f7f9', maxHeight: '420px' }}>
             <Box m={2} sx={{ left: "0" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Button variant="outlined">{request[0]?.object?.topic}</Button>
+                <Button variant="outlined">{request[0]?.Detail?.object?.topic}</Button>
               </Box>
             </Box>
             {request?.map((req) => (
               <>
-                {request[0]?.requestMessageResponse?.receiverId === userId
+                {request[0]?.Detail?.requestMessageResponse?.receiverId === userId
                   ?
                   (<>
-                    <StyledPaper>
+                    <StyledPaperAns>
                       <Box display="flex" gap={1} alignItems="center" mb={2}>
                         <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
                         <Box display='flex' flexDirection='column'>
                           <Typography fontSize='16px' variant="body1" >
-                            {req?.requestMessageResponse?.senderFirstName || req?.requestMessageResponse?.senderLastName === null ? (<>unknown</>) :
-                              (<>                        {req?.requestMessageResponse?.senderFirstName} {req?.requestMessageResponse?.senderLastName}
+                            {req?.Detail?.requestMessageResponse?.senderFirstName || req?.Detail?.requestMessageResponse?.senderLastName === null ? (<>unknown</>) :
+                              (<>                        {req?.Detail?.requestMessageResponse?.senderFirstName} {req?.Detail?.requestMessageResponse?.senderLastName}
                               </>)}
                           </Typography>
                           <Typography fontSize='12px' variant="body1">
@@ -106,20 +106,20 @@ const TicketDetail = () => {
                           </Typography>
                         </Box>
                       </Box>
-                      <Typography dangerouslySetInnerHTML={{ __html: req?.object?.content }}>
+                      <Typography dangerouslySetInnerHTML={{ __html: req?.Detail?.object?.content }}>
 
                       </Typography>
-                    </StyledPaper>
+                    </StyledPaperAns>
                   </>)
                   :
                   (<>
-                    <StyledPaperAns>
+                    <StyledPaper>
                       <Box display="flex" gap={1} alignItems="center" mb={2}>
                         <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
                         <Box display='flex' flexDirection='column'>
                           <Typography fontSize='16px' variant="body1" >
-                            {req?.requestMessageResponse?.receiverFirstName || req?.requestMessageResponse?.receiverLastName === null ? (<>unknown</>) :
-                              (<>                        {req?.requestMessageResponse?.receiverFirstName} {req?.requestMessageResponse?.receiverLastName}
+                            {req?.Detail?.requestMessageResponse?.receiverFirstName || req?.Detail?.requestMessageResponse?.receiverLastName === null ? (<>unknown</>) :
+                              (<>                        {req?.Detail?.requestMessageResponse?.receiverFirstName} {req?.Detail?.requestMessageResponse?.receiverLastName}
                               </>)}
                           </Typography>
                           <Typography fontSize='12px' variant="body1">
@@ -127,10 +127,10 @@ const TicketDetail = () => {
                           </Typography>
                         </Box>
                       </Box>
-                      <Typography dangerouslySetInnerHTML={{ __html: req?.object?.content }}>
+                      <Typography dangerouslySetInnerHTML={{ __html: req?.Detail?.object?.content }}>
 
                       </Typography>
-                    </StyledPaperAns>
+                    </StyledPaper>
                   </>)}
 
               </>

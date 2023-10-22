@@ -25,7 +25,7 @@ const BookListDetail = () => {
   useEffect(() => {
     setIsLoading(true)
     const fetchGetRequestDetailByAdmin = async () => {
-      const response = await requestApi.getRequestDetailByAdmin(ticketId)
+      const response = await requestApi.getRequestDetailByAdmin('AT_f5a71321-53c5-40e9-b539-90e056936914')
       setBookRoomDetail(response)
       setIsLoading(false)
     }

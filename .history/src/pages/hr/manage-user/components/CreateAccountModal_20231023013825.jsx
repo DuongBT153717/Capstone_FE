@@ -117,29 +117,27 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
         </>
       )
     } else if (
-      department === 'tech D1' ||
-      department === 'tech D2' ||
-      department === 'tech D3' ||
-      department === 'tech D4' ||
-      department === 'tech D5' ||
-      department === 'tech D6'
+      department === 'Tech D1' ||
+      department === 'Tech D2' ||
+      department === 'Tech D3' ||
+      department === 'Tech D4' ||
+      department === 'Tech D5' ||
+      department === 'Tech D6'
     ) {
-      return (
-        <>
-          <FormControl fullWidth sx={{ mb: 2 }}>
-            <InputLabel id="demo-simple-select-label">Role</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={role}
-              label="Age"
-              onChange={handleChangeRole}>
-              <MenuItem value="manager">Manager</MenuItem>
-              <MenuItem value="employee">Employee</MenuItem>
-            </Select>
-          </FormControl>
-        </>
-      )
+      <>
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <InputLabel id="demo-simple-select-label">Role</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={role}
+            label="Age"
+            onChange={handleChangeRole}>
+            <MenuItem value="manager">Manager</MenuItem>
+            <MenuItem value="employee">Employee</MenuItem>
+          </Select>
+        </FormControl>
+      </>
     }
   }
 

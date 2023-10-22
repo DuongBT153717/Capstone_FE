@@ -91,7 +91,7 @@ function Row(props) {
   );
 }
 
-export default function RequestList() {
+export default function RequestListHr() {
   const [listRequestAndTicket, setListRequestAndTicket] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);

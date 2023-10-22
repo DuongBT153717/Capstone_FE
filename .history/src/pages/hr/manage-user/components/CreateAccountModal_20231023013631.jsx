@@ -42,7 +42,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
 
   useEffect(() => {
     const getAllDepartment = async () => {
-      let res = await userApi.getAllDepartment()
+      let res = await userApi.getAllDepartment();
       setListDepartment(res)
     }
     getAllDepartment()
@@ -54,24 +54,23 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
       username: username,
       password: '123',
       role: role,
-      departmentName: department
+      departmentName : department
     }
     userApi.createAccount(data, dispatch)
     let dataInfo = {
       username: username,
-      statusId: '1',
-      statusName: 'active',
-      roleName: role
+      statusId: "1",
+      statusName: "active",
+      roleName: role,
     }
-    setAllUser((prevUser) => [...prevUser, dataInfo])
+    setAllUser(prevUser => [...prevUser, dataInfo])
     handleCloseCreateAccount()
   }
 
-  const handleSetRole = () => {
-    if (department === 'security') {
-      return (
-        <>
-          <FormControl fullWidth sx={{ mb: 2 }}>
+  const handleSetRole =()=>{
+    if(department === "security"){
+      return (<>
+      <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel id="demo-simple-select-label">Role</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -82,12 +81,12 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
               <MenuItem value="security">Security</MenuItem>
             </Select>
           </FormControl>
-        </>
-      )
-    } else if (department === 'human resources') {
+      </>)
+    }
+    else if( department === "human resources"){
       return (
         <>
-          <FormControl fullWidth sx={{ mb: 2 }}>
+         <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel id="demo-simple-select-label">Role</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -100,10 +99,11 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
           </FormControl>
         </>
       )
-    } else if (department === 'admin') {
+    }
+    else if(department === "admin"){
       return (
         <>
-          <FormControl fullWidth sx={{ mb: 2 }}>
+         <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel id="demo-simple-select-label">Role</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -116,17 +116,9 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
           </FormControl>
         </>
       )
-    } else if (
-      department === 'tech D1' ||
-      department === 'tech D2' ||
-      department === 'tech D3' ||
-      department === 'tech D4' ||
-      department === 'tech D5' ||
-      department === 'tech D6'
-    ) {
-      return (
-        <>
-          <FormControl fullWidth sx={{ mb: 2 }}>
+    }else{
+      <>
+         <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel id="demo-simple-select-label">Role</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -139,7 +131,6 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
             </Select>
           </FormControl>
         </>
-      )
     }
   }
 
@@ -164,6 +155,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
             />
           </Stack>
 
+        
           <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel id="demo-simple-select-label">Department</InputLabel>
             <Select
@@ -172,9 +164,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
               value={department}
               onChange={handleChangeDepartment}>
               {listDepartment.map((item) => (
-                <MenuItem sx={{ textTransform: 'capitalize' }} value={item.departmentName}>
-                  {item.departmentName}
-                </MenuItem>
+                <MenuItem sx={{textTransform: 'capitalize'}} value={item.departmentName}>{item.departmentName}</MenuItem>
               ))}
             </Select>
           </FormControl>

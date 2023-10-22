@@ -100,7 +100,7 @@ const BookListDetail = () => {
                         </Typography>
                       </Grid>
                       <Grid item xs={12} md={6}>
-                        <Typography>
+                        <Typography textAlign="right">
                           Room: {bookRoomDetail[0]?.Detail?.object?.roomName}
                         </Typography>
                       </Grid>

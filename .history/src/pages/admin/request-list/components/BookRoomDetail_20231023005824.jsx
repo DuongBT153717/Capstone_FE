@@ -26,7 +26,7 @@ const BookListDetail = () => {
     setIsLoading(true)
     const fetchGetRequestDetailByAdmin = async () => {
       const response = await requestApi.getRequestDetailByAdmin(ticketId)
-      setBookRoomDetail(response)
+      setBookRoomDetail((prevDetails) => [...prevDetails, ...response])
       setIsLoading(false)
     }
     fetchGetRequestDetailByAdmin()
