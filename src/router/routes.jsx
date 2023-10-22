@@ -34,6 +34,7 @@ import ManagerLayout from '../layouts/manager'
 import RequestListManager from '../pages/manager/request-list'
 import ManageTicketListAdmin from '../pages/admin/manage-ticket-list'
 import RequestListEmployee from '../pages/employee/request-list'
+import ManageTicketListHr from '../pages/hr/manage-ticket-list'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 export default function Router() {
   let router = useRoutes([
@@ -162,7 +163,7 @@ export default function Router() {
               path: HR_PATH.REQUEST_LIST,
               element: (
                 <Suspense fallback={<>Loading...</>}>
-                  <RequestList />
+                  <ManageTicketListHr />
                 </Suspense>
               )
             },

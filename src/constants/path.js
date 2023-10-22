@@ -36,5 +36,5 @@ export const HR_PATH = {
     LAYOUT: "/",
     MANAGE_USER: "/manage-user",
     MANAGE_PROFILE: '/manage-profile',
-    REQUEST_LIST: '/request-list',
+    REQUEST_LIST: '/hr-request-list-manage',
 }

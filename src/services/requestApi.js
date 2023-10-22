@@ -16,6 +16,15 @@ const requestApi = {
     }
   
   },
+  getAllRequestAndTicketByHr: () => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getTicketHr`)
+      return response
+    } catch (error) {
+      console.log(error);
+    }
+  
+  },
   getReceiveIdAndDepartment: (data) => {
     try {
       const response = axiosClient.post(`${BASE_URL}/getReceiveIdAndDepartmentId`, data)
