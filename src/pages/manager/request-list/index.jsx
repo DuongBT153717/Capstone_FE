@@ -20,6 +20,7 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
+import useAuth from '../../../hooks/useAuth'
 
 function Row(props) {
   const { row } = props
@@ -96,6 +97,8 @@ function Row(props) {
   )
 }
 
+
+
 const TableRowsLoader = ({ rowsNum }) => {
   return [...Array(rowsNum)].map((row, index) => (
     <TableRow key={index}>
@@ -124,6 +127,7 @@ const TableRowsLoader = ({ rowsNum }) => {
   ))
 }
 
+
 export default function RequestListManager() {
   const [listRequestAndTicket, setListRequestAndTicket] = useState([])
   const [page, setPage] = useState(0)
@@ -139,15 +143,17 @@ export default function RequestListManager() {
     setPage(0)
   }
 
-  useEffect(() => {
-    setIsLoading(true)
-    const fetchListRequestAndTicketByAdmin = async () => {
-      const response = await requestApi.getAllRequestAndTicketByAdmin()
-      setListRequestAndTicket(response)
-      setIsLoading(false)
-    }
-    fetchListRequestAndTicketByAdmin()
-  }, [])
+  const userInfo = useAuth();
+ 
+   useEffect(() => {
+     setIsLoading(true)
+     const fetchListRequestAndTicketByAdmin = async () => {
+       const response = await requestApi.getTicketDepartment(userInfo.departmentName)
+       setListRequestAndTicket(response)
+       setIsLoading(false)
+     }
+     fetchListRequestAndTicketByAdmin()
+   }, [])
 
   return (
     <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">
@@ -189,9 +195,7 @@ export default function RequestListManager() {
                 <TableCell style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
                   Status
                 </TableCell>
-                <TableCell style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
-                  Action
-                </TableCell>
+          
               </TableRow>
             </TableHead>
             {isLoading ? (

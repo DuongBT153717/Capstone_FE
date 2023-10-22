@@ -11,6 +11,36 @@ const requestApi = {
       console.log(error);
     }
   },
+  getDetailAttendanceMessageById: (data) => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getAttendanceMessage/`,{
+        params :{
+          request_id : data
+        }
+      })
+      return response
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getTicketDepartment: (data) => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getTicketDepartment`, {
+        params :{
+          department :data
+        }
+      })
+      return response
+    } catch (error) {
+      if (error.response.status === 400) {
+        toast.error('Request fail!')
+      }
+      if (error.response.status === 404) {
+        toast.error('User not found!')
+      }
+    }
+  },
 
   getReceiveIdAndDepartment: (data) => {
     try {

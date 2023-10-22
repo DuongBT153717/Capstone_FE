@@ -2,11 +2,15 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import { Avatar, Box, Button, Paper, Typography } from '@mui/material'
 import { styled } from '@mui/system'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './components/style.css'
 import ChatTopbar from '../chat/components/ChatTopbar'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import axios from 'axios'
+import requestApi from '../../../services/requestApi'
+import userApi from '../../../services/userApi'
+import useAuth from '../../../hooks/useAuth'
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   margin: theme.spacing(2),
@@ -18,10 +22,14 @@ const StyledPaperAns = styled(Paper)(({ theme }) => ({
   margin: theme.spacing(2),
   backgroundColor: 'lightblue'
 }))
+
+
 const TicketDetail = () => {
 
   const scrollbarsRef = useRef()
   const inputRef = useRef()
+  const [request, setRequest] = useState([])
+  const [roleReceive, setRoleReceive] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -31,88 +39,115 @@ const TicketDetail = () => {
     }
   }
 
-  const {requestId} = useParams()
-  const currentUser = useSelector((state) => state.auth.login?.currentUser);
+  useEffect(() => {
+    const getMessageDetail = async () => {
+      const res = await requestApi.getDetailAttendanceMessageById(requestId);
+      console.log(res);
+      setRequest(res)
+    }
+    getMessageDetail()
+  }, [])
+
+  useEffect(() => {
+    if (request.length !== 0) {
+      const getRoleByID = async () => {
+        const res = await userApi.getRoleByUserId(request[0]?.Detail?.requestMessageResponse?.senderId);
+        setRoleReceive(res.roleName)
+        console.log(res);
+      }
+      getRoleByID()
+    }
+  }, [request[0]?.Detail?.requestMessageResponse?.senderId])
+
+
+  console.log(">>>" + request[0]?.Detail?.requestMessageResponse?.senderId);
+  const { requestId } = useParams()
+  const userRole = useSelector((state) => state.auth.login?.currentUser.role);
+  const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
+  const userInfo = useAuth();
+
+  // console.log("requestID " + requestId);
+  // console.log("userID >> " + userId);
+  // console.log("departmant " + userInfo.departmentName);
+
   useEffect(() => {
     scrollbarsRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [])
   return (
-    <Box height='100vh'>
-      <ChatTopbar />
-      <div
-        ref={scrollbarsRef}
-        style={{ overflow: 'auto', backgroundColor: '#f5f7f9', maxHeight: '420px' }}>
-        <StyledPaper>
-          <Box display="flex" gap={1} alignItems="center" mb={2}>
-            <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
-            <Box display='flex' flexDirection='column'>
-            <Typography fontSize='16px' variant="body1" >
-              Nguyen Thinh
-            </Typography>
-            <Typography fontSize='12px' variant="body1">
-              Admin
-            </Typography>
+    <>
+      {request.length === 0 ? (
+        <></>
+      ) : (
+        <Box height='100vh'>
+          <ChatTopbar />
+          <div
+            ref={scrollbarsRef}
+            style={{ overflow: 'auto', backgroundColor: '#f5f7f9', maxHeight: '420px' }}>
+            <Box m={2} sx={{ left: "0" }}>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Button variant="outlined">{request[0]?.Detail?.object?.topic}</Button>
+              </Box>
             </Box>
-          </Box>
-          <Typography variant="h2" gutterBottom>
-            Request Attendence
-          </Typography>
-          <Typography>
-            Request kiểm tra điểm danh của bạn đã đượcequest kiểm tra điểm danh của bạn đã được chấp
-            nhận, thông tin về log là bạn không đi làm vào ngày hôm đó , vui lòng bạn kiểm tra lại
-            bộ não của bạn !!equest kiểm tra điểm danh của bạn đã được chấp nhận, thông tin về log
-            là bạn không đi làm vào ngày hôm đó , vui lòng bạn kiểm tra lại bộ não của bạn !!equest
-            kiểm tra điểm danh của bạn đã được chấp nhận, thông tin về log là bạn không đi làm vào
-            ngày hôm đó , vui lòng bạn kiểm tra lại bộ não của bạn !!equest kiểm tra điểm danh của
-            bạn đã được chấp nhận, thông tin về log là bạn không đi làm vào ngày hôm đó , vui lòng
-            bạn kiểm tra lại bộ não của bạn !!equest kiểm tra điểm danh của bạn đã được chấp nhận,
-            thông tin về log là bạn không đi làm vào ngày hôm đó , vui lòng bạn kiểm tra lại bộ não
-            của bạn !!equest kiểm tra điểm danh của bạn đã được chấp nhận, thông tin về log là bạn
-            không đi làm vào ngày hôm đó , vui lòng bạn kiểm tra lại bộ não của bạn !! chấp nhận,
-            thông tin về log là bạn không đi làm vào ngày hôm đó , vui lòng bạn kiểm tra lại bộ não
-            của bạn !!
-          </Typography>
-        </StyledPaper>
-        <StyledPaperAns>
-        <Box display="flex" gap={1} alignItems="center" mb={2}>
-            <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
-            <Box display='flex' flexDirection='column'>
-            <Typography fontSize='16px' variant="body1" >
-              Nguyen Thinh
-            </Typography>
-            <Typography fontSize='12px' variant="body1">
-              Admin
-            </Typography>
-            </Box>
-          </Box>
-          <Typography variant="h2" gutterBottom>
-            Request Attendence
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            Request kiểm tra điểm danh của bạn đã đượcequest kiểm tra điểm danh của bạn đã được chấp
-            nhận, thông tin về log là bạn không đi làm vào ngày hôm đó , vui lòng bạn kiểm tra lại
-            bộ não của bạn !!equest kiểm tra điểm danh của bạn đã được chấp nhận, thông tin về log
-            là bạn không đi làm vào ngày hôm đó , vui lòng bạn kiểm tra lại bộ não của bạn !!equest
-            kiểm tra điểm danh của bạn đã được chấp nhận, thông tin về log là bạn không đi làm vào
-            ngày hôm đó , vui lòng bạn kiểm tra lại bộ não của bạn !!equest kiểm tra điểm danh của
-            bạn đã được chấp nhận, thông tin về log là bạn không đi làm vào ngày hôm đó , vui lòng
-            bạn kiểm tra lại bộ não của bạn !!equest kiểm tra điểm danh của bạn đã được chấp nhận,
-            thông tin về log là bạn không đi làm vào ngày hôm đó , vui lòng bạn kiểm tra lại bộ não
-            của bạn !!equest kiểm tra điểm danh của bạn đã được chấp nhận, thông tin về log là bạn
-            không đi làm vào ngày hôm đó , vui lòng bạn kiểm tra lại bộ não của bạn !! chấp nhận,
-            thông tin về log là bạn không đi làm vào ngày hôm đó , vui lòng bạn kiểm tra lại bộ não
-            của bạn !!
-          </Typography>
-        </StyledPaperAns>
-      </div>
-        <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column'}}>
-          <CKEditor editor={ClassicEditor} onInit={() => {}} />
+            {request?.map((req) => (
+              <>
+                {request[0]?.Detail?.requestMessageResponse?.receiverId === userId
+                  ?
+                  (<>
+                    <StyledPaperAns>
+                      <Box display="flex" gap={1} alignItems="center" mb={2}>
+                        <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
+                        <Box display='flex' flexDirection='column'>
+                          <Typography fontSize='16px' variant="body1" >
+                            {req?.Detail?.requestMessageResponse?.senderFirstName || req?.Detail?.requestMessageResponse?.senderLastName === null ? (<>unknown</>) :
+                              (<>                        {req?.Detail?.requestMessageResponse?.senderFirstName} {req?.Detail?.requestMessageResponse?.senderLastName}
+                              </>)}
+                          </Typography>
+                          <Typography fontSize='12px' variant="body1">
+                            {userRole}
+                          </Typography>
+                        </Box>
+                      </Box>
+                      <Typography dangerouslySetInnerHTML={{ __html: req?.Detail?.object?.content }}>
 
-          <Button sx={{alignSelf: 'flex-end', mr: 2}} type="submit" variant="contained" color="primary" style={{ marginTop: '20px' }}>
-            Send
-          </Button>
-        </form>
-    </Box>
+                      </Typography>
+                    </StyledPaperAns>
+                  </>)
+                  :
+                  (<>
+                    <StyledPaper>
+                      <Box display="flex" gap={1} alignItems="center" mb={2}>
+                        <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
+                        <Box display='flex' flexDirection='column'>
+                          <Typography fontSize='16px' variant="body1" >
+                            {req?.Detail?.requestMessageResponse?.receiverFirstName || req?.Detail?.requestMessageResponse?.receiverLastName === null ? (<>unknown</>) :
+                              (<>                        {req?.Detail?.requestMessageResponse?.receiverFirstName} {req?.Detail?.requestMessageResponse?.receiverLastName}
+                              </>)}
+                          </Typography>
+                          <Typography fontSize='12px' variant="body1">
+                            {roleReceive}
+                          </Typography>
+                        </Box>
+                      </Box>
+                      <Typography dangerouslySetInnerHTML={{ __html: req?.Detail?.object?.content }}>
+
+                      </Typography>
+                    </StyledPaper>
+                  </>)}
+
+              </>
+            ))
+            }
+          </div>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
+            <CKEditor editor={ClassicEditor} onInit={() => { }} />
+            <Button sx={{ alignSelf: 'flex-end', mr: 2 }} type="submit" variant="contained" color="primary" style={{ marginTop: '20px' }}>
+              Send
+            </Button>
+          </form>
+        </Box>
+      )}
+    </>
+
   )
 }
 
