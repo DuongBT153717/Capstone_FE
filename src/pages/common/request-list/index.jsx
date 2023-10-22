@@ -20,7 +20,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import requestApi from '../../../services/requestApi';
 import TablePagination from '@mui/material/TablePagination';
-import CheckIcon from '@mui/icons-material/Check'
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   margin: theme.spacing(2),
@@ -30,7 +30,6 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
-
   return (
     <>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -46,13 +45,13 @@ function Row(props) {
         <TableCell component="th" scope="row">
           {row.ticketId}
         </TableCell>
-        <TableCell >{row.requestTicketDtos[row.requestTicketDtos.length - 1].title}</TableCell>
+        <TableCell >{row.requestTickets[row.requestTickets.length - 1].title}</TableCell>
         <TableCell >{row.createDate}</TableCell>
         <TableCell >{row.updateDate}</TableCell>
         <TableCell >{row.status}</TableCell>
 
       </TableRow>
-      <TableRow>
+      <TableRow >
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
@@ -60,24 +59,45 @@ function Row(props) {
                 Request
               </Typography>
               <Table size="small" aria-label="purchases">
-                <TableHead>
+                <TableHead >
                   <TableRow>
-                    <TableCell>Request ID</TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell align="center">Curator</TableCell>
-                    <TableCell align="center">Create Date</TableCell>
-                    <TableCell align="center">Update Date</TableCell>
+                    <TableCell style={{ width: '160px' }}>Request ID</TableCell>
+                    <TableCell style={{ width: '200px' }} align="center">Status</TableCell>
+                    <TableCell  style={{ width: '50px' }}>Receiver</TableCell>
+                    <TableCell style={{ width: '10px' }} align="center">Create Date</TableCell>
+                    <TableCell style={{ width: '10px' }} align="center">Update Date</TableCell>
                     <TableCell style={{ width: '100px' }}>Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.requestTicketDtos.map((request_row) => (
+                  {row.requestTickets.map((request_row) => (
                     <TableRow key={request_row.request_id}>
                       <TableCell component="th" scope="row">
                         {request_row.requestId}
                       </TableCell>
-                      <TableCell>{request_row.requestStatus}</TableCell>
-                      <TableCell align="right" >{request_row.userId}</TableCell>
+                      <TableCell>
+      {request_row.requestStatus === 'PENDING' ? (
+       <Box
+       width="80%"
+       margin="0 auto"
+       p="5px"
+       display="flex"
+       justifyContent="center"
+       alignItems="center"
+       bgcolor={'#fff'}
+       borderRadius="4px">
+       <AccessTimeFilledIcon />
+       <Typography color="#2e7c67" >
+         {request_row.requestStatus}
+       </Typography>
+     </Box>
+      ) : (
+   
+        null
+      )}
+    </TableCell>
+                      <TableCell  key={request_row.userId}
+                      >{request_row.receiverLastName}</TableCell>
                       <TableCell align="right">
                         {request_row.requestCreateDate}
                       </TableCell>
@@ -134,12 +154,11 @@ export default function RequestList() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Paper>
-        <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
+        {/* <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
           <Button variant="contained">
             <Typography>Create Ticket</Typography>
           </Button>
-        </Box>
-
+        </Box> */}
         <TableContainer component={Paper} sx={{ marginTop: '16px' }}>
           <Table aria-label="collapsible table">
             <TableHead>
@@ -150,9 +169,7 @@ export default function RequestList() {
                 <TableCell style={{ width: '150px' }}>Create Date</TableCell>
                 <TableCell style={{ width: '150px' }}>Update Date</TableCell>
                 <TableCell style={{ width: '100px' }}>Status</TableCell>
-
               </TableRow>
-
             </TableHead>
             <TableBody>
               {listRequestAndTicket
