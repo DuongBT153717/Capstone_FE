@@ -45,11 +45,11 @@ function Row(props) {
         <TableCell>{row.createDate}</TableCell>
         <TableCell>{row.updateDate}</TableCell>
         <TableCell>{row.status}</TableCell>
-        <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+        {/* <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
           <IconButton  >
             <AddIcon />
           </IconButton>
-        </TableCell>
+        </TableCell> */}
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -222,9 +222,9 @@ export default function ManageTicketListAdmin() {
           />
         </Paper>
         <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
-          <Button variant="contained">
+          {/* <Button variant="contained">
             <Typography>Create Ticket</Typography>
-          </Button>
+          </Button> */}
         </Box>
 
         <TableContainer component={Paper} sx={{ marginTop: '16px' }}>
@@ -250,9 +250,9 @@ export default function ManageTicketListAdmin() {
                 <TableCell style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
                   Status
                 </TableCell>
-                <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+                {/* <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
                   Action
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             </TableHead>
             {isLoading ? (

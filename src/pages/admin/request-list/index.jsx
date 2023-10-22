@@ -25,6 +25,8 @@ import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import CloseIcon from '@mui/icons-material/Close';
 import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors';
 import CheckIcon from '@mui/icons-material/Check';
+import { Link, useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 function Row(props) {
   const { row } = props
   const [open, setOpen] = React.useState(false)
@@ -189,6 +191,7 @@ const TableRowsLoader = ({ rowsNum }) => {
   ))
 }
 export default function RequestListAdmin() {
+ const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const [listRequestAndTicket, setListRequestAndTicket] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
@@ -206,13 +209,13 @@ export default function RequestListAdmin() {
   useEffect(() => {
     setIsLoading(true)
     const fetchListRequestAndTicketByAdmin = async () => {
-      const response = await requestApi.getAllRequestAndTicketByAdmin()
+      const response = await requestApi.getAllRequestAndTicket(currentUser?.accountId)
       setListRequestAndTicket(response)
       setIsLoading(false)
     }
     fetchListRequestAndTicketByAdmin()
   }, [])
-
+  console.log(currentUser?.accountId);
   return (
     <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">
       <Box flex={1} sx={{ overflowX: 'hidden' }}>

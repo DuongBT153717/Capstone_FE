@@ -32,6 +32,7 @@ import ManageProfile from '../pages/hr/manage-profile'
 import BookListDetail from '../pages/admin/request-list/components/BookRoomDetail'
 import ManagerLayout from '../layouts/manager'
 import RequestListManager from '../pages/manager/request-list'
+import ManageTicketListAdmin from '../pages/admin/manage-ticket-list'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 export default function Router() {
   let router = useRoutes([
@@ -80,7 +81,6 @@ export default function Router() {
           element: <RequireAuth allowedRoles={ROLES.ADMIN} />,
           children: [
             {
-              index: true,
               path: ADMIN_PATH.REQUEST_LIST_ADMIN,
               element: (
                 <Suspense fallback={<>Loading...</>}>
@@ -93,7 +93,7 @@ export default function Router() {
               path: ADMIN_PATH.MANAGE_LIST_TICKET_ADMIN,
               element: (
                 <Suspense fallback={<>Loading...</>}>
-                  <RequestListAdmin />
+                  <ManageTicketListAdmin />
                 </Suspense>
               )
             }
@@ -164,7 +164,7 @@ export default function Router() {
                   <RequestList />
                 </Suspense>
               )
-            }
+            },
           ]
         }
       ]
