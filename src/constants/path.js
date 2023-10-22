@@ -25,6 +25,7 @@ export const MANAGER_PATH = {
 export const EMPLOYEE_PATH = {
     LAYOUT: "/",
     CHECK_ATTENDACE: '/check-attendance',
+    REQUEST_LIST_EMPLOYEE: '/request-list-employee'
 }
 
 export const DIRECTOR_PATH = {

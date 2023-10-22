@@ -20,8 +20,13 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import AddIcon from '@mui/icons-material/Add';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import CloseIcon from '@mui/icons-material/Close';
+import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors';
+import CheckIcon from '@mui/icons-material/Check';
+import { Link, useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 function Row(props) {
   const { row } = props
   const [open, setOpen] = React.useState(false)
@@ -45,11 +50,11 @@ function Row(props) {
         <TableCell>{row.createDate}</TableCell>
         <TableCell>{row.updateDate}</TableCell>
         <TableCell>{row.status}</TableCell>
-        {/* <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+        <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
           <IconButton  >
             <AddIcon />
           </IconButton>
-        </TableCell> */}
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -101,7 +106,7 @@ function Row(props) {
                             bgcolor={'#2e7c67'}
                             borderRadius="4px"
                           >
-                            <AccessTimeFilledIcon />
+                            <CheckIcon />
                             <Typography color="#fff">{request_row.requestStatus}</Typography>
                           </Box>
                         ) : request_row.requestStatus === 'EXECUTING' ? (
@@ -115,10 +120,10 @@ function Row(props) {
                             bgcolor={'#6495ED'}
                             borderRadius="4px"
                           >
-                            <AccessTimeFilledIcon />
+                            <RunningWithErrorsIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
-                        ) : request_row.requestStatus === 'EXECUTING' ? (
+                        ) : request_row.requestStatus === 'CLOSED' ? (
                           <Box
                             width="80%"
                             margin="0 auto"
@@ -129,7 +134,7 @@ function Row(props) {
                             bgcolor={'#C0C0C0'}
                             borderRadius="4px"
                           >
-                            <AccessTimeFilledIcon />
+                            <CloseIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
                         ) : null }
@@ -141,8 +146,10 @@ function Row(props) {
                       <TableCell>
                         <IconButton
                           sx={{ color: '#1565c0' }}
-                          >
-                          <AssignmentTurnedInIcon />
+                          onClick={() =>
+                            navigate(`/room-detail/${request_row.requestId}`)
+                          }>
+                          <RemoveRedEyeIcon />
                         </IconButton>
                       </TableCell>
                     </TableRow>
@@ -183,7 +190,8 @@ const TableRowsLoader = ({ rowsNum }) => {
     </TableRow>
   ))
 }
-export default function ManageTicketListAdmin() {
+export default function RequestListEmployee() {
+ const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const [listRequestAndTicket, setListRequestAndTicket] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
@@ -201,13 +209,13 @@ export default function ManageTicketListAdmin() {
   useEffect(() => {
     setIsLoading(true)
     const fetchListRequestAndTicketByAdmin = async () => {
-      const response = await requestApi.getAllRequestAndTicketByAdmin()
+      const response = await requestApi.getAllRequestAndTicket(currentUser?.accountId)
       setListRequestAndTicket(response)
       setIsLoading(false)
     }
     fetchListRequestAndTicketByAdmin()
   }, [])
-
+  console.log(currentUser?.accountId);
   return (
     <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">
       <Box flex={1} sx={{ overflowX: 'hidden' }}>
@@ -220,9 +228,11 @@ export default function ManageTicketListAdmin() {
           />
         </Paper>
         <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
-          {/* <Button variant="contained">
+        <Link to="/request-list-admin">
+          <Button variant="contained">
             <Typography>Create Ticket</Typography>
-          </Button> */}
+          </Button>
+          </Link>
         </Box>
 
         <TableContainer component={Paper} sx={{ marginTop: '16px' }}>
@@ -248,9 +258,9 @@ export default function ManageTicketListAdmin() {
                 <TableCell style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
                   Status
                 </TableCell>
-                {/* <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
                   Action
-                </TableCell> */}
+                </TableCell>
               </TableRow>
             </TableHead>
             {isLoading ? (
