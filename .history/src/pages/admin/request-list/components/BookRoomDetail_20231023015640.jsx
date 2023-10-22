@@ -91,7 +91,7 @@ const BookListDetail = () => {
                       </Grid>
                       <Grid item xs={12} md={6}>
                         <Typography>
-                          Start time: {bookRoomDetail[0]?.object?.startDate}
+                          Start time: {bookRoomDetail[0]?.Detail.object?.startDate}
                         </Typography>
                       </Grid>
                       <Grid item xs={12} md={6}>
@@ -114,7 +114,7 @@ const BookListDetail = () => {
                 </CardContent>
                 <Divider />
                 <CardActions sx={{ justifyContent: 'space-between', py: '8px' }}>
-                  <Link to="/manage-list-admin">
+                  <Link to="/request-list-admin">
                     <Button variant="contained" sx={{ bgcolor: 'rgb(94, 53, 177)' }}>
                       Back to Dashboard
                     </Button>

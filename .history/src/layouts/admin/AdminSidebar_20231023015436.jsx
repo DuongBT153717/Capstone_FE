@@ -2,12 +2,10 @@ import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt'
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
-import { getDownloadURL, ref } from 'firebase/storage'
 import { useState } from 'react'
 import { Menu, MenuItem, Sidebar, useProSidebar } from 'react-pro-sidebar'
 import { Link } from 'react-router-dom'
-import { storage } from '../../firebase/config'
-import useAuth from '../../hooks/useAuth'
+import AVATAR from '../../assets/images/user.png'
 const AdminSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => { 
@@ -19,20 +17,6 @@ const AdminSidebar = () => {
           : 0; 
     return initialIndex; 
   });
-  const [userProfileImage, setUserProfileImage] = useState('')
-  const currentUser = useAuth()
-  const imgurl = async () => {
-    const storageRef = ref(storage, `/${currentUser.image}`)
-    try {
-      const url = await getDownloadURL(storageRef)
-      setUserProfileImage(url)
-    } catch (error) {
-      console.error('Error getting download URL:', error)
-    }
-  }
-  if (currentUser && currentUser.image) {
-    imgurl()
-  }
   return (
     <>
       <Sidebar
@@ -67,16 +51,14 @@ const AdminSidebar = () => {
         <Divider />
         <Box height="60px" bgcolor="white" display='flex' alignItems='center' ml="20px" gap='20px'>
         <Avatar
-            sx={{
-              cursor: 'pointer',
-              height: 40,
-              width: 40
-            }}
-            src={`${userProfileImage}`}
-          />
-          <Typography fontSize="15px" fontWeight="600">
-            {currentUser.firstName}
-          </Typography>
+              sx={{
+                cursor: 'pointer',
+                height: 40,
+                width: 40
+              }}
+              src={AVATAR}
+            />
+              <Typography fontSize='15px' fontWeight='600'>Cristiano Ronaldo</Typography>
         </Box>
         <Divider />
         {/* <Box mb="25px">
@@ -130,9 +112,9 @@ const AdminSidebar = () => {
               component={<Link to="/request-list-admin" onClick={() => setActiveIndex(0)} />}>
               Check Your Ticket
             </MenuItem>
-            <MenuItem active={activeIndex === 1} icon={<AppSettingsAltIcon />} component={<Link to="/manage-list-admin"  onClick={() => setActiveIndex(1)} />}>
+            <MenuItem active={activeIndex === 2} icon={<AppSettingsAltIcon />} component={<Link to="/admin/device-config"  onClick={() => setActiveIndex(2)} />}>
               {' '}
-              Manage Ticket
+              Device Config{' '}
             </MenuItem>
           </Menu>
           

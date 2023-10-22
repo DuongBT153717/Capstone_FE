@@ -114,7 +114,7 @@ const BookListDetail = () => {
                 </CardContent>
                 <Divider />
                 <CardActions sx={{ justifyContent: 'space-between', py: '8px' }}>
-                  <Link to="/manage-list-admin">
+                  <Link to="/request-list-admin">
                     <Button variant="contained" sx={{ bgcolor: 'rgb(94, 53, 177)' }}>
                       Back to Dashboard
                     </Button>

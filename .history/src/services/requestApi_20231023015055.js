@@ -133,7 +133,6 @@ const requestApi = {
       console.log(error);
     }
   },
-  
   getRequestDetailByAdmin: (data) => {
     try {
       const response = axiosClient.get(`${BASE_URL}/getRoomBookingMessage`, {

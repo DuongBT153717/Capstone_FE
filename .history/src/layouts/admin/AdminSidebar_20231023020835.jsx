@@ -2,12 +2,13 @@ import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt'
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
-import { getDownloadURL, ref } from 'firebase/storage'
 import { useState } from 'react'
 import { Menu, MenuItem, Sidebar, useProSidebar } from 'react-pro-sidebar'
 import { Link } from 'react-router-dom'
-import { storage } from '../../firebase/config'
+import AVATAR from '../../assets/images/user.png'
 import useAuth from '../../hooks/useAuth'
+import { getDownloadURL, ref } from 'firebase/storage'
+import { storage } from '../../firebase/config'
 const AdminSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => { 
