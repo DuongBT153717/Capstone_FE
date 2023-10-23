@@ -10,7 +10,6 @@ import requestApi from '../../../services/requestApi'
 import userApi from '../../../services/userApi'
 import ChatTopbar from '../chat/components/ChatTopbar'
 import './components/style.css'
-import { LoadingButton } from '@mui/lab'
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   margin: theme.spacing(2),
@@ -29,18 +28,13 @@ const TicketDetail = () => {
   const [roleSender, setRoleSender] = useState(null)
   const [content, setContent] = useState('')
   const { requestId } = useParams()
-  const userRole = useSelector((state) => state.auth.login?.currentUser.role)
-  const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
   const handleSendMessage = () => {
     let data = {
-      userId: userId,
-      requestId: requestId,
-      content: content,
-      departmentId: request[0]?.requestMessageResponse?.receiverDepartment?.departmentId
+      userId: '5520f549-d906-45e3-b2bc-609284f06000',
+      requestId: 'OR_55d383bc-27d3-4231-8e33-de57aaffe8e3',
+      content: 'real marid hihi',
+      departmentId: '3'
     }
-
-    requestApi.otherFormExistRequest(data)
-    location.reload();
   }
 
   useEffect(() => {
@@ -65,7 +59,8 @@ const TicketDetail = () => {
 
   console.log('>>>' + request[0]?.requestMessageResponse?.senderId)
 
-  
+  const userRole = useSelector((state) => state.auth.login?.currentUser.role)
+  const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
 
   // console.log("requestID " + requestId);
   // console.log("userID >> " + userId);
@@ -89,77 +84,37 @@ const TicketDetail = () => {
                 <Button variant="outlined">{request[0]?.object?.topic}</Button>
               </Box>
             </Box>
-            {request?.map((req, index) => (
+            {request?.map((req) => (
               <>
-                {request[index]?.requestMessageResponse?.receiverId === userId ? (
+                {request[0]?.requestMessageResponse?.receiverId === userId ? (
                   <>
-                    {index === 0 ? (
-                      <StyledPaper>
-                        <Box display="flex" gap={1} alignItems="center" mb={2}>
-                          <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
-                          <Box display="flex" flexDirection="column">
-                            <Typography fontSize="16px" variant="body1">
-                              {req?.requestMessageResponse?.senderFirstName ||
-                              req?.requestMessageResponse?.senderLastName === null ? (
-                                <>unknown</>
-                              ) : (
-                                <>
-                                  {' '}
-                                  {req?.requestMessageResponse?.senderFirstName}{' '}
-                                  {req?.requestMessageResponse?.senderLastName}
-                                </>
-                              )}
-                            </Typography>
-                            <Typography
-                              sx={{ textTransform: 'capitalize' }}
-                              fontSize="12px"
-                              variant="body1">
-                              {roleSender}
-                            </Typography>
-                          </Box>
-                        </Box>
-                        <Typography fontSize='16px' fontWeight='bold'>Time: {req?.object?.manualDate} {req?.object?.manualFirstEntry} - {req?.object?.manualDate} {req?.object?.manualLastExit}</Typography>
-                        <Typography
-                          dangerouslySetInnerHTML={{ __html: req?.object?.content }}>
+                    <StyledPaper>
+                      <Box display="flex" gap={1} alignItems="center" mb={2}>
+                        <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
+                        <Box display="flex" flexDirection="column">
+                          <Typography fontSize="16px" variant="body1">
+                            {req?.requestMessageResponse?.senderFirstName ||
+                            req?.requestMessageResponse?.senderLastName === null ? (
+                              <>unknown</>
+                            ) : (
+                              <>
+                                {' '}
+                                {req?.requestMessageResponse?.senderFirstName}{' '}
+                                {req?.requestMessageResponse?.senderLastName}
+                              </>
+                            )}
                           </Typography>
-                        <Box display="flex" gap="10px" justifyContent='flex-end'>
-                          <LoadingButton variant="contained" sx={{ bgcolor: 'red' }}>
-                            Reject
-                          </LoadingButton>
-                          <LoadingButton variant="contained" sx={{ bgcolor: 'green' }}>
-                            Accept
-                          </LoadingButton>
+                          <Typography
+                            sx={{ textTransform: 'capitalize' }}
+                            fontSize="12px"
+                            variant="body1">
+                            {roleSender}
+                          </Typography>
                         </Box>
-                      </StyledPaper>
-                    ) : (
-                      <StyledPaper>
-                        <Box display="flex" gap={1} alignItems="center" mb={2}>
-                          <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
-                          <Box display="flex" flexDirection="column">
-                            <Typography fontSize="16px" variant="body1">
-                              {req?.requestMessageResponse?.senderFirstName ||
-                              req?.requestMessageResponse?.senderLastName === null ? (
-                                <>unknown</>
-                              ) : (
-                                <>
-                                  {' '}
-                                  {req?.requestMessageResponse?.senderFirstName}{' '}
-                                  {req?.requestMessageResponse?.senderLastName}
-                                </>
-                              )}
-                            </Typography>
-                            <Typography
-                              sx={{ textTransform: 'capitalize' }}
-                              fontSize="12px"
-                              variant="body1">
-                              {roleSender}
-                            </Typography>
-                          </Box>
-                        </Box>
-                        <Typography
-                          dangerouslySetInnerHTML={{ __html: req?.object?.content }}></Typography>
-                      </StyledPaper>
-                    )}
+                      </Box>
+                      <Typography
+                        dangerouslySetInnerHTML={{ __html: req?.object?.content }}></Typography>
+                    </StyledPaper>
                   </>
                 ) : (
                   <>

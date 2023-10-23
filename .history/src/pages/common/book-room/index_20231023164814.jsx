@@ -14,11 +14,10 @@ import {
   DragDropProvider,
   GroupingPanel,
   Resources,
-  TodayButton,
   Scheduler,
+  TodayButton,
   Toolbar
 } from '@devexpress/dx-react-scheduler-material-ui'
-// import Scheduler, { Resource } from 'devextreme-react/scheduler';
 import PersonIcon from '@mui/icons-material/Person'
 import { Box, CircularProgress, Grid, Typography } from '@mui/material'
 import Paper from '@mui/material/Paper'
@@ -232,22 +231,6 @@ const BookRoom = () => {
           <DragDropProvider />
           
         </Scheduler>
-      //   <Scheduler
-      //   timeZone="America/Los_Angeles"
-      //   dataSource={data}
-      //   defaultCurrentView="timelineDay"
-      //   groups={grouping}
-      //   cellDuration={60}
-      //   firstDayOfWeek={0}
-      //   startDayHour={8}
-      //   endDayHour={20}>
-      //   <Resource
-      //     fieldExpr="roomId"
-      //     dataSource={room}
-      //     label="Room"
-      //   />
-
-      // </Scheduler>
       )}
     </Paper>
   )

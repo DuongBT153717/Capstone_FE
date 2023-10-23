@@ -1,7 +1,7 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import { Box, Button, Checkbox, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
-import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { DatePicker, DateTimePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
@@ -90,7 +90,7 @@ const AttendenceFrom = ({ userId }) => {
           <Grid item xs={6} mb={2}>
             <Typography fontWeight="500">From</Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker
+              <TimePicker
                 value={from}
                 onChange={(e) => setFrom(e)}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
@@ -100,7 +100,7 @@ const AttendenceFrom = ({ userId }) => {
           <Grid item xs={6} mb={2}>
             <Typography fontWeight="500">To</Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker
+              <TimePicker
                 value={to}
                 onChange={(e) => setTo(e)}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}

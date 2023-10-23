@@ -135,7 +135,7 @@ const ManagerSidebar = () => {
             icon={<AssignmentTurnedInIcon />}
             component={<Link to="/book-room" onClick={() => setActiveIndex(1)} />}>
             {' '}
-            Book Room
+            Book room
           </MenuItem>
         </Menu>
       </Sidebar>

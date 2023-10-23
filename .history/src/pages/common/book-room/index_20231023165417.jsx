@@ -15,10 +15,9 @@ import {
   GroupingPanel,
   Resources,
   TodayButton,
-  Scheduler,
   Toolbar
 } from '@devexpress/dx-react-scheduler-material-ui'
-// import Scheduler, { Resource } from 'devextreme-react/scheduler';
+import Scheduler, { Resource } from 'devextreme-react/scheduler';
 import PersonIcon from '@mui/icons-material/Person'
 import { Box, CircularProgress, Grid, Typography } from '@mui/material'
 import Paper from '@mui/material/Paper'
@@ -208,46 +207,56 @@ const BookRoom = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <Scheduler data={data}>
-          <ViewState />
-          <EditingState onCommitChanges={commitChanges} />
-          <GroupingState grouping={grouping} />
-          <DayView startDayHour={9} endDayHour={16} />
-          <Toolbar />
-          <DateNavigator />
-          <TodayButton />
+        // <Scheduler data={data}>
+        //   <ViewState />
+        //   <EditingState onCommitChanges={commitChanges} />
+        //   <GroupingState grouping={grouping} />
+        //   <DayView startDayHour={9} endDayHour={16} />
+        //   <Toolbar />
+        //   <DateNavigator />
+        //   <TodayButton />
           
-          <Appointments />
-          <Resources data={resources} mainResourceName="roomId" />
-          <IntegratedGrouping />
-          <IntegratedEditing />
-          <AppointmentTooltip contentComponent={Content} showOpenButton />
-          <AppointmentForm
-            booleanEditorComponent={BoolEditor}
-            labelComponent={LabelComponent}
-            textEditorComponent={TextEditor}
-            basicLayoutComponent={BasicLayout}
-          />
-          <GroupingPanel />
-          <DragDropProvider />
+        //   <Appointments />
+        //   <Resources data={resources} mainResourceName="roomId" />
+        //   <IntegratedGrouping />
+        //   <IntegratedEditing />
+        //   <AppointmentTooltip contentComponent={Content} showOpenButton />
+        //   <AppointmentForm
+        //     booleanEditorComponent={BoolEditor}
+        //     labelComponent={LabelComponent}
+        //     textEditorComponent={TextEditor}
+        //     basicLayoutComponent={BasicLayout}
+        //   />
+        //   <GroupingPanel />
+        //   <DragDropProvider />
           
-        </Scheduler>
-      //   <Scheduler
-      //   timeZone="America/Los_Angeles"
-      //   dataSource={data}
-      //   defaultCurrentView="timelineDay"
-      //   groups={grouping}
-      //   cellDuration={60}
-      //   firstDayOfWeek={0}
-      //   startDayHour={8}
-      //   endDayHour={20}>
-      //   <Resource
-      //     fieldExpr="roomId"
-      //     dataSource={room}
-      //     label="Room"
-      //   />
-
-      // </Scheduler>
+        // </Scheduler>
+        <Scheduler
+        timeZone="America/Los_Angeles"
+        dataSource={data}
+        views={views}
+        defaultCurrentView="timelineMonth"
+        defaultCurrentDate={currentDate}
+        height={580}
+        groups={groups}
+        cellDuration={60}
+        firstDayOfWeek={0}
+        startDayHour={8}
+        endDayHour={20}>
+        <Resource
+          fieldExpr="ownerId"
+          allowMultiple={true}
+          dataSource={resourcesData}
+          label="Owner"
+          useColorAsDefault={ true }
+        />
+        <Resource
+          fieldExpr="priority"
+          allowMultiple={false}
+          dataSource={priorityData}
+          label="Priority"
+        />
+      </Scheduler>
       )}
     </Paper>
   )

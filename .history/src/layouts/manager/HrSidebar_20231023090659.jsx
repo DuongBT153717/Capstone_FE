@@ -130,13 +130,6 @@ const ManagerSidebar = () => {
             {' '}
             Ticket Management
           </MenuItem>
-          <MenuItem
-            active={activeIndex === 1}
-            icon={<AssignmentTurnedInIcon />}
-            component={<Link to="/book-room" onClick={() => setActiveIndex(1)} />}>
-            {' '}
-            Book Room
-          </MenuItem>
         </Menu>
       </Sidebar>
     </>

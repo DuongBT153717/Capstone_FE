@@ -118,10 +118,8 @@ const TicketDetail = () => {
                             </Typography>
                           </Box>
                         </Box>
-                        <Typography fontSize='16px' fontWeight='bold'>Time: {req?.object?.manualDate} {req?.object?.manualFirstEntry} - {req?.object?.manualDate} {req?.object?.manualLastExit}</Typography>
                         <Typography
-                          dangerouslySetInnerHTML={{ __html: req?.object?.content }}>
-                          </Typography>
+                          dangerouslySetInnerHTML={{ __html: req?.object?.content }}></Typography>
                         <Box display="flex" gap="10px" justifyContent='flex-end'>
                           <LoadingButton variant="contained" sx={{ bgcolor: 'red' }}>
                             Reject

@@ -15,10 +15,9 @@ import {
   GroupingPanel,
   Resources,
   TodayButton,
-  Scheduler,
   Toolbar
 } from '@devexpress/dx-react-scheduler-material-ui'
-// import Scheduler, { Resource } from 'devextreme-react/scheduler';
+import Scheduler, { Resource } from 'devextreme-react/scheduler';
 import PersonIcon from '@mui/icons-material/Person'
 import { Box, CircularProgress, Grid, Typography } from '@mui/material'
 import Paper from '@mui/material/Paper'

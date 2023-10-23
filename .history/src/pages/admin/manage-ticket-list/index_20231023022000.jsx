@@ -1,11 +1,6 @@
-import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled'
-import AddIcon from '@mui/icons-material/Add'
-import CheckIcon from '@mui/icons-material/Check'
-import CloseIcon from '@mui/icons-material/Close'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
-import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors'
 import { Skeleton } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -23,9 +18,10 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 function Row(props) {
   const { row } = props
   const [open, setOpen] = React.useState(false)
@@ -49,11 +45,11 @@ function Row(props) {
         <TableCell>{row.createDate}</TableCell>
         <TableCell>{row.updateDate}</TableCell>
         <TableCell>{row.status}</TableCell>
-        <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-          <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
+        {/* <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+          <IconButton  >
             <AddIcon />
           </IconButton>
-        </TableCell>
+        </TableCell> */}
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -105,7 +101,7 @@ function Row(props) {
                             bgcolor={'#2e7c67'}
                             borderRadius="4px"
                           >
-                            <CheckIcon />
+                            <AccessTimeFilledIcon />
                             <Typography color="#fff">{request_row.requestStatus}</Typography>
                           </Box>
                         ) : request_row.requestStatus === 'EXECUTING' ? (
@@ -119,10 +115,10 @@ function Row(props) {
                             bgcolor={'#6495ED'}
                             borderRadius="4px"
                           >
-                            <RunningWithErrorsIcon />
+                            <AccessTimeFilledIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
-                        ) : request_row.requestStatus === 'CLOSED' ? (
+                        ) : request_row.requestStatus === 'EXECUTING' ? (
                           <Box
                             width="80%"
                             margin="0 auto"
@@ -133,7 +129,7 @@ function Row(props) {
                             bgcolor={'#C0C0C0'}
                             borderRadius="4px"
                           >
-                            <CloseIcon />
+                            <AccessTimeFilledIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
                         ) : null }
@@ -145,10 +141,8 @@ function Row(props) {
                       <TableCell>
                         <IconButton
                           sx={{ color: '#1565c0' }}
-                          onClick={() =>
-                            navigate(`/request-detail/${request_row.requestId}`)
-                          }>
-                          <RemoveRedEyeIcon />
+                          >
+                          <AssignmentTurnedInIcon />
                         </IconButton>
                       </TableCell>
                     </TableRow>
@@ -189,8 +183,7 @@ const TableRowsLoader = ({ rowsNum }) => {
     </TableRow>
   ))
 }
-export default function RequestListEmployee() {
- const currentUser = useSelector((state) => state.auth.login?.currentUser);
+export default function ManageTicketListAdmin() {
   const [listRequestAndTicket, setListRequestAndTicket] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
@@ -208,13 +201,13 @@ export default function RequestListEmployee() {
   useEffect(() => {
     setIsLoading(true)
     const fetchListRequestAndTicketByAdmin = async () => {
-      const response = await requestApi.getAllRequestAndTicket(currentUser?.accountId)
+      const response = await requestApi.getAllRequestAndTicketByAdmin()
       setListRequestAndTicket(response)
       setIsLoading(false)
     }
     fetchListRequestAndTicketByAdmin()
   }, [])
-  console.log(currentUser?.accountId);
+
   return (
     <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">
       <Box flex={1} sx={{ overflowX: 'hidden' }}>
@@ -227,11 +220,9 @@ export default function RequestListEmployee() {
           />
         </Paper>
         <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
-        <Link to="/create-request">
-          <Button variant="contained">
+          {/* <Button variant="contained">
             <Typography>Create Ticket</Typography>
-          </Button>
-          </Link>
+          </Button> */}
         </Box>
 
         <TableContainer component={Paper} sx={{ marginTop: '16px' }}>
@@ -257,9 +248,9 @@ export default function RequestListEmployee() {
                 <TableCell style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
                   Status
                 </TableCell>
-                <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+                {/* <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
                   Action
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             </TableHead>
             {isLoading ? (

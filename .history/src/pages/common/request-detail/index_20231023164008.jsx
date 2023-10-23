@@ -29,18 +29,13 @@ const TicketDetail = () => {
   const [roleSender, setRoleSender] = useState(null)
   const [content, setContent] = useState('')
   const { requestId } = useParams()
-  const userRole = useSelector((state) => state.auth.login?.currentUser.role)
-  const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
   const handleSendMessage = () => {
     let data = {
-      userId: userId,
-      requestId: requestId,
-      content: content,
-      departmentId: request[0]?.requestMessageResponse?.receiverDepartment?.departmentId
+      userId: '5520f549-d906-45e3-b2bc-609284f06000',
+      requestId: 'OR_55d383bc-27d3-4231-8e33-de57aaffe8e3',
+      content: 'real marid hihi',
+      departmentId: '3'
     }
-
-    requestApi.otherFormExistRequest(data)
-    location.reload();
   }
 
   useEffect(() => {
@@ -65,7 +60,8 @@ const TicketDetail = () => {
 
   console.log('>>>' + request[0]?.requestMessageResponse?.senderId)
 
-  
+  const userRole = useSelector((state) => state.auth.login?.currentUser.role)
+  const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
 
   // console.log("requestID " + requestId);
   // console.log("userID >> " + userId);
@@ -91,7 +87,7 @@ const TicketDetail = () => {
             </Box>
             {request?.map((req, index) => (
               <>
-                {request[index]?.requestMessageResponse?.receiverId === userId ? (
+                {request[0]?.requestMessageResponse?.receiverId === userId ? (
                   <>
                     {index === 0 ? (
                       <StyledPaper>
@@ -118,10 +114,8 @@ const TicketDetail = () => {
                             </Typography>
                           </Box>
                         </Box>
-                        <Typography fontSize='16px' fontWeight='bold'>Time: {req?.object?.manualDate} {req?.object?.manualFirstEntry} - {req?.object?.manualDate} {req?.object?.manualLastExit}</Typography>
                         <Typography
-                          dangerouslySetInnerHTML={{ __html: req?.object?.content }}>
-                          </Typography>
+                          >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi amet voluptatem possimus obcaecati tenetur veritatis delectus quaerat cum, itaque reprehenderit iusto pariatur adipisci ea, accusamus ex optio quos, numquam alias?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis optio nam eos culpa quibusdam voluptatibus nostrum itaque. Quos, praesentium. Pariatur eligendi fugiat autem nisi, quasi sed praesentium nulla aliquid libero.</Typography>
                         <Box display="flex" gap="10px" justifyContent='flex-end'>
                           <LoadingButton variant="contained" sx={{ bgcolor: 'red' }}>
                             Reject

@@ -227,7 +227,7 @@ export default function Router() {
       path: '/',
       children: [
         {
-          element: <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.EMPLOYEE]} />,
+          element: <RequireAuth allowedRoles={ROLES.MANAGER} />,
           children: [
             {
               path: MANAGER_PATH.REQUEST_DETAIL_MANAGER,

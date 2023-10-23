@@ -216,36 +216,27 @@ export default function Router() {
               )
             }
           ]
-        },
-        {
-          path: PUBLIC_PATH.BOOK_ROOM,
-          element: <BookRoom />
-        },
+        }
       ]
     },
     {
       path: '/',
+      element: <RequireAuth allowedRoles={ROLES.MANAGER} />,
       children: [
         {
-          element: <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.EMPLOYEE]} />,
-          children: [
-            {
-              path: MANAGER_PATH.REQUEST_DETAIL_MANAGER,
-              element: (
-                <Suspense fallback={<>Loading...</>}>
-                  <TicketDetail />
-                </Suspense>
-              )
-            }
-          ]
+          path: MANAGER_PATH.REQUEST_DETAIL_MANAGER,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <TicketDetail />
+            </Suspense>
+          )
         },
         {
           path: PUBLIC_PATH.BOOK_ROOM,
           element: <BookRoom />
         },
       ]
-    },
-    
+    }
   ])
 
   return router
