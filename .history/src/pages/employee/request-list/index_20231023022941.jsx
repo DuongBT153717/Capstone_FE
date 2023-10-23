@@ -50,7 +50,7 @@ function Row(props) {
         <TableCell>{row.updateDate}</TableCell>
         <TableCell>{row.status}</TableCell>
         <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-          <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
+          <IconButton onClick={() => navigate('/')}>
             <AddIcon />
           </IconButton>
         </TableCell>
@@ -227,7 +227,7 @@ export default function RequestListEmployee() {
           />
         </Paper>
         <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
-        <Link to="/create-request">
+        <Link to="/request-list-admin">
           <Button variant="contained">
             <Typography>Create Ticket</Typography>
           </Button>

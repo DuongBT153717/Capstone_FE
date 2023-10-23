@@ -1,36 +1,19 @@
-import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt'
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
-import MenuIcon from '@mui/icons-material/Menu'
-import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
-import { getDownloadURL, ref } from 'firebase/storage'
-import { useState } from 'react'
-import { Menu, MenuItem, Sidebar, useProSidebar } from 'react-pro-sidebar'
-import { Link } from 'react-router-dom'
-import { storage } from '../../firebase/config'
-import useAuth from '../../hooks/useAuth'
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material';
+import { Menu, MenuItem, Sidebar, useProSidebar } from 'react-pro-sidebar';
+
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import AVATAR from '../../assets/images/user.png';
 const EmployeeSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => { 
     const initialIndex = 
-      window.location.pathname === '/check-attendance' ? 0 
-      : window.location.pathname === '/request-list-employee' ? 1 
+      window.location.pathname === '/employee' ? 0 
           : 0; 
     return initialIndex; 
   });
-  const [userProfileImage, setUserProfileImage] = useState('')
-  const currentUser = useAuth()
-  const imgurl = async () => {
-    const storageRef = ref(storage, `/${currentUser.image}`)
-    try {
-      const url = await getDownloadURL(storageRef)
-      setUserProfileImage(url)
-    } catch (error) {
-      console.error('Error getting download URL:', error)
-    }
-  }
-  if (currentUser && currentUser.image) {
-    imgurl()
-  }
   return (
     <>
       <Sidebar
@@ -41,18 +24,11 @@ const EmployeeSidebar = () => {
         }}
         breakPoint="md"
         backgroundColor="#fff">
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          ml="15px"
-          height="65px">
+        <Box display="flex" justifyContent="space-between" alignItems="center" ml="15px" mb="25px">
           {!collapsed ? (
-            <Link to="/request-list-adminr" style={{ textDecoration: 'none' }}>
-              <Typography fontWeight="800" color="#000" fontSize="22px" sx={{ cursor: 'pointer' }}>
-                BMS
-              </Typography>
-            </Link>
+            <Typography variant="h3" color="#000">
+              ADMINIS
+            </Typography>
           ) : null}
           <IconButton
             onClick={() => {
@@ -65,16 +41,14 @@ const EmployeeSidebar = () => {
         <Divider />
         <Box height="60px" bgcolor="white" display='flex' alignItems='center' ml="20px" gap='20px'>
         <Avatar
-            sx={{
-              cursor: 'pointer',
-              height: 40,
-              width: 40
-            }}
-            src={`${userProfileImage}`}
-          />
-          <Typography fontSize="15px" fontWeight="600">
-            {currentUser.firstName}
-          </Typography>
+              sx={{
+                cursor: 'pointer',
+                height: 40,
+                width: 40
+              }}
+              src={AVATAR}
+            />
+              <Typography fontSize='15px' fontWeight='600'>Cristiano Ronaldo</Typography>
         </Box>
         <Divider />
         {/* <Box mb="25px">
@@ -124,13 +98,10 @@ const EmployeeSidebar = () => {
             }}>
             <MenuItem
               active={activeIndex === 0}
-              icon={<AssignmentTurnedInIcon />}
-              component={<Link to="/check-attendance" onClick={() => setActiveIndex(0)} />}>
-              Check Attendace
-            </MenuItem>
-            <MenuItem active={activeIndex === 1} icon={<AppSettingsAltIcon />} component={<Link to="/request-list-employee"  onClick={() => setActiveIndex(1)} />}>
+              icon={<DashboardIcon />}
+              component={<Link to="/employee" onClick={() => setActiveIndex(0)} />}>
               {' '}
-              Check Your Ticket
+              Check attendance{' '}
             </MenuItem>
           </Menu>
           

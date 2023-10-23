@@ -2,10 +2,11 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import { Box, Button, Checkbox, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
 import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import requestApi from '../../../../services/requestApi'
+import dayjs from 'dayjs'
+import { useParams } from 'react-router-dom'
 
 const AttendenceFrom = ({ userId }) => {
   const [from, setFrom] = useState(dayjs(new Date()))
@@ -14,7 +15,7 @@ const AttendenceFrom = ({ userId }) => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
-
+  const {ticketId} = useParams()
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
       const response = await requestApi.getReceiveIdAndDepartment(userId)
@@ -32,6 +33,7 @@ const AttendenceFrom = ({ userId }) => {
         userId: userId,
         title: title,
         content: content,
+        ticketId:ticketId,
         manualDate: from.format('YYYY-MM-DD'),
         manualFirstEntry: from.format('HH:mm:ss'),
         manualLastExit: to.format('HH:mm:ss'),
@@ -39,13 +41,14 @@ const AttendenceFrom = ({ userId }) => {
         receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
       }
 
-      requestApi.requestAttendanceForm(data)
+      requestApi.requestAttendanceFormExistTicket(data)
       console.log(data)
     } else if (role == 'hr') {
       let data = {
         userId: userId,
         title: title,
         content: content,
+        ticketId:ticketId,
         manualDate: from.format('YYYY-MM-DD'),
         manualFirstEntry: from.format('HH:mm:ss'),
         manualLastExit: to.format('HH:mm:ss'),
@@ -53,7 +56,7 @@ const AttendenceFrom = ({ userId }) => {
         receivedId: null
       }
 
-      requestApi.requestAttendanceForm(data)
+      requestApi.requestAttendanceFormExistTicket(data)
       console.log(data)
     }
   }
@@ -167,7 +170,7 @@ const LeaveRequest = ({ userId }) => {
       receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
     }
     console.log(data)
-    requestApi.requestLeaveForm(data)
+    requestApi.requestLeaveFormExistTicket(data)
   }
   return (
     <Box p={3} pl={0}>
@@ -248,4 +251,3 @@ const LeaveRequest = ({ userId }) => {
 }
 
 export { AttendenceFrom, DepartmentRequest, LeaveRequest, OtRequest }
-

@@ -69,6 +69,7 @@ const Data = () => {
                 <MenuItem value="leave_request">Leave Request</MenuItem>
                 <MenuItem value="ot_request">OT Request</MenuItem>
                 <MenuItem value="attendence_request">Attendence Request</MenuItem>
+                <MenuItem value="room_request">Room request</MenuItem>
                 <MenuItem value="department_change_request">Department change request</MenuItem>
               </Select>
               {selectedValue === 'attendence_request' && <AttendenceFrom userId={currentUser.accountId}/>}

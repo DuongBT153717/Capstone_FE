@@ -74,22 +74,9 @@ const requestApi = {
       }
     }
   },
-  requestAttendanceFormExistTicket: async (data) => {
+  requestAttendanceFormExistRequest: async (data) => {
     try {
-      await axiosClient.post(`${BASE_URL}/requestAttendanceFormExistTicket`, data)
-      toast.success('Send request successfully')
-    } catch (error) {
-      if (error.response.status === 400) {
-        toast.error('Request fail!')
-      }
-      if (error.response.status === 404) {
-        toast.error('User not found!')
-      }
-    }
-  },
-  requestLeaveFormExistTicket: async (data) => {
-    try {
-      await axiosClient.post(`${BASE_URL}/requestLeaveFormExistTicket`, data)
+      await axiosClient.post(`${BASE_URL}/requestAttendanceFormExistRequest`, data)
       toast.success('Send request successfully')
     } catch (error) {
       if (error.response.status === 400) {

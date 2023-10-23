@@ -87,19 +87,6 @@ const requestApi = {
       }
     }
   },
-  requestLeaveFormExistTicket: async (data) => {
-    try {
-      await axiosClient.post(`${BASE_URL}/requestLeaveFormExistTicket`, data)
-      toast.success('Send request successfully')
-    } catch (error) {
-      if (error.response.status === 400) {
-        toast.error('Request fail!')
-      }
-      if (error.response.status === 404) {
-        toast.error('User not found!')
-      }
-    }
-  },
   requestLeaveForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/requestLeaveForm`, data)

@@ -227,7 +227,7 @@ export default function RequestListEmployee() {
           />
         </Paper>
         <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
-        <Link to="/create-request">
+        <Link to="/request-list-admin">
           <Button variant="contained">
             <Typography>Create Ticket</Typography>
           </Button>

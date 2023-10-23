@@ -52,7 +52,7 @@ const HrSidebar = () => {
           ml="15px"
           height="65px">
           {!collapsed ? (
-            <Link to="/check-attendance" style={{ textDecoration: 'none' }}>
+            <Link to="/manage-user" style={{ textDecoration: 'none' }}>
               <Typography fontWeight="800" color="#000" fontSize="22px" sx={{ cursor: 'pointer' }}>
                 BMS
               </Typography>

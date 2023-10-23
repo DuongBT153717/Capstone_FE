@@ -5,7 +5,6 @@ export const PUBLIC_PATH = {
     RESET_PASSWORD: '/reset-password',
     CHAT: '/chat',
     CREATE_REQUEST: '/create-request',
-    CREATE_REQUEST_EXISTED: '/create-request-existed/:ticketId',
     BOOK_ROOM: '/book-room',
     NOT_FOUND: '*'
 }

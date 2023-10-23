@@ -1,26 +1,22 @@
-import DashboardIcon from '@mui/icons-material/Dashboard'
+import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt'
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
-import { Menu, MenuItem, Sidebar, useProSidebar } from 'react-pro-sidebar'
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useState } from 'react'
+import { Menu, MenuItem, Sidebar, useProSidebar } from 'react-pro-sidebar'
 import { Link } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
-const HrSidebar = () => {
+const EmployeeSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
-  const [activeIndex, setActiveIndex] = useState(() => {
-    const initialIndex =
-      window.location.pathname === '/manage-user'
-        ? 0
-        : window.location.pathname === '/manage-profile'
-        ? 1
-        : window.location.pathname === '/request-list'
-        ? 2
-        :0
-    return initialIndex
-  })
+  const [activeIndex, setActiveIndex] = useState(() => { 
+    const initialIndex = 
+      window.location.pathname === '/check-attendance' ? 0 
+      : window.location.pathname === '/request-list-employee' ? 1 
+          : 0; 
+    return initialIndex; 
+  });
   const [userProfileImage, setUserProfileImage] = useState('')
   const currentUser = useAuth()
   const imgurl = async () => {
@@ -52,7 +48,7 @@ const HrSidebar = () => {
           ml="15px"
           height="65px">
           {!collapsed ? (
-            <Link to="/check-attendance" style={{ textDecoration: 'none' }}>
+            <Link to="/request-list-adminr" style={{ textDecoration: 'none' }}>
               <Typography fontWeight="800" color="#000" fontSize="22px" sx={{ cursor: 'pointer' }}>
                 BMS
               </Typography>
@@ -67,8 +63,8 @@ const HrSidebar = () => {
           </IconButton>
         </Box>
         <Divider />
-        <Box height="60px" bgcolor="white" display="flex" alignItems="center" ml="20px" gap="20px">
-          <Avatar
+        <Box height="60px" bgcolor="white" display='flex' alignItems='center' ml="20px" gap='20px'>
+        <Avatar
             sx={{
               cursor: 'pointer',
               height: 40,
@@ -112,44 +108,36 @@ const HrSidebar = () => {
             ) : null}
           </Box>
         </Box> */}
-        <Menu
-          menuItemStyles={{
-            button: ({ active }) => {
-              return {
-                backgroundColor: active ? 'rgb(237, 231, 246)' : undefined,
-                color: '#000',
-                '&:hover': {
-                  backgroundColor: 'rgb(237, 231, 246)',
-                  color: 'rgb(94, 53, 177)',
-                  borderRadius: '10px'
+          <Menu
+            menuItemStyles={{
+              button: ({ active }) => {
+                return {
+                  backgroundColor: active ? 'rgb(237, 231, 246)' : undefined,
+                  color: '#000',
+                  '&:hover': {
+                    backgroundColor: 'rgb(237, 231, 246)',
+                    color: 'rgb(94, 53, 177)',
+                    borderRadius: '10px'
+                  }
                 }
               }
-            }
-          }}>
-          <MenuItem
-            active={activeIndex === 0}
-            icon={<DashboardIcon />}
-            component={<Link to="/manage-user" onClick={() => setActiveIndex(0)} />}>
-            {' '}
-            Manage User
-          </MenuItem>
-          <MenuItem
-            active={activeIndex === 1}
-            icon={<DashboardIcon />}
-            component={<Link to="/manage-profile" onClick={() => setActiveIndex(1)} />}>
-            {' '}
-            Manage Profile
-          </MenuItem>
-          <MenuItem
-            active={activeIndex === 1}
-            icon={<AssignmentTurnedInIcon />}
-            component={<Link to="/request-list" onClick={() => setActiveIndex(2)} />}>
-            {' '}
-            Ticket Management
-          </MenuItem>
-        </Menu>
+            }}>
+            <MenuItem
+              active={activeIndex === 0}
+              icon={<AssignmentTurnedInIcon />}
+              component={<Link to="/request-list-admin" onClick={() => setActiveIndex(0)} />}>
+              Check Attendace
+            </MenuItem>
+            <MenuItem active={activeIndex === 1} icon={<AppSettingsAltIcon />} component={<Link to="/manage-list-admin"  onClick={() => setActiveIndex(1)} />}>
+              {' '}
+              Check Your Ticket
+            </MenuItem>
+          </Menu>
+          
+
       </Sidebar>
     </>
   )
 }
-export default HrSidebar
+
+export default EmployeeSidebar
