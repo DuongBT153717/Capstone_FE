@@ -143,7 +143,7 @@ const HrSidebar = () => {
           <MenuItem
             active={activeIndex === 1}
             icon={<AssignmentTurnedInIcon />}
-            component={<Link to="/request-list" onClick={() => setActiveIndex(2)} />}>
+            component={<Link to="/hr-request-list-manage" onClick={() => setActiveIndex(2)} />}>
             {' '}
             Ticket Management
           </MenuItem>
