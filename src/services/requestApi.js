@@ -47,7 +47,17 @@ const requestApi = {
       }
     }
   },
-
+  acceptAttendanceRequest: async (data) => {
+    let data1 ={
+      attendanceRequestId : data
+    }
+    try {
+       await axiosClient.post(`${BASE_URL}/acceptAttendanceRequest`, data1)
+      toast.success('Accept request success')
+    } catch (error) {
+    console.log(error);
+    }
+  },
   getReceiveIdAndDepartment: (data) => {
     try {
       const response = axiosClient.post(`${BASE_URL}/getReceiveIdAndDepartmentId`, data)
