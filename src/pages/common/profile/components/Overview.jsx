@@ -8,6 +8,7 @@ import {
   Typography,
   styled
 } from '@mui/material'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const TypoOverView = styled(Typography)(() => ({
@@ -15,8 +16,8 @@ const TypoOverView = styled(Typography)(() => ({
   textAlign: 'left'
 }))
 
-
 const Overview = (props) => {
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   return (
     <>
       <CardContent>
@@ -51,11 +52,39 @@ const Overview = (props) => {
       </CardContent>
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-start' }}>
-        <Link to="/admin">
-          <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-            Back to Dashboard
-          </Button>
-        </Link>
+        {currentUser?.role === 'hr' ? (
+          <Link to="/manage-user">
+            <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+              Back to Dashboard
+            </Button>
+          </Link>
+        ) : currentUser?.role === 'employee' ? (
+          <Link to="/check-attendance">
+            <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+              Back to Dashboard
+            </Button>
+          </Link>
+        ) : currentUser?.role === 'manager' ? (
+          <Link to="/request-list-manager">
+            <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+              Back to Dashboard
+            </Button>
+          </Link>
+        ) : currentUser?.role === 'admin' ? (
+          <Link to="/request-list-admin">
+            <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+              Back to Dashboard
+            </Button>
+          </Link>
+        ) : currentUser?.role === 'security' ? (
+          <Link to="/manage-user">
+            <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+              Back to Dashboard
+            </Button>
+          </Link>
+        ) : (
+          <></>
+        )}
       </CardActions>
     </>
   )

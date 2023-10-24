@@ -57,7 +57,17 @@ const requestApi = {
       }
     }
   },
-
+  acceptAttendanceRequest: async (data) => {
+    let data1 ={
+      attendanceRequestId : data
+    }
+    try {
+       await axiosClient.post(`${BASE_URL}/acceptAttendanceRequest`, data1)
+      toast.success('Accept request success')
+    } catch (error) {
+    console.log(error);
+    }
+  },
   getReceiveIdAndDepartment: (data) => {
     try {
       const response = axiosClient.post(`${BASE_URL}/getReceiveIdAndDepartmentId`, data)
@@ -136,6 +146,32 @@ const requestApi = {
       }
     }
   },
+  requestOtherForm: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/otherForm`, data)
+      toast.success('Send request successfully')
+    } catch (error) {
+      if (error.response.status === 400) {
+        toast.error('Request fail!')
+      }
+      if (error.response.status === 404) {
+        toast.error('User not found!')
+      }
+    }
+  },
+  otherFormExistTicket: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/otherFormExistTicket`, data)
+      toast.success('Send Message successfully')
+    } catch (error) {
+      if (error.response.status === 400) {
+        toast.error('Request fail!')
+      }
+      if (error.response.status === 404) {
+        toast.error('User not found!')
+      }
+    }
+  },
   getAllDepartment: () => {
     try {
       const response = axiosClient.get(`${BASE_URL}/getAllDepartment`)
@@ -177,6 +213,15 @@ const requestApi = {
   getAllRequestAndTicketByAdmin: () => {
     try {
       const response = axiosClient.get(`${BASE_URL}/getTicketAdmin`)
+      return response
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getAllTicketHr: () => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getTicketHr`)
       return response
     } catch (error) {
       console.log(error);

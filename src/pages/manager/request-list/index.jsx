@@ -70,7 +70,7 @@ function Row(props) {
                         {request_row.requestId}
                       </TableCell>
                       <TableCell>{request_row.requestStatus}</TableCell>
-                      <TableCell>{request_row.userId}</TableCell>
+                      <TableCell>{request_row.receiverFirstName} {request_row.receiverLastName}</TableCell>
                       <TableCell>{request_row.requestCreateDate}</TableCell>
                       <TableCell>{request_row.requestUpdateDate}</TableCell>
                       <TableCell>
