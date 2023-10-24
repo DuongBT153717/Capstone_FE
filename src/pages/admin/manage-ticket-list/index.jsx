@@ -66,7 +66,8 @@ function Row(props) {
                     <TableCell style={{ width: '50px' }}>Receiver</TableCell>
                     <TableCell style={{ width: '100px' }} >Create Date</TableCell>
                     <TableCell style={{ width: '100px' }} >Update Date</TableCell>
-                    <TableCell style={{ width: '100px' }}>Action</TableCell>
+                    <TableCell style={{ width: '10px' }}></TableCell>
+                    <TableCell style={{ width: '10px' }}></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -132,7 +133,7 @@ function Row(props) {
                             <AccessTimeFilledIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
-                        ) : null }
+                        ) : null}
                       </TableCell>
                       <TableCell key={request_row.userId}
                       >{request_row.receiverFirstName}</TableCell>
@@ -146,6 +147,12 @@ function Row(props) {
                           }>
                           <AssignmentTurnedInIcon />
                         </IconButton>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          sx={{ color: '#2e7c67' }}>
+                          ACCEPT
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -231,7 +238,7 @@ export default function ManageTicketListAdmin() {
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
-                <TableCell style={{ width: '10px' }} /> 
+                <TableCell style={{ width: '10px' }} />
                 <TableCell style={{ width: '160px', fontWeight: 'bold', fontSize: '18px' }}>
                   TicketID
                 </TableCell>
