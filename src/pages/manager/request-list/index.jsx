@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../../../hooks/useAuth'
 import requestApi from '../../../services/requestApi'
-
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 function Row(props) {
   const { row } = props
   const [open, setOpen] = React.useState(false)
@@ -69,14 +69,72 @@ function Row(props) {
                       <TableCell component="th" scope="row">
                         {request_row.requestId}
                       </TableCell>
-                      <TableCell>{request_row.requestStatus}</TableCell>
+                      <TableCell>
+                        {request_row.requestStatus === 'PENDING' ? (
+                          <Box
+                            width="80%"
+                            margin="0 auto"
+                            p="5px"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            bgcolor={'#FAFAD2'}
+                            borderRadius="4px"
+                          >
+                            <AccessTimeFilledIcon />
+                            <Typography color="#000">{request_row.requestStatus}</Typography>
+                          </Box>
+                        ) : request_row.requestStatus === 'ANSWERED' ? (
+                          <Box
+                            width="80%"
+                            margin="0 auto"
+                            p="5px"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            bgcolor={'#2e7c67'}
+                            borderRadius="4px"
+                          >
+                            <AccessTimeFilledIcon />
+                            <Typography color="#fff">{request_row.requestStatus}</Typography>
+                          </Box>
+                        ) : request_row.requestStatus === 'EXECUTING' ? (
+                          <Box
+                            width="80%"
+                            margin="0 auto"
+                            p="5px"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            bgcolor={'#6495ED'}
+                            borderRadius="4px"
+                          >
+                            <AccessTimeFilledIcon />
+                            <Typography color="#000">{request_row.requestStatus}</Typography>
+                          </Box>
+                        ) : request_row.requestStatus === 'CLOSED' ? (
+                          <Box
+                            width="80%"
+                            margin="0 auto"
+                            p="5px"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            bgcolor={'#C0C0C0'}
+                            borderRadius="4px"
+                          >
+                            <AccessTimeFilledIcon />
+                            <Typography color="#000">{request_row.requestStatus}</Typography>
+                          </Box>
+                        ) : null}
+                      </TableCell>
                       <TableCell>{request_row.receiverFirstName} {request_row.receiverLastName}</TableCell>
                       <TableCell>{request_row.requestCreateDate}</TableCell>
                       <TableCell>{request_row.requestUpdateDate}</TableCell>
                       <TableCell>
                         {' '}
                         <IconButton
-                        
+
                           sx={{ color: '#1565c0' }}
                           onClick={() =>
                             navigate(`/request-detail/${request_row.requestId}`)
@@ -143,16 +201,16 @@ export default function RequestListManager() {
   }
 
   const userInfo = useAuth();
- 
-   useEffect(() => {
-     setIsLoading(true)
-     const fetchListRequestAndTicketByAdmin = async () => {
-       const response = await requestApi.getTicketDepartment(userInfo.departmentName)
-       setListRequestAndTicket(response)
-       setIsLoading(false)
-     }
-     fetchListRequestAndTicketByAdmin()
-   }, [userInfo.departmentName])
+
+  useEffect(() => {
+    setIsLoading(true)
+    const fetchListRequestAndTicketByAdmin = async () => {
+      const response = await requestApi.getTicketDepartment(userInfo.departmentName)
+      setListRequestAndTicket(response)
+      setIsLoading(false)
+    }
+    fetchListRequestAndTicketByAdmin()
+  }, [userInfo.departmentName])
 
   return (
     <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">
@@ -189,7 +247,7 @@ export default function RequestListManager() {
                 <TableCell style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
                   Status
                 </TableCell>
-          
+
               </TableRow>
             </TableHead>
             {isLoading ? (
