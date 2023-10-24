@@ -59,7 +59,7 @@ const Overview = (props) => {
             </Button>
           </Link>
         ) : currentUser?.role === 'employee' ? (
-          <Link to="/manage-user">
+          <Link to="/check-attendance">
             <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
               Back to Dashboard
             </Button>

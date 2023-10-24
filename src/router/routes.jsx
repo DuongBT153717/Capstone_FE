@@ -34,6 +34,7 @@ import ManagerLayout from '../layouts/manager'
 import RequestListManager from '../pages/manager/request-list'
 import ManageTicketListAdmin from '../pages/admin/manage-ticket-list'
 import RequestListEmployee from '../pages/employee/request-list'
+import ManageTicketListHr from '../pages/hr/manage-ticket-list'
 import CreateTicketExistRequest from '../pages/common/create-request-exist'
 import RequestListHr from '../pages/hr/request-list'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
@@ -168,7 +169,7 @@ export default function Router() {
                   <RequestListHr />
                 </Suspense>
               )
-            },
+            }
           ]
         }
       ]

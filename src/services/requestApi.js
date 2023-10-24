@@ -17,6 +17,16 @@ const requestApi = {
   
   },
   
+
+  getAllRequestAndTicketByHr: () => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getTicketHr`)
+      return response
+    } catch (error) {
+      console.log(error);
+    }
+  
+  },
   getDetailAttendanceMessageById: (data) => {
     try {
       const response = axiosClient.get(`${BASE_URL}/getAttendanceMessage/`,{
@@ -243,7 +253,15 @@ const requestApi = {
       console.log(error);
     }
   },
-
+  closeTicketAttendence: async (data, dispatch) => {
+    
+    try {
+      await axiosClient.post(`${BASE_URL}/acceptChangeUserInfo`, data)
+      toast.success('Finish Ticket Success !')
+    } catch (error) {
+        console.log(error);
+    }
+  },
 }
 
 export default requestApi
