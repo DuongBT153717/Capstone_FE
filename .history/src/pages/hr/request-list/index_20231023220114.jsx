@@ -189,7 +189,7 @@ const TableRowsLoader = ({ rowsNum }) => {
     </TableRow>
   ))
 }
-export default function RequestListAdmin() {
+export default function RequestListHr() {
  const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const [listRequestAndTicket, setListRequestAndTicket] = useState([])
   const [page, setPage] = useState(0)
@@ -207,14 +207,13 @@ export default function RequestListAdmin() {
 
   useEffect(() => {
     setIsLoading(true)
-    const fetchListRequestAndTicketByAdmin = async () => {
-      const response = await requestApi.getAllRequestAndTicket(currentUser?.accountId)
+    const fetchListRequestAndTicketByHr = async () => {
+      const response = await requestApi.getAllTicketHr()
       setListRequestAndTicket(response)
       setIsLoading(false)
     }
-    fetchListRequestAndTicketByAdmin()
+    fetchListRequestAndTicketByHr()
   }, [])
-  console.log(currentUser?.accountId);
   return (
     <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">
       <Box flex={1} sx={{ overflowX: 'hidden' }}>
@@ -226,13 +225,6 @@ export default function RequestListAdmin() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Paper>
-        <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
-        <Link to="/create-request">
-          <Button variant="contained">
-            <Typography>Create Ticket</Typography>
-          </Button>
-          </Link>
-        </Box>
 
         <TableContainer component={Paper} sx={{ marginTop: '16px' }}>
           <Table aria-label="collapsible table">
@@ -256,9 +248,6 @@ export default function RequestListAdmin() {
                 </TableCell>
                 <TableCell style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
                   Status
-                </TableCell>
-                <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-                  Action
                 </TableCell>
               </TableRow>
             </TableHead>

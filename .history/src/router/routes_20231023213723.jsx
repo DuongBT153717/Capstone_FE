@@ -162,7 +162,7 @@ export default function Router() {
               )
             },
             {
-              path: HR_PATH.REQUEST_LIST_HR,
+              path: HR_PATH.REQUEST_LIST,
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <RequestListHr />
@@ -228,10 +228,10 @@ export default function Router() {
       path: '/',
       children: [
         {
-          element: <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.EMPLOYEE, ROLES.ADMIN, ROLES.HR]} />,
+          element: <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.EMPLOYEE, ROLES.ADMIN]} />,
           children: [
             {
-              path: PUBLIC_PATH.REQUEST_DETAIL,
+              path: MANAGER_PATH.REQUEST_DETAIL_MANAGER,
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <TicketDetail />

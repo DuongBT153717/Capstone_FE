@@ -139,7 +139,7 @@ function Row(props) {
                         ) : null }
                       </TableCell>
                       <TableCell key={request_row.userId}
-                      >{request_row.receiverFirstName} {request_row.receiverLastName}</TableCell>
+                      >{request_row.receiverFirstName}</TableCell>
                       <TableCell>{request_row.requestCreateDate}</TableCell>
                       <TableCell>{request_row.requestUpdateDate}</TableCell>
                       <TableCell>

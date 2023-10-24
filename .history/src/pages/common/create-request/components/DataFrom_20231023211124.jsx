@@ -7,8 +7,6 @@ import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import requestApi from '../../../../services/requestApi'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-
 
 const AttendenceFrom = ({ userId }) => {
   const [from, setFrom] = useState(dayjs(new Date()))
@@ -17,7 +15,7 @@ const AttendenceFrom = ({ userId }) => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
-  const currentUser = useSelector((state) => state.auth.login?.currentUser);
+
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
       const response = await requestApi.getReceiveIdAndDepartment(userId)
@@ -122,29 +120,11 @@ const AttendenceFrom = ({ userId }) => {
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
-          {
-            currentUser?.role === 'employee' ? 
-            <Link to='/request-list-employee'>
+          <Link to='/request-list-employee'>
             <Button type="submit" variant="contained">
               Back
             </Button>
-          </Link> : currentUser?.role === 'manager' ? 
-          <Link to='/request-list-manager'>
-            <Button type="submit" variant="contained">
-              Back
-            </Button>
-          </Link> : currentUser?.role === 'admin' ? 
-          <Link to='/request-list-admin'>
-            <Button type="submit" variant="contained">
-              Back
-            </Button>
-            </Link> : currentUser?.role === 'admin' ? 
-          <Link to='/request-list-hr'>
-            <Button type="submit" variant="contained">
-              Back
-            </Button>
-            </Link> : <></>
-          }
+          </Link>
           <Button type="submit" variant="contained">
             Save
           </Button>

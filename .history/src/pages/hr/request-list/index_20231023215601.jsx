@@ -139,7 +139,7 @@ function Row(props) {
                         ) : null }
                       </TableCell>
                       <TableCell key={request_row.userId}
-                      >{request_row.receiverFirstName} {request_row.receiverLastName}</TableCell>
+                      >{request_row.receiverFirstName}</TableCell>
                       <TableCell>{request_row.requestCreateDate}</TableCell>
                       <TableCell>{request_row.requestUpdateDate}</TableCell>
                       <TableCell>
@@ -189,7 +189,7 @@ const TableRowsLoader = ({ rowsNum }) => {
     </TableRow>
   ))
 }
-export default function RequestListAdmin() {
+export default function RequestListHr() {
  const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const [listRequestAndTicket, setListRequestAndTicket] = useState([])
   const [page, setPage] = useState(0)
@@ -207,14 +207,13 @@ export default function RequestListAdmin() {
 
   useEffect(() => {
     setIsLoading(true)
-    const fetchListRequestAndTicketByAdmin = async () => {
-      const response = await requestApi.getAllRequestAndTicket(currentUser?.accountId)
+    const fetchListRequestAndTicketByHr = async () => {
+      const response = await requestApi.getAllTicketHr()
       setListRequestAndTicket(response)
       setIsLoading(false)
     }
-    fetchListRequestAndTicketByAdmin()
+    fetchListRequestAndTicketByHr()
   }, [])
-  console.log(currentUser?.accountId);
   return (
     <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">
       <Box flex={1} sx={{ overflowX: 'hidden' }}>

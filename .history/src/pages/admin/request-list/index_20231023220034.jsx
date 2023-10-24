@@ -226,13 +226,6 @@ export default function RequestListAdmin() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Paper>
-        <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
-        <Link to="/create-request">
-          <Button variant="contained">
-            <Typography>Create Ticket</Typography>
-          </Button>
-          </Link>
-        </Box>
 
         <TableContainer component={Paper} sx={{ marginTop: '16px' }}>
           <Table aria-label="collapsible table">

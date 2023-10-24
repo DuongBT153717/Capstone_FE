@@ -8,14 +8,12 @@ import { Menu, MenuItem, Sidebar, useProSidebar } from 'react-pro-sidebar'
 import { Link } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
-const AdminSidebar = () => {
+const EmployeeSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => { 
     const initialIndex = 
-      window.location.pathname === '/request-list-admin' ? 0 
-      : window.location.pathname === 'manage-list-admin' ? 1 : 
-      window.location.pathname === '/admin/profile' ? 4 : 
-      window.location.pathname === '/admin/change-password' ? 5  
+      window.location.pathname === '/check-attendance' ? 0 
+      : window.location.pathname === '/request-list-employee' ? 1 
           : 0; 
     return initialIndex; 
   });
@@ -50,7 +48,7 @@ const AdminSidebar = () => {
           ml="15px"
           height="65px">
           {!collapsed ? (
-            <Link to="/request-list-admin" style={{ textDecoration: 'none' }}>
+            <Link to="/request-list-employee" style={{ textDecoration: 'none' }}>
               <Typography fontWeight="800" color="#000" fontSize="22px" sx={{ cursor: 'pointer' }}>
                 BMS
               </Typography>
@@ -127,12 +125,12 @@ const AdminSidebar = () => {
             <MenuItem
               active={activeIndex === 0}
               icon={<AssignmentTurnedInIcon />}
-              component={<Link to="/request-list-admin" onClick={() => setActiveIndex(0)} />}>
-              Check Your Ticket
+              component={<Link to="/check-attendance" onClick={() => setActiveIndex(0)} />}>
+              Check Attendace
             </MenuItem>
-            <MenuItem active={activeIndex === 1} icon={<AppSettingsAltIcon />} component={<Link to="/manage-list-admin"  onClick={() => setActiveIndex(1)} />}>
+            <MenuItem active={activeIndex === 1} icon={<AppSettingsAltIcon />} component={<Link to="/request-list-employee"  onClick={() => setActiveIndex(1)} />}>
               {' '}
-              Manage Ticket
+              Check Your Ticket
             </MenuItem>
           </Menu>
           
@@ -142,4 +140,4 @@ const AdminSidebar = () => {
   )
 }
 
-export default AdminSidebar
+export default EmployeeSidebar

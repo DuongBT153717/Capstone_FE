@@ -25,7 +25,7 @@ import Chat from '../pages/common/chat'
 import CreateTicketRequest from '../pages/common/create-request'
 import Profile from '../pages/common/profile'
 import TicketDetail from '../pages/common/request-detail'
-
+import RequestList from '../pages/common/request-list'
 import DirectorDashboard from '../pages/director'
 import CheckAttendance from '../pages/employee/check-attendance'
 import ManageProfile from '../pages/hr/manage-profile'
@@ -35,7 +35,6 @@ import RequestListManager from '../pages/manager/request-list'
 import ManageTicketListAdmin from '../pages/admin/manage-ticket-list'
 import RequestListEmployee from '../pages/employee/request-list'
 import CreateTicketExistRequest from '../pages/common/create-request-exist'
-import RequestListHr from '../pages/hr/request-list'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 export default function Router() {
   let router = useRoutes([
@@ -162,10 +161,10 @@ export default function Router() {
               )
             },
             {
-              path: HR_PATH.REQUEST_LIST_HR,
+              path: HR_PATH.REQUEST_LIST,
               element: (
                 <Suspense fallback={<>Loading...</>}>
-                  <RequestListHr />
+                  <RequestList />
                 </Suspense>
               )
             },
@@ -228,10 +227,10 @@ export default function Router() {
       path: '/',
       children: [
         {
-          element: <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.EMPLOYEE, ROLES.ADMIN, ROLES.HR]} />,
+          element: <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.EMPLOYEE, ROLES.ADMIN]} />,
           children: [
             {
-              path: PUBLIC_PATH.REQUEST_DETAIL,
+              path: MANAGER_PATH.REQUEST_DETAIL_MANAGER,
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <TicketDetail />
