@@ -16,6 +16,8 @@ const requestApi = {
     }
   
   },
+  
+
   getAllRequestAndTicketByHr: () => {
     try {
       const response = axiosClient.get(`${BASE_URL}/getTicketHr`)
@@ -25,6 +27,37 @@ const requestApi = {
     }
   
   },
+  getDetailAttendanceMessageById: (data) => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getAttendanceMessage/`,{
+        params :{
+          request_id : data
+        }
+      })
+      return response
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getTicketDepartment: (data) => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getTicketDepartment`, {
+        params :{
+          department :data
+        }
+      })
+      return response
+    } catch (error) {
+      if (error.response.status === 400) {
+        toast.error('Request fail!')
+      }
+      if (error.response.status === 404) {
+        toast.error('User not found!')
+      }
+    }
+  },
+
   getReceiveIdAndDepartment: (data) => {
     try {
       const response = axiosClient.post(`${BASE_URL}/getReceiveIdAndDepartmentId`, data)
@@ -41,6 +74,45 @@ const requestApi = {
   requestAttendanceForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/requestAttendanceForm`, data)
+      toast.success('Send request successfully')
+    } catch (error) {
+      if (error.response.status === 400) {
+        toast.error('Request fail!')
+      }
+      if (error.response.status === 404) {
+        toast.error('User not found!')
+      }
+    }
+  },
+  requestAttendanceFormExistTicket: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/requestAttendanceFormExistTicket`, data)
+      toast.success('Send request successfully')
+    } catch (error) {
+      if (error.response.status === 400) {
+        toast.error('Request fail!')
+      }
+      if (error.response.status === 404) {
+        toast.error('User not found!')
+      }
+    }
+  },
+  otherFormExistRequest: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/otherFormExistRequest`, data)
+      toast.success('Send Message successfully')
+    } catch (error) {
+      if (error.response.status === 400) {
+        toast.error('Request fail!')
+      }
+      if (error.response.status === 404) {
+        toast.error('User not found!')
+      }
+    }
+  },
+  requestLeaveFormExistTicket: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/requestLeaveFormExistTicket`, data)
       toast.success('Send request successfully')
     } catch (error) {
       if (error.response.status === 400) {
@@ -110,6 +182,7 @@ const requestApi = {
       console.log(error);
     }
   },
+  
   getRequestDetailByAdmin: (data) => {
     try {
       const response = axiosClient.get(`${BASE_URL}/getRoomBookingMessage`, {

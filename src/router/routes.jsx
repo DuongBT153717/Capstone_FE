@@ -35,6 +35,7 @@ import RequestListManager from '../pages/manager/request-list'
 import ManageTicketListAdmin from '../pages/admin/manage-ticket-list'
 import RequestListEmployee from '../pages/employee/request-list'
 import ManageTicketListHr from '../pages/hr/manage-ticket-list'
+import CreateTicketExistRequest from '../pages/common/create-request-exist'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 export default function Router() {
   let router = useRoutes([
@@ -65,6 +66,10 @@ export default function Router() {
     {
       path: PUBLIC_PATH.CREATE_REQUEST,
       element: <CreateTicketRequest />
+    },
+    {
+      path: PUBLIC_PATH.CREATE_REQUEST_EXISTED,
+      element: <CreateTicketExistRequest />
     },
     {
       path: PUBLIC_PATH.REQUEST_DETAIL,
@@ -147,10 +152,7 @@ export default function Router() {
                 </Suspense>
               )
             },
-            {
-              path: PUBLIC_PATH.BOOK_ROOM,
-              element: <BookRoom />
-            },
+
             {
               path: HR_PATH.MANAGE_PROFILE,
               element: (
@@ -160,13 +162,13 @@ export default function Router() {
               )
             },
             {
-              path: HR_PATH.REQUEST_LIST,
+              path: HR_PATH.REQUEST_LIST_HR,
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <ManageTicketListHr />
                 </Suspense>
               )
-            },
+            }
           ]
         }
       ]
@@ -215,23 +217,36 @@ export default function Router() {
               )
             }
           ]
-        }
+        },
+        {
+          path: PUBLIC_PATH.BOOK_ROOM,
+          element: <BookRoom />
+        },
       ]
     },
     {
       path: '/',
-      element: <RequireAuth allowedRoles={ROLES.MANAGER} />,
       children: [
         {
-          path: MANAGER_PATH.REQUEST_DETAIL_MANAGER,
-          element: (
-            <Suspense fallback={<>Loading...</>}>
-              <TicketDetail />
-            </Suspense>
-          )
-        }
+          element: <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.EMPLOYEE]} />,
+          children: [
+            {
+              path: MANAGER_PATH.REQUEST_DETAIL_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <TicketDetail />
+                </Suspense>
+              )
+            }
+          ]
+        },
+        {
+          path: PUBLIC_PATH.BOOK_ROOM,
+          element: <BookRoom />
+        },
       ]
-    }
+    },
+    
   ])
 
   return router

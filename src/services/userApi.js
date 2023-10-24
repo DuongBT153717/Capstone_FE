@@ -51,6 +51,16 @@ const userApi = {
       }
     }
   },
+  getRoleByUserId: async (data) => {
+    try {
+      const response = await axiosClient.post(`${BASE_URL}/getRoleByUserId`, data)
+      return response;
+    } catch (error) {
+      if (error.response.status === 404) {
+        toast.error('User not found!')
+      }
+    }
+  },
   changeUserStatus: async (data, dispatch) => {
     dispatch(changeUserStatusStart())
     try {

@@ -52,7 +52,7 @@ const HrSidebar = () => {
           ml="15px"
           height="65px">
           {!collapsed ? (
-            <Link to="/manage-user" style={{ textDecoration: 'none' }}>
+            <Link to="/check-attendance" style={{ textDecoration: 'none' }}>
               <Typography fontWeight="800" color="#000" fontSize="22px" sx={{ cursor: 'pointer' }}>
                 BMS
               </Typography>
@@ -143,7 +143,7 @@ const HrSidebar = () => {
           <MenuItem
             active={activeIndex === 1}
             icon={<AssignmentTurnedInIcon />}
-            component={<Link to="/hr-request-list-manage" onClick={() => setActiveIndex(2)} />}>
+            component={<Link to="/request-list-hr" onClick={() => setActiveIndex(2)} />}>
             {' '}
             Ticket Management
           </MenuItem>
