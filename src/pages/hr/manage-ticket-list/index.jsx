@@ -21,12 +21,31 @@ import requestApi from '../../../services/requestApi'
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import CloseIcon from '@mui/icons-material/Close';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 function Row(props) {
     const { row } = props
     const [open, setOpen] = React.useState(false)
-
+    const [accpetStatus, setAcceptStatus] = useState('')
+    const [isLoadingAccept, setIsLoadingAccept] = useState(false)
+    const handleAcceptAttendRequest = async () => {
+        if (accpetStatus) {
+            let data = {
+                attendanceRequestId: accpetStatus[0]?.object?.attendanceRequestId
+            }
+            try {
+                setIsLoadingAccept(true)
+                await axiosClient.post(`${BASE_URL}/acceptAttendanceRequest`, data)
+                setIsLoadingAccept(false)
+                toast.success('Accept book room successfully!')
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }
+    console.log(accpetStatus[0]?.object?.requestId)
     const navigate = useNavigate()
     return (
+        
         <>
             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
                 <TableCell>
@@ -35,7 +54,7 @@ function Row(props) {
                     </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row">
-                    {row.ticketId}
+                    {row.ticketId.slice(0, 10)}
                 </TableCell>
                 <TableCell component="th" scope="row">
                     {row.topic}
@@ -55,7 +74,7 @@ function Row(props) {
 
                             borderRadius="4px"
                         >
-                            <Typography color="#000">CLOSE</Typography>
+                            <Typography color="#a9a9a9">CLOSE</Typography>
                         </Box>
                     ) : row.status === true ? (
                         <Box
@@ -68,26 +87,26 @@ function Row(props) {
 
                             borderRadius="4px"
                         >
-                            <Typography color="#000">OPEN</Typography>
+                            <Typography color="#000">AVALIABLE</Typography>
                         </Box>
                     ) : null}
                 </TableCell>
-                <TableCell>{row.topic === 'OTHER_REQUEST' ? (
-                        <Box
-                            width="80%"
-                            margin="0 auto"
-                            p="5px"
-                            display="flex"
-                            justifyContent="center"
-                          bgcolor={''}
-                            borderRadius="4px"
-                        >
-                            <Button>
-                                <CloseIcon />
-                            <Typography color="#000">CLOSE TICKET</Typography>
-                            </Button>
-                        </Box>
-                    ) : null}</TableCell>
+                <TableCell >{row.topic === 'OTHER_REQUEST' ? (
+                    <Box
+                        width="80%"
+                        margin="0 auto"
+                        p="5px"
+                        display="flex"
+                        justifyContent="center"
+                        bgcolor={''}
+                        borderRadius="4px"
+                    >
+                        <Button onClick={handleAcceptAttendRequest}>
+                            <CloseIcon />
+                            <Typography fontSize={'13px'} color="#000">Finish</Typography>
+                        </Button>
+                    </Box>
+                ) : null}</TableCell>
                 {/* <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
           <IconButton  >
             <AddIcon />
@@ -161,7 +180,7 @@ function Row(props) {
                                                         <AccessTimeFilledIcon />
                                                         <Typography color="#000">{request_row.requestStatus}</Typography>
                                                     </Box>
-                                                ) : request_row.requestStatus === 'EXECUTING' ? (
+                                                ) : request_row.requestStatus === 'CLOSED' ? (
                                                     <Box
                                                         width="80%"
                                                         margin="0 auto"
@@ -185,7 +204,7 @@ function Row(props) {
                                                 <IconButton
                                                     sx={{ color: '#1565c0' }}
                                                 >
-                                                    <AssignmentTurnedInIcon />
+                                                    <RemoveRedEyeIcon />
                                                 </IconButton>
                                             </TableCell>
                                         </TableRow>
@@ -226,12 +245,14 @@ const TableRowsLoader = ({ rowsNum }) => {
         </TableRow>
     ))
 }
+
 export default function ManageTicketListHr() {
     const [listRequestAndTicket, setListRequestAndTicket] = useState([])
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
     const [searchTerm, setSearchTerm] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+
     const handleChangePage = (event, newPage) => {
         setPage(newPage)
     }
@@ -240,6 +261,7 @@ export default function ManageTicketListHr() {
         setRowsPerPage(parseInt(event.target.value, 10))
         setPage(0)
     }
+   
 
     useEffect(() => {
         setIsLoading(true)
@@ -248,6 +270,7 @@ export default function ManageTicketListHr() {
             setListRequestAndTicket(response)
             setIsLoading(false)
         }
+
         fetchListRequestAndTicketByAdmin()
     }, [])
 
@@ -292,7 +315,7 @@ export default function ManageTicketListHr() {
                                     Status
                                 </TableCell>
 
-                                <TableCell align='center'  style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+                                <TableCell align='center' style={{ width: '10px', fontWeight: 'bold', fontSize: '18px' }}>
                                     Action
                                 </TableCell>
                             </TableRow>

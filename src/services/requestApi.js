@@ -208,7 +208,15 @@ const requestApi = {
       console.log(error);
     }
   },
-
+  closeTicketAttendence: async (data, dispatch) => {
+    
+    try {
+      await axiosClient.post(`${BASE_URL}/acceptChangeUserInfo`, data)
+      toast.success('Finish Ticket Success !')
+    } catch (error) {
+        console.log(error);
+    }
+  },
 }
 
 export default requestApi
