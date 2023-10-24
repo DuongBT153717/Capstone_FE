@@ -37,8 +37,7 @@ const BookListDetail = () => {
   const handleAcceptBookRoom = async () => {
     if (bookRoomDetail) {
       let data = {
-        roomBookingFormRoomId: bookRoomDetail[0]?.object?.roomBookingRequestId,
-        content: ""
+        roomBookingFormRoomId: bookRoomDetail[0]?.object?.roomBookingRequestId
       }
       try {
         setIsLoadingAccept(true)
