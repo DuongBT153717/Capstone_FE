@@ -28,13 +28,21 @@ function Row(props) {
     const [accpetStatus, setAcceptStatus] = useState('')
     const [isLoadingAccept, setIsLoadingAccept] = useState(false)
     const handleAcceptAttendRequest = async () => {
-        try {
-          requestApi.acceptStatutOtherRequest(accpetStatus[0]?.Detail?.object?.ticketId)
-        } catch (error) {
-          console.error('Error', error);
+        if (accpetStatus) {
+            let data = {
+                attendanceRequestId: accpetStatus[0]?.object?.attendanceRequestId
+            }
+            try {
+                setIsLoadingAccept(true)
+                await axiosClient.post(`${BASE_URL}/acceptAttendanceRequest`, data)
+                setIsLoadingAccept(false)
+                toast.success('Accept book room successfully!')
+            } catch (error) {
+                console.log(error)
+            }
         }
-      }
-    console.log(ticketId)
+    }
+    console.log(accpetStatus[0]?.object?.requestId)
     const navigate = useNavigate()
     return (
         
