@@ -36,6 +36,8 @@ function Row(props) {
             location.reload()
           }, 500)
     }
+
+    
     console.log(accpetStatus[0]?.object?.ticketId)
     const navigate = useNavigate()
     return (
