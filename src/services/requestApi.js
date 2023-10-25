@@ -40,6 +40,32 @@ const requestApi = {
     }
   },
 
+  
+  getDetailLeaveMessageById: (data) => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getLeaveMessage/`,{
+        params :{
+          request_id : data
+        }
+      })
+      return response
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  getDetailOtherMessageById: (data) => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getOtherMessage/`,{
+        params :{
+          request_id : data
+        }
+      })
+      return response
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   getTicketDepartment: (data) => {
     try {
       const response = axiosClient.get(`${BASE_URL}/getTicketDepartment`, {
@@ -64,6 +90,54 @@ const requestApi = {
    } catch (error) {
    console.log(error);
    }
+  },
+
+  acceptLeaveRequest: async (data) => {
+    let data1 ={
+      leaveRequestId : data
+    }
+    try {
+       await axiosClient.post(`${BASE_URL}/acceptLeaveRequest`, data1)
+      toast.success('Accept request success')
+    } catch (error) {
+    console.log(error);
+    }
+  },
+
+  acceptRequest: async (data) => {
+    try {
+       await axiosClient.post(`${BASE_URL}/changeReceiveId`, data)
+      toast.success('Accept Request success')
+    } catch (error) {
+    console.log(error);
+    }
+  },
+
+  rejectLeaveRequest: async (data) => {
+    try {
+       await axiosClient.post(`${BASE_URL}/rejectLeaveRequest`, data)
+      toast.success('Reject request success')
+    } catch (error) {
+    console.log(error);
+    }
+  },
+
+  rejectAttendanceRequest: async (data) => {
+    try {
+       await axiosClient.post(`${BASE_URL}/rejectAttendanceRequest`, data)
+      toast.success('Reject request success')
+    } catch (error) {
+    console.log(error);
+    }
+  },
+
+  rejectBookRoomRequest: async (data) => {
+    try {
+       await axiosClient.post(`${BASE_URL}/rejectBookRoom`, data)
+      toast.success('Reject request success')
+    } catch (error) {
+    console.log(error);
+    }
   },
   getReceiveIdAndDepartment: (data) => {
     try {
@@ -250,7 +324,7 @@ const requestApi = {
       console.log(error);
     }
   },
-  closeTicketAttendence: async (data, dispatch) => {
+  closeTicketAttendence: async (data) => {
     
     try {
       await axiosClient.post(`${BASE_URL}/acceptChangeUserInfo`, data)
