@@ -27,17 +27,16 @@ function Row(props) {
     const [open, setOpen] = React.useState(false)
     const [accpetStatus, setAcceptStatus] = useState('')
     const [isLoadingAccept, setIsLoadingAccept] = useState(false)
-    const handleAcceptAttendRequest = async () => {
+    const handleAcceptAttendRequest = (ticketId) => {
         let data = {
-            requestId: requestId,
-            receiverId: currentUser?.accountId
+            ticketId: ticketId,
           }
           requestApi.acceptStatutOtherRequest(data)
           setTimeout(function () {
             location.reload()
           }, 500)
     }
-    console.log(accpetStatus[0]?.object?.requestId)
+    console.log(accpetStatus[0]?.object?.ticketId)
     const navigate = useNavigate()
     return (
         
