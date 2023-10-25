@@ -2,7 +2,6 @@ import { Box, Grid, MenuItem, Paper, Select, TextField, Typography, useTheme } f
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import useAuth from '../../../../hooks/useAuth'
-
 import {
   AttendenceFrom,
   LeaveRequest,
@@ -59,63 +58,32 @@ const Data = () => {
           <Paper elevation={2} sx={{ p: 2 }}>
             <Grid item xs={12}>
               <Typography fontWeight="500">Service</Typography>
-              {currentUser?.role === 'employee' ? (
-                <Select
-                  value={selectedValue}
-                  onChange={handleChange3}
-                  sx={{ width: '100%', height: '38px' }}
-                  displayEmpty>
-                  <MenuItem value="">Service Type</MenuItem>
-
+              <Select
+                value={selectedValue}
+                onChange={handleChange3}
+                sx={{ width: '100%', height: '38px' }}
+                displayEmpty>
+                <MenuItem value="">
+                  Service Type
+                </MenuItem>
+                {
+                  currentUser?.role === 'employee' ? 
+                  <>
                   <MenuItem value="leave_request">Leave Request</MenuItem>
                   <MenuItem value="ot_request">OT Request</MenuItem>
                   <MenuItem value="attendence_request">Attendence Request</MenuItem>
-                  <MenuItem value="other_request">Other Request</MenuItem>
-                </Select>
-              ) : currentUser?.role === 'hr' ? (
-                <Select
-                  value={selectedValue}
-                  onChange={handleChange3}
-                  sx={{ width: '100%', height: '38px' }}
-                  displayEmpty>
-                  <MenuItem value="">Service Type</MenuItem>
-
-                  <MenuItem value="attendence_request">Attendence Request</MenuItem>
-                  <MenuItem value="other_request">Other Request</MenuItem>
-                </Select>
-              ) : currentUser?.role === 'manager' ? (
-                <Select
-                  value={selectedValue}
-                  onChange={handleChange3}
-                  sx={{ width: '100%', height: '38px' }}
-                  displayEmpty>
-                  <MenuItem value="">Service Type</MenuItem>
-
-                  <MenuItem value="other_request">Other Request</MenuItem>
-                </Select>
-              ) : currentUser?.role === 'security' ? (
-                <Select
-                  value={selectedValue}
-                  onChange={handleChange3}
-                  sx={{ width: '100%', height: '38px' }}
-                  displayEmpty>
-                  <MenuItem value="">Service Type</MenuItem>
-
-                  <MenuItem value="other_request">Other Request</MenuItem>
-                </Select>
-              ) : currentUser?.role === 'admin' ? (
-                <Select
-                  value={selectedValue}
-                  onChange={handleChange3}
-                  sx={{ width: '100%', height: '38px' }}
-                  displayEmpty>
-                  <MenuItem value="">Service Type</MenuItem>
-
-                  <MenuItem value="other_request">Other Request</MenuItem>
-                </Select>
-              ) : (
-                <></>
-              )}
+                  <MenuItem value="other_request">Other Request</MenuItem> 
+                  </>: currentUser?.role === 'hr' ? <>
+                  <MenuItem value="other_request">Other Request</MenuItem> 
+                  </>: currentUser?.role === 'manager' ? <>
+                  <MenuItem value="other_request">Other Request</MenuItem> 
+                  </>: currentUser?.role === 'security' ? <>
+                  <MenuItem value="other_request">Other Request</MenuItem> 
+                  </>: currentUser?.role === 'admin' ? <>
+                  <MenuItem value="other_request">Other Request</MenuItem> 
+                  </>: <></>
+                }
+              </Select>
               {selectedValue === 'attendence_request' && <AttendenceFrom userId={currentUser.accountId}/>}
               {selectedValue === 'ot_request' && <OtRequest />}
               {selectedValue === 'leave_request' && <LeaveRequest userId={currentUser.accountId} />}

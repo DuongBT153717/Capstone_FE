@@ -4,7 +4,9 @@ import {
   Box,
   Button,
   Checkbox,
+  FormControl,
   Grid,
+  InputLabel,
   MenuItem,
   Select,
   TextField,
@@ -14,9 +16,9 @@ import { DatePicker, DateTimePicker, LocalizationProvider, TimePicker } from '@m
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
+import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const AttendenceFrom = ({ userId }) => {
   const [from, setFrom] = useState(dayjs(new Date()))
@@ -181,7 +183,6 @@ const OtherRequest = ({ userId }) => {
       receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
     }
     setTitle('')
-    setContent('')
     requestApi.requestOtherForm(data)
   }
   return (
@@ -262,7 +263,6 @@ const OtherRequest = ({ userId }) => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Content</Typography>
             <CKEditor
-              data={content}
               editor={ClassicEditor}
               onChange={(event, editor) => {
                 const data = editor.getData()
@@ -343,8 +343,6 @@ const LeaveRequest = ({ userId }) => {
       receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
     }
     console.log(data)
-    setTitle('')
-    setContent('')
     requestApi.requestLeaveForm(data)
   }
   return (
@@ -407,7 +405,6 @@ const LeaveRequest = ({ userId }) => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Content</Typography>
             <CKEditor
-            data={content}
               editor={ClassicEditor}
               onChange={(event, editor) => {
                 const data = editor.getData()
@@ -453,5 +450,4 @@ const LeaveRequest = ({ userId }) => {
   )
 }
 
-export { AttendenceFrom, LeaveRequest, OtRequest, OtherRequest }
-
+export { AttendenceFrom, OtherRequest, LeaveRequest, OtRequest }
