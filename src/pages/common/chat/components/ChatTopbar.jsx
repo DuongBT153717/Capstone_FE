@@ -1,17 +1,19 @@
 import ChatIcon from '@mui/icons-material/Chat'
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box, Divider, IconButton, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import AccountPopover from '../../../../components/AccountPopover'
 import NotificationsPopover from '../../../../components/NotificationsPopover'
 const ChatTopbar = () => {
   return (
+    <>
       <Box
         display="flex"
         justifyContent="space-between"
         alignItems="center"
         px={2}
         height="65px"
-        bgcolor="#fff">
+        bgcolor="#fff" 
+        >
         <Link to="/manage-user" style={{ textDecoration: 'none' }}>
           <Typography fontWeight="800" color="#000" fontSize="22px" sx={{ cursor: 'pointer' }}>
             BMS
@@ -27,6 +29,8 @@ const ChatTopbar = () => {
           <AccountPopover />
         </Box>
       </Box>
+      <Divider/>
+    </>
   )
 }
 
