@@ -95,7 +95,7 @@ function Row(props) {
                         bgcolor={''}
                         borderRadius="4px"
                     >
-                        <Button onClick={handleAcceptAttendRequest}>
+                        <Button onClick={handleAcceptAttendRequest(row.ticketId)}>
                             <CloseIcon />
                             <Typography fontSize={'13px'} color="#000">Finish</Typography>
                         </Button>
