@@ -27,22 +27,16 @@ function Row(props) {
     const [open, setOpen] = React.useState(false)
     const [accpetStatus, setAcceptStatus] = useState('')
     const [isLoadingAccept, setIsLoadingAccept] = useState(false)
-    const handleAcceptAttendRequest = async () => {
-        if (accpetStatus) {
-            let data = {
-                attendanceRequestId: accpetStatus[0]?.object?.attendanceRequestId
-            }
-            try {
-                setIsLoadingAccept(true)
-                await axiosClient.post(`${BASE_URL}/acceptAttendanceRequest`, data)
-                setIsLoadingAccept(false)
-                toast.success('Accept book room successfully!')
-            } catch (error) {
-                console.log(error)
-            }
-        }
+    const handleAcceptOtherRequest = (ticketId) => {
+        let data = {
+            ticketId: ticketId,
+          }
+          requestApi.acceptStatutOtherRequest(data)
+          setTimeout(function () {
+            location.reload()
+          }, 500)
     }
-    console.log(accpetStatus[0]?.object?.requestId)
+
     const navigate = useNavigate()
     return (
         
@@ -101,7 +95,7 @@ function Row(props) {
                         bgcolor={''}
                         borderRadius="4px"
                     >
-                        <Button onClick={handleAcceptAttendRequest}>
+                        <Button  onClick={() => handleAcceptOtherRequest(row.ticketId)}>
                             <CloseIcon />
                             <Typography fontSize={'13px'} color="#000">Finish</Typography>
                         </Button>
