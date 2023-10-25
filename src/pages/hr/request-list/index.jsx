@@ -22,6 +22,10 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import requestApi from '../../../services/requestApi'
 import { useNavigate } from 'react-router-dom'
+import DoneIcon from '@mui/icons-material/Done';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 function Row(props) {
   const { row } = props
   const [open, setOpen] = useState(false)
@@ -90,12 +94,6 @@ function Row(props) {
               justifyContent="center"
               bgcolor={''}
               borderRadius="4px">
-              <Button>
-                <CloseIcon />
-                <Typography fontSize={'13px'} color="#000">
-                  Finish
-                </Typography>
-              </Button>
             </Box>
           ) : null}
         </TableCell>
@@ -155,7 +153,7 @@ function Row(props) {
                             alignItems="center"
                             bgcolor={'#2e7c67'}
                             borderRadius="4px">
-                            <AccessTimeFilledIcon />
+                            <HeadsetMicIcon />
                             <Typography color="#fff">{request_row.requestStatus}</Typography>
                           </Box>
                         ) : request_row.requestStatus === 'EXECUTING' ? (
@@ -168,7 +166,7 @@ function Row(props) {
                             alignItems="center"
                             bgcolor={'#6495ED'}
                             borderRadius="4px">
-                            <AccessTimeFilledIcon />
+                            <AutorenewIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
                         ) : request_row.requestStatus === 'CLOSED' ? (
@@ -181,7 +179,7 @@ function Row(props) {
                             alignItems="center"
                             bgcolor={'#C0C0C0'}
                             borderRadius="4px">
-                            <AccessTimeFilledIcon />
+                            <CloseIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
                         ) : null}
@@ -193,7 +191,7 @@ function Row(props) {
                       <TableCell>{request_row.requestUpdateDate}</TableCell>
                       <TableCell>
                         <IconButton onClick={() => navigate(`/request-detail/${request_row.requestId}`)} sx={{ color: '#1565c0' }}>
-                          <RemoveRedEyeIcon />
+                          <QuestionAnswerIcon />
                         </IconButton>
                         <IconButton
                           disabled={request_row.requestStatus === 'PENDING' ? false : true}  
@@ -299,13 +297,13 @@ export default function ManageTicketListHr() {
                 <TableCell style={{ width: '160px', fontWeight: 'bold', fontSize: '18px' }}>
                   Topic
                 </TableCell>
-                <TableCell style={{ width: '200px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell style={{ width: '500px', fontWeight: 'bold', fontSize: '18px' }}>
                   Title
                 </TableCell>
-                <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell style={{ width: '250px', fontWeight: 'bold', fontSize: '18px' }}>
                   Create Date
                 </TableCell>
-                <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell style={{ width: '250px', fontWeight: 'bold', fontSize: '18px' }}>
                   Update Date
                 </TableCell>
                 <TableCell
@@ -314,11 +312,7 @@ export default function ManageTicketListHr() {
                   Status
                 </TableCell>
 
-                <TableCell
-                  align="center"
-                  style={{ width: '10px', fontWeight: 'bold', fontSize: '18px' }}>
-                  Action
-                </TableCell>
+                
               </TableRow>
             </TableHead>
             {isLoading ? (
