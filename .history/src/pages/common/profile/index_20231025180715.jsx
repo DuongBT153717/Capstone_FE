@@ -80,6 +80,8 @@ const Profile = () => {
     }
   }
 
+
+  console.log(userImage.file);
   const [value, setValue] = useState('1')
 
   const handleChange = (event, newValue) => {

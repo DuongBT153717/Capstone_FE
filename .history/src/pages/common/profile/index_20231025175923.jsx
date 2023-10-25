@@ -66,7 +66,7 @@ const Profile = () => {
   }
   // const isNonMobile = useMediaQuery("(min-width:600px)");
   const [userImage, setuserImage] = useState({
-    file: [],
+    file: null,
     filepreview: null
   })
 
@@ -80,6 +80,8 @@ const Profile = () => {
     }
   }
 
+
+  console.log(userImage.file);
   const [value, setValue] = useState('1')
 
   const handleChange = (event, newValue) => {

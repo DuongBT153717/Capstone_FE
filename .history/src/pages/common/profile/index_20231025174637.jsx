@@ -80,6 +80,16 @@ const Profile = () => {
     }
   }
 
+  useEffect(() => {
+    if (userProfileImageUpdate) {
+      setuserImage({
+        ...userImage,
+        file: [userProfileImageUpdate],
+      });
+    }
+  }, [userProfileImageUpdate]);
+
+  console.log(userImage.file);
   const [value, setValue] = useState('1')
 
   const handleChange = (event, newValue) => {
@@ -138,15 +148,14 @@ const Profile = () => {
         firstName: firstNameUpdate,
         lastName: lastNameUpdate,
         gender: genderUpdate,
-        dateOfBirth: birthUpdate.format('YYYY-MM-DD'),
+        dateOfBirth: birthUpdate.format('DD/MM/YYYY'),
         telephoneNumber: phoneUpdate,
         country: countryUpdate,
         city: cityUpdate,
         email: emailUpdate
       }
+      console.log(data);
       formData.append('data', JSON.stringify(data))
-      console.log(userImage.file);
-      formData.append('image', userImage.file)
       userApi.updateProfile(formData, dispatch)
     }
   }

@@ -80,6 +80,16 @@ const Profile = () => {
     }
   }
 
+  useEffect(() => {
+    if (userProfileImageUpdate) {
+      setuserImage({
+        ...userImage,
+        file: [userProfileImageUpdate],
+      });
+    }
+  }, [userProfileImageUpdate]);
+
+  console.log(userImage.file);
   const [value, setValue] = useState('1')
 
   const handleChange = (event, newValue) => {
@@ -130,6 +140,7 @@ const Profile = () => {
       }
       formData.append('data', JSON.stringify(data))
       formData.append('image', userImage.file)
+      console.log(formData[0]);
       userApi.updateProfile(formData, dispatch)
     } else {
       let formData = new FormData()
@@ -145,8 +156,8 @@ const Profile = () => {
         email: emailUpdate
       }
       formData.append('data', JSON.stringify(data))
-      console.log(userImage.file);
-      formData.append('image', userImage.file)
+      formData.append('image', null)
+      console.log(formData[0]);
       userApi.updateProfile(formData, dispatch)
     }
   }

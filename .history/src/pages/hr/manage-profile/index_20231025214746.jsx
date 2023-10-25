@@ -34,6 +34,7 @@ const ManageProfile = () => {
       profileApi.acceptUserInfo(userId, dispatch)
       const updatedUserList = usersProfile.filter((user) => user.accountId !== userId)
       setUsersProfile(updatedUserList)
+      navigate('/manage-profile')
     } else {
       navigate('/manage-profile')
     }
@@ -44,6 +45,7 @@ const ManageProfile = () => {
       profileApi.rejectUserInfo(userId)
       const updatedUserList = usersProfile.filter((user) => user.accountId !== userId)
       setUsersProfile(updatedUserList)
+      navigate('/manage-profile')
     } else {
       navigate('/manage-profile')
     }

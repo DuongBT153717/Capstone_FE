@@ -80,6 +80,7 @@ const Profile = () => {
     }
   }
 
+
   const [value, setValue] = useState('1')
 
   const handleChange = (event, newValue) => {
@@ -145,8 +146,8 @@ const Profile = () => {
         email: emailUpdate
       }
       formData.append('data', JSON.stringify(data))
-      console.log(userImage.file);
       formData.append('image', userImage.file)
+      console.log(formData);
       userApi.updateProfile(formData, dispatch)
     }
   }

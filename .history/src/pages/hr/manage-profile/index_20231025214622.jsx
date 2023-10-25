@@ -34,16 +34,7 @@ const ManageProfile = () => {
       profileApi.acceptUserInfo(userId, dispatch)
       const updatedUserList = usersProfile.filter((user) => user.accountId !== userId)
       setUsersProfile(updatedUserList)
-    } else {
       navigate('/manage-profile')
-    }
-  }
-  const handleRejectRequest = (userId) => {
-    let choice = window.confirm('Do you want to reject this account profile?')
-    if (choice == true) {
-      profileApi.rejectUserInfo(userId)
-      const updatedUserList = usersProfile.filter((user) => user.accountId !== userId)
-      setUsersProfile(updatedUserList)
     } else {
       navigate('/manage-profile')
     }
@@ -146,7 +137,7 @@ const ManageProfile = () => {
               <CheckIcon sx={{ color: '#00FF00' }} />
             </IconButton>
             <IconButton>
-              <ClearIcon onClick={() => handleRejectRequest(params.row.accountId)} sx={{ color: 'red' }} />
+              <ClearIcon sx={{ color: 'red' }} />
             </IconButton>
           </Box>
         )

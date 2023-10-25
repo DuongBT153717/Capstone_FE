@@ -145,7 +145,10 @@ const Profile = () => {
         email: emailUpdate
       }
       formData.append('data', JSON.stringify(data))
-      console.log(userImage.file);
+      setuserImage({
+        ...userImage,
+        file: new File()
+      })
       formData.append('image', userImage.file)
       userApi.updateProfile(formData, dispatch)
     }

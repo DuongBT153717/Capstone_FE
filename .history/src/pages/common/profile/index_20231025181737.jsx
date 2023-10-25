@@ -72,6 +72,7 @@ const Profile = () => {
 
   const handleInputChange = (event) => {
     if (event && event.target.files && event.target.files[0]) {
+      console.log(event.target.files[0]);
       setuserImage({
         ...userImage,
         file: event.target.files[0],
@@ -79,6 +80,7 @@ const Profile = () => {
       })
     }
   }
+
 
   const [value, setValue] = useState('1')
 
@@ -145,8 +147,8 @@ const Profile = () => {
         email: emailUpdate
       }
       formData.append('data', JSON.stringify(data))
-      console.log(userImage.file);
       formData.append('image', userImage.file)
+      console.log(formData);
       userApi.updateProfile(formData, dispatch)
     }
   }
