@@ -21,12 +21,10 @@ import Typography from '@mui/material/Typography'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import requestApi from '../../../services/requestApi'
-import { useNavigate } from 'react-router-dom'
 function Row(props) {
   const { row } = props
   const [open, setOpen] = useState(false)
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
-  const navigate = useNavigate()
   const handleAcceptRequest = (requestId) => {
     let data = {
       requestId: requestId,

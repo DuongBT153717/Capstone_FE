@@ -26,13 +26,13 @@ const ManageProfile = () => {
     }
     fetchData()
   }, [])
-  console.log(usersProfile);
+
   const handleAcceptRequest = (userId) => {
     let choice = window.confirm('Do you want to accept this account profile?')
     if (choice == true) {
       profileApi.acceptUserInfo(userId, dispatch)
-      const updatedUserList = usersProfile.filter((user) => user.accountId !== userId)
-      setUsersProfile(updatedUserList)
+      // const updatedUserList = usersProfile.filter((user) => user.accountId !== userId)
+      // setUsersProfile(updatedUserList)
       navigate('/manage-profile')
     } else {
       navigate('/manage-profile')

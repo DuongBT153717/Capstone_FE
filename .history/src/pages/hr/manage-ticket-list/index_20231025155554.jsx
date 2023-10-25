@@ -1,5 +1,4 @@
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled'
-import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
@@ -19,25 +18,12 @@ import TableRow from '@mui/material/TableRow'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import requestApi from '../../../services/requestApi'
 import { useNavigate } from 'react-router-dom'
 function Row(props) {
   const { row } = props
   const [open, setOpen] = useState(false)
-  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const navigate = useNavigate()
-  const handleAcceptRequest = (requestId) => {
-    let data = {
-      requestId: requestId,
-      receiverId: currentUser?.accountId
-    }
-    requestApi.acceptRequest(data)
-    setTimeout(function () {
-      location.reload()
-    }, 500)
-  }
-
   return (
     <>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -192,15 +178,14 @@ function Row(props) {
                       <TableCell>{request_row.requestCreateDate}</TableCell>
                       <TableCell>{request_row.requestUpdateDate}</TableCell>
                       <TableCell>
-                        <IconButton onClick={() => navigate(`/request-detail/${request_row.requestId}`)} sx={{ color: '#1565c0' }}>
+                        <IconButton
+                          sx={{ color: '#1565c0' }}
+                          onClick={() => navigate(`/request-detail/${request_row.requestId}`)}>
                           <RemoveRedEyeIcon />
                         </IconButton>
-                        <IconButton
-                          disabled={request_row.requestStatus === 'PENDING' ? false : true}  
-                          onClick={() => handleAcceptRequest(request_row.requestId)}
-                          sx={{ color: 'green' }}>
-                          <CheckIcon />
-                        </IconButton>
+                        <Button variant="contained" sx={{ bgcolor: 'green' }}>
+                          Accept
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -213,7 +198,6 @@ function Row(props) {
     </>
   )
 }
-
 const TableRowsLoader = ({ rowsNum }) => {
   return [...Array(rowsNum)].map((row, index) => (
     <TableRow key={index}>
@@ -268,8 +252,6 @@ export default function ManageTicketListHr() {
 
     fetchListRequestAndTicketByAdmin()
   }, [])
-
-  console.log(listRequestAndTicket)
 
   return (
     <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">

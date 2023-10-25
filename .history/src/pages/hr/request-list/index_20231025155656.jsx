@@ -21,7 +21,6 @@ import Typography from '@mui/material/Typography'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import requestApi from '../../../services/requestApi'
-import { useNavigate } from 'react-router-dom'
 function Row(props) {
   const { row } = props
   const [open, setOpen] = useState(false)

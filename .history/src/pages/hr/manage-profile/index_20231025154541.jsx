@@ -26,41 +26,39 @@ const ManageProfile = () => {
     }
     fetchData()
   }, [])
+
   console.log(usersProfile);
   const handleAcceptRequest = (userId) => {
     let choice = window.confirm('Do you want to accept this account profile?')
     if (choice == true) {
       profileApi.acceptUserInfo(userId, dispatch)
-      const updatedUserList = usersProfile.filter((user) => user.accountId !== userId)
-      setUsersProfile(updatedUserList)
+      // const updatedUserList = usersProfile.filter((user) => user.accountId !== userId)
+      // setUsersProfile(updatedUserList)
       navigate('/manage-profile')
     } else {
       navigate('/manage-profile')
     }
   }
   const imgurl = async () => {
-    if(usersProfile.length > 0){
-      try {
-        const downloadURLPromises = usersProfile.map((item) => {
-          const storageRef = ref(storage, `/${item.image}`)
-          return getDownloadURL(storageRef)
-        })
-  
-        const downloadURLs = await Promise.all(downloadURLPromises)
-        const updatedUsersProfile = usersProfile.map((item, index) => ({
-          ...item,
-          image: downloadURLs[index]
-        }))
-        setUsersProfile(updatedUsersProfile)
-      } catch (error) {
-        console.error('Error getting download URLs:', error)
-      }
+    try {
+      const downloadURLPromises = usersProfile.map((item) => {
+        const storageRef = ref(storage, `/${item.image}`)
+        return getDownloadURL(storageRef)
+      })
+
+      const downloadURLs = await Promise.all(downloadURLPromises)
+      const updatedUsersProfile = usersProfile.map((item, index) => ({
+        ...item,
+        image: downloadURLs[index]
+      }))
+      setUsersProfile(updatedUsersProfile)
+    } catch (error) {
+      console.error('Error getting download URLs:', error)
     }
   }
 
-  useEffect(() => {
     imgurl()
-  }, [usersProfile])
+
 
   const columns = [
     {

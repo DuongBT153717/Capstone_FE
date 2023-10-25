@@ -26,7 +26,6 @@ const ManageProfile = () => {
     }
     fetchData()
   }, [])
-  console.log(usersProfile);
   const handleAcceptRequest = (userId) => {
     let choice = window.confirm('Do you want to accept this account profile?')
     if (choice == true) {
@@ -39,22 +38,20 @@ const ManageProfile = () => {
     }
   }
   const imgurl = async () => {
-    if(usersProfile.length > 0){
-      try {
-        const downloadURLPromises = usersProfile.map((item) => {
-          const storageRef = ref(storage, `/${item.image}`)
-          return getDownloadURL(storageRef)
-        })
-  
-        const downloadURLs = await Promise.all(downloadURLPromises)
-        const updatedUsersProfile = usersProfile.map((item, index) => ({
-          ...item,
-          image: downloadURLs[index]
-        }))
-        setUsersProfile(updatedUsersProfile)
-      } catch (error) {
-        console.error('Error getting download URLs:', error)
-      }
+    try {
+      const downloadURLPromises = usersProfile.map((item) => {
+        const storageRef = ref(storage, `/${item.image}`)
+        return getDownloadURL(storageRef)
+      })
+
+      const downloadURLs = await Promise.all(downloadURLPromises)
+      const updatedUsersProfile = usersProfile.map((item, index) => ({
+        ...item,
+        image: downloadURLs[index]
+      }))
+      setUsersProfile(updatedUsersProfile)
+    } catch (error) {
+      console.error('Error getting download URLs:', error)
     }
   }
 
@@ -62,6 +59,7 @@ const ManageProfile = () => {
     imgurl()
   }, [usersProfile])
 
+  console.log(usersProfile)
   const columns = [
     {
       field: 'image',
