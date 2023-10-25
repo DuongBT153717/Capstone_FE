@@ -27,7 +27,7 @@ function Row(props) {
     const [open, setOpen] = React.useState(false)
     const [accpetStatus, setAcceptStatus] = useState('')
     const [isLoadingAccept, setIsLoadingAccept] = useState(false)
-    const handleAcceptAttendRequest = (ticketId) => {
+    const handleAcceptOtherRequest = (ticketId) => {
         let data = {
             ticketId: ticketId,
           }
@@ -37,8 +37,6 @@ function Row(props) {
           }, 500)
     }
 
-    
-    console.log(accpetStatus[0]?.object?.ticketId)
     const navigate = useNavigate()
     return (
         
@@ -97,7 +95,7 @@ function Row(props) {
                         bgcolor={''}
                         borderRadius="4px"
                     >
-                        <Button  onClick={() => handleAcceptAttendRequest(row.ticketId)}>
+                        <Button  onClick={() => handleAcceptOtherRequest(row.ticketId)}>
                             <CloseIcon />
                             <Typography fontSize={'13px'} color="#000">Finish</Typography>
                         </Button>
