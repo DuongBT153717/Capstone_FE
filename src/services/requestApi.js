@@ -57,15 +57,16 @@ const requestApi = {
       }
     }
   },
-  acceptAttendanceRequest: async (data) => {
-    let data1 ={
-      attendanceRequestId : data
-    }
+  acceptStatutOtherRequest: async (data) => {
     try {
-       await axiosClient.post(`${BASE_URL}/acceptAttendanceRequest`, data1)
-      toast.success('Accept request success')
+      await axiosClient.put(`${BASE_URL}/closeOtherRequest`, {
+        params: {
+          ticketId: data
+        }
+      })
+      toast.success('Accept request successfully!')
     } catch (error) {
-    console.log(error);
+      console.log(error);
     }
   },
   getReceiveIdAndDepartment: (data) => {
