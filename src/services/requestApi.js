@@ -59,15 +59,11 @@ const requestApi = {
   },
   acceptStatutOtherRequest: async (data) => {
     try {
-      await axiosClient.put(`${BASE_URL}/closeOtherRequest`, {
-        params: {
-          ticketId: data
-        }
-      })
-      toast.success('Accept request successfully!')
-    } catch (error) {
-      console.log(error);
-    }
+      await axiosClient.post(`${BASE_URL}/closeOtherRequest`, data)
+     toast.success('Accept Request success')
+   } catch (error) {
+   console.log(error);
+   }
   },
   getReceiveIdAndDepartment: (data) => {
     try {
