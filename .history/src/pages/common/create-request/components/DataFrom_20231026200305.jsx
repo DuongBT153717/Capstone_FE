@@ -180,6 +180,7 @@ const OtherRequest = ({ userId }) => {
       title: title,
       content: content,
       departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+      receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
     }
     setTitle('')
     setContent('')
