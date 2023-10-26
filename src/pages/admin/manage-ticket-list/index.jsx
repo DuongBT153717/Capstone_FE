@@ -55,7 +55,29 @@ function Row(props) {
         <TableCell>{row.requestTickets[row.requestTickets.length - 1].title}</TableCell>
         <TableCell>{row.createDate}</TableCell>
         <TableCell>{row.updateDate}</TableCell>
-        <TableCell>{row.status}</TableCell>
+        <TableCell> {row.status === false ? (
+          <Box
+            width="80%"
+            margin="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            borderRadius="4px">
+            <Typography color="#a9a9a9">CLOSE</Typography>
+          </Box>
+        ) : row.status === true ? (
+          <Box
+            width="80%"
+            margin="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            borderRadius="4px">
+            <Typography color="#000">AVALIABLE</Typography>
+          </Box>
+        ) : null}</TableCell>
         {/* <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
           <IconButton  >
             <AddIcon />
@@ -265,7 +287,7 @@ export default function ManageTicketListAdmin() {
                 <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>
                   Update Date
                 </TableCell>
-                <TableCell style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell align='center' style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
                   Status
                 </TableCell>
                 {/* <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>

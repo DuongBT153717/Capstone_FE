@@ -192,7 +192,7 @@ function Row(props) {
                           <QuestionAnswerIcon />
                         </IconButton>
                         <IconButton
-                          disabled={request_row.requestStatus === 'PENDING' ? false : true}  
+                          disabled={request_row.requestStatus === 'PENDING' ? false : true}
                           onClick={() => handleAcceptRequest(request_row.requestId)}
                           sx={{ color: 'green' }}>
                           <CheckIcon />
@@ -310,7 +310,7 @@ export default function ManageTicketListHr() {
                   Status
                 </TableCell>
 
-                
+
               </TableRow>
             </TableHead>
             {isLoading ? (

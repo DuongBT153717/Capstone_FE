@@ -79,7 +79,7 @@ function Row(props) {
         ): null }
         </TableCell>
         <TableCell>
-          {row.status === true ? (
+          { row.topic ==='OTHER_REQUEST' && row.status===true ? (
             <Button>
               <CloseIcon />
               <Typography fontSize={'13px'} color="#000">
