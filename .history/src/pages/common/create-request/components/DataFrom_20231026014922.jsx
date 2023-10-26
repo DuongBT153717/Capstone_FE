@@ -197,7 +197,6 @@ const OtherRequest = ({ userId }) => {
             <Typography fontWeight="500">Title</Typography>
             <TextField
               onChange={(e) => setTitle(e.target.value)}
-              value={title}
               sx={{ width: '100%' }}
               size="small"
               placeholder="Enter the request title"
@@ -361,7 +360,6 @@ const LeaveRequest = ({ userId }) => {
             <Typography fontWeight="500">Title</Typography>
             <TextField
               onChange={(e) => setTitle(e.target.value)}
-              value={title}
               sx={{ width: '100%' }}
               size="small"
               placeholder="Enter the request title"

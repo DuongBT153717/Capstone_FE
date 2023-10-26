@@ -58,7 +58,6 @@ const AdminChanagePassword = () => {
                         <TextField
                           fullWidth
                           label="Old Password"
-                          type='password'
                           onChange={(e) => setOldPassword(e.target.value)}
                           name="oldPassword"
                           value={oldPassword}
@@ -69,7 +68,6 @@ const AdminChanagePassword = () => {
                         <TextField
                           fullWidth
                           label="New Password"
-                          type='password'
                           onChange={(e) => setNewPassword(e.target.value)}
                           value={newPassword}
                           name="newPassword"
@@ -80,7 +78,6 @@ const AdminChanagePassword = () => {
                         <TextField
                           fullWidth
                           label="Confirm New Password"
-                          type='password'
                           name="confirmPassword"
                           required
                           value={confirmPassword}

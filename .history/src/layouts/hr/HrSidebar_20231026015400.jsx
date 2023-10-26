@@ -155,13 +155,6 @@ const HrSidebar = () => {
             {' '}
             Check Your Ticket
           </MenuItem>
-          <MenuItem
-            active={activeIndex === 4}
-            icon={<AssignmentTurnedInIcon />}
-            component={<Link to="/book-room" onClick={() => setActiveIndex(4)} />}>
-            {' '}
-            Book Room
-          </MenuItem>
         </Menu>
       </Sidebar>
     </>

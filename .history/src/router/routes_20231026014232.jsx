@@ -156,14 +156,6 @@ export default function Router() {
                   <CheckHrList />
                 </Suspense>
               )
-            },
-            {
-              path: PUBLIC_PATH.BOOK_ROOM,
-              element: (
-                <Suspense fallback={<>Loading...</>}>
-                  <BookRoom />
-                </Suspense>
-              )
             }
           ]
         }

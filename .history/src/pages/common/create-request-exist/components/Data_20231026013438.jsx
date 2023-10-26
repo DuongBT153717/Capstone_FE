@@ -2,13 +2,19 @@ import { Box, Grid, MenuItem, Paper, Select, TextField, Typography, useTheme } f
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import useAuth from '../../../../hooks/useAuth'
-import { AttendenceFrom, LeaveRequest, OtRequest, OtherRequest } from './DataFrom'
+
+import {
+  AttendenceFrom,
+  LeaveRequest,
+  OtRequest,
+  OtherRequest
+} from './DataFrom'
 
 const Data = () => {
   const userInfo = useAuth()
   const [selectedValue, setSelectedValue] = useState('')
-  const currentUser = useSelector((state) => state.auth.login?.currentUser)
-
+  const currentUser = useSelector((state) => state.auth.login?.currentUser);
+  
   const handleChange3 = (event) => {
     setSelectedValue(event.target.value)
   }
@@ -74,6 +80,7 @@ const Data = () => {
                   displayEmpty>
                   <MenuItem value="">Service Type</MenuItem>
 
+                  <MenuItem value="attendence_request">Attendence Request</MenuItem>
                   <MenuItem value="other_request">Other Request</MenuItem>
                 </Select>
               ) : currentUser?.role === 'manager' ? (
@@ -109,9 +116,7 @@ const Data = () => {
               ) : (
                 <></>
               )}
-              {selectedValue === 'attendence_request' && (
-                <AttendenceFrom userId={currentUser.accountId} />
-              )}
+              {selectedValue === 'attendence_request' && <AttendenceFrom userId={currentUser.accountId}/>}
               {selectedValue === 'ot_request' && <OtRequest />}
               {selectedValue === 'leave_request' && <LeaveRequest userId={currentUser.accountId} />}
               {selectedValue === 'other_request' && <OtherRequest userId={currentUser.accountId} />}

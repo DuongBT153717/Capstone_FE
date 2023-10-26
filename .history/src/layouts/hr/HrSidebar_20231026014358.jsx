@@ -18,9 +18,8 @@ const HrSidebar = () => {
         ? 1
         : window.location.pathname === '/request-list-hr'
         ? 2
-        : window.location.pathname === '/request-hr-list'
-        ? 3 : window.location.pathname === '/book-room'
-        ? 4
+        : window.location.pathname === '/request-list-hr'
+        ? 3
         : 0
     return initialIndex
   })
@@ -149,18 +148,11 @@ const HrSidebar = () => {
             Ticket Management
           </MenuItem>
           <MenuItem
-            active={activeIndex === 3}
+            active={activeIndex === 2}
             icon={<AssignmentTurnedInIcon />}
-            component={<Link to="/request-hr-list" onClick={() => setActiveIndex(3)} />}>
+            component={<Link to="/request-hr-list" onClick={() => setActiveIndex(2)} />}>
             {' '}
-            Check Your Ticket
-          </MenuItem>
-          <MenuItem
-            active={activeIndex === 4}
-            icon={<AssignmentTurnedInIcon />}
-            component={<Link to="/book-room" onClick={() => setActiveIndex(4)} />}>
-            {' '}
-            Book Room
+            Ticket Management
           </MenuItem>
         </Menu>
       </Sidebar>

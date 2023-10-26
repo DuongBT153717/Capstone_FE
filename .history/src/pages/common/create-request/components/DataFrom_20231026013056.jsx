@@ -4,7 +4,9 @@ import {
   Box,
   Button,
   Checkbox,
+  FormControl,
   Grid,
+  InputLabel,
   MenuItem,
   Select,
   TextField,
@@ -14,9 +16,9 @@ import { DatePicker, DateTimePicker, LocalizationProvider, TimePicker } from '@m
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
+import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const AttendenceFrom = ({ userId }) => {
   const [from, setFrom] = useState(dayjs(new Date()))
@@ -124,7 +126,7 @@ const AttendenceFrom = ({ userId }) => {
               </Button>
             </Link>
           ) : currentUser?.role === 'manager' ? (
-            <Link to="/request-manager-list">
+            <Link to="/request-list-manager">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -135,8 +137,8 @@ const AttendenceFrom = ({ userId }) => {
                 Back
               </Button>
             </Link>
-          ) : currentUser?.role === 'hr' ? (
-            <Link to="/request-hr-list">
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-hr">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -181,7 +183,6 @@ const OtherRequest = ({ userId }) => {
       receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
     }
     setTitle('')
-    setContent('')
     requestApi.requestOtherForm(data)
   }
   return (
@@ -197,7 +198,6 @@ const OtherRequest = ({ userId }) => {
             <Typography fontWeight="500">Title</Typography>
             <TextField
               onChange={(e) => setTitle(e.target.value)}
-              value={title}
               sx={{ width: '100%' }}
               size="small"
               placeholder="Enter the request title"
@@ -263,7 +263,6 @@ const OtherRequest = ({ userId }) => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Content</Typography>
             <CKEditor
-              data={content}
               editor={ClassicEditor}
               onChange={(event, editor) => {
                 const data = editor.getData()
@@ -280,7 +279,7 @@ const OtherRequest = ({ userId }) => {
               </Button>
             </Link>
           ) : currentUser?.role === 'manager' ? (
-            <Link to="/request-manager-list'">
+            <Link to="/request-list-manager">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -291,8 +290,8 @@ const OtherRequest = ({ userId }) => {
                 Back
               </Button>
             </Link>
-          ) : currentUser?.role === 'hr' ? (
-            <Link to="/request-hr-list">
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-hr">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -344,8 +343,6 @@ const LeaveRequest = ({ userId }) => {
       receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
     }
     console.log(data)
-    setTitle('')
-    setContent('')
     requestApi.requestLeaveForm(data)
   }
   return (
@@ -361,7 +358,6 @@ const LeaveRequest = ({ userId }) => {
             <Typography fontWeight="500">Title</Typography>
             <TextField
               onChange={(e) => setTitle(e.target.value)}
-              value={title}
               sx={{ width: '100%' }}
               size="small"
               placeholder="Enter the request title"
@@ -409,7 +405,6 @@ const LeaveRequest = ({ userId }) => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Content</Typography>
             <CKEditor
-            data={content}
               editor={ClassicEditor}
               onChange={(event, editor) => {
                 const data = editor.getData()
@@ -426,7 +421,7 @@ const LeaveRequest = ({ userId }) => {
               </Button>
             </Link>
           ) : currentUser?.role === 'manager' ? (
-            <Link to="/request-manager-list'">
+            <Link to="/request-list-manager">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -437,8 +432,8 @@ const LeaveRequest = ({ userId }) => {
                 Back
               </Button>
             </Link>
-          ) : currentUser?.role === 'hr' ? (
-            <Link to="/request-hr-list">
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-hr">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -455,5 +450,4 @@ const LeaveRequest = ({ userId }) => {
   )
 }
 
-export { AttendenceFrom, LeaveRequest, OtRequest, OtherRequest }
-
+export { AttendenceFrom, OtherRequest, LeaveRequest, OtRequest }

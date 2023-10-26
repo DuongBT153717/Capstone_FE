@@ -1,27 +1,19 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
-import {
-  Box,
-  Button,
-  Checkbox,
-  Grid,
-  MenuItem,
-  Select,
-  TextField,
-  Typography
-} from '@mui/material'
+import { Box, Button, Checkbox, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
 import { DatePicker, DateTimePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
+import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const AttendenceFrom = ({ userId }) => {
   const [from, setFrom] = useState(dayjs(new Date()))
   const [to, setTo] = useState(dayjs(new Date()))
   const [date, setDate] = useState(dayjs(new Date()))
+  const [role, setRole] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
@@ -38,20 +30,38 @@ const AttendenceFrom = ({ userId }) => {
 
   const handleCreateRequest = (e) => {
     e.preventDefault()
-    let data = {
-      userId: userId,
-      title: title,
-      content: content,
-      manualDate: from.format('YYYY-MM-DD'),
-      manualFirstEntry: from.format('HH:mm:ss'),
-      manualLastExit: to.format('HH:mm:ss'),
-      departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-      receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+    if (role == 'manager') {
+      let data = {
+        userId: userId,
+        title: title,
+        content: content,
+        manualDate: from.format('YYYY-MM-DD'),
+        manualFirstEntry: from.format('HH:mm:ss'),
+        manualLastExit: to.format('HH:mm:ss'),
+        departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+        receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+      }
+      requestApi.requestAttendanceForm(data)
+      setTitle('')
+      setContent('')
+      console.log(data)
+    } else if (role == 'hr') {
+      let data = {
+        userId: userId,
+        title: title,
+        content: content,
+        manualDate: date.format('YYYY-MM-DD'),
+        manualFirstEntry: from.format('HH:mm:ss'),
+        manualLastExit: to.format('HH:mm:ss'),
+        departmentId: receiveIdAndDepartment?.hrDepartmentResponse?.hrDepartmentId,
+        receivedId: null
+      }
+
+      requestApi.requestAttendanceForm(data)
+      console.log(data)
+      setTitle('')
+      setContent('')
     }
-    requestApi.requestAttendanceForm(data)
-    setTitle('')
-    setContent('')
-    console.log(data)
   }
 
   console.log(from.format('DD/MM/YYYY'))
@@ -78,6 +88,7 @@ const AttendenceFrom = ({ userId }) => {
             <Typography fontWeight="500">Date</Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
+              
                 value={date}
                 onChange={(e) => setDate(e)}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
@@ -124,7 +135,7 @@ const AttendenceFrom = ({ userId }) => {
               </Button>
             </Link>
           ) : currentUser?.role === 'manager' ? (
-            <Link to="/request-manager-list">
+            <Link to="/request-list-manager">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -135,8 +146,8 @@ const AttendenceFrom = ({ userId }) => {
                 Back
               </Button>
             </Link>
-          ) : currentUser?.role === 'hr' ? (
-            <Link to="/request-hr-list">
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-hr">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -155,15 +166,11 @@ const AttendenceFrom = ({ userId }) => {
 
 const OtRequest = () => <Box p={3}>Ot Request From</Box>
 
-const OtherRequest = ({ userId }) => {
+const OtherRequest = ({userId}) => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
-  const [role, setRole] = useState('')
-  const handleChange = (event) => {
-    setRole(event.target.value);
-  };
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
       const response = await requestApi.getReceiveIdAndDepartment(userId)
@@ -180,8 +187,7 @@ const OtherRequest = ({ userId }) => {
       departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
       receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
     }
-    setTitle('')
-    setContent('')
+    console.log(data)
     requestApi.requestOtherForm(data)
   }
   return (
@@ -197,73 +203,14 @@ const OtherRequest = ({ userId }) => {
             <Typography fontWeight="500">Title</Typography>
             <TextField
               onChange={(e) => setTitle(e.target.value)}
-              value={title}
               sx={{ width: '100%' }}
               size="small"
               placeholder="Enter the request title"
             />
           </Grid>
           <Grid item xs={12}>
-          <Typography fontWeight="500">Position</Typography>
-          {
-            currentUser?.role === 'employee' ? <Select
-            value={role}
-            sx={{width: '100%'}}
-            onChange={handleChange}
-            displayEmpty
-            >
-            <MenuItem value='admin'>Admin</MenuItem>
-            <MenuItem value='manager'>Manager</MenuItem>
-            <MenuItem value='hr'>HR</MenuItem>
-            <MenuItem value='security'>Security</MenuItem>
-          </Select> : currentUser?.role === 'hr' ? <Select
-            value={role}
-            sx={{width: '100%'}}
-            onChange={handleChange}
-            displayEmpty
-            >
-            <MenuItem value='admin'>Admin</MenuItem>
-            <MenuItem value='manager'>Manager</MenuItem>
-            <MenuItem value='employee'>Employee</MenuItem>
-            <MenuItem value='security'>Security</MenuItem>
-          </Select> : currentUser?.role === 'admin' ? <Select
-            value={role}
-            sx={{width: '100%'}}
-            onChange={handleChange}
-            displayEmpty
-            >
-            <MenuItem value='employee'>Employee</MenuItem>
-            <MenuItem value='manager'>Manager</MenuItem>
-            <MenuItem value='hr'>HR</MenuItem>
-            <MenuItem value='security'>Security</MenuItem>
-          </Select> : currentUser?.role === 'manager' ? <Select
-            value={role}
-            sx={{width: '100%'}}
-            onChange={handleChange}
-            displayEmpty
-            >
-            <MenuItem value='admin'>Admin</MenuItem>
-            <MenuItem value='employee'>Employee</MenuItem>
-            <MenuItem value='hr'>HR</MenuItem>
-            <MenuItem value='security'>Security</MenuItem>
-          </Select> : currentUser?.role === 'security' ? <Select
-            value={role}
-            sx={{width: '100%'}}
-            onChange={handleChange}
-            displayEmpty
-            >
-            <MenuItem value='admin'>Admin</MenuItem>
-            <MenuItem value='manager'>Manager</MenuItem>
-            <MenuItem value='hr'>HR</MenuItem>
-            <MenuItem value='employee'>Employee</MenuItem>
-          </Select> : <></>
-          }
-              
-          </Grid>
-          <Grid item xs={12}>
             <Typography fontWeight="500">Content</Typography>
             <CKEditor
-              data={content}
               editor={ClassicEditor}
               onChange={(event, editor) => {
                 const data = editor.getData()
@@ -280,7 +227,7 @@ const OtherRequest = ({ userId }) => {
               </Button>
             </Link>
           ) : currentUser?.role === 'manager' ? (
-            <Link to="/request-manager-list'">
+            <Link to="/request-list-manager">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -291,8 +238,8 @@ const OtherRequest = ({ userId }) => {
                 Back
               </Button>
             </Link>
-          ) : currentUser?.role === 'hr' ? (
-            <Link to="/request-hr-list">
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-hr">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -344,8 +291,6 @@ const LeaveRequest = ({ userId }) => {
       receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
     }
     console.log(data)
-    setTitle('')
-    setContent('')
     requestApi.requestLeaveForm(data)
   }
   return (
@@ -361,7 +306,6 @@ const LeaveRequest = ({ userId }) => {
             <Typography fontWeight="500">Title</Typography>
             <TextField
               onChange={(e) => setTitle(e.target.value)}
-              value={title}
               sx={{ width: '100%' }}
               size="small"
               placeholder="Enter the request title"
@@ -409,7 +353,6 @@ const LeaveRequest = ({ userId }) => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Content</Typography>
             <CKEditor
-            data={content}
               editor={ClassicEditor}
               onChange={(event, editor) => {
                 const data = editor.getData()
@@ -426,7 +369,7 @@ const LeaveRequest = ({ userId }) => {
               </Button>
             </Link>
           ) : currentUser?.role === 'manager' ? (
-            <Link to="/request-manager-list'">
+            <Link to="/request-list-manager">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -437,8 +380,8 @@ const LeaveRequest = ({ userId }) => {
                 Back
               </Button>
             </Link>
-          ) : currentUser?.role === 'hr' ? (
-            <Link to="/request-hr-list">
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-hr">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -455,5 +398,4 @@ const LeaveRequest = ({ userId }) => {
   )
 }
 
-export { AttendenceFrom, LeaveRequest, OtRequest, OtherRequest }
-
+export { AttendenceFrom, OtherRequest, LeaveRequest, OtRequest }

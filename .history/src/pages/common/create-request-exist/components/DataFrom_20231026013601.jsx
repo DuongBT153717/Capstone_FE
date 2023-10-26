@@ -1,30 +1,22 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
-import {
-  Box,
-  Button,
-  Checkbox,
-  Grid,
-  MenuItem,
-  Select,
-  TextField,
-  Typography
-} from '@mui/material'
-import { DatePicker, DateTimePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
+import { Box, Button, Checkbox, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
+import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
 
 const AttendenceFrom = ({ userId }) => {
   const [from, setFrom] = useState(dayjs(new Date()))
   const [to, setTo] = useState(dayjs(new Date()))
-  const [date, setDate] = useState(dayjs(new Date()))
+  const [date, setDate] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
+  const { ticketId } = useParams()
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
@@ -38,17 +30,20 @@ const AttendenceFrom = ({ userId }) => {
 
   const handleCreateRequest = (e) => {
     e.preventDefault()
+
     let data = {
       userId: userId,
       title: title,
       content: content,
+      ticketId: ticketId,
       manualDate: from.format('YYYY-MM-DD'),
       manualFirstEntry: from.format('HH:mm:ss'),
       manualLastExit: to.format('HH:mm:ss'),
       departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
       receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
     }
-    requestApi.requestAttendanceForm(data)
+
+    requestApi.requestAttendanceFormExistTicket(data)
     setTitle('')
     setContent('')
     console.log(data)
@@ -68,7 +63,6 @@ const AttendenceFrom = ({ userId }) => {
             <Typography fontWeight="500">Title</Typography>
             <TextField
               onChange={(e) => setTitle(e.target.value)}
-              value={title}
               sx={{ width: '100%' }}
               size="small"
               placeholder="Enter the request title"
@@ -107,7 +101,6 @@ const AttendenceFrom = ({ userId }) => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Content</Typography>
             <CKEditor
-              data={content}
               editor={ClassicEditor}
               onChange={(event, editor) => {
                 const data = editor.getData()
@@ -124,7 +117,7 @@ const AttendenceFrom = ({ userId }) => {
               </Button>
             </Link>
           ) : currentUser?.role === 'manager' ? (
-            <Link to="/request-manager-list">
+            <Link to="/request-list-manager">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -135,8 +128,8 @@ const AttendenceFrom = ({ userId }) => {
                 Back
               </Button>
             </Link>
-          ) : currentUser?.role === 'hr' ? (
-            <Link to="/request-hr-list">
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-hr">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -160,10 +153,7 @@ const OtherRequest = ({ userId }) => {
   const [content, setContent] = useState('')
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
-  const [role, setRole] = useState('')
-  const handleChange = (event) => {
-    setRole(event.target.value);
-  };
+  const { ticketId } = useParams()
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
       const response = await requestApi.getReceiveIdAndDepartment(userId)
@@ -176,13 +166,13 @@ const OtherRequest = ({ userId }) => {
     let data = {
       userId: userId,
       title: title,
+      ticketId: ticketId,
       content: content,
-      departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-      receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+      departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId
     }
-    setTitle('')
-    setContent('')
-    requestApi.requestOtherForm(data)
+
+    console.log(data)
+    requestApi.otherFormExistTicket(data)
   }
   return (
     <Box p={3} pl={0}>
@@ -197,73 +187,14 @@ const OtherRequest = ({ userId }) => {
             <Typography fontWeight="500">Title</Typography>
             <TextField
               onChange={(e) => setTitle(e.target.value)}
-              value={title}
               sx={{ width: '100%' }}
               size="small"
               placeholder="Enter the request title"
             />
           </Grid>
           <Grid item xs={12}>
-          <Typography fontWeight="500">Position</Typography>
-          {
-            currentUser?.role === 'employee' ? <Select
-            value={role}
-            sx={{width: '100%'}}
-            onChange={handleChange}
-            displayEmpty
-            >
-            <MenuItem value='admin'>Admin</MenuItem>
-            <MenuItem value='manager'>Manager</MenuItem>
-            <MenuItem value='hr'>HR</MenuItem>
-            <MenuItem value='security'>Security</MenuItem>
-          </Select> : currentUser?.role === 'hr' ? <Select
-            value={role}
-            sx={{width: '100%'}}
-            onChange={handleChange}
-            displayEmpty
-            >
-            <MenuItem value='admin'>Admin</MenuItem>
-            <MenuItem value='manager'>Manager</MenuItem>
-            <MenuItem value='employee'>Employee</MenuItem>
-            <MenuItem value='security'>Security</MenuItem>
-          </Select> : currentUser?.role === 'admin' ? <Select
-            value={role}
-            sx={{width: '100%'}}
-            onChange={handleChange}
-            displayEmpty
-            >
-            <MenuItem value='employee'>Employee</MenuItem>
-            <MenuItem value='manager'>Manager</MenuItem>
-            <MenuItem value='hr'>HR</MenuItem>
-            <MenuItem value='security'>Security</MenuItem>
-          </Select> : currentUser?.role === 'manager' ? <Select
-            value={role}
-            sx={{width: '100%'}}
-            onChange={handleChange}
-            displayEmpty
-            >
-            <MenuItem value='admin'>Admin</MenuItem>
-            <MenuItem value='employee'>Employee</MenuItem>
-            <MenuItem value='hr'>HR</MenuItem>
-            <MenuItem value='security'>Security</MenuItem>
-          </Select> : currentUser?.role === 'security' ? <Select
-            value={role}
-            sx={{width: '100%'}}
-            onChange={handleChange}
-            displayEmpty
-            >
-            <MenuItem value='admin'>Admin</MenuItem>
-            <MenuItem value='manager'>Manager</MenuItem>
-            <MenuItem value='hr'>HR</MenuItem>
-            <MenuItem value='employee'>Employee</MenuItem>
-          </Select> : <></>
-          }
-              
-          </Grid>
-          <Grid item xs={12}>
             <Typography fontWeight="500">Content</Typography>
             <CKEditor
-              data={content}
               editor={ClassicEditor}
               onChange={(event, editor) => {
                 const data = editor.getData()
@@ -280,7 +211,7 @@ const OtherRequest = ({ userId }) => {
               </Button>
             </Link>
           ) : currentUser?.role === 'manager' ? (
-            <Link to="/request-manager-list'">
+            <Link to="/request-list-manager">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -291,8 +222,8 @@ const OtherRequest = ({ userId }) => {
                 Back
               </Button>
             </Link>
-          ) : currentUser?.role === 'hr' ? (
-            <Link to="/request-hr-list">
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-hr">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -317,6 +248,7 @@ const LeaveRequest = ({ userId }) => {
   const [title, setTitle] = useState('')
   const [duration, setDuration] = useState(0)
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
+  const { ticketId } = useParams()
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const handleChangeHalfDay = (event) => {
     setChecked(event.target.checked)
@@ -336,6 +268,7 @@ const LeaveRequest = ({ userId }) => {
       userId: userId,
       title: title,
       content: content,
+      ticketId: ticketId,
       fromDate: dateFrom.format('YYYY-MM-DD'),
       toDate: dateTo.format('YYYY-MM-DD'),
       halfDay: checked,
@@ -344,9 +277,7 @@ const LeaveRequest = ({ userId }) => {
       receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
     }
     console.log(data)
-    setTitle('')
-    setContent('')
-    requestApi.requestLeaveForm(data)
+    requestApi.requestLeaveFormExistTicket(data)
   }
   return (
     <Box p={3} pl={0}>
@@ -361,7 +292,6 @@ const LeaveRequest = ({ userId }) => {
             <Typography fontWeight="500">Title</Typography>
             <TextField
               onChange={(e) => setTitle(e.target.value)}
-              value={title}
               sx={{ width: '100%' }}
               size="small"
               placeholder="Enter the request title"
@@ -371,7 +301,7 @@ const LeaveRequest = ({ userId }) => {
           <Grid item xs={6} mb={2}>
             <Typography fontWeight="500">From</Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker
+              <DatePicker
                 value={dateFrom}
                 onChange={(e) => setDateFrom(e)}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
@@ -381,7 +311,7 @@ const LeaveRequest = ({ userId }) => {
           <Grid item xs={6} mb={2}>
             <Typography fontWeight="500">To</Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker
+              <DatePicker
                 value={dateTo}
                 onChange={(e) => setDateTo(e)}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
@@ -409,7 +339,6 @@ const LeaveRequest = ({ userId }) => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Content</Typography>
             <CKEditor
-            data={content}
               editor={ClassicEditor}
               onChange={(event, editor) => {
                 const data = editor.getData()
@@ -426,7 +355,7 @@ const LeaveRequest = ({ userId }) => {
               </Button>
             </Link>
           ) : currentUser?.role === 'manager' ? (
-            <Link to="/request-manager-list'">
+            <Link to="/request-list-manager">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -437,8 +366,8 @@ const LeaveRequest = ({ userId }) => {
                 Back
               </Button>
             </Link>
-          ) : currentUser?.role === 'hr' ? (
-            <Link to="/request-hr-list">
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-hr">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -456,4 +385,3 @@ const LeaveRequest = ({ userId }) => {
 }
 
 export { AttendenceFrom, LeaveRequest, OtRequest, OtherRequest }
-
