@@ -124,7 +124,7 @@ const AttendenceFrom = ({ userId }) => {
               </Button>
             </Link>
           ) : currentUser?.role === 'manager' ? (
-            <Link to="/request-manager-list">
+            <Link to="/request-list-manager">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -135,8 +135,8 @@ const AttendenceFrom = ({ userId }) => {
                 Back
               </Button>
             </Link>
-          ) : currentUser?.role === 'hr' ? (
-            <Link to="/request-hr-list">
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-hr">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -197,7 +197,6 @@ const OtherRequest = ({ userId }) => {
             <Typography fontWeight="500">Title</Typography>
             <TextField
               onChange={(e) => setTitle(e.target.value)}
-              value={title}
               sx={{ width: '100%' }}
               size="small"
               placeholder="Enter the request title"
@@ -280,7 +279,7 @@ const OtherRequest = ({ userId }) => {
               </Button>
             </Link>
           ) : currentUser?.role === 'manager' ? (
-            <Link to="/request-manager-list'">
+            <Link to="/request-list-manager">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -291,8 +290,8 @@ const OtherRequest = ({ userId }) => {
                 Back
               </Button>
             </Link>
-          ) : currentUser?.role === 'hr' ? (
-            <Link to="/request-hr-list">
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-hr">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -361,7 +360,6 @@ const LeaveRequest = ({ userId }) => {
             <Typography fontWeight="500">Title</Typography>
             <TextField
               onChange={(e) => setTitle(e.target.value)}
-              value={title}
               sx={{ width: '100%' }}
               size="small"
               placeholder="Enter the request title"
@@ -426,7 +424,7 @@ const LeaveRequest = ({ userId }) => {
               </Button>
             </Link>
           ) : currentUser?.role === 'manager' ? (
-            <Link to="/request-manager-list'">
+            <Link to="/request-list-manager">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -437,8 +435,8 @@ const LeaveRequest = ({ userId }) => {
                 Back
               </Button>
             </Link>
-          ) : currentUser?.role === 'hr' ? (
-            <Link to="/request-hr-list">
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-hr">
               <Button type="submit" variant="contained">
                 Back
               </Button>

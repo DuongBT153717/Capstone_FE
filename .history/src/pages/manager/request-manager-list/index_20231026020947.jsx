@@ -144,15 +144,11 @@ function Row(props) {
                       <TableCell>{request_row.requestCreateDate}</TableCell>
                       <TableCell>{request_row.requestUpdateDate}</TableCell>
                       <TableCell>
-                      {row.topic !== 'ROOM_REQUEST' && (
                         <IconButton
                           sx={{ color: '#1565c0' }}
-                          onClick={() =>
-                            navigate(`/request-detail/${request_row.requestId}`)
-                          }>
+                          onClick={() => navigate(`/request-detail/${request_row.requestId}`)}>
                           <RemoveRedEyeIcon />
                         </IconButton>
-                      )}
                       </TableCell>
                     </TableRow>
                   ))}

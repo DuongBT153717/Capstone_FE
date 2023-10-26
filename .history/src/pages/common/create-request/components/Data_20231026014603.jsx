@@ -74,6 +74,7 @@ const Data = () => {
                   displayEmpty>
                   <MenuItem value="">Service Type</MenuItem>
 
+                  <MenuItem value="attendence_request">Attendence Request</MenuItem>
                   <MenuItem value="other_request">Other Request</MenuItem>
                 </Select>
               ) : currentUser?.role === 'manager' ? (

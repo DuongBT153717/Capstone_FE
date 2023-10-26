@@ -50,11 +50,9 @@ function Row(props) {
         <TableCell>{row.updateDate}</TableCell>
         <TableCell>{row.status}</TableCell>
         <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-          {row.topic !== 'ROOM_REQUEST' && (
-            <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
-              <AddIcon />
-            </IconButton>
-          )}
+          <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
+            <AddIcon />
+          </IconButton>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -68,12 +66,10 @@ function Row(props) {
                 <TableHead>
                   <TableRow>
                     <TableCell style={{ width: '120px' }}>Request ID</TableCell>
-                    <TableCell style={{ width: '200px' }} align="center">
-                      Status
-                    </TableCell>
+                    <TableCell style={{ width: '200px' }} align="center">Status</TableCell>
                     <TableCell style={{ width: '50px' }}>Receiver</TableCell>
-                    <TableCell style={{ width: '100px' }}>Create Date</TableCell>
-                    <TableCell style={{ width: '100px' }}>Update Date</TableCell>
+                    <TableCell style={{ width: '100px' }} >Create Date</TableCell>
+                    <TableCell style={{ width: '100px' }} >Update Date</TableCell>
                     <TableCell style={{ width: '100px' }}>Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -93,7 +89,8 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#FAFAD2'}
-                            borderRadius="4px">
+                            borderRadius="4px"
+                          >
                             <AccessTimeFilledIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
@@ -106,7 +103,8 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#2e7c67'}
-                            borderRadius="4px">
+                            borderRadius="4px"
+                          >
                             <CheckIcon />
                             <Typography color="#fff">{request_row.requestStatus}</Typography>
                           </Box>
@@ -119,7 +117,8 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#6495ED'}
-                            borderRadius="4px">
+                            borderRadius="4px"
+                          >
                             <RunningWithErrorsIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
@@ -132,19 +131,18 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#C0C0C0'}
-                            borderRadius="4px">
+                            borderRadius="4px"
+                          >
                             <CloseIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
-                        ) : null}
+                        ) : null }
                       </TableCell>
-                      <TableCell key={request_row.userId}>
-                        {request_row.receiverFirstName}
-                      </TableCell>
+                      <TableCell key={request_row.userId}
+                      >{request_row.receiverFirstName}</TableCell>
                       <TableCell>{request_row.requestCreateDate}</TableCell>
                       <TableCell>{request_row.requestUpdateDate}</TableCell>
                       <TableCell>
-                      {row.topic !== 'ROOM_REQUEST' && (
                         <IconButton
                           sx={{ color: '#1565c0' }}
                           onClick={() =>
@@ -152,7 +150,6 @@ function Row(props) {
                           }>
                           <RemoveRedEyeIcon />
                         </IconButton>
-                      )}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -192,8 +189,8 @@ const TableRowsLoader = ({ rowsNum }) => {
     </TableRow>
   ))
 }
-export default function RequestManagerList() {
-  const currentUser = useSelector((state) => state.auth.login?.currentUser)
+export default function CheckHrList() {
+ const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const [listRequestAndTicket, setListRequestAndTicket] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
@@ -217,7 +214,7 @@ export default function RequestManagerList() {
     }
     fetchListRequestAndTicketByAdmin()
   }, [])
-  console.log(currentUser?.accountId)
+  console.log(currentUser?.accountId);
   return (
     <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">
       <Box flex={1} sx={{ overflowX: 'hidden' }}>
@@ -230,10 +227,10 @@ export default function RequestManagerList() {
           />
         </Paper>
         <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
-          <Link to="/create-request">
-            <Button variant="contained">
-              <Typography>Create Ticket</Typography>
-            </Button>
+        <Link to="/create-request">
+          <Button variant="contained">
+            <Typography>Create Ticket</Typography>
+          </Button>
           </Link>
         </Box>
 
@@ -241,7 +238,7 @@ export default function RequestManagerList() {
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
-                <TableCell style={{ width: '10px' }} />
+                <TableCell style={{ width: '10px' }} /> 
                 <TableCell style={{ width: '160px', fontWeight: 'bold', fontSize: '18px' }}>
                   TicketID
                 </TableCell>

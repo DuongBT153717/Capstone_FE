@@ -19,7 +19,7 @@ const HrSidebar = () => {
         : window.location.pathname === '/request-list-hr'
         ? 2
         : window.location.pathname === '/request-hr-list'
-        ? 3 : window.location.pathname === '/book-room'
+        ? 3 : window.location.pathname === '/request-hr-list'
         ? 4
         : 0
     return initialIndex
@@ -154,13 +154,6 @@ const HrSidebar = () => {
             component={<Link to="/request-hr-list" onClick={() => setActiveIndex(3)} />}>
             {' '}
             Check Your Ticket
-          </MenuItem>
-          <MenuItem
-            active={activeIndex === 4}
-            icon={<AssignmentTurnedInIcon />}
-            component={<Link to="/book-room" onClick={() => setActiveIndex(4)} />}>
-            {' '}
-            Book Room
           </MenuItem>
         </Menu>
       </Sidebar>

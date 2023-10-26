@@ -24,7 +24,6 @@ import RequestListHr from '../pages/hr/request-list'
 import RequestListManager from '../pages/manager/request-list'
 import RequestManagerList from '../pages/manager/request-manager-list'
 import BookListDetail from '../pages/admin/manage-ticket-list/components/BookRoomDetail'
-import CheckHrList from '../pages/hr/check-hr-ticket'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
 const RequestListAdmin = lazy(() => import('../pages/admin/request-list'))
@@ -153,15 +152,7 @@ export default function Router() {
               path: HR_PATH.REQUEST_HR_LIST,
               element: (
                 <Suspense fallback={<>Loading...</>}>
-                  <CheckHrList />
-                </Suspense>
-              )
-            },
-            {
-              path: PUBLIC_PATH.BOOK_ROOM,
-              element: (
-                <Suspense fallback={<>Loading...</>}>
-                  <BookRoom />
+                  <RequestListHr />
                 </Suspense>
               )
             }
