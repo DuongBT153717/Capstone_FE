@@ -28,6 +28,13 @@ import requestApi from '../../../services/requestApi'
 function Row(props) {
   const { row } = props
   const [open, setOpen] = useState(false)
+  const handelAcceptOtherRequest = (ticketId) => {
+    let data = {
+      ticketId: ticketId,
+    }
+    requestApi.acceptStatutOtherRequest(data)
+    
+  }
 
   const navigate = useNavigate()
   return (
@@ -71,7 +78,7 @@ function Row(props) {
           </Box>
         ) : null}</TableCell>
         <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-        {row.topic !== 'ROOM_REQUEST' && row.status === true ? (
+        {row.topic !== 'ROOM_REQUEST' && row.status === false ? (
             <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
               <AddIcon />
             </IconButton>
@@ -79,7 +86,7 @@ function Row(props) {
         </TableCell>
         <TableCell>
           { row.topic ==='OTHER_REQUEST' &&  row.status===true ? (
-            <Button>
+            <Button onClick={() =>handelAcceptOtherRequest(row.ticketId)}>
               <CloseIcon />
               <Typography fontSize={'13px'} color="#000">
                 Finish
