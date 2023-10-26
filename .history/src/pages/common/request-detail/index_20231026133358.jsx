@@ -120,7 +120,8 @@ const TicketDetail = () => {
     scrollbarsRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [])
 
-  const handleRejectRequest = () => {
+  const handleRejectRequest = (e) => {
+    e.preventDeafult()
     if (request[0]?.object?.topic === 'ATTENDANCE_REQUEST') {
       let data = {
         attendanceRequestId: request[0]?.object?.attendanceRequestId,

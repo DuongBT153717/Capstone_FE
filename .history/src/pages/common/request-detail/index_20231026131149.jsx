@@ -396,7 +396,6 @@ const TicketDetail = () => {
           <Box height="100%" display="flex">
             <Box flex="1">{checkTopic()}</Box>
             <Box flex="4">
-              <form onSubmit={handleSendMessage}>
               <div
                 ref={scrollbarsRef}
                 style={{ overflow: 'auto', backgroundColor: '#f5f7f9', maxHeight: '430px' }}>
@@ -548,19 +547,16 @@ const TicketDetail = () => {
                 ))}
               </div>
               <Box style={{ display: 'flex', flexDirection: 'column' }}>
-                {request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' &&
-                request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
-                  <CKEditor
-                    editor={ClassicEditor}
-                    onChange={(event, editor) => {
-                      const data = editor.getData()
-                      setContent(data)
-                    }}
-                  />
-                ) : (
-                  <></>
-                )}
-
+                {
+                  request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' && request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ?<CKEditor
+                  editor={ClassicEditor}
+                  onChange={(event, editor) => {
+                    const data = editor.getData()
+                    setContent(data)
+                  }}
+                /> : <></>
+                }
+                
                 <Box mt={2} justifyContent="space-between" display="flex">
                   {currentUser?.role === 'hr' ? (
                     <Link to="/request-list-hr">
@@ -595,19 +591,15 @@ const TicketDetail = () => {
                   ) : (
                     <></>
                   )}
-                  {request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' && request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId && (
-                    <Button
-                      sx={{ mr: 2 }}
-                      
-                      type='submit'
-                      variant="contained"
-                      color="primary">
-                      Send
-                    </Button>
-                  )}
+                  <Button
+                    sx={{ mr: 2 }}
+                    onClick={handleSendMessage}
+                    variant="contained"
+                    color="primary">
+                    Send
+                  </Button>
                 </Box>
               </Box>
-              </form>
             </Box>
           </Box>
           <Modal
@@ -616,8 +608,6 @@ const TicketDetail = () => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description">
             <Box sx={style} display="flex" flexDirection="column">
-              <form onSubmit={handleRejectRequest}>
-
               <Typography fontSize="20px" fontWeight="700" mb={2}>
                 Reason reject
               </Typography>
@@ -628,13 +618,11 @@ const TicketDetail = () => {
                 rows={6}
               />
               <Button
-                type='submit'
+                onClick={handleRejectRequest}
                 variant="contained"
                 sx={{ alignSelf: 'flex-end', mt: 2 }}>
                 Save
               </Button>
-                              
-              </form>
             </Box>
           </Modal>
         </Box>

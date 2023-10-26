@@ -9,25 +9,40 @@ import {
   Grid,
   TextField
 } from '@mui/material'
-import { useFormik } from 'formik'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Header from '../../../components/Header'
 import userApi from '../../../services/userApi'
+import { useFormik } from 'formik'
 import { validationSchema } from './util/validationSchema'
 
 const AdminChanagePassword = () => {
+  const [oldPassword, setOldPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const isLoading = useSelector((state) => state.user.changePassword?.isFetching)
   const accountId = useSelector((state) => state.auth.login?.currentUser?.accountId)
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
-  // console.log(accountId)
+  console.log(accountId)
   const dispatch = useDispatch()
-
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    let data = {
+      accountId: accountId,
+      oldPassword: oldPassword,
+      newPassword: newPassword
+    }
+    userApi.changePassword(data, dispatch)
+    setOldPassword('')
+    setNewPassword('')
+    setConfirmPassword('')
+  }
   const formik = useFormik({
     initialValues: {
       oldPassword: '',
       newPassword: '',
-      confirmPassword: ''
+      confirmPassword
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -37,6 +52,9 @@ const AdminChanagePassword = () => {
         newPassword: values.newPassword
       }
       userApi.changePassword(data, dispatch)
+      setOldPassword('')
+      setNewPassword('')
+      setConfirmPassword('')
     }
   })
   return (
@@ -68,9 +86,6 @@ const AdminChanagePassword = () => {
                           value={formik.values.oldPassword}
                           required
                         />
-                        {formik.touched.oldPassword && formik.errors.oldPassword ? (
-                          <p className="text-danger">{formik.errors.oldPassword}</p>
-                        ) : null}
                       </Grid>
                       <Grid item xs={7}>
                         <TextField
@@ -83,9 +98,6 @@ const AdminChanagePassword = () => {
                           name="newPassword"
                           required
                         />
-                        {formik.touched.newPassword && formik.errors.newPassword ? (
-                          <p className="text-danger">{formik.errors.newPassword}</p>
-                        ) : null}
                       </Grid>
                       <Grid item xs={7}>
                         <TextField
@@ -98,9 +110,6 @@ const AdminChanagePassword = () => {
                           onBlur={formik.handleBlur}
                           onChange={formik.handleChange}
                         />
-                        {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-                          <p className="text-danger">{formik.errors.confirmPassword}</p>
-                        ) : null}
                       </Grid>
                     </Grid>
                   </Box>
@@ -141,7 +150,7 @@ const AdminChanagePassword = () => {
                     <></>
                   )}
                   <LoadingButton
-                    type="submit"
+                    type='submit'
                     loading={isLoading}
                     variant="contained"
                     sx={{ bgcolor: 'rgb(94, 53, 177)' }}>
@@ -152,6 +161,7 @@ const AdminChanagePassword = () => {
             </form>
           </Grid>
         </Grid>
+        
       </Box>
     </Box>
   )
