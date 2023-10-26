@@ -9,11 +9,12 @@ import {
   Grid,
   TextField
 } from '@mui/material'
-import { useFormik } from 'formik'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Header from '../../../components/Header'
 import userApi from '../../../services/userApi'
+import { useFormik } from 'formik'
 import { validationSchema } from './util/validationSchema'
 
 const AdminChanagePassword = () => {
@@ -30,7 +31,7 @@ const AdminChanagePassword = () => {
       confirmPassword: ''
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       let data = {
         accountId: accountId,
         oldPassword: values.oldPassword,

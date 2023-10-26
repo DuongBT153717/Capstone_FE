@@ -9,36 +9,58 @@ import {
   Grid,
   TextField
 } from '@mui/material'
-import { useFormik } from 'formik'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Header from '../../../components/Header'
 import userApi from '../../../services/userApi'
-import { validationSchema } from './util/validationSchema'
-
+import { useFormik } from "formik";
+import * as Yup from "yup";
 const AdminChanagePassword = () => {
+  const [oldPassword, setOldPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const isLoading = useSelector((state) => state.user.changePassword?.isFetching)
   const accountId = useSelector((state) => state.auth.login?.currentUser?.accountId)
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
-  // console.log(accountId)
+  console.log(accountId)
   const dispatch = useDispatch()
-
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    let data = {
+      accountId: accountId,
+      oldPassword: oldPassword,
+      newPassword: newPassword
+    }
+    userApi.changePassword(data, dispatch)
+    setOldPassword('')
+    setNewPassword('')
+    setConfirmPassword('')
+  }
   const formik = useFormik({
     initialValues: {
-      oldPassword: '',
-      newPassword: '',
-      confirmPassword: ''
+      oldPassword: "",
+      newPassword: "",
+      confirmPassword
     },
-    validationSchema: validationSchema,
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .required("Required")
+        .matches(
+          /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/,
+          "Please enter a valid email address"
+        ),
+      password: Yup.string()
+        .required("Required")
+        .matches(
+          /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+          "Password must be minimum eight characters, at least one letter and one number"
+        ),
+    }),
     onSubmit: async (values) => {
-      let data = {
-        accountId: accountId,
-        oldPassword: values.oldPassword,
-        newPassword: values.newPassword
-      }
-      userApi.changePassword(data, dispatch)
-    }
-  })
+      
+    },  
+  });
   return (
     <Box height="100vh" bgcolor="seashell">
       <Box
@@ -51,7 +73,7 @@ const AdminChanagePassword = () => {
         }}>
         <Grid container>
           <Grid item xs={12}>
-            <form onSubmit={formik.handleSubmit} autoComplete="off" noValidate>
+            <form autoComplete="off" noValidate>
               <Card>
                 <CardContent>
                   <Header title="Change Password" subtitle="Update Password" />
@@ -61,46 +83,34 @@ const AdminChanagePassword = () => {
                         <TextField
                           fullWidth
                           label="Old Password"
-                          type="password"
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
+                          type='password'
+                          onChange={(e) => setOldPassword(e.target.value)}
                           name="oldPassword"
-                          value={formik.values.oldPassword}
+                          value={oldPassword}
                           required
                         />
-                        {formik.touched.oldPassword && formik.errors.oldPassword ? (
-                          <p className="text-danger">{formik.errors.oldPassword}</p>
-                        ) : null}
                       </Grid>
                       <Grid item xs={7}>
                         <TextField
                           fullWidth
                           label="New Password"
-                          type="password"
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.newPassword}
+                          type='password'
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          value={newPassword}
                           name="newPassword"
                           required
                         />
-                        {formik.touched.newPassword && formik.errors.newPassword ? (
-                          <p className="text-danger">{formik.errors.newPassword}</p>
-                        ) : null}
                       </Grid>
                       <Grid item xs={7}>
                         <TextField
                           fullWidth
                           label="Confirm New Password"
-                          type="password"
+                          type='password'
                           name="confirmPassword"
                           required
-                          value={formik.values.confirmPassword}
-                          onBlur={formik.handleBlur}
-                          onChange={formik.handleChange}
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
                         />
-                        {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-                          <p className="text-danger">{formik.errors.confirmPassword}</p>
-                        ) : null}
                       </Grid>
                     </Grid>
                   </Box>
@@ -141,7 +151,7 @@ const AdminChanagePassword = () => {
                     <></>
                   )}
                   <LoadingButton
-                    type="submit"
+                    onClick={handleSubmit}
                     loading={isLoading}
                     variant="contained"
                     sx={{ bgcolor: 'rgb(94, 53, 177)' }}>

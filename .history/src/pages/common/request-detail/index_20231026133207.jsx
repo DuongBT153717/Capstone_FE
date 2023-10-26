@@ -120,7 +120,8 @@ const TicketDetail = () => {
     scrollbarsRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [])
 
-  const handleRejectRequest = () => {
+  const handleRejectRequest = (e) => {
+    e.preventDeafult()
     if (request[0]?.object?.topic === 'ATTENDANCE_REQUEST') {
       let data = {
         attendanceRequestId: request[0]?.object?.attendanceRequestId,
@@ -396,7 +397,6 @@ const TicketDetail = () => {
           <Box height="100%" display="flex">
             <Box flex="1">{checkTopic()}</Box>
             <Box flex="4">
-              <form onSubmit={handleSendMessage}>
               <div
                 ref={scrollbarsRef}
                 style={{ overflow: 'auto', backgroundColor: '#f5f7f9', maxHeight: '430px' }}>
@@ -598,8 +598,7 @@ const TicketDetail = () => {
                   {request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' && request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId && (
                     <Button
                       sx={{ mr: 2 }}
-                      
-                      type='submit'
+                      onClick={handleSendMessage}
                       variant="contained"
                       color="primary">
                       Send
@@ -607,7 +606,6 @@ const TicketDetail = () => {
                   )}
                 </Box>
               </Box>
-              </form>
             </Box>
           </Box>
           <Modal
