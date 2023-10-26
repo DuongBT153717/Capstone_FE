@@ -72,12 +72,14 @@ function Row(props) {
           </Box>
         ) : null}</TableCell>
         <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+        {row.status === true ? (
           <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
             <AddIcon />
           </IconButton>
+        ): null }
         </TableCell>
         <TableCell>
-          {row.status === false ? (
+          {row.status === true ? (
             <Button>
               <CloseIcon />
               <Typography fontSize={'13px'} color="#000">
