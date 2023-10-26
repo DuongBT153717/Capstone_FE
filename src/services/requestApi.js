@@ -14,7 +14,6 @@ const requestApi = {
     } catch (error) {
       console.log(error);
     }
-  
   },
   
 
@@ -32,6 +31,18 @@ const requestApi = {
       const response = axiosClient.get(`${BASE_URL}/getAttendanceMessage/`,{
         params :{
           request_id : data
+        }
+      })
+      return response
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  getManagerByDepartment: (data) => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getManagerByDepartment/`,{
+        params :{
+          department : data
         }
       })
       return response

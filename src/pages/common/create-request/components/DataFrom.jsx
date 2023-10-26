@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
+import { async } from '@firebase/util'
 
 const AttendenceFrom = ({ userId }) => {
   const [from, setFrom] = useState(dayjs(new Date()))
@@ -161,9 +162,15 @@ const OtherRequest = ({ userId }) => {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const [role, setRole] = useState('')
+  const [department,setDepartment] = useState('')
+  const [manager,setManager] = useState('')
   const handleChange = (event) => {
     setRole(event.target.value);
   };
+  const handleChangeDepartment = (event) => {
+    setDepartment(event.target.value);
+  };
+
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
       const response = await requestApi.getReceiveIdAndDepartment(userId)
@@ -172,20 +179,173 @@ const OtherRequest = ({ userId }) => {
     fetchReceiveIdAndDepartment()
   }, [])
 
+  console.log(">>>");
   console.log(receiveIdAndDepartment);
   const handleCreateRequest = (e) => {
+    if (currentUser?.role === "employee" && role === 'manager') {
+      callApiEmployee(e,receiveIdAndDepartment?.managerInfoResponse?.managerId)
+    } else if (currentUser?.role === "employee" && role === 'hr') {
+      callApiOther(e, 3)
+    } else if (currentUser?.role === "employee" && role === 'security') {
+      callApiOther(e, 10)
+    }else if (currentUser?.role === "employee" && role === 'admin') {
+      callApiOther(e, 9)
+    }else if(currentUser?.role === "manager" && role === 'admin'){
+      callApiOther(e,9)
+    }else if(currentUser?.role === "manager" && role === 'security'){
+      callApiOther(e,10)
+    }else if(currentUser?.role === "manager" && role === 'hr'){
+      callApiOther(e,3)
+    }else if(currentUser?.role === "hr" && role === 'admin'){
+      callApiOther(e,9)
+    }else if(currentUser?.role === "hr" && role === 'security'){
+      callApiOther(e,10)
+    }else if(currentUser?.role === "hr" && role === 'manager'){
+      callApiOther(e,department)
+    }else if(currentUser?.role === "security" && role === 'admin'){
+      callApiOther(e,9)
+    }else if(currentUser?.role === "security" && role === 'hr'){
+      callApiOther(e,3)
+    }else if(currentUser?.role === "security" && role === 'manager'){
+      callApiOther(e,department)
+    }else if(currentUser?.role === "admin" && role === 'security'){
+      callApiOther(e,10)
+    }else if(currentUser?.role === "admin" && role === 'hr'){
+      callApiOther(e,3)
+    }else if(currentUser?.role === "admin" && role === 'manager'){
+      callApiOther(e,department)
+    }
+  }
+ 
+useEffect(()=>{
+  if(department !== ''){
+    getManagerByDepartment= async()=>{
+      let res = await requestApi.getManagerByDepartment(department);
+      setManager(res)
+      console.log(">>>>>>>>");
+      console.log(res);
+     }
+     getManagerByDepartment();
+  }
+  
+},[department])
+
+  const callApiOther = (e, departmentId) => {
+    e.preventDefault()
+    let data = {
+      userId: userId,
+      title: title,
+      content: content,
+      departmentId: departmentId
+    }
+    setTitle('')
+    setContent('')
+    setDepartment('')
+    requestApi.requestOtherForm(data)
+  }
+
+  const callApiEmployee = (e,managerId) => {
     e.preventDefault()
     let data = {
       userId: userId,
       title: title,
       content: content,
       departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-      receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+      receivedId: managerId
     }
     setTitle('')
     setContent('')
     requestApi.requestOtherForm(data)
   }
+console.log(">> user role "+currentUser?.role);
+console.log(">> role "+role);
+
+
+  const handleDepartment = () => {
+    if (currentUser?.role === 'admin' && role === "manager") {
+      console.log("aaa");
+      return (
+        <>
+         <Typography fontWeight="500">Department</Typography>
+          <Select
+            value={department}
+            sx={{ width: '100%' }}
+            onChange={handleChangeDepartment}
+            displayEmpty
+          >
+            <MenuItem value='2'>tech D1</MenuItem>
+            <MenuItem value='4'>tech D2</MenuItem>
+            <MenuItem value='5'>tech D3</MenuItem>
+          </Select> 
+        </>
+      )
+    }else if(currentUser?.role === 'admin' && role === "hr"){
+      // hr = 3
+      // security = 10 
+      // admin = 9 
+    setDepartment(3)
+    return (<></>)
+    }else if(currentUser?.role === 'admin' && role === "security"){
+      setDepartment(10)
+      return (<></>)
+    }else if (currentUser?.role === 'hr' && role === "manager"){
+      return (
+        <>
+         <Typography fontWeight="500">Department</Typography>
+          <Select
+            value={role}
+            sx={{ width: '100%' }}
+            onChange={handleChangeDepartment}
+            displayEmpty
+          >
+            <MenuItem value='2'>tech D1</MenuItem>
+            <MenuItem value='4'>tech D2</MenuItem>
+            <MenuItem value='5'>tech D3</MenuItem>
+          </Select>
+        </>
+      )
+    }else if (currentUser?.role === 'hr' && role === "admin"){
+      setDepartment(9)
+      return (<></>)
+    }else if (currentUser?.role === 'hr' && role === "security"){
+      setDepartment(10)
+      return (<></>)
+    }else if (currentUser?.role === 'security' && role === "admin"){
+      setDepartment(9)
+      return (<></>)
+    }else if (currentUser?.role === 'security' && role === "hr"){
+      setDepartment(3)
+      return (<></>)
+    }else if (currentUser?.role === 'security' && role === "manager"){
+      return (
+        <>
+         <Typography fontWeight="500">Department</Typography>
+          <Select
+            value={role}
+            sx={{ width: '100%' }}
+            onChange={handleChangeDepartment}
+            displayEmpty
+          >
+            <MenuItem value='2'>tech D1</MenuItem>
+            <MenuItem value='4'>tech D2</MenuItem>
+            <MenuItem value='5'>tech D3</MenuItem>
+          </Select>
+        </>
+      )
+    }else if (currentUser?.role === 'manager' && role === "admin"){
+      setDepartment(9)
+      return (<></>)
+    }else if (currentUser?.role === 'manager' && role === "hr"){
+      setDepartment(3)
+      return (<></>)
+    }else if (currentUser?.role === 'manager' && role === "security"){
+      setDepartment(10)
+      return (<></>)
+    }else{
+      return (<></>)
+    }
+  }
+
   return (
     <Box p={3} pl={0}>
       <form onSubmit={handleCreateRequest}>
@@ -206,57 +366,58 @@ const OtherRequest = ({ userId }) => {
             />
           </Grid>
           <Grid item xs={12}>
-          <Typography fontWeight="500">Position</Typography>
-          {
-            currentUser?.role === 'employee' ? <Select
-            value={role}
-            sx={{width: '100%'}}
-            onChange={handleChange}
-            displayEmpty
-            >
-            <MenuItem value='admin'>Admin</MenuItem>
-            <MenuItem value='manager'>Manager</MenuItem>
-            <MenuItem value='hr'>HR</MenuItem>
-            <MenuItem value='security'>Security</MenuItem>
-          </Select> : currentUser?.role === 'hr' ? <Select
-            value={role}
-            sx={{width: '100%'}}
-            onChange={handleChange}
-            displayEmpty
-            >
-            <MenuItem value='admin'>Admin</MenuItem>
-            <MenuItem value='manager'>Manager</MenuItem>
-            <MenuItem value='security'>Security</MenuItem>
-          </Select> : currentUser?.role === 'admin' ? <Select
-            value={role}
-            sx={{width: '100%'}}
-            onChange={handleChange}
-            displayEmpty
-            >
-            <MenuItem value='manager'>Manager</MenuItem>
-            <MenuItem value='hr'>HR</MenuItem>
-            <MenuItem value='security'>Security</MenuItem>
-          </Select> : currentUser?.role === 'manager' ? <Select
-            value={role}
-            sx={{width: '100%'}}
-            onChange={handleChange}
-            displayEmpty
-            >
-            <MenuItem value='admin'>Admin</MenuItem>
-            <MenuItem value='hr'>HR</MenuItem>
-            <MenuItem value='security'>Security</MenuItem>
-          </Select> : currentUser?.role === 'security' ? <Select
-            value={role}
-            sx={{width: '100%'}}
-            onChange={handleChange}
-            displayEmpty
-            >
-            <MenuItem value='admin'>Admin</MenuItem>
-            <MenuItem value='manager'>Manager</MenuItem>
-            <MenuItem value='hr'>HR</MenuItem>
-          </Select> : <></>
-          }
-              
+            <Typography fontWeight="500">Position</Typography>
+            {
+              currentUser?.role === 'employee' ? <Select
+                value={role}
+                sx={{ width: '100%' }}
+                onChange={handleChange}
+                displayEmpty
+              >
+                <MenuItem value='admin'>Admin</MenuItem>
+                <MenuItem value='manager'>Manager</MenuItem>
+                <MenuItem value='hr'>HR</MenuItem>
+                <MenuItem value='security'>Security</MenuItem>
+              </Select> : currentUser?.role === 'hr' ? <Select
+                value={role}
+                sx={{ width: '100%' }}
+                onChange={handleChange}
+                displayEmpty
+              >
+                <MenuItem value='admin'>Admin</MenuItem>
+                <MenuItem value='manager'>Manager</MenuItem>
+                <MenuItem value='security'>Security</MenuItem>
+              </Select> : currentUser?.role === 'admin' ? <Select
+                value={role}
+                sx={{ width: '100%' }}
+                onChange={handleChange}
+                displayEmpty
+              >
+                <MenuItem value='manager'>Manager</MenuItem>
+                <MenuItem value='hr'>HR</MenuItem>
+                <MenuItem value='security'>Security</MenuItem>
+              </Select> : currentUser?.role === 'manager' ? <Select
+                value={role}
+                sx={{ width: '100%' }}
+                onChange={handleChange}
+                displayEmpty
+              >
+                <MenuItem value='admin'>Admin</MenuItem>
+                <MenuItem value='hr'>HR</MenuItem>
+                <MenuItem value='security'>Security</MenuItem>
+              </Select> : currentUser?.role === 'security' ? <Select
+                value={role}
+                sx={{ width: '100%' }}
+                onChange={handleChange}
+                displayEmpty
+              >
+                <MenuItem value='admin'>Admin</MenuItem>
+                <MenuItem value='manager'>Manager</MenuItem>
+                <MenuItem value='hr'>HR</MenuItem>
+              </Select> : <></>
+            }
+
+            {handleDepartment()}
           </Grid>
           <Grid item xs={12}>
             <Typography fontWeight="500">Content</Typography>
@@ -407,7 +568,7 @@ const LeaveRequest = ({ userId }) => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Content</Typography>
             <CKEditor
-            data={content}
+              data={content}
               editor={ClassicEditor}
               onChange={(event, editor) => {
                 const data = editor.getData()
