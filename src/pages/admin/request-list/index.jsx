@@ -71,11 +71,22 @@ function Row(props) {
           </Box>
         ) : null}</TableCell>
          <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-        {row.status === true ? (
+        {row.topic !== 'ROOM_REQUEST' &&  row.status === true  ? (
           <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
             <AddIcon />
           </IconButton>
         ): null }
+        </TableCell>
+        <TableCell>
+          { row.topic ==='OTHER_REQUEST' && row.status===true ? (
+            <Button>
+              <CloseIcon />
+              <Typography fontSize={'13px'} color="#000">
+                Finish
+              </Typography>
+            </Button>
+          ) : null}
+
         </TableCell>
       </TableRow>
       <TableRow>
@@ -283,6 +294,10 @@ export default function RequestListAdmin() {
                 </TableCell>
                 <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
                   Action
+                </TableCell>
+
+                <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+
                 </TableCell>
               </TableRow>
             </TableHead>

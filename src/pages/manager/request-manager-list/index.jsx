@@ -46,15 +46,48 @@ function Row(props) {
           {row.topic}
         </TableCell>
         <TableCell>{row.requestTickets[row.requestTickets.length - 1].title}</TableCell>
-        <TableCell>{row.createDate}</TableCell>
-        <TableCell>{row.updateDate}</TableCell>
-        <TableCell>{row.status}</TableCell>
-        <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-          {row.topic !== 'ROOM_REQUEST' && (
-            <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
-              <AddIcon />
-            </IconButton>
-          )}
+        <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>{row.createDate}</TableCell>
+        <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>{row.updateDate}</TableCell>
+          <TableCell> {row.status === false ? (
+          <Box
+            width="85%"
+            margin="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            borderRadius="4px">
+            <Typography color="#a9a9a9">CLOSE</Typography>
+          </Box>
+        ) : row.status === true ? (
+          <Box
+            width="85%"
+            margin="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            borderRadius="4px">
+            <Typography color="#000">AVALIABLE</Typography>
+          </Box>
+        ) : null}</TableCell>
+         <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+        {row.status === true ? (
+          <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
+            <AddIcon />
+          </IconButton>
+        ): null }
+        </TableCell>
+        <TableCell>
+          { row.topic ==='OTHER_REQUEST' && row.status===true ? (
+            <Button>
+              <CloseIcon />
+              <Typography fontSize={'13px'} color="#000">
+                Finish
+              </Typography>
+            </Button>
+          ) : null}
+
         </TableCell>
       </TableRow>
       <TableRow>
@@ -248,7 +281,7 @@ export default function RequestManagerList() {
                 <TableCell style={{ width: '160px', fontWeight: 'bold', fontSize: '18px' }}>
                   Topic
                 </TableCell>
-                <TableCell style={{ width: '200px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell style={{ width: '300px', fontWeight: 'bold', fontSize: '18px' }}>
                   Title
                 </TableCell>
                 <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>
@@ -257,11 +290,14 @@ export default function RequestManagerList() {
                 <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>
                   Update Date
                 </TableCell>
-                <TableCell style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell align='center' style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
                   Status
                 </TableCell>
                 <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
                   Action
+                </TableCell>
+                <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+
                 </TableCell>
               </TableRow>
             </TableHead>
