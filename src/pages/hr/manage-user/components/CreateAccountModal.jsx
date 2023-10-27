@@ -16,6 +16,9 @@ import userApi from '../../../../services/userApi'
 import axiosClient from '../../../../utils/axios-config'
 import { BASE_URL } from '../../../../services/constraint'
 import { toast } from 'react-toastify'
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import { validationSchema } from './until/validationSchema'
 
 const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAllUser }) => {
   const style = {
@@ -79,8 +82,46 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
 
     handleCloseCreateAccount()
   }
-  console.log(department)
+
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      role: '',
+      departmentName: '',
+
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      let data = {
+        username: values.username,
+        password: '123',
+        role: values.role,
+        departmentName: values.departmentName
+      }
+      console.log(data)
+      try {
+        axiosClient.post(`${BASE_URL}/register`, data)
+        let dataInfo = {
+          username: username,
+          statusId: '1',
+          statusName: 'active',
+          roleName: role
+        }
+        setAllUser((prevUser) => [...prevUser, dataInfo])
+        toast.success('Create account succesfully!')
+      } catch (error) {
+        if (error.response.status === 404) {
+          toast.error('Role not found!')
+        }
+        if (error.response.status === 400) {
+          toast.error('Username already exists!')
+        }
+      }
+    },
+  });
+
   const handleSetRole = () => {
+
     if (department === 'security') {
       return (
         <>
@@ -89,9 +130,14 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={role}
               label="Age"
-              onChange={handleChangeRole}>
+              onBlur={formik.handleBlur}
+              value={formik.values.role}
+              onChange={formik.handleChange}
+            >
+              {formik.touched.role && formik.errors.role && (
+                <div className="error-message">{formik.errors.role}</div>
+              )}
               <MenuItem value="security">Security</MenuItem>
             </Select>
           </FormControl>
@@ -105,9 +151,9 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={role}
-              label="Age"
-              onChange={handleChangeRole}>
+              onBlur={formik.handleBlur}
+              value={formik.values.role}
+              onChange={formik.handleChange}>
               <MenuItem value="hr">HR</MenuItem>
             </Select>
           </FormControl>
@@ -121,9 +167,9 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={role}
-              label="Age"
-              onChange={handleChangeRole}>
+              onBlur={formik.handleBlur}
+              value={formik.values.role}
+              onChange={formik.handleChange}>
               <MenuItem value="admin">Admin</MenuItem>
             </Select>
           </FormControl>
@@ -144,9 +190,10 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={role}
+              value={formik.values.role}
               label="Age"
-              onChange={handleChangeRole}>
+              onChange={formik.handleChange}>
+
               <MenuItem value="manager">Manager</MenuItem>
               <MenuItem value="employee">Employee</MenuItem>
             </Select>
@@ -166,15 +213,20 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
         <Typography fontSize="25px" fontWeight="800" mb={2}>
           Create Account
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={formik.handleSubmit}>
           <Stack mb={3}>
             <TextField
               fullWidth
               label="Username"
               name="username"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.username}
               type="username"
-              onChange={(e) => setUsername(e.target.value)}
             />
+            {formik.touched.username && formik.errors.username && (
+              <div className="error-message">{formik.errors.username}</div>
+            )}
           </Stack>
 
           <FormControl fullWidth sx={{ mb: 2 }}>
