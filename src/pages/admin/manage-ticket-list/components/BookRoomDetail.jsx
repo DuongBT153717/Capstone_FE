@@ -125,9 +125,22 @@ const BookListDetail = () => {
                           End Time: {bookRoomDetail[0]?.object?.endDate}
                         </Typography>
                       </Grid>
-                      <Grid item xs={12} md={6}>
+                      <Grid item xs={12} md={12}>
                         <Typography>Room: {bookRoomDetail[0]?.object?.roomName}</Typography>
                       </Grid>
+                      <Grid item xs={12} md={6}>
+                        <Typography>
+                          Room: {bookRoomDetail[0]?.object?.status === true ? (
+                            <span style={{ color: 'green' }}>Accept</span>
+                          ) : bookRoomDetail[0]?.object?.status === false ? (
+                            <span style={{ color: 'red' }}>Reject</span>
+                          ) : (
+                            <span>Waiting</span>
+                          )}
+                        </Typography>
+                      </Grid>
+
+
                       <Grid item xs={12} md={12}>
                         <Typography>Content: {bookRoomDetail[0]?.object?.content}</Typography>
                       </Grid>

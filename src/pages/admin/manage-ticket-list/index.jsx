@@ -176,8 +176,9 @@ function Row(props) {
                       <TableCell>{request_row.requestCreateDate}</TableCell>
                       <TableCell>{request_row.requestUpdateDate}</TableCell>
                       <TableCell>
-                        {row.topic === 'ROOM_REQUEST' ? (
+                      {row.topic === 'ROOM_REQUEST' ? (
                           <IconButton
+                          disabled={request_row.requestStatus === 'PENDING' ? true : false}
                             sx={{ color: '#1565c0' }}
                             onClick={() => navigate(`/room-detail/${request_row.requestId}`)}>
                             <AssignmentTurnedInIcon />

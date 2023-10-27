@@ -15,8 +15,9 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 const EditProfile = (props) => {
   return (
-    <>
+    <>   <form onSubmit={formik.props.handleSubmit} >
       <CardContent>
+     
         <Box sx={{ mb: 1 }}>
           <Grid item container spacing={3}>
             <Grid item xs={12} md={6}>
@@ -150,12 +151,14 @@ const EditProfile = (props) => {
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-end' }}>
         <Button
-          onClick={props.handleSubmit}
+        type="submit"
           variant="contained"
           sx={{ bgcolor: 'rgb(94, 53, 177)' }}>
           Save details
         </Button>
+      
       </CardActions>
+      </form>
     </>
   )
 }

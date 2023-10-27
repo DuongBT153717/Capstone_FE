@@ -8,62 +8,88 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
+import { useFormik } from 'formik'
+import { validationSchema } from '../until/validationSchema'
 
 const AttendenceFrom = ({ userId }) => {
-  const [from, setFrom] = useState(dayjs(new Date()))
-  const [to, setTo] = useState(dayjs(new Date()))
-  const [date, setDate] = useState(dayjs(new Date()))
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
-  const currentUser = useSelector((state) => state.auth.login?.currentUser)
+  const [from, setFrom] = useState(dayjs(new Date()));
+  const [to, setTo] = useState(dayjs(new Date()));
+  const [date, setDate] = useState(dayjs(new Date()));
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('');
+  const currentUser = useSelector((state) => state.auth.login?.currentUser);
+
+
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
-      const response = await requestApi.getReceiveIdAndDepartment(userId)
-      setReceiveIdAndDepartment(response)
+      const response = await requestApi.getReceiveIdAndDepartment(userId);
+      setReceiveIdAndDepartment(response);
     }
-    fetchReceiveIdAndDepartment()
-  }, [])
+    fetchReceiveIdAndDepartment();
+  }, []);
 
-  console.log(receiveIdAndDepartment)
+  // const handleCreateRequest = (e) => {
+  //   e.preventDefault();
+  //   let data = {
+  //     userId: userId,
+  //     title: title,
+  //     content: content,
+  //     manualDate: from.format('YYYY-MM-DD'),
+  //     manualFirstEntry: from.format('HH:mm:ss'),
+  //     manualLastExit: to.format('HH:mm:ss'),
+  //     departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+  //     receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+  //   };
+  //   requestApi.requestAttendanceForm(data);
+  //   setTitle('');
+  //   setContent('');
+  //   console.log(data);
+  // };
 
-  const handleCreateRequest = (e) => {
-    e.preventDefault()
-    let data = {
-      userId: userId,
-      title: title,
-      content: content,
-      manualDate: from.format('YYYY-MM-DD'),
-      manualFirstEntry: from.format('HH:mm:ss'),
-      manualLastExit: to.format('HH:mm:ss'),
-      departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-      receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
-    }
-    requestApi.requestAttendanceForm(data)
-    setTitle('')
-    setContent('')
-    console.log(data)
-  }
-
-  console.log(from.format('DD/MM/YYYY'))
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      let data = {
+        userId: userId,
+        title: values.title,
+        content: content,
+        manualDate: from.format('YYYY-MM-DD'),
+        manualFirstEntry: from.format('HH:mm:ss'),
+        manualLastExit: to.format('HH:mm:ss'),
+        departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+        receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+      };
+      console.log(data);
+      requestApi.requestAttendanceForm(data);
+    },
+  });
   return (
     <Box p={3} pl={0}>
-      <form onSubmit={handleCreateRequest}>
+      <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography fontWeight="700" fontSize="18px">
-              Request details{' '}
+              Request details
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography fontWeight="500">Title</Typography>
             <TextField
-              onChange={(e) => setTitle(e.target.value)}
-              value={title}
+              name="title"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.title}
               sx={{ width: '100%' }}
               size="small"
               placeholder="Enter the request title"
             />
+            {formik.touched.title && formik.errors.title && (
+              <div className="error-message">{formik.errors.title}</div>
+            )}
           </Grid>
           <Grid item xs={4} mb={2}>
             <Typography fontWeight="500">Date</Typography>
@@ -101,10 +127,13 @@ const AttendenceFrom = ({ userId }) => {
               data={content}
               editor={ClassicEditor}
               onChange={(event, editor) => {
-                const data = editor.getData()
-                setContent(data)
+                const data = editor.getData();
+                setContent(data);
               }}
             />
+            {/* {formik.touched.content && formik.errors.content && (
+              <div className="error-message">{formik.errors.content}</div>
+            )} */}
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
@@ -135,7 +164,7 @@ const AttendenceFrom = ({ userId }) => {
           ) : (
             <></>
           )}
-          <Button type="submit" variant="contained">
+          <Button type='submit' variant="contained">
             Save
           </Button>
         </Box>
@@ -143,6 +172,7 @@ const AttendenceFrom = ({ userId }) => {
     </Box>
   )
 }
+
 
 const OtRequest = () => <Box p={3}>Ot Request From</Box>
 
@@ -171,11 +201,11 @@ const OtherRequest = ({ userId }) => {
   }, [])
 
   useEffect(() => {
-      const fetchAllManagerDepartment = async () => {
-        const response = await requestApi.getAllManagerDepartment()
-        setGetAllManagerDepartment(response)
-      }
-      fetchAllManagerDepartment()
+    const fetchAllManagerDepartment = async () => {
+      const response = await requestApi.getAllManagerDepartment()
+      setGetAllManagerDepartment(response)
+    }
+    fetchAllManagerDepartment()
   }, [])
 
   console.log(department);
@@ -272,6 +302,56 @@ const OtherRequest = ({ userId }) => {
     requestApi.requestOtherForm(data)
   }
 
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      let data = {
+        userId: userId,
+        title: title,
+        content: content,
+        departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+        receivedId: managerId
+      };
+      console.log(data);
+      if (currentUser?.role === 'employee' && role === 'manager') {
+        callApiEmployee(e, receiveIdAndDepartment?.managerInfoResponse?.managerId)
+      } else if (currentUser?.role === 'employee' && role === 'hr') {
+        callApiOther(e, 3)
+      } else if (currentUser?.role === 'employee' && role === 'security') {
+        callApiOther(e, 10)
+      } else if (currentUser?.role === 'employee' && role === 'admin') {
+        callApiOther(e, 9)
+      } else if (currentUser?.role === 'manager' && role === 'admin') {
+        callApiOther(e, 9)
+      } else if (currentUser?.role === 'manager' && role === 'security') {
+        callApiOther(e, 10)
+      } else if (currentUser?.role === 'manager' && role === 'hr') {
+        callApiOther(e, 3)
+      } else if (currentUser?.role === 'hr' && role === 'admin') {
+        callApiOther(e, 9)
+      } else if (currentUser?.role === 'hr' && role === 'security') {
+        callApiOther(e, 10)
+      } else if (currentUser?.role === 'hr' && role === 'manager') {
+        callApiToManager(e, department)
+      } else if (currentUser?.role === 'security' && role === 'admin') {
+        callApiOther(e, 9)
+      } else if (currentUser?.role === 'security' && role === 'hr') {
+        callApiOther(e, 3)
+      } else if (currentUser?.role === 'security' && role === 'manager') {
+        callApiToManager(e, department)
+      } else if (currentUser?.role === 'admin' && role === 'security') {
+        callApiOther(e, 10)
+      } else if (currentUser?.role === 'admin' && role === 'hr') {
+        callApiOther(e, 3)
+      } else if (currentUser?.role === 'admin' && role === 'manager') {
+        callApiToManager(e, department)
+      }
+    },
+  });
+
   const handleDepartment = () => {
     if (currentUser?.role === 'admin' && role === 'manager') {
       return (
@@ -286,11 +366,11 @@ const OtherRequest = ({ userId }) => {
               getAllManagerDepartment.map((item) => (
                 <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
               ))
-            }  
+            }
           </Select>
         </>
       )
-    }  else if (currentUser?.role === 'hr' && role === 'manager') {
+    } else if (currentUser?.role === 'hr' && role === 'manager') {
       return (
         <>
           <Typography mt={2} fontWeight="500">Department</Typography>
@@ -299,11 +379,11 @@ const OtherRequest = ({ userId }) => {
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
             displayEmpty>
-             {
+            {
               getAllManagerDepartment.map((item) => (
                 <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName}</MenuItem>
               ))
-            }  
+            }
           </Select>
         </>
       )
@@ -316,11 +396,11 @@ const OtherRequest = ({ userId }) => {
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
             displayEmpty>
-             {
+            {
               getAllManagerDepartment.map((item) => (
                 <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
               ))
-            }  
+            }
           </Select>
         </>
       )
@@ -329,7 +409,7 @@ const OtherRequest = ({ userId }) => {
 
   return (
     <Box p={3} pl={0}>
-      <form onSubmit={handleCreateRequest}>
+      <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography fontWeight="700" fontSize="18px">
