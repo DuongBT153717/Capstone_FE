@@ -165,7 +165,7 @@ const requestApi = {
   },
   getAllManagerDepartment: () => {
     try {
-      const response = axiosClient.get(`${BASE_URL}/getManagerDepartment`)
+      const response = axiosClient.post(`${BASE_URL}/getManagerDepartment`)
       return response
     } catch (error) {
       if (error.response.status === 400) {

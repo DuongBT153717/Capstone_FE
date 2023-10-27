@@ -152,8 +152,7 @@ const OtherRequest = ({ userId }) => {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const [role, setRole] = useState('')
-  const [department, setDepartment] = useState()
-  const [getAllManagerDepartment, setGetAllManagerDepartment] = useState([])
+  const [department, setDepartment] = useState('')
   const [manager, setManager] = useState('')
   const handleChange = (event) => {
     setRole(event.target.value)
@@ -171,14 +170,15 @@ const OtherRequest = ({ userId }) => {
   }, [])
 
   useEffect(() => {
-      const fetchAllManagerDepartment = async () => {
-        const response = await requestApi.getAllManagerDepartment()
-        setGetAllManagerDepartment(response)
-      }
-      fetchAllManagerDepartment()
+    const fetchAllManagerDepartment = async () => {
+      const response = await requestApi.getAllManagerDepartment()
+      setDepartment(response)
+    }
+    fetchAllManagerDepartment()
   }, [])
 
-  console.log(department);
+  console.log('>>>')
+  console.log(receiveIdAndDepartment)
   const handleCreateRequest = (e) => {
     if (currentUser?.role === 'employee' && role === 'manager') {
       callApiEmployee(e, receiveIdAndDepartment?.managerInfoResponse?.managerId)
@@ -216,7 +216,7 @@ const OtherRequest = ({ userId }) => {
   }
 
   useEffect(() => {
-    if (getAllManagerDepartment.length !== 0) {
+    if (department !== '') {
       const getManagerByDepartment = async () => {
         let res = await requestApi.getManagerByDepartment(department)
         setManager(res)
@@ -276,51 +276,45 @@ const OtherRequest = ({ userId }) => {
     if (currentUser?.role === 'admin' && role === 'manager') {
       return (
         <>
-          <Typography mt={2} fontWeight="500">Department</Typography>
+          <Typography mt={1} fontWeight="500">Department</Typography>
           <Select
             value={department}
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
             displayEmpty>
-            {
-              getAllManagerDepartment.map((item) => (
-                <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
-              ))
-            }  
+            <MenuItem value="2">tech D1</MenuItem>
+            <MenuItem value="4">tech D2</MenuItem>
+            <MenuItem value="5">tech D3</MenuItem>
           </Select>
         </>
       )
     }  else if (currentUser?.role === 'hr' && role === 'manager') {
       return (
         <>
-          <Typography mt={2} fontWeight="500">Department</Typography>
+          <Typography fontWeight="500">Department</Typography>
           <Select
-            value={department}
+            value={role}
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
             displayEmpty>
-             {
-              getAllManagerDepartment.map((item) => (
-                <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName}</MenuItem>
-              ))
-            }  
+            <MenuItem value="2">tech D1</MenuItem>
+            <MenuItem value="4">tech D2</MenuItem>
+            <MenuItem value="5">tech D3</MenuItem>
           </Select>
         </>
       )
     } else if (currentUser?.role === 'security' && role === 'manager') {
       return (
         <>
-          <Typography mt={2} fontWeight="500">Department</Typography>
+          <Typography fontWeight="500">Department</Typography>
           <Select
-            value={department}
+            value={role}
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
             displayEmpty>
-             {
-              getAllManagerDepartment.map((item) => (
-                <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
-              ))
-            }  
+            <MenuItem value="2">tech D1</MenuItem>
+            <MenuItem value="4">tech D2</MenuItem>
+            <MenuItem value="5">tech D3</MenuItem>
           </Select>
         </>
       )

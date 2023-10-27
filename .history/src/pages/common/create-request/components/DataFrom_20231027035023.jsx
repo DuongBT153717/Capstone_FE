@@ -152,8 +152,7 @@ const OtherRequest = ({ userId }) => {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const [role, setRole] = useState('')
-  const [department, setDepartment] = useState()
-  const [getAllManagerDepartment, setGetAllManagerDepartment] = useState([])
+  const [department, setDepartment] = useState('')
   const [manager, setManager] = useState('')
   const handleChange = (event) => {
     setRole(event.target.value)
@@ -170,15 +169,8 @@ const OtherRequest = ({ userId }) => {
     fetchReceiveIdAndDepartment()
   }, [])
 
-  useEffect(() => {
-      const fetchAllManagerDepartment = async () => {
-        const response = await requestApi.getAllManagerDepartment()
-        setGetAllManagerDepartment(response)
-      }
-      fetchAllManagerDepartment()
-  }, [])
-
-  console.log(department);
+  console.log('>>>')
+  console.log(receiveIdAndDepartment)
   const handleCreateRequest = (e) => {
     if (currentUser?.role === 'employee' && role === 'manager') {
       callApiEmployee(e, receiveIdAndDepartment?.managerInfoResponse?.managerId)
@@ -199,33 +191,33 @@ const OtherRequest = ({ userId }) => {
     } else if (currentUser?.role === 'hr' && role === 'security') {
       callApiOther(e, 10)
     } else if (currentUser?.role === 'hr' && role === 'manager') {
-      callApiToManager(e, department)
+      callApiOther(e, department)
     } else if (currentUser?.role === 'security' && role === 'admin') {
       callApiOther(e, 9)
     } else if (currentUser?.role === 'security' && role === 'hr') {
       callApiOther(e, 3)
     } else if (currentUser?.role === 'security' && role === 'manager') {
-      callApiToManager(e, department)
+      callApiOther(e, department)
     } else if (currentUser?.role === 'admin' && role === 'security') {
       callApiOther(e, 10)
     } else if (currentUser?.role === 'admin' && role === 'hr') {
       callApiOther(e, 3)
     } else if (currentUser?.role === 'admin' && role === 'manager') {
-      callApiToManager(e, department)
+      callApiOther(e, department)
     }
   }
 
   useEffect(() => {
-    if (getAllManagerDepartment.length !== 0) {
+    if (department !== '') {
       const getManagerByDepartment = async () => {
         let res = await requestApi.getManagerByDepartment(department)
         setManager(res)
+        console.log('>>>>>>>>')
+        console.log(res)
       }
       getManagerByDepartment()
     }
   }, [department])
-
-
 
   const callApiOther = (e, departmentId) => {
     e.preventDefault()
@@ -233,25 +225,8 @@ const OtherRequest = ({ userId }) => {
       userId: userId,
       title: title,
       content: content,
-      departmentId: departmentId,
+      departmentId: departmentId
     }
-    console.log(data);
-    setTitle('')
-    setContent('')
-    setDepartment('')
-    requestApi.requestOtherForm(data)
-  }
-
-  const callApiToManager = (e, departmentId) => {
-    e.preventDefault()
-    let data = {
-      userId: userId,
-      title: title,
-      content: content,
-      departmentId: departmentId,
-      receivedId: manager[0].accountId
-    }
-    console.log(data);
     setTitle('')
     setContent('')
     setDepartment('')
@@ -271,59 +246,88 @@ const OtherRequest = ({ userId }) => {
     setContent('')
     requestApi.requestOtherForm(data)
   }
+  console.log('>> user role ' + currentUser?.role)
+  console.log('>> role ' + role)
 
   const handleDepartment = () => {
     if (currentUser?.role === 'admin' && role === 'manager') {
+      console.log('aaa')
       return (
         <>
-          <Typography mt={2} fontWeight="500">Department</Typography>
+          <Typography fontWeight="500">Department</Typography>
           <Select
             value={department}
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
             displayEmpty>
-            {
-              getAllManagerDepartment.map((item) => (
-                <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
-              ))
-            }  
+            <MenuItem value="2">tech D1</MenuItem>
+            <MenuItem value="4">tech D2</MenuItem>
+            <MenuItem value="5">tech D3</MenuItem>
           </Select>
         </>
       )
-    }  else if (currentUser?.role === 'hr' && role === 'manager') {
+    } else if (currentUser?.role === 'admin' && role === 'hr') {
+      // hr = 3
+      // security = 10
+      // admin = 9
+      setDepartment(3)
+      return <></>
+    } else if (currentUser?.role === 'admin' && role === 'security') {
+      setDepartment(10)
+      return <></>
+    } else if (currentUser?.role === 'hr' && role === 'manager') {
       return (
         <>
-          <Typography mt={2} fontWeight="500">Department</Typography>
+          <Typography fontWeight="500">Department</Typography>
           <Select
-            value={department}
+            value={role}
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
             displayEmpty>
-             {
-              getAllManagerDepartment.map((item) => (
-                <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName}</MenuItem>
-              ))
-            }  
+            <MenuItem value="2">tech D1</MenuItem>
+            <MenuItem value="4">tech D2</MenuItem>
+            <MenuItem value="5">tech D3</MenuItem>
           </Select>
         </>
       )
+    } else if (currentUser?.role === 'hr' && role === 'admin') {
+      setDepartment(9)
+      return <></>
+    } else if (currentUser?.role === 'hr' && role === 'security') {
+      setDepartment(10)
+      return <></>
+    } else if (currentUser?.role === 'security' && role === 'admin') {
+      setDepartment(9)
+      return <></>
+    } else if (currentUser?.role === 'security' && role === 'hr') {
+      setDepartment(3)
+      return <></>
     } else if (currentUser?.role === 'security' && role === 'manager') {
       return (
         <>
-          <Typography mt={2} fontWeight="500">Department</Typography>
+          <Typography fontWeight="500">Department</Typography>
           <Select
-            value={department}
+            value={role}
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
             displayEmpty>
-             {
-              getAllManagerDepartment.map((item) => (
-                <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
-              ))
-            }  
+            <MenuItem value="2">tech D1</MenuItem>
+            <MenuItem value="4">tech D2</MenuItem>
+            <MenuItem value="5">tech D3</MenuItem>
           </Select>
         </>
       )
+    } else if (currentUser?.role === 'manager' && role === 'admin') {
+      setDepartment(9)
+      return <></>
+    } else if (currentUser?.role === 'manager' && role === 'hr') {
+      setDepartment(3)
+      return <></>
+    } else if (currentUser?.role === 'manager' && role === 'security') {
+      setDepartment(10)
+      return <></>
+    } else {
+      return <></>
     }
   }
 

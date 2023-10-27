@@ -1,6 +1,15 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
-import { Box, Button, Checkbox, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Checkbox,
+  Grid,
+  MenuItem,
+  Select,
+  TextField,
+  Typography
+} from '@mui/material'
 import { DatePicker, DateTimePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
@@ -152,15 +161,14 @@ const OtherRequest = ({ userId }) => {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const [role, setRole] = useState('')
-  const [department, setDepartment] = useState()
-  const [getAllManagerDepartment, setGetAllManagerDepartment] = useState([])
-  const [manager, setManager] = useState('')
+  const [department,setDepartment] = useState('')
+  const [manager,setManager] = useState('')
   const handleChange = (event) => {
-    setRole(event.target.value)
-  }
+    setRole(event.target.value);
+  };
   const handleChangeDepartment = (event) => {
-    setDepartment(event.target.value)
-  }
+    setDepartment(event.target.value);
+  };
 
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
@@ -170,62 +178,56 @@ const OtherRequest = ({ userId }) => {
     fetchReceiveIdAndDepartment()
   }, [])
 
-  useEffect(() => {
-      const fetchAllManagerDepartment = async () => {
-        const response = await requestApi.getAllManagerDepartment()
-        setGetAllManagerDepartment(response)
-      }
-      fetchAllManagerDepartment()
-  }, [])
-
-  console.log(department);
+  console.log(">>>");
+  console.log(receiveIdAndDepartment);
   const handleCreateRequest = (e) => {
-    if (currentUser?.role === 'employee' && role === 'manager') {
-      callApiEmployee(e, receiveIdAndDepartment?.managerInfoResponse?.managerId)
-    } else if (currentUser?.role === 'employee' && role === 'hr') {
+    if (currentUser?.role === "employee" && role === 'manager') {
+      callApiEmployee(e,receiveIdAndDepartment?.managerInfoResponse?.managerId)
+    } else if (currentUser?.role === "employee" && role === 'hr') {
       callApiOther(e, 3)
-    } else if (currentUser?.role === 'employee' && role === 'security') {
+    } else if (currentUser?.role === "employee" && role === 'security') {
       callApiOther(e, 10)
-    } else if (currentUser?.role === 'employee' && role === 'admin') {
+    }else if (currentUser?.role === "employee" && role === 'admin') {
       callApiOther(e, 9)
-    } else if (currentUser?.role === 'manager' && role === 'admin') {
-      callApiOther(e, 9)
-    } else if (currentUser?.role === 'manager' && role === 'security') {
-      callApiOther(e, 10)
-    } else if (currentUser?.role === 'manager' && role === 'hr') {
-      callApiOther(e, 3)
-    } else if (currentUser?.role === 'hr' && role === 'admin') {
-      callApiOther(e, 9)
-    } else if (currentUser?.role === 'hr' && role === 'security') {
-      callApiOther(e, 10)
-    } else if (currentUser?.role === 'hr' && role === 'manager') {
-      callApiToManager(e, department)
-    } else if (currentUser?.role === 'security' && role === 'admin') {
-      callApiOther(e, 9)
-    } else if (currentUser?.role === 'security' && role === 'hr') {
-      callApiOther(e, 3)
-    } else if (currentUser?.role === 'security' && role === 'manager') {
-      callApiToManager(e, department)
-    } else if (currentUser?.role === 'admin' && role === 'security') {
-      callApiOther(e, 10)
-    } else if (currentUser?.role === 'admin' && role === 'hr') {
-      callApiOther(e, 3)
-    } else if (currentUser?.role === 'admin' && role === 'manager') {
-      callApiToManager(e, department)
+    }else if(currentUser?.role === "manager" && role === 'admin'){
+      callApiOther(e,9)
+    }else if(currentUser?.role === "manager" && role === 'security'){
+      callApiOther(e,10)
+    }else if(currentUser?.role === "manager" && role === 'hr'){
+      callApiOther(e,3)
+    }else if(currentUser?.role === "hr" && role === 'admin'){
+      callApiOther(e,9)
+    }else if(currentUser?.role === "hr" && role === 'security'){
+      callApiOther(e,10)
+    }else if(currentUser?.role === "hr" && role === 'manager'){
+      callApiOther(e,department)
+    }else if(currentUser?.role === "security" && role === 'admin'){
+      callApiOther(e,9)
+    }else if(currentUser?.role === "security" && role === 'hr'){
+      callApiOther(e,3)
+    }else if(currentUser?.role === "security" && role === 'manager'){
+      callApiOther(e,department)
+    }else if(currentUser?.role === "admin" && role === 'security'){
+      callApiOther(e,10)
+    }else if(currentUser?.role === "admin" && role === 'hr'){
+      callApiOther(e,3)
+    }else if(currentUser?.role === "admin" && role === 'manager'){
+      callApiOther(e,department)
     }
   }
-
-  useEffect(() => {
-    if (getAllManagerDepartment.length !== 0) {
-      const getManagerByDepartment = async () => {
-        let res = await requestApi.getManagerByDepartment(department)
-        setManager(res)
-      }
-      getManagerByDepartment()
-    }
-  }, [department])
-
-
+ 
+useEffect(()=>{
+  if(department !== ''){
+    const getManagerByDepartment= async ()=>{
+      let res = await requestApi.getManagerByDepartment(department);
+      setManager(res)
+      console.log(">>>>>>>>");
+      console.log(res);
+     }
+     getManagerByDepartment();
+  }
+  
+},[department])
 
   const callApiOther = (e, departmentId) => {
     e.preventDefault()
@@ -233,32 +235,15 @@ const OtherRequest = ({ userId }) => {
       userId: userId,
       title: title,
       content: content,
-      departmentId: departmentId,
+      departmentId: departmentId
     }
-    console.log(data);
     setTitle('')
     setContent('')
     setDepartment('')
     requestApi.requestOtherForm(data)
   }
 
-  const callApiToManager = (e, departmentId) => {
-    e.preventDefault()
-    let data = {
-      userId: userId,
-      title: title,
-      content: content,
-      departmentId: departmentId,
-      receivedId: manager[0].accountId
-    }
-    console.log(data);
-    setTitle('')
-    setContent('')
-    setDepartment('')
-    requestApi.requestOtherForm(data)
-  }
-
-  const callApiEmployee = (e, managerId) => {
+  const callApiEmployee = (e,managerId) => {
     e.preventDefault()
     let data = {
       userId: userId,
@@ -271,59 +256,92 @@ const OtherRequest = ({ userId }) => {
     setContent('')
     requestApi.requestOtherForm(data)
   }
+console.log(">> user role "+currentUser?.role);
+console.log(">> role "+role);
+
 
   const handleDepartment = () => {
-    if (currentUser?.role === 'admin' && role === 'manager') {
+    if (currentUser?.role === 'admin' && role === "manager") {
+      console.log("aaa");
       return (
         <>
-          <Typography mt={2} fontWeight="500">Department</Typography>
+         <Typography fontWeight="500">Department</Typography>
           <Select
             value={department}
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
-            displayEmpty>
-            {
-              getAllManagerDepartment.map((item) => (
-                <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
-              ))
-            }  
-          </Select>
+            displayEmpty
+          >
+            <MenuItem value='2'>tech D1</MenuItem>
+            <MenuItem value='4'>tech D2</MenuItem>
+            <MenuItem value='5'>tech D3</MenuItem>
+          </Select> 
         </>
       )
-    }  else if (currentUser?.role === 'hr' && role === 'manager') {
+    }else if(currentUser?.role === 'admin' && role === "hr"){
+      // hr = 3
+      // security = 10 
+      // admin = 9 
+    setDepartment(3)
+    return (<></>)
+    }else if(currentUser?.role === 'admin' && role === "security"){
+      setDepartment(10)
+      return (<></>)
+    }else if (currentUser?.role === 'hr' && role === "manager"){
       return (
         <>
-          <Typography mt={2} fontWeight="500">Department</Typography>
+         <Typography fontWeight="500">Department</Typography>
           <Select
-            value={department}
+            value={role}
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
-            displayEmpty>
-             {
-              getAllManagerDepartment.map((item) => (
-                <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName}</MenuItem>
-              ))
-            }  
+            displayEmpty
+          >
+            <MenuItem value='2'>tech D1</MenuItem>
+            <MenuItem value='4'>tech D2</MenuItem>
+            <MenuItem value='5'>tech D3</MenuItem>
           </Select>
         </>
       )
-    } else if (currentUser?.role === 'security' && role === 'manager') {
+    }else if (currentUser?.role === 'hr' && role === "admin"){
+      setDepartment(9)
+      return (<></>)
+    }else if (currentUser?.role === 'hr' && role === "security"){
+      setDepartment(10)
+      return (<></>)
+    }else if (currentUser?.role === 'security' && role === "admin"){
+      setDepartment(9)
+      return (<></>)
+    }else if (currentUser?.role === 'security' && role === "hr"){
+      setDepartment(3)
+      return (<></>)
+    }else if (currentUser?.role === 'security' && role === "manager"){
       return (
         <>
-          <Typography mt={2} fontWeight="500">Department</Typography>
+         <Typography fontWeight="500">Department</Typography>
           <Select
-            value={department}
+            value={role}
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
-            displayEmpty>
-             {
-              getAllManagerDepartment.map((item) => (
-                <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
-              ))
-            }  
+            displayEmpty
+          >
+            <MenuItem value='2'>tech D1</MenuItem>
+            <MenuItem value='4'>tech D2</MenuItem>
+            <MenuItem value='5'>tech D3</MenuItem>
           </Select>
         </>
       )
+    }else if (currentUser?.role === 'manager' && role === "admin"){
+      setDepartment(9)
+      return (<></>)
+    }else if (currentUser?.role === 'manager' && role === "hr"){
+      setDepartment(3)
+      return (<></>)
+    }else if (currentUser?.role === 'manager' && role === "security"){
+      setDepartment(10)
+      return (<></>)
+    }else{
+      return (<></>)
     }
   }
 
@@ -348,40 +366,55 @@ const OtherRequest = ({ userId }) => {
           </Grid>
           <Grid item xs={12}>
             <Typography fontWeight="500">Position</Typography>
-            {currentUser?.role === 'employee' ? (
-              <Select value={role} sx={{ width: '100%' }} onChange={handleChange} displayEmpty>
-                <MenuItem value="admin">Admin</MenuItem>
-                <MenuItem value="manager">Manager</MenuItem>
-                <MenuItem value="hr">HR</MenuItem>
-                <MenuItem value="security">Security</MenuItem>
-              </Select>
-            ) : currentUser?.role === 'hr' ? (
-              <Select value={role} sx={{ width: '100%' }} onChange={handleChange} displayEmpty>
-                <MenuItem value="admin">Admin</MenuItem>
-                <MenuItem value="manager">Manager</MenuItem>
-                <MenuItem value="security">Security</MenuItem>
-              </Select>
-            ) : currentUser?.role === 'admin' ? (
-              <Select value={role} sx={{ width: '100%' }} onChange={handleChange} displayEmpty>
-                <MenuItem value="manager">Manager</MenuItem>
-                <MenuItem value="hr">HR</MenuItem>
-                <MenuItem value="security">Security</MenuItem>
-              </Select>
-            ) : currentUser?.role === 'manager' ? (
-              <Select value={role} sx={{ width: '100%' }} onChange={handleChange} displayEmpty>
-                <MenuItem value="admin">Admin</MenuItem>
-                <MenuItem value="hr">HR</MenuItem>
-                <MenuItem value="security">Security</MenuItem>
-              </Select>
-            ) : currentUser?.role === 'security' ? (
-              <Select value={role} sx={{ width: '100%' }} onChange={handleChange} displayEmpty>
-                <MenuItem value="admin">Admin</MenuItem>
-                <MenuItem value="manager">Manager</MenuItem>
-                <MenuItem value="hr">HR</MenuItem>
-              </Select>
-            ) : (
-              <></>
-            )}
+            {
+              currentUser?.role === 'employee' ? <Select
+                value={role}
+                sx={{ width: '100%' }}
+                onChange={handleChange}
+                displayEmpty
+              >
+                <MenuItem value='admin'>Admin</MenuItem>
+                <MenuItem value='manager'>Manager</MenuItem>
+                <MenuItem value='hr'>HR</MenuItem>
+                <MenuItem value='security'>Security</MenuItem>
+              </Select> : currentUser?.role === 'hr' ? <Select
+                value={role}
+                sx={{ width: '100%' }}
+                onChange={handleChange}
+                displayEmpty
+              >
+                <MenuItem value='admin'>Admin</MenuItem>
+                <MenuItem value='manager'>Manager</MenuItem>
+                <MenuItem value='security'>Security</MenuItem>
+              </Select> : currentUser?.role === 'admin' ? <Select
+                value={role}
+                sx={{ width: '100%' }}
+                onChange={handleChange}
+                displayEmpty
+              >
+                <MenuItem value='manager'>Manager</MenuItem>
+                <MenuItem value='hr'>HR</MenuItem>
+                <MenuItem value='security'>Security</MenuItem>
+              </Select> : currentUser?.role === 'manager' ? <Select
+                value={role}
+                sx={{ width: '100%' }}
+                onChange={handleChange}
+                displayEmpty
+              >
+                <MenuItem value='admin'>Admin</MenuItem>
+                <MenuItem value='hr'>HR</MenuItem>
+                <MenuItem value='security'>Security</MenuItem>
+              </Select> : currentUser?.role === 'security' ? <Select
+                value={role}
+                sx={{ width: '100%' }}
+                onChange={handleChange}
+                displayEmpty
+              >
+                <MenuItem value='admin'>Admin</MenuItem>
+                <MenuItem value='manager'>Manager</MenuItem>
+                <MenuItem value='hr'>HR</MenuItem>
+              </Select> : <></>
+            }
 
             {handleDepartment()}
           </Grid>
@@ -581,3 +614,4 @@ const LeaveRequest = ({ userId }) => {
 }
 
 export { AttendenceFrom, LeaveRequest, OtRequest, OtherRequest }
+

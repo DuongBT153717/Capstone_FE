@@ -179,6 +179,7 @@ const OtherRequest = ({ userId }) => {
   }, [])
 
   console.log(department);
+  console.log(receiveIdAndDepartment)
   const handleCreateRequest = (e) => {
     if (currentUser?.role === 'employee' && role === 'manager') {
       callApiEmployee(e, receiveIdAndDepartment?.managerInfoResponse?.managerId)
@@ -283,7 +284,7 @@ const OtherRequest = ({ userId }) => {
             onChange={handleChangeDepartment}
             displayEmpty>
             {
-              getAllManagerDepartment.map((item) => (
+              department.map((item) => (
                 <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
               ))
             }  
@@ -295,13 +296,13 @@ const OtherRequest = ({ userId }) => {
         <>
           <Typography mt={2} fontWeight="500">Department</Typography>
           <Select
-            value={department}
+            value={role}
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
             displayEmpty>
              {
               getAllManagerDepartment.map((item) => (
-                <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName}</MenuItem>
+                <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
               ))
             }  
           </Select>
@@ -312,12 +313,12 @@ const OtherRequest = ({ userId }) => {
         <>
           <Typography mt={2} fontWeight="500">Department</Typography>
           <Select
-            value={department}
+            value={role}
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
             displayEmpty>
              {
-              getAllManagerDepartment.map((item) => (
+              department.map((item) => (
                 <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
               ))
             }  
