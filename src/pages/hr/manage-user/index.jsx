@@ -18,6 +18,8 @@ import axiosClient from '../../../utils/axios-config'
 import CreateAccountModal from './components/CreateAccountModal'
 import DataTableManageUser from './components/DataTable'
 import RoleModal from './components/RoleModal'
+import DeleteIcon from '@mui/icons-material/Delete';
+import { toast } from 'react-toastify'
 const ManageUser = () => {
   const userId = useSelector((state) => state.auth.login.currentUser.accountId)
   const dispatch = useDispatch()
@@ -46,7 +48,7 @@ const ManageUser = () => {
     }
     fetchAllUser()
   }, [])
-  
+
   const handleChangeStatus = (user) => {
     Swal.fire({
       title: "Are you sure to change this status?",
@@ -56,30 +58,54 @@ const ManageUser = () => {
       cancelButtonColor: 'red',
       confirmButtonColor: 'green'
     })
-    .then(result => {
-      if (result.isConfirmed) {
-        let data = {
-          accountId: user.accountId,
-          statusName: user.statusName === 'active' ? 'inactive' : 'active'
-        }
-        userApi.changeUserStatus(data, dispatch)
-        setAllUser((prevUser) =>
-          prevUser.map((userInfo) => {
-            if (userInfo.accountId === user.accountId) {
-              return {
-                ...userInfo,
-                statusName: user.statusName === 'active' ? 'inactive' : 'active'
+      .then(result => {
+        if (result.isConfirmed) {
+          let data = {
+            accountId: user.accountId,
+            statusName: user.statusName === 'active' ? 'inactive' : 'active'
+          }
+          userApi.changeUserStatus(data, dispatch)
+          setAllUser((prevUser) =>
+            prevUser.map((userInfo) => {
+              if (userInfo.accountId === user.accountId) {
+                return {
+                  ...userInfo,
+                  statusName: user.statusName === 'active' ? 'inactive' : 'active'
+                }
+              } else {
+                return userInfo
               }
-            } else {
-              return userInfo
-            }
-          })
-        )
-      }else {
-        navigate('/manage-user')
-      }
-    });
+            })
+          )
+        } else {
+          navigate('/manage-user')
+        }
+      });
   }
+  const handleDelete = (username) => {
+    if (window.confirm('Are you sure you want to delete this account?')) {
+      axiosClient
+        .post(`${BASE_URL}/deleteAccount`, { username }) 
+        .then(() => {
+          toast.success('Account deleted successfully!');
+          setTimeout(() => {
+            window.location.reload();
+          }, 500); 
+        })
+   
+        .catch((error) => {
+          if (error.response.status === 400) {
+            toast.error('Username is null!');
+          } else if (error.response.status === 404) {
+            toast.error('Username does not exist!');
+          } else if (error.response.status === 500) {
+            toast.error('Unable to delete the account!');
+          } else {
+            toast.error('An error occurred while deleting the account.');
+          }
+        });
+    }
+  };
   
   const columns = [
     {
@@ -161,19 +187,24 @@ const ManageUser = () => {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            borderRadius="4px">
+            borderRadius="4px"
+          >
             <IconButton onClick={() => handleOpen(params.row)}>
               <EditIcon sx={{ color: '#00FF00' }} />
             </IconButton>
             {params.row.statusName === 'active' ? (
               <IconButton onClick={() => handleChangeStatus(params.row)}>
-                <BlockIcon sx={{ color: 'red' }} />
+                <BlockIcon sx={{ color: '#ff6666' }} />
               </IconButton>
             ) : (
               <IconButton onClick={() => handleChangeStatus(params.row)}>
-                <CheckIcon sx={{ color: '#00FF00' }} />
+                <CheckIcon sx={{ color: '#009900' }} />
               </IconButton>
             )}
+        
+            <IconButton onClick={() => handleDelete(params.row.username)}>
+              <DeleteIcon sx={{ color: '#2596be' }} />
+            </IconButton>
           </Box>
         )
       }
@@ -189,7 +220,7 @@ const ManageUser = () => {
         allUser={allUser}
         openCreateAccount={openCreateAccount}
         handleCloseCreateAccount={handleCloseCreateAccount}
-        
+
       />
     </>
   )
