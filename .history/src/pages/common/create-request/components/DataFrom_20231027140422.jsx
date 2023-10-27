@@ -283,7 +283,7 @@ const OtherRequest = ({ userId }) => {
             onChange={handleChangeDepartment}
             displayEmpty>
             {
-              getAllManagerDepartment.map((item) => (
+              department.map((item) => (
                 <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
               ))
             }  
@@ -295,7 +295,7 @@ const OtherRequest = ({ userId }) => {
         <>
           <Typography mt={2} fontWeight="500">Department</Typography>
           <Select
-            value={department}
+            value={role}
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
             displayEmpty>
@@ -312,12 +312,12 @@ const OtherRequest = ({ userId }) => {
         <>
           <Typography mt={2} fontWeight="500">Department</Typography>
           <Select
-            value={department}
+            value={role}
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
             displayEmpty>
              {
-              getAllManagerDepartment.map((item) => (
+              department.map((item) => (
                 <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
               ))
             }  

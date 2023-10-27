@@ -25,8 +25,6 @@ import RequestListManager from '../pages/manager/request-list'
 import RequestManagerList from '../pages/manager/request-manager-list'
 import CheckHrList from '../pages/hr/check-hr-ticket'
 import BookRoom from '../components/BookRoom'
-import BookRoomManager from '../pages/manager/book-room-manager'
-import BookRoomHr from '../pages/hr/book-room-hr'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
 const RequestListAdmin = lazy(() => import('../pages/admin/request-list'))
@@ -160,10 +158,10 @@ export default function Router() {
               )
             },
             {
-              path: HR_PATH.BOOK_ROOM_HR,
+              path: PUBLIC_PATH.BOOK_ROOM,
               element: (
                 <Suspense fallback={<>Loading...</>}>
-                  <BookRoomHr />
+                  <BookRoom />
                 </Suspense>
               )
             }
@@ -225,10 +223,10 @@ export default function Router() {
           ]
         },
         {
-          path: MANAGER_PATH.BOOK_ROOM_MANAGER,
+          path: PUBLIC_PATH.BOOK_ROOM,
           element: (
             <Suspense fallback={<>Loading...</>}>
-              <BookRoomManager />
+              <BookRoom />
             </Suspense>
           )
         }

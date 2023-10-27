@@ -163,19 +163,6 @@ const requestApi = {
       }
     }
   },
-  getAllManagerDepartment: () => {
-    try {
-      const response = axiosClient.get(`${BASE_URL}/getManagerDepartment`)
-      return response
-    } catch (error) {
-      if (error.response.status === 400) {
-        toast.error('Request fail!')
-      }
-      if (error.response.status === 404) {
-        toast.error('User not found!')
-      }
-    }
-  },
   requestAttendanceForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/requestAttendanceForm`, data)
@@ -234,7 +221,7 @@ const requestApi = {
       toast.success('Send request successfully')
     } catch (error) {
       if (error.response.status === 400) {
-        toast.error('Date to must be after date from!')
+        toast.error('Request fail!')
       }
       if (error.response.status === 404) {
         toast.error('User not found!')

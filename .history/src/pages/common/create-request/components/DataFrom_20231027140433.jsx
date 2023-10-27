@@ -283,7 +283,7 @@ const OtherRequest = ({ userId }) => {
             onChange={handleChangeDepartment}
             displayEmpty>
             {
-              getAllManagerDepartment.map((item) => (
+              department.map((item) => (
                 <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
               ))
             }  
@@ -317,7 +317,7 @@ const OtherRequest = ({ userId }) => {
             onChange={handleChangeDepartment}
             displayEmpty>
              {
-              getAllManagerDepartment.map((item) => (
+              department.map((item) => (
                 <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
               ))
             }  
