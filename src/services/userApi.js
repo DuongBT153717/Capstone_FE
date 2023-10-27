@@ -100,6 +100,23 @@ const userApi = {
       }
     }
   }
+  ,
+  deleteAccount: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/deleteAccount`, data)
+      toast.success('Delete account succesfully!')
+    } catch (error) {
+      if (error.response.status === 400) {
+        toast.error('Username is null!')
+      }
+      if (error.response.status === 404) {
+        toast.error('Username already exists!')
+      }
+      if (error.response.status === 500) {
+        toast.error('Can not delete!')
+      }
+    }
+  }
 }
 
 export default userApi
