@@ -51,7 +51,7 @@ const Profile = () => {
       firstName: info?.firstName,
       lastName: info?.lastName,
       gender: info?.gender,
-      email: info?.email,
+      email: info?.country,
       city: info?.city,
       country: info?.country,
       phone: info?.telephoneNumber

@@ -12,19 +12,17 @@ import {
 } from '@mui/material'
 import dayjs from 'dayjs'
 import { getDownloadURL, ref } from 'firebase/storage'
+import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import USER from '../../../assets/images/user.jpg'
 import Header from '../../../components/Header'
 import { storage } from '../../../firebase/config'
-import useAuth from '../../../hooks/useAuth'
 import userApi from '../../../services/userApi'
 import EditProfile from './components/EditProfile'
 import Overview from './components/Overview'
-import { useFormik } from 'formik'
 import { validationSchema } from './components/until/validationSchema'
 const Profile = () => {
-  
   const [isHovered, setIsHovered] = useState(false)
   const [birth, setBirth] = useState(dayjs('2022-04-17'))
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -37,21 +35,23 @@ const Profile = () => {
   const [birthUpdate, setBirthUpdate] = useState('')
   const [phoneUpdate, setPhoneUpdate] = useState('')
   const [info, setInfo] = useState('')
-  const userInfo = useAuth()
+  const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    userApi.getUserInfo(userId, dispatch)
+  }, [userId])
+  const userInfo = useSelector((state) => state.user.getUserInfo?.userInfo)
   useEffect(() => {
     setBirthUpdate(userInfo?.dateOfBirth)
     setInfo(userInfo)
   }, [userInfo])
 
-  console.log(birthUpdate);
-  console.log(info?.firstName);
   const formik = useFormik({
-    enableReinitialize: true,
     initialValues: {
       firstName: info?.firstName,
       lastName: info?.lastName,
       gender: info?.gender,
-      email: info?.email,
+      email: info?.country,
       city: info?.city,
       country: info?.country,
       phone: info?.telephoneNumber
@@ -77,7 +77,7 @@ const Profile = () => {
     }
   })
 
-  console.log(formik.values.firstName)
+  console.log(formik.values)
   const handleMouseEnter = () => {
     setIsHovered(true)
   }

@@ -24,7 +24,7 @@ import Overview from './components/Overview'
 import { useFormik } from 'formik'
 import { validationSchema } from './components/until/validationSchema'
 const Profile = () => {
-  
+  const userInfo = useAuth()
   const [isHovered, setIsHovered] = useState(false)
   const [birth, setBirth] = useState(dayjs('2022-04-17'))
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -37,7 +37,7 @@ const Profile = () => {
   const [birthUpdate, setBirthUpdate] = useState('')
   const [phoneUpdate, setPhoneUpdate] = useState('')
   const [info, setInfo] = useState('')
-  const userInfo = useAuth()
+  
   useEffect(() => {
     setBirthUpdate(userInfo?.dateOfBirth)
     setInfo(userInfo)
@@ -46,12 +46,11 @@ const Profile = () => {
   console.log(birthUpdate);
   console.log(info?.firstName);
   const formik = useFormik({
-    enableReinitialize: true,
     initialValues: {
       firstName: info?.firstName,
       lastName: info?.lastName,
       gender: info?.gender,
-      email: info?.email,
+      email: info?.country,
       city: info?.city,
       country: info?.country,
       phone: info?.telephoneNumber

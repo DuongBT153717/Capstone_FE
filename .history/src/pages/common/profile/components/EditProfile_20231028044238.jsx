@@ -32,10 +32,8 @@ const EditProfile = (props) => {
                 nBlur={props.formik.handleBlur}
                 InputLabelProps={{ shrink: true }}
               />
-              {props.formik.touched.firstName && props.formik.errors.firstName ? (
-                <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                  {props.formik.errors.firstName}
-                </Typography>
+              {props.formik.touched.oldPassword && props.formik.errors.oldPassword ? (
+                <Typography sx={{ color: 'red' }}>{props.formik.errors.oldPassword}</Typography>
               ) : null}
             </Grid>
             <Grid item xs={12} md={6}>
@@ -45,15 +43,11 @@ const EditProfile = (props) => {
                 value={props.lastName}
                 onChange={props.formik.handleChange}
                 name="lastName"
+                o
                 onBlur={props.formik.handleBlur}
                 nBlur={props.formik.handleBlur}
                 InputLabelProps={{ shrink: true }}
               />
-              {props.formik.touched.lastName && props.formik.errors.lastName ? (
-                <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                  {props.formik.errors.lastName}
-                </Typography>
-              ) : null}
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
@@ -66,11 +60,6 @@ const EditProfile = (props) => {
                 onBlur={props.formik.handleBlur}
                 InputLabelProps={{ shrink: true }}
               />
-              {props.formik.touched.email && props.formik.errors.email ? (
-                <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                  {props.formik.errors.email}
-                </Typography>
-              ) : null}
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
@@ -83,11 +72,6 @@ const EditProfile = (props) => {
                 onBlur={props.formik.handleBlur}
                 InputLabelProps={{ shrink: true }}
               />
-              {props.formik.touched.phone && props.formik.errors.phone ? (
-                <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                  {props.formik.errors.phone}
-                </Typography>
-              ) : null}
             </Grid>
             <Grid item xs={12} md={6}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -111,13 +95,7 @@ const EditProfile = (props) => {
                 name="country"
                 onChange={props.formik.handleChange}
                 onBlur={props.formik.handleBlur}
-                InputLabelProps={{ shrink: true }}
-              />
-              {props.formik.touched.country && props.formik.errors.country ? (
-                <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                  {props.formik.errors.country}
-                </Typography>
-              ) : null}
+                InputLabelProps={{ shrink: true }}></TextField>
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
@@ -127,13 +105,7 @@ const EditProfile = (props) => {
                 name="city"
                 onChange={props.formik.handleChange}
                 onBlur={props.formik.handleBlur}
-                InputLabelProps={{ shrink: true }}
-              />
-              {props.formik.touched.city && props.formik.errors.city ? (
-                <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                  {props.formik.errors.city}
-                </Typography>
-              ) : null}
+                InputLabelProps={{ shrink: true }}></TextField>
             </Grid>
             <Grid item xs={12} md={6}>
               <FormControl fullWidth>
@@ -150,11 +122,6 @@ const EditProfile = (props) => {
                   <MenuItem value="female">Female</MenuItem>
                 </Select>
               </FormControl>
-              {props.formik.touched.gender && props.formik.errors.gender ? (
-                <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                  {props.formik.errors.gender}
-                </Typography>
-              ) : null}
             </Grid>
           </Grid>
         </Box>

@@ -24,9 +24,16 @@ import Overview from './components/Overview'
 import { useFormik } from 'formik'
 import { validationSchema } from './components/until/validationSchema'
 const Profile = () => {
-  
+  const userInfo = useAuth()
   const [isHovered, setIsHovered] = useState(false)
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [gender, setGender] = useState('')
+  const [email, setEmail] = useState('')
+  const [city, setCity] = useState('')
+  const [country, setCountry] = useState('')
   const [birth, setBirth] = useState(dayjs('2022-04-17'))
+  const [phone, setPhone] = useState('')
   const [userProfileImage, setUserProfileImage] = useState('')
   const [firstNameUpdate, setFirstNameUpdate] = useState('')
   const [lastNameUpdate, setLastNameUpdate] = useState('')
@@ -36,48 +43,40 @@ const Profile = () => {
   const [countryUpdate, setCountryUpdate] = useState('')
   const [birthUpdate, setBirthUpdate] = useState('')
   const [phoneUpdate, setPhoneUpdate] = useState('')
-  const [info, setInfo] = useState('')
-  const userInfo = useAuth()
+  const [userProfileImageUpdate, setUserProfileImageUpdate] = useState('')
   useEffect(() => {
-    setBirthUpdate(userInfo?.dateOfBirth)
-    setInfo(userInfo)
+    setFirstNameUpdate(userInfo?.firstName)
+    setLastNameUpdate(userInfo?.lastName)
+    setGenderUpdate(userInfo?.gender)
+    setCityUpdate(userInfo?.city)
+    setCountryUpdate(userInfo?.country)
+    setPhoneUpdate(userInfo?.telephoneNumber)
+    setEmailUpdate(userInfo?.email)
+    setBirthUpdate(dayjs(userInfo?.dateOfBirth))
+    setUserProfileImageUpdate(userInfo?.image)
   }, [userInfo])
 
-  console.log(birthUpdate);
-  console.log(info?.firstName);
-  const formik = useFormik({
-    enableReinitialize: true,
+   const formik = useFormik({
     initialValues: {
-      firstName: info?.firstName,
-      lastName: info?.lastName,
-      gender: info?.gender,
-      email: info?.email,
-      city: info?.city,
-      country: info?.country,
-      phone: info?.telephoneNumber
+      firstName: '',
+      lastName: '',
+      gender: '',
+      email: '',
+      city: '',
+      country: '',
+      phone: ''
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      let formData = new FormData()
-      const data = {
-        userId: accountId,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        gender: values.gender,
-        dateOfBirth: birth.format('YYYY-MM-DD'),
-        telephoneNumber: values.phone,
-        country: values.country,
-        city: values.city,
-        email: values.email
+      let data = {
+        accountId: accountId,
+        oldPassword: values.oldPassword,
+        newPassword: values.newPassword
       }
-      formData.append('data', JSON.stringify(data))
-      console.log(data)
-      formData.append('image', userImage.file)
-      userApi.updateProfile(formData, dispatch)
+      userApi.changePassword(data, dispatch)
     }
   })
 
-  console.log(formik.values.firstName)
   const handleMouseEnter = () => {
     setIsHovered(true)
   }
@@ -125,14 +124,63 @@ const Profile = () => {
   const accountId = useSelector((state) => state.auth.login?.currentUser?.accountId)
   const role = useSelector((state) => state.auth.login?.currentUser?.role)
   const dispatch = useDispatch()
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (
+      userInfo?.firstName === 'unknown' &&
+      userInfo?.lastName === 'unknown' &&
+      userInfo?.gender === 'unknown' &&
+      userInfo?.city === 'unknown' &&
+      userInfo?.dateOfBirth === 'unknown' &&
+      userInfo?.country === 'unknown' &&
+      userInfo?.email === 'unknown' &&
+      userInfo?.telephoneNumber === 'unknown' &&
+      userInfo?.image === 'unknown'
+    ) {
+      
+      let formData = new FormData()
+      const data = {
+        userId: accountId,
+        firstName: firstName,
+        lastName: lastName,
+        gender: gender,
+        dateOfBirth: birth.format('YYYY-MM-DD'),
+        telephoneNumber: phone,
+        country: country,
+        city: city,
+        email: email
+      }
+      formData.append('data', JSON.stringify(data))
+      console.log(data);
+      formData.append('image', userImage.file)
+      userApi.updateProfile(formData, dispatch)
+    } else {
+      let formData = new FormData()
+      const data = {
+        userId: accountId,
+        firstName: firstNameUpdate,
+        lastName: lastNameUpdate,
+        gender: genderUpdate,
+        dateOfBirth: birthUpdate.format('YYYY-MM-DD'),
+        telephoneNumber: phoneUpdate,
+        country: countryUpdate,
+        city: cityUpdate,
+        email: emailUpdate
+      }
+      formData.append('data', JSON.stringify(data))
+      console.log(data);
+      formData.append('image', userImage.file)
+      userApi.updateProfile(formData, dispatch)
+    }
+  }
 
-  console.log(formik.values)
   return (
     <Box textAlign="center" bgcolor="seashell" height="100vh">
       <Box pt={5}>
         <Header title="PROFILE USER" subtitle="Overview and Update New User Profile" />
+
         <Box px={5} mt={8}>
-          <form onSubmit={formik.handleSubmit} noValidate>
+          <form onSubmit={handleSubmit} noValidate>
             <Grid container spacing={3}>
               <Grid item xs={12} md={6} lg={4}>
                 {value === '2' ? (
@@ -280,16 +328,22 @@ const Profile = () => {
                         setCountryUpdate={setCountryUpdate}
                         setGendeUpdater={setGenderUpdate}
                         genderUpdate={genderUpdate}
-                        firstName={formik.values.firstName}
-                        lastName={formik.values.lastName}
-                        city={formik.values.city}
+                        firstName={firstName}
+                        setFirstName={setFirstName}
+                        lastName={lastName}
+                        setLastName={setLastName}
+                        city={city}
+                        setCity={setCity}
                         birth={birth}
                         setBirth={setBirth}
-                        phone={formik.values.phone}
-                        email={formik.values.email}
-                        country={formik.values.country}
-                        gender={formik.values.gender}
-                        formik={formik}
+                        phone={phone}
+                        setPhone={setPhone}
+                        email={email}
+                        setEmail={setEmail}
+                        country={country}
+                        setCountry={setCountry}
+                        setGender={setGender}
+                        gender={gender}
                       />
                     </TabPanel>
                   </TabContext>

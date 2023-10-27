@@ -24,7 +24,7 @@ import Overview from './components/Overview'
 import { useFormik } from 'formik'
 import { validationSchema } from './components/until/validationSchema'
 const Profile = () => {
-  
+  const userInfo = useAuth()
   const [isHovered, setIsHovered] = useState(false)
   const [birth, setBirth] = useState(dayjs('2022-04-17'))
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -36,48 +36,51 @@ const Profile = () => {
   const [countryUpdate, setCountryUpdate] = useState('')
   const [birthUpdate, setBirthUpdate] = useState('')
   const [phoneUpdate, setPhoneUpdate] = useState('')
-  const [info, setInfo] = useState('')
-  const userInfo = useAuth()
+
   useEffect(() => {
-    setBirthUpdate(userInfo?.dateOfBirth)
-    setInfo(userInfo)
+    setFirstNameUpdate(userInfo?.firstName)
+    setLastNameUpdate(userInfo?.lastName)
+    setGenderUpdate(userInfo?.gender)
+    setCityUpdate(userInfo?.city)
+    setCountryUpdate(userInfo?.country)
+    setPhoneUpdate(userInfo?.telephoneNumber)
+    setEmailUpdate(userInfo?.email)
+    setBirthUpdate(dayjs(userInfo?.dateOfBirth))
   }, [userInfo])
 
-  console.log(birthUpdate);
-  console.log(info?.firstName);
   const formik = useFormik({
-    enableReinitialize: true,
     initialValues: {
-      firstName: info?.firstName,
-      lastName: info?.lastName,
-      gender: info?.gender,
-      email: info?.email,
-      city: info?.city,
-      country: info?.country,
-      phone: info?.telephoneNumber
+      firstName: userInfo?.firstName,
+      lastName: userInfo?.lastName,
+      gender: userInfo?.gender,
+      email: userInfo?.country,
+      city: userInfo?.city,
+      country: userInfo?.country,
+      phone: userInfo?.telephoneNumber
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      let formData = new FormData()
-      const data = {
-        userId: accountId,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        gender: values.gender,
-        dateOfBirth: birth.format('YYYY-MM-DD'),
-        telephoneNumber: values.phone,
-        country: values.country,
-        city: values.city,
-        email: values.email
-      }
-      formData.append('data', JSON.stringify(data))
-      console.log(data)
-      formData.append('image', userImage.file)
-      userApi.updateProfile(formData, dispatch)
+     
+        let formData = new FormData()
+        const data = {
+          userId: accountId,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          gender: values.gender,
+          dateOfBirth: birth.format('YYYY-MM-DD'),
+          telephoneNumber: values.phone,
+          country: values.country,
+          city: values.city,
+          email: values.email
+        }
+        formData.append('data', JSON.stringify(data))
+        console.log(data)
+        formData.append('image', userImage.file)
+        userApi.updateProfile(formData, dispatch)
     }
   })
 
-  console.log(formik.values.firstName)
+  console.log(formik.values);
   const handleMouseEnter = () => {
     setIsHovered(true)
   }
@@ -125,6 +128,7 @@ const Profile = () => {
   const accountId = useSelector((state) => state.auth.login?.currentUser?.accountId)
   const role = useSelector((state) => state.auth.login?.currentUser?.role)
   const dispatch = useDispatch()
+
 
   console.log(formik.values)
   return (
@@ -281,13 +285,19 @@ const Profile = () => {
                         setGendeUpdater={setGenderUpdate}
                         genderUpdate={genderUpdate}
                         firstName={formik.values.firstName}
+                        
                         lastName={formik.values.lastName}
+                        
                         city={formik.values.city}
+                        
                         birth={birth}
                         setBirth={setBirth}
                         phone={formik.values.phone}
+                        
                         email={formik.values.email}
+                        
                         country={formik.values.country}
+                      
                         gender={formik.values.gender}
                         formik={formik}
                       />

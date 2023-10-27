@@ -53,18 +53,6 @@ const userApi = {
       }
     }
   },
-  getUserInfo2: async (data) => {
-
-    try {
-      const response = await axiosClient.post(`${BASE_URL}/getInfoUser`, data)
-      return response
-      
-    } catch (error) {
-      if (error.response.status === 404) {
-        toast.error('User not found!')
-      }
-    }
-  },
   getRoleByUserId: async (data) => {
     try {
       const response = await axiosClient.post(`${BASE_URL}/getRoleByUserId`, data)

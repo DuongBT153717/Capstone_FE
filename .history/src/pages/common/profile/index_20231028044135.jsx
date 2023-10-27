@@ -24,7 +24,7 @@ import Overview from './components/Overview'
 import { useFormik } from 'formik'
 import { validationSchema } from './components/until/validationSchema'
 const Profile = () => {
-  
+  const userInfo = useAuth()
   const [isHovered, setIsHovered] = useState(false)
   const [birth, setBirth] = useState(dayjs('2022-04-17'))
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -36,25 +36,27 @@ const Profile = () => {
   const [countryUpdate, setCountryUpdate] = useState('')
   const [birthUpdate, setBirthUpdate] = useState('')
   const [phoneUpdate, setPhoneUpdate] = useState('')
-  const [info, setInfo] = useState('')
-  const userInfo = useAuth()
+
   useEffect(() => {
-    setBirthUpdate(userInfo?.dateOfBirth)
-    setInfo(userInfo)
+    setFirstNameUpdate(userInfo?.firstName)
+    setLastNameUpdate(userInfo?.lastName)
+    setGenderUpdate(userInfo?.gender)
+    setCityUpdate(userInfo?.city)
+    setCountryUpdate(userInfo?.country)
+    setPhoneUpdate(userInfo?.telephoneNumber)
+    setEmailUpdate(userInfo?.email)
+    setBirthUpdate(dayjs(userInfo?.dateOfBirth))
   }, [userInfo])
 
-  console.log(birthUpdate);
-  console.log(info?.firstName);
   const formik = useFormik({
-    enableReinitialize: true,
     initialValues: {
-      firstName: info?.firstName,
-      lastName: info?.lastName,
-      gender: info?.gender,
-      email: info?.email,
-      city: info?.city,
-      country: info?.country,
-      phone: info?.telephoneNumber
+      firstName: userInfo?.firstName,
+      lastName: userInfo?.lastName,
+      gender: userInfo?.gender,
+      email: userInfo?.country,
+      city: userInfo?.city,
+      country: userInfo?.country,
+      phone: userInfo?.telephoneNumber
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -77,7 +79,7 @@ const Profile = () => {
     }
   })
 
-  console.log(formik.values.firstName)
+  console.log(formik.values)
   const handleMouseEnter = () => {
     setIsHovered(true)
   }
