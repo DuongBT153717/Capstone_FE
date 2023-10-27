@@ -514,6 +514,9 @@ const OtherRequest = ({ userId }) => {
   )
 }
 
+
+
+
 const LeaveRequest = ({ userId }) => {
   const [content, setContent] = useState('')
   const [dateFrom, setDateFrom] = useState(dayjs(new Date()))
@@ -523,6 +526,8 @@ const LeaveRequest = ({ userId }) => {
   const [duration, setDuration] = useState(0)
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
+
+
   const handleChangeHalfDay = (event) => {
     setChecked(event.target.checked)
   }
@@ -544,7 +549,7 @@ const LeaveRequest = ({ userId }) => {
       fromDate: dateFrom.format('YYYY-MM-DD'),
       toDate: dateTo.format('YYYY-MM-DD'),
       halfDay: checked,
-      durationEvaluation: duration,
+      durationEvaluation: durationEvaluation,
       departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
       receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
     }
@@ -553,9 +558,32 @@ const LeaveRequest = ({ userId }) => {
     setContent('')
     requestApi.requestLeaveForm(data)
   }
+
+
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      let data = {
+        userId: userId,
+        title: values.title,
+        content: values.content,
+        fromDate: dateFrom.format('YYYY-MM-DD'),
+        toDate: dateTo.format('YYYY-MM-DD'),
+        halfDay: values.checked,
+        durationEvaluation: values.durationEvaluation,
+        departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+        receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+      };
+      console.log(data);
+      requestApi.requestLeaveForm(data)
+    },
+  });
   return (
     <Box p={3} pl={0}>
-      <form onSubmit={handleSubmitLeaveRequest}>
+      <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography fontWeight="700" fontSize="20px">
@@ -565,12 +593,17 @@ const LeaveRequest = ({ userId }) => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Title</Typography>
             <TextField
-              onChange={(e) => setTitle(e.target.value)}
-              value={title}
+              name="title"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.title}
               sx={{ width: '100%' }}
               size="small"
               placeholder="Enter the request title"
             />
+            {formik.touched.title && formik.errors.title && (
+              <div className="error-message">{formik.errors.title}</div>
+            )}
           </Grid>
 
           <Grid item xs={6} mb={2}>
@@ -596,12 +629,18 @@ const LeaveRequest = ({ userId }) => {
           <Grid sx={{ display: 'flex', alignItems: 'center', gap: '10px' }} item xs={6}>
             <Typography fontWeight="500">Duration Evaluation</Typography>
             <TextField
-              onChange={(e) => setDuration(e.target.value)}
+               name="durationEvaluation"
+               onChange={formik.handleChange}
+               onBlur={formik.handleBlur}
+               value={formik.values.durationEvaluation}
               sx={{ width: '60%' }}
               size="small"
               placeholder="Enter the duration evaluation"
               type="number"
             />
+            {formik.touched.title && formik.errors.title && (
+              <div className="error-message">{formik.errors.durationEvaluation}</div>
+            )}
           </Grid>
           <Grid sx={{ display: 'flex', alignItems: 'center' }} item xs={12}>
             <Typography fontWeight="500">Half Day</Typography>
