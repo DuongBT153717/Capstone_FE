@@ -42,6 +42,7 @@ const Profile = () => {
   const [birthUpdate, setBirthUpdate] = useState('')
   const [phoneUpdate, setPhoneUpdate] = useState('')
   const [userProfileImageUpdate, setUserProfileImageUpdate] = useState('')
+  const [userImageFile, setUserImageFile] = useState([])
   useEffect(() => {
     setFirstNameUpdate(userInfo?.firstName)
     setLastNameUpdate(userInfo?.lastName)
@@ -53,7 +54,7 @@ const Profile = () => {
     setBirthUpdate(dayjs(userInfo?.dateOfBirth))
     setUserProfileImageUpdate(userInfo?.image)
   }, [userInfo])
-  console.log(userProfileImageUpdate);
+
   console.log(firstNameUpdate)
 
   const handleMouseEnter = () => {

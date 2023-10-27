@@ -71,9 +71,9 @@ const TicketDetail = () => {
     }
 
     requestApi.otherFormExistRequest(data)
-    setTimeout(function () {
-      location.reload()
-    }, 500)
+    // setTimeout(function () {
+    //   location.reload()
+    // }, 500)
   }
 
   const handleOpen = () => setOpen(true)
@@ -136,7 +136,7 @@ const TicketDetail = () => {
       }
     } else if (request[0]?.object?.topic === 'LEAVE_REQUEST') {
       let data = {
-        leaveRequestId: request[0]?.object?.leaveRequestId,
+        attendanceRequestId: request[0]?.object?.leaveRequestId,
         content: contentReason
       }
       console.log(data)

@@ -61,8 +61,7 @@ const TicketDetail = () => {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const userRole = useSelector((state) => state.auth.login?.currentUser.role)
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
-  const handleSendMessage = (e) => {
-    e.preventDefault()
+  const handleSendMessage = () => {
     let data = {
       userId: userId,
       requestId: requestId,
@@ -136,7 +135,7 @@ const TicketDetail = () => {
       }
     } else if (request[0]?.object?.topic === 'LEAVE_REQUEST') {
       let data = {
-        leaveRequestId: request[0]?.object?.leaveRequestId,
+        attendanceRequestId: request[0]?.object?.leaveRequestId,
         content: contentReason
       }
       console.log(data)
@@ -176,9 +175,6 @@ const TicketDetail = () => {
   if (request[0]?.requestMessageResponse && request[0]?.requestMessageResponse?.imageSender) {
     imgurlSender()
   }
-
-  console.log(request[0]?.requestMessageResponse?.receiverId)
-  console.log(currentUser?.accountId)
 
   const checkTopic = () => {
     if (request[0]?.object?.topic === 'ATTENDANCE_REQUEST') {
@@ -401,125 +397,26 @@ const TicketDetail = () => {
             <Box flex="1">{checkTopic()}</Box>
             <Box flex="4">
               <form onSubmit={handleSendMessage}>
-                <div
-                  ref={scrollbarsRef}
-                  style={{ overflow: 'auto', backgroundColor: '#f5f7f9', maxHeight: '430px' }}>
-                  <Box m={2} sx={{ left: '0' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                      <Button variant="outlined">{request[0]?.object?.topic}</Button>
-                    </Box>
+              <div
+                ref={scrollbarsRef}
+                style={{ overflow: 'auto', backgroundColor: '#f5f7f9', maxHeight: '430px' }}>
+                <Box m={2} sx={{ left: '0' }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button variant="outlined">{request[0]?.object?.topic}</Button>
                   </Box>
-                  {request?.map((req, index) => (
-                    <>
-                      {request[index]?.requestMessageResponse?.receiverId === userId ? (
-                        <>
-                          {index === 0 ? (
-                            <StyledPaper>
-                              <Box display="flex" justifyContent="space-between">
-                                <Box display="flex" gap={1} alignItems="center" mb={2}>
-                                  {req?.requestMessageResponse?.imageSender === null ? (
-                                    <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
-                                  ) : (
-                                    <Avatar src={imageSender} alt="Avatar" />
-                                  )}
-                                  <Box display="flex" flexDirection="column">
-                                    <Typography fontSize="16px" variant="body1">
-                                      {req?.requestMessageResponse?.senderFirstName === null ||
-                                      req?.requestMessageResponse?.senderLastName === null ? (
-                                        <>unknown</>
-                                      ) : (
-                                        <>
-                                          {' '}
-                                          {req?.requestMessageResponse?.senderFirstName}{' '}
-                                          {req?.requestMessageResponse?.senderLastName}
-                                        </>
-                                      )}
-                                    </Typography>
-                                    <Typography
-                                      sx={{ textTransform: 'capitalize' }}
-                                      fontSize="12px"
-                                      variant="body1">
-                                      {roleSender}
-                                    </Typography>
-                                  </Box>
-                                </Box>
-                                <Box>{req?.requestMessageResponse?.createDate}</Box>
-                              </Box>
-                              <Typography
-                                dangerouslySetInnerHTML={{
-                                  __html: req?.object?.content
-                                }}></Typography>
-                              {request[0]?.object?.topic !== 'OTHER_REQUEST' &&
-                              request[0]?.requestMessageResponse?.requestTicketStatus !=
-                                'CLOSED' ? (
-                                <Box display="flex" gap="10px" justifyContent="flex-end">
-                                  <Button
-                                    onClick={handleOpen}
-                                    variant="contained"
-                                    sx={{ bgcolor: 'red' }}>
-                                    Reject
-                                  </Button>
-
-                                  <LoadingButton
-                                    onClick={handleAccept}
-                                    variant="contained"
-                                    sx={{ bgcolor: 'green' }}>
-                                    Accept
-                                  </LoadingButton>
-                                </Box>
-                              ) : (
-                                <></>
-                              )}
-                            </StyledPaper>
-                          ) : (
-                            <StyledPaper>
-                              <Box display="flex" justifyContent="space-between">
-                                <Box display="flex" gap={1} alignItems="center" mb={2}>
-                                  {req?.requestMessageResponse?.imageSender === null ? (
-                                    <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
-                                  ) : (
-                                    <Avatar src={imageSender} alt="Avatar" />
-                                  )}
-                                  <Box display="flex" flexDirection="column">
-                                    <Typography fontSize="16px" variant="body1">
-                                      {req?.requestMessageResponse?.senderFirstName === null ||
-                                      req?.requestMessageResponse?.senderLastName === null ? (
-                                        <>unknown</>
-                                      ) : (
-                                        <>
-                                          {' '}
-                                          {req?.requestMessageResponse?.senderFirstName}{' '}
-                                          {req?.requestMessageResponse?.senderLastName}
-                                        </>
-                                      )}
-                                    </Typography>
-                                    <Typography
-                                      sx={{ textTransform: 'capitalize' }}
-                                      fontSize="12px"
-                                      variant="body1">
-                                      {roleSender}
-                                    </Typography>
-                                  </Box>
-                                </Box>
-
-                                <Box>{req?.requestMessageResponse?.createDate}</Box>
-                              </Box>
-                              <Typography
-                                dangerouslySetInnerHTML={{
-                                  __html: req?.object?.content
-                                }}></Typography>
-                            </StyledPaper>
-                          )}
-                        </>
-                      ) : (
-                        <>
-                          <StyledPaperAns>
+                </Box>
+                {request?.map((req, index) => (
+                  <>
+                    {request[index]?.requestMessageResponse?.receiverId === userId ? (
+                      <>
+                        {index === 0 ? (
+                          <StyledPaper>
                             <Box display="flex" justifyContent="space-between">
                               <Box display="flex" gap={1} alignItems="center" mb={2}>
                                 {req?.requestMessageResponse?.imageSender === null ? (
                                   <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
                                 ) : (
-                                  <Avatar src={imageReceiver} alt="Avatar" />
+                                  <Avatar src={imageSender} alt="Avatar" />
                                 )}
                                 <Box display="flex" flexDirection="column">
                                   <Typography fontSize="16px" variant="body1">
@@ -538,7 +435,7 @@ const TicketDetail = () => {
                                     sx={{ textTransform: 'capitalize' }}
                                     fontSize="12px"
                                     variant="body1">
-                                    {userRole}
+                                    {roleSender}
                                   </Typography>
                                 </Box>
                               </Box>
@@ -548,94 +445,168 @@ const TicketDetail = () => {
                               dangerouslySetInnerHTML={{
                                 __html: req?.object?.content
                               }}></Typography>
-                          </StyledPaperAns>
-                        </>
-                      )}
-                    </>
-                  ))}
-                </div>
-                <Box style={{ display: 'flex', flexDirection: 'column' }}>
-                  {currentUser?.role === 'hr' ||
-                  currentUser?.role === 'admin' ||
-                  currentUser?.role === 'security' ? (
-                    request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' &&
-                    request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
-                      <CKEditor
-                        editor={ClassicEditor}
-                        onChange={(event, editor) => {
-                          const data = editor.getData()
-                          setContent(data)
-                        }}
-                      />
+                            {request[0]?.object?.topic !== 'OTHER_REQUEST' &&
+                            request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' ? (
+                              <Box display="flex" gap="10px" justifyContent="flex-end">
+                                <Button
+                                  onClick={handleOpen}
+                                  variant="contained"
+                                  sx={{ bgcolor: 'red' }}>
+                                  Reject
+                                </Button>
+
+                                <LoadingButton
+                                  onClick={handleAccept}
+                                  variant="contained"
+                                  sx={{ bgcolor: 'green' }}>
+                                  Accept
+                                </LoadingButton>
+                              </Box>
+                            ) : (
+                              <></>
+                            )}
+                          </StyledPaper>
+                        ) : (
+                          <StyledPaper>
+                            <Box display="flex" justifyContent="space-between">
+                              <Box display="flex" gap={1} alignItems="center" mb={2}>
+                                {req?.requestMessageResponse?.imageSender === null ? (
+                                  <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
+                                ) : (
+                                  <Avatar src={imageSender} alt="Avatar" />
+                                )}
+                                <Box display="flex" flexDirection="column">
+                                  <Typography fontSize="16px" variant="body1">
+                                    {req?.requestMessageResponse?.senderFirstName === null ||
+                                    req?.requestMessageResponse?.senderLastName === null ? (
+                                      <>unknown</>
+                                    ) : (
+                                      <>
+                                        {' '}
+                                        {req?.requestMessageResponse?.senderFirstName}{' '}
+                                        {req?.requestMessageResponse?.senderLastName}
+                                      </>
+                                    )}
+                                  </Typography>
+                                  <Typography
+                                    sx={{ textTransform: 'capitalize' }}
+                                    fontSize="12px"
+                                    variant="body1">
+                                    {roleSender}
+                                  </Typography>
+                                </Box>
+                              </Box>
+
+                              <Box>{req?.requestMessageResponse?.createDate}</Box>
+                            </Box>
+                            <Typography
+                              dangerouslySetInnerHTML={{
+                                __html: req?.object?.content
+                              }}></Typography>
+                          </StyledPaper>
+                        )}
+                      </>
                     ) : (
-                      <></>
-                    )
-                  ) : request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' ? (
-                    <CKEditor
-                      editor={ClassicEditor}
-                      onChange={(event, editor) => {
-                        const data = editor.getData()
-                        setContent(data)
-                      }}
-                    />
+                      <>
+                        <StyledPaperAns>
+                          <Box display="flex" justifyContent="space-between">
+                            <Box display="flex" gap={1} alignItems="center" mb={2}>
+                              {req?.requestMessageResponse?.imageSender === null ? (
+                                <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
+                              ) : (
+                                <Avatar src={imageReceiver} alt="Avatar" />
+                              )}
+                              <Box display="flex" flexDirection="column">
+                                <Typography fontSize="16px" variant="body1">
+                                  {req?.requestMessageResponse?.senderFirstName === null ||
+                                  req?.requestMessageResponse?.senderLastName === null ? (
+                                    <>unknown</>
+                                  ) : (
+                                    <>
+                                      {' '}
+                                      {req?.requestMessageResponse?.senderFirstName}{' '}
+                                      {req?.requestMessageResponse?.senderLastName}
+                                    </>
+                                  )}
+                                </Typography>
+                                <Typography
+                                  sx={{ textTransform: 'capitalize' }}
+                                  fontSize="12px"
+                                  variant="body1">
+                                  {userRole}
+                                </Typography>
+                              </Box>
+                            </Box>
+                            <Box>{req?.requestMessageResponse?.createDate}</Box>
+                          </Box>
+                          <Typography
+                            dangerouslySetInnerHTML={{ __html: req?.object?.content }}></Typography>
+                        </StyledPaperAns>
+                      </>
+                    )}
+                  </>
+                ))}
+              </div>
+              <Box style={{ display: 'flex', flexDirection: 'column' }}>
+                {request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' &&
+                currentUser?.role === 'manager' && request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
+                  <CKEditor
+                    editor={ClassicEditor}
+                    onChange={(event, editor) => {
+                      const data = editor.getData()
+                      setContent(data)
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
+
+                <Box mt={2} justifyContent="space-between" display="flex">
+                  {currentUser?.role === 'hr' ? (
+                    <Link to="/request-list-hr">
+                      <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                        Back
+                      </Button>
+                    </Link>
+                  ) : currentUser?.role === 'employee' ? (
+                    <Link to="/request-list-employee">
+                      <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                        Back
+                      </Button>
+                    </Link>
+                  ) : currentUser?.role === 'manager' ? (
+                    <Link to="/request-list-manager">
+                      <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                        Back
+                      </Button>
+                    </Link>
+                  ) : currentUser?.role === 'admin' ? (
+                    <Link to="/request-list-admin">
+                      <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                        Back
+                      </Button>
+                    </Link>
+                  ) : currentUser?.role === 'security' ? (
+                    <Link to="/manage-user">
+                      <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                        Back
+                      </Button>
+                    </Link>
                   ) : (
                     <></>
                   )}
-
-                  <Box mt={2} justifyContent="space-between" display="flex">
-                    {currentUser?.role === 'hr' ? (
-                      <Link to="/request-list-hr">
-                        <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                          Back
-                        </Button>
-                      </Link>
-                    ) : currentUser?.role === 'employee' ? (
-                      <Link to="/request-list-employee">
-                        <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                          Back
-                        </Button>
-                      </Link>
-                    ) : currentUser?.role === 'manager' ? (
-                      <Link to="/request-list-manager">
-                        <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                          Back
-                        </Button>
-                      </Link>
-                    ) : currentUser?.role === 'admin' ? (
-                      <Link to="/request-list-admin">
-                        <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                          Back
-                        </Button>
-                      </Link>
-                    ) : currentUser?.role === 'security' ? (
-                      <Link to="/manage-user">
-                        <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                          Back
-                        </Button>
-                      </Link>
-                    ) : (
-                      <></>
-                    )}
-                    {currentUser?.role === 'hr' ||
-                    currentUser?.role === 'admin' ||
-                    currentUser?.role === 'security' ? (
-                      request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' &&
-                      request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
-                        <Button sx={{ mr: 2 }} type="submit" variant="contained" color="primary">
-                          Send
-                        </Button>
-                      ) : (
-                        <></>
-                      )
-                    ) : request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' ? (
-                      <Button sx={{ mr: 2 }} type="submit" variant="contained" color="primary">
-                        Send
-                      </Button>
-                    ) : (
-                      <></>
-                    )}
-                  </Box>
+                  {request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' && request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId && (
+                    <Button
+                      sx={{ mr: 2 }}
+                      
+                      type='submit'
+                      variant="contained"
+                      color="primary">
+                      Send
+                    </Button>
+                  )}
                 </Box>
+              </Box>
               </form>
             </Box>
           </Box>
@@ -646,18 +617,23 @@ const TicketDetail = () => {
             aria-describedby="modal-modal-description">
             <Box sx={style} display="flex" flexDirection="column">
               <form onSubmit={handleRejectRequest}>
-                <Typography fontSize="20px" fontWeight="700" mb={2}>
-                  Reason reject
-                </Typography>
-                <textarea
-                  value={contentReason}
-                  onChange={(e) => setContentReason(e.target.value)}
-                  style={{ width: '100%' }}
-                  rows={6}
-                />
-                <Button type="submit" variant="contained" sx={{ alignSelf: 'flex-end', mt: 2 }}>
-                  Save
-                </Button>
+
+              <Typography fontSize="20px" fontWeight="700" mb={2}>
+                Reason reject
+              </Typography>
+              <textarea
+                value={contentReason}
+                onChange={(e) => setContentReason(e.target.value)}
+                style={{ width: '100%' }}
+                rows={6}
+              />
+              <Button
+                type='submit'
+                variant="contained"
+                sx={{ alignSelf: 'flex-end', mt: 2 }}>
+                Save
+              </Button>
+                              
               </form>
             </Box>
           </Modal>

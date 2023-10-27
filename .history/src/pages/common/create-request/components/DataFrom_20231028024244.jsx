@@ -1,73 +1,95 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import { Box, Button, Checkbox, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
-import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
+import { DatePicker, DateTimePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
+import { useFormik } from 'formik'
+import { validationSchema } from '../until/validationSchema'
 
 const AttendenceFrom = ({ userId }) => {
-  const [from, setFrom] = useState(dayjs(new Date()))
-  const [to, setTo] = useState(dayjs(new Date()))
-  const [date, setDate] = useState('')
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
-  const { ticketId } = useParams()
-  const currentUser = useSelector((state) => state.auth.login?.currentUser)
+  const [from, setFrom] = useState(dayjs(new Date()));
+  const [to, setTo] = useState(dayjs(new Date()));
+  const [date, setDate] = useState(dayjs(new Date()));
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('');
+  const currentUser = useSelector((state) => state.auth.login?.currentUser);
+
+
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
-      const response = await requestApi.getReceiveIdAndDepartment(userId)
-      setReceiveIdAndDepartment(response)
+      const response = await requestApi.getReceiveIdAndDepartment(userId);
+      setReceiveIdAndDepartment(response);
     }
-    fetchReceiveIdAndDepartment()
-  }, [])
+    fetchReceiveIdAndDepartment();
+  }, []);
 
-  console.log(receiveIdAndDepartment)
+  // const handleCreateRequest = (e) => {
+  //   e.preventDefault();
+  //   let data = {
+  //     userId: userId,
+  //     title: title,
+  //     content: content,
+  //     manualDate: from.format('YYYY-MM-DD'),
+  //     manualFirstEntry: from.format('HH:mm:ss'),
+  //     manualLastExit: to.format('HH:mm:ss'),
+  //     departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+  //     receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+  //   };
+  //   requestApi.requestAttendanceForm(data);
+  //   setTitle('');
+  //   setContent('');
+  //   console.log(data);
+  // };
 
-  const handleCreateRequest = (e) => {
-    e.preventDefault()
-
-    let data = {
-      userId: userId,
-      title: title,
-      content: content,
-      ticketId: ticketId,
-      manualDate: from.format('YYYY-MM-DD'),
-      manualFirstEntry: from.format('HH:mm:ss'),
-      manualLastExit: to.format('HH:mm:ss'),
-      departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-      receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
-    }
-
-    requestApi.requestAttendanceFormExistTicket(data)
-    setTitle('')
-    setContent('')
-    console.log(data)
-  }
-
-  console.log(from.format('DD/MM/YYYY'))
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      let data = {
+        userId: userId,
+        title: values.title,
+        content: content,
+        manualDate: from.format('YYYY-MM-DD'),
+        manualFirstEntry: from.format('HH:mm:ss'),
+        manualLastExit: to.format('HH:mm:ss'),
+        departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+        receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+      };
+      console.log(data);
+      requestApi.requestAttendanceForm(data);
+    },
+  });
   return (
     <Box p={3} pl={0}>
-      <form onSubmit={handleCreateRequest}>
+      <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography fontWeight="700" fontSize="18px">
-              Request details{' '}
+              Request details
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography fontWeight="500">Title</Typography>
             <TextField
-              onChange={(e) => setTitle(e.target.value)}
-              value={title}
+              name="title"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.title}
               sx={{ width: '100%' }}
               size="small"
               placeholder="Enter the request title"
             />
+            {formik.touched.title && formik.errors.title && (
+              <div className="error-message">{formik.errors.title}</div>
+            )}
           </Grid>
           <Grid item xs={4} mb={2}>
             <Typography fontWeight="500">Date</Typography>
@@ -105,10 +127,13 @@ const AttendenceFrom = ({ userId }) => {
               data={content}
               editor={ClassicEditor}
               onChange={(event, editor) => {
-                const data = editor.getData()
-                setContent(data)
+                const data = editor.getData();
+                setContent(data);
               }}
             />
+            {/* {formik.touched.content && formik.errors.content && (
+              <div className="error-message">{formik.errors.content}</div>
+            )} */}
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
@@ -139,7 +164,7 @@ const AttendenceFrom = ({ userId }) => {
           ) : (
             <></>
           )}
-          <Button type="submit" variant="contained">
+          <Button type='submit' variant="contained">
             Save
           </Button>
         </Box>
@@ -147,6 +172,7 @@ const AttendenceFrom = ({ userId }) => {
     </Box>
   )
 }
+
 
 const OtRequest = () => <Box p={3}>Ot Request From</Box>
 
@@ -156,10 +182,9 @@ const OtherRequest = ({ userId }) => {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const [role, setRole] = useState('')
-  const [department, setDepartment] = useState('')
+  const [department, setDepartment] = useState()
   const [getAllManagerDepartment, setGetAllManagerDepartment] = useState([])
   const [manager, setManager] = useState('')
-  const {ticketId} = useParams()
   const handleChange = (event) => {
     setRole(event.target.value)
   }
@@ -176,11 +201,11 @@ const OtherRequest = ({ userId }) => {
   }, [])
 
   useEffect(() => {
-      const fetchAllManagerDepartment = async () => {
-        const response = await requestApi.getAllManagerDepartment()
-        setGetAllManagerDepartment(response)
-      }
-      fetchAllManagerDepartment()
+    const fetchAllManagerDepartment = async () => {
+      const response = await requestApi.getAllManagerDepartment()
+      setGetAllManagerDepartment(response)
+    }
+    fetchAllManagerDepartment()
   }, [])
 
   console.log(department);
@@ -237,7 +262,6 @@ const OtherRequest = ({ userId }) => {
     let data = {
       userId: userId,
       title: title,
-      ticketId: ticketId,
       content: content,
       departmentId: departmentId,
     }
@@ -245,7 +269,7 @@ const OtherRequest = ({ userId }) => {
     setTitle('')
     setContent('')
     setDepartment('')
-    requestApi.otherFormExistTicket(data)
+    requestApi.requestOtherForm(data)
   }
 
   const callApiToManager = (e, departmentId) => {
@@ -253,7 +277,6 @@ const OtherRequest = ({ userId }) => {
     let data = {
       userId: userId,
       title: title,
-      ticketId: ticketId,
       content: content,
       departmentId: departmentId,
       receivedId: manager[0].accountId
@@ -262,7 +285,7 @@ const OtherRequest = ({ userId }) => {
     setTitle('')
     setContent('')
     setDepartment('')
-    requestApi.otherFormExistTicket(data)
+    requestApi.requestOtherForm(data)
   }
 
   const callApiEmployee = (e, managerId) => {
@@ -270,15 +293,64 @@ const OtherRequest = ({ userId }) => {
     let data = {
       userId: userId,
       title: title,
-      ticketId: ticketId,
       content: content,
       departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
       receivedId: managerId
     }
     setTitle('')
     setContent('')
-    requestApi.otherFormExistTicket(data)
+    requestApi.requestOtherForm(data)
   }
+
+  // const formik = useFormik({
+  //   initialValues: {
+  //     title: '',
+  //   },
+  //   validationSchema: validationSchema,
+  //   onSubmit: (values) => {
+  //     let data = {
+  //       userId: userId,
+  //       title: title,
+  //       content: content,
+  //       departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+  //       receivedId: managerId
+  //     };
+  //     console.log(data);
+  //     if (currentUser?.role === 'employee' && role === 'manager') {
+  //       callApiEmployee(e, receiveIdAndDepartment?.managerInfoResponse?.managerId)
+  //     } else if (currentUser?.role === 'employee' && role === 'hr') {
+  //       callApiOther(e, 3)
+  //     } else if (currentUser?.role === 'employee' && role === 'security') {
+  //       callApiOther(e, 10)
+  //     } else if (currentUser?.role === 'employee' && role === 'admin') {
+  //       callApiOther(e, 9)
+  //     } else if (currentUser?.role === 'manager' && role === 'admin') {
+  //       callApiOther(e, 9)
+  //     } else if (currentUser?.role === 'manager' && role === 'security') {
+  //       callApiOther(e, 10)
+  //     } else if (currentUser?.role === 'manager' && role === 'hr') {
+  //       callApiOther(e, 3)
+  //     } else if (currentUser?.role === 'hr' && role === 'admin') {
+  //       callApiOther(e, 9)
+  //     } else if (currentUser?.role === 'hr' && role === 'security') {
+  //       callApiOther(e, 10)
+  //     } else if (currentUser?.role === 'hr' && role === 'manager') {
+  //       callApiToManager(e, department)
+  //     } else if (currentUser?.role === 'security' && role === 'admin') {
+  //       callApiOther(e, 9)
+  //     } else if (currentUser?.role === 'security' && role === 'hr') {
+  //       callApiOther(e, 3)
+  //     } else if (currentUser?.role === 'security' && role === 'manager') {
+  //       callApiToManager(e, department)
+  //     } else if (currentUser?.role === 'admin' && role === 'security') {
+  //       callApiOther(e, 10)
+  //     } else if (currentUser?.role === 'admin' && role === 'hr') {
+  //       callApiOther(e, 3)
+  //     } else if (currentUser?.role === 'admin' && role === 'manager') {
+  //       callApiToManager(e, department)
+  //     }
+  //   },
+  // });
 
   const handleDepartment = () => {
     if (currentUser?.role === 'admin' && role === 'manager') {
@@ -294,25 +366,24 @@ const OtherRequest = ({ userId }) => {
               getAllManagerDepartment.map((item) => (
                 <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
               ))
-            }  
+            }
           </Select>
         </>
       )
-    }  else if (currentUser?.role === 'hr' && role === 'manager') {
+    } else if (currentUser?.role === 'hr' && role === 'manager') {
       return (
         <>
           <Typography mt={2} fontWeight="500">Department</Typography>
           <Select
-            required
             value={department}
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
             displayEmpty>
-             {
+            {
               getAllManagerDepartment.map((item) => (
                 <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName}</MenuItem>
               ))
-            }  
+            }
           </Select>
         </>
       )
@@ -325,11 +396,11 @@ const OtherRequest = ({ userId }) => {
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
             displayEmpty>
-             {
+            {
               getAllManagerDepartment.map((item) => (
                 <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
               ))
-            }  
+            }
           </Select>
         </>
       )
@@ -365,7 +436,7 @@ const OtherRequest = ({ userId }) => {
                 <MenuItem value="security">Security</MenuItem>
               </Select>
             ) : currentUser?.role === 'hr' ? (
-              <Select required value={role} sx={{ width: '100%' }} onChange={handleChange} displayEmpty>
+              <Select value={role} sx={{ width: '100%' }} onChange={handleChange} displayEmpty>
                 <MenuItem value="admin">Admin</MenuItem>
                 <MenuItem value="manager">Manager</MenuItem>
                 <MenuItem value="security">Security</MenuItem>
@@ -451,7 +522,6 @@ const LeaveRequest = ({ userId }) => {
   const [title, setTitle] = useState('')
   const [duration, setDuration] = useState(0)
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
-  const { ticketId } = useParams()
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const handleChangeHalfDay = (event) => {
     setChecked(event.target.checked)
@@ -471,7 +541,6 @@ const LeaveRequest = ({ userId }) => {
       userId: userId,
       title: title,
       content: content,
-      ticketId: ticketId,
       fromDate: dateFrom.format('YYYY-MM-DD'),
       toDate: dateTo.format('YYYY-MM-DD'),
       halfDay: checked,
@@ -479,10 +548,10 @@ const LeaveRequest = ({ userId }) => {
       departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
       receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
     }
+    console.log(data)
     setTitle('')
     setContent('')
-    console.log(data)
-    requestApi.requestLeaveFormExistTicket(data)
+    requestApi.requestLeaveForm(data)
   }
   return (
     <Box p={3} pl={0}>
@@ -525,7 +594,7 @@ const LeaveRequest = ({ userId }) => {
             </LocalizationProvider>
           </Grid>
           <Grid sx={{ display: 'flex', alignItems: 'center', gap: '10px' }} item xs={6}>
-            <Typography fontWeight="500">Duration Evaluation</Typography>
+            <Typography fontWeight="500">Duration Evaluation (h)</Typography>
             <TextField
               onChange={(e) => setDuration(e.target.value)}
               sx={{ width: '60%' }}
@@ -562,7 +631,7 @@ const LeaveRequest = ({ userId }) => {
               </Button>
             </Link>
           ) : currentUser?.role === 'manager' ? (
-            <Link to="/request-manager-list">
+            <Link to="/request-manager-list'">
               <Button type="submit" variant="contained">
                 Back
               </Button>

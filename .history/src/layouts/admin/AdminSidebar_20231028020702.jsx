@@ -132,10 +132,6 @@ const AdminSidebar = () => {
               {' '}
               Manage Ticket
             </MenuItem>
-            <MenuItem active={activeIndex === 2} icon={<AppSettingsAltIcon />} component={<Link to="/check-book-room"  onClick={() => setActiveIndex(2)} />}>
-              {' '}
-              Check Book Room
-            </MenuItem>
           </Menu>
           
 

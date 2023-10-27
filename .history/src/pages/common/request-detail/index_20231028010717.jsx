@@ -136,7 +136,7 @@ const TicketDetail = () => {
       }
     } else if (request[0]?.object?.topic === 'LEAVE_REQUEST') {
       let data = {
-        leaveRequestId: request[0]?.object?.leaveRequestId,
+        attendanceRequestId: request[0]?.object?.leaveRequestId,
         content: contentReason
       }
       console.log(data)

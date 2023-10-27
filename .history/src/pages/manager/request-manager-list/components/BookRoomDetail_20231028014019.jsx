@@ -151,29 +151,39 @@ const BookListDetail = () => {
                 </CardContent>
                 <Divider />
                 <CardActions sx={{ justifyContent: 'space-between', py: '8px' }}>
-                  <Link to="/manage-list-admin">
-                    <Button variant="contained" sx={{ bgcolor: 'rgb(94, 53, 177)' }}>
-                      Back to Dashboard
-                    </Button>
-                  </Link>
-                  <Box display="flex" gap="10px">
-                    {bookRoomDetail[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' ? (
-                      <Box display="flex" gap="10px" justifyContent="flex-end">
-                        <Button onClick={handleOpen} variant="contained" sx={{ bgcolor: 'red' }}>
-                          Reject
-                        </Button>
-                        <LoadingButton
-                          loading={isLoadingAccept}
-                          onClick={handleAcceptBookRoom}
-                          variant="contained"
-                          sx={{ bgcolor: 'green' }}>
-                          Accept
-                        </LoadingButton>
-                      </Box>
-                    ) : (
-                      <></>
-                    )}
-                  </Box>
+                {currentUser?.role === 'hr' ? (
+              <Link to="/manage-user">
+                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                  Back to Dashboard
+                </Button>
+              </Link>
+            ) : currentUser?.role === 'employee' ? (
+              <Link to="/request-list-employee">
+                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                  Back to Dashboard
+                </Button>
+              </Link>
+            ) : currentUser?.role === 'manager' ? (
+              <Link to="/request-list-manager">
+                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                  Back to Dashboard
+                </Button>
+              </Link>
+            ) : currentUser?.role === 'admin' ? (
+              <Link to="/request-list-admin">
+                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                  Back to Dashboard
+                </Button>
+              </Link>
+            ) : currentUser?.role === 'security' ? (
+              <Link to="/manage-user">
+                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                  Back to Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <></>
+            )}
                 </CardActions>
               </Card>
             </form>

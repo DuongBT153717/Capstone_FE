@@ -14,8 +14,7 @@ export const ADMIN_PATH = {
     LAYOUT: "/",   
     REQUEST_LIST_ADMIN:'/request-list-admin',
     BOOK_ROOM_DETAIL: '/room-detail/:ticketId',
-    MANAGE_LIST_TICKET_ADMIN: '/manage-list-admin',
-    CHECK_BOOK_ROOM: '/check-book-room',
+    MANAGE_LIST_TICKET_ADMIN: '/manage-list-admin'
 }
 
 export const MANAGER_PATH = {

@@ -303,7 +303,7 @@ const OtherRequest = ({ userId }) => {
         <>
           <Typography mt={2} fontWeight="500">Department</Typography>
           <Select
-            required
+           required
             value={department}
             sx={{ width: '100%' }}
             onChange={handleChangeDepartment}
@@ -365,7 +365,7 @@ const OtherRequest = ({ userId }) => {
                 <MenuItem value="security">Security</MenuItem>
               </Select>
             ) : currentUser?.role === 'hr' ? (
-              <Select required value={role} sx={{ width: '100%' }} onChange={handleChange} displayEmpty>
+              <Select value={role} sx={{ width: '100%' }} onChange={handleChange} displayEmpty>
                 <MenuItem value="admin">Admin</MenuItem>
                 <MenuItem value="manager">Manager</MenuItem>
                 <MenuItem value="security">Security</MenuItem>

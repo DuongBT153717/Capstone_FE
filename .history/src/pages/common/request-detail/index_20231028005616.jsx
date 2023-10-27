@@ -61,8 +61,7 @@ const TicketDetail = () => {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const userRole = useSelector((state) => state.auth.login?.currentUser.role)
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
-  const handleSendMessage = (e) => {
-    e.preventDefault()
+  const handleSendMessage = () => {
     let data = {
       userId: userId,
       requestId: requestId,
@@ -136,7 +135,7 @@ const TicketDetail = () => {
       }
     } else if (request[0]?.object?.topic === 'LEAVE_REQUEST') {
       let data = {
-        leaveRequestId: request[0]?.object?.leaveRequestId,
+        attendanceRequestId: request[0]?.object?.leaveRequestId,
         content: contentReason
       }
       console.log(data)

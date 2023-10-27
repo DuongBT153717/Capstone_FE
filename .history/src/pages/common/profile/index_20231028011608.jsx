@@ -53,7 +53,7 @@ const Profile = () => {
     setBirthUpdate(dayjs(userInfo?.dateOfBirth))
     setUserProfileImageUpdate(userInfo?.image)
   }, [userInfo])
-  console.log(userProfileImageUpdate);
+
   console.log(firstNameUpdate)
 
   const handleMouseEnter = () => {

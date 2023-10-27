@@ -17,6 +17,7 @@ import requestApi from '../../../../services/requestApi'
 import axiosClient from '../../../../utils/axios-config'
 import { BASE_URL } from '../../../../services/constraint'
 import { toast } from 'react-toastify'
+import { useSelector } from 'react-redux'
 
 const style = {
   position: 'absolute',
@@ -36,6 +37,7 @@ const BookListDetail = () => {
   const [isLoadingAccept, setIsLoadingAccept] = useState(false)
   const [contentReason, setContentReason] = useState('')
   const [open, setOpen] = useState(false)
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const navigate = useNavigate()
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -151,29 +153,39 @@ const BookListDetail = () => {
                 </CardContent>
                 <Divider />
                 <CardActions sx={{ justifyContent: 'space-between', py: '8px' }}>
-                  <Link to="/manage-list-admin">
-                    <Button variant="contained" sx={{ bgcolor: 'rgb(94, 53, 177)' }}>
-                      Back to Dashboard
-                    </Button>
-                  </Link>
-                  <Box display="flex" gap="10px">
-                    {bookRoomDetail[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' ? (
-                      <Box display="flex" gap="10px" justifyContent="flex-end">
-                        <Button onClick={handleOpen} variant="contained" sx={{ bgcolor: 'red' }}>
-                          Reject
-                        </Button>
-                        <LoadingButton
-                          loading={isLoadingAccept}
-                          onClick={handleAcceptBookRoom}
-                          variant="contained"
-                          sx={{ bgcolor: 'green' }}>
-                          Accept
-                        </LoadingButton>
-                      </Box>
-                    ) : (
-                      <></>
-                    )}
-                  </Box>
+                {currentUser?.role === 'hr' ? (
+              <Link to="/manage-user">
+                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                  Back to Dashboard
+                </Button>
+              </Link>
+            ) : currentUser?.role === 'employee' ? (
+              <Link to="/request-list-employee">
+                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                  Back to Dashboard
+                </Button>
+              </Link>
+            ) : currentUser?.role === 'manager' ? (
+              <Link to="/request-list-manager">
+                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                  Back to Dashboard
+                </Button>
+              </Link>
+            ) : currentUser?.role === 'admin' ? (
+              <Link to="/request-list-admin">
+                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                  Back to Dashboard
+                </Button>
+              </Link>
+            ) : currentUser?.role === 'security' ? (
+              <Link to="/manage-user">
+                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                  Back to Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <></>
+            )}
                 </CardActions>
               </Card>
             </form>

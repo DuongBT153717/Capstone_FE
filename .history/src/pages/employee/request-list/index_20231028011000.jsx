@@ -26,10 +26,19 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
+function formatDate(date) {
+  const createDate = new Date(date);
+  const year = createDate.getFullYear().toString().slice(-2);
+  const month = String(createDate.getMonth() + 1).padStart(2, '0');
+  const day = String(createDate.getDate()).padStart(2, '0');
+  const hours = String(createDate.getHours()).padStart(2, '0');
+  const minutes = String(createDate.getMinutes()).padStart(2, '0');
+  const seconds = String(createDate.getSeconds()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
 function Row(props) {
   const { row } = props
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
 
   const navigate = useNavigate()
   return (
@@ -47,47 +56,40 @@ function Row(props) {
           {row.topic}
         </TableCell>
         <TableCell>{row.requestTickets[row.requestTickets.length - 1].title}</TableCell>
-        <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>
-          {row.createDate}
-        </TableCell>
-        <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>
-          {row.updateDate}
-        </TableCell>
-        <TableCell>
-          {' '}
-          {row.status === false ? (
-            <Box
-              width="85%"
-              margin="0 auto"
-              p="5px"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              borderRadius="4px">
-              <Typography color="#a9a9a9">CLOSE</Typography>
-            </Box>
-          ) : row.status === true ? (
-            <Box
-              width="85%"
-              margin="0 auto"
-              p="5px"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              borderRadius="4px">
-              <Typography color="#000">AVALIABLE</Typography>
-            </Box>
-          ) : null}
-        </TableCell>
+        <TableCell>{formatDate(row.createDate)}</TableCell>
+        <TableCell>{formatDate(row.updateDate)}</TableCell>
+        <TableCell> {row.status === false ? (
+          <Box
+            width="80%"
+            margin="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            borderRadius="4px">
+            <Typography color="#a9a9a9">CLOSE</Typography>
+          </Box>
+        ) : row.status === true ? (
+          <Box
+            width="80%"
+            margin="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            borderRadius="4px">
+            <Typography color="#000">AVALIABLE</Typography>
+          </Box>
+        ) : null}</TableCell>
         <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-          {row.status === true ? (
-            <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
-              <AddIcon />
-            </IconButton>
-          ) : null}
+        {row.status === true ? (
+          <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
+            <AddIcon />
+          </IconButton>
+        ): null }
         </TableCell>
         <TableCell>
-          {row.topic === 'OTHER_REQUEST' && row.status === true ? (
+          { row.topic ==='OTHER_REQUEST' && row.status===true ? (
             <Button>
               <CloseIcon />
               <Typography fontSize={'13px'} color="#000">
@@ -95,10 +97,11 @@ function Row(props) {
               </Typography>
             </Button>
           ) : null}
+
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
@@ -108,19 +111,17 @@ function Row(props) {
                 <TableHead>
                   <TableRow>
                     <TableCell style={{ width: '120px' }}>Request ID</TableCell>
-                    <TableCell style={{ width: '200px' }} align="center">
-                      Status
-                    </TableCell>
+                    <TableCell style={{ width: '200px' }} align="center">Status</TableCell>
                     <TableCell style={{ width: '50px' }}>Receiver</TableCell>
-                    <TableCell style={{ width: '100px' }}>Create Date</TableCell>
-                    <TableCell style={{ width: '100px' }}>Update Date</TableCell>
+                    <TableCell style={{ width: '100px' }} >Create Date</TableCell>
+                    <TableCell style={{ width: '100px' }} >Update Date</TableCell>
                     <TableCell style={{ width: '100px' }}>Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {row.requestTickets.map((request_row) => (
                     <TableRow key={request_row.requestId}>
-                      <TableCell component="th" scope="row">
+                      <TableCell  style={{ width: '120px' }} component="th" scope="row">
                         {request_row.requestId.slice(0, 10)}
                       </TableCell>
                       <TableCell>
@@ -133,7 +134,8 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#FAFAD2'}
-                            borderRadius="4px">
+                            borderRadius="4px"
+                          >
                             <AccessTimeFilledIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
@@ -146,7 +148,8 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#2e7c67'}
-                            borderRadius="4px">
+                            borderRadius="4px"
+                          >
                             <CheckIcon />
                             <Typography color="#fff">{request_row.requestStatus}</Typography>
                           </Box>
@@ -159,7 +162,8 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#6495ED'}
-                            borderRadius="4px">
+                            borderRadius="4px"
+                          >
                             <RunningWithErrorsIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
@@ -172,31 +176,25 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#C0C0C0'}
-                            borderRadius="4px">
+                            borderRadius="4px"
+                          >
                             <CloseIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
                         ) : null}
                       </TableCell>
-                      <TableCell key={request_row.userId}>
-                        {request_row.receiverFirstName}
-                      </TableCell>
-                      <TableCell>{request_row.requestCreateDate}</TableCell>
-                      <TableCell>{request_row.requestUpdateDate}</TableCell>
+                      <TableCell key={request_row.userId}
+                      >{request_row.receiverFirstName}</TableCell>
+                      <TableCell style={{ width: '150px' }}>{formatDate(request_row.requestCreateDate)}</TableCell>
+                      <TableCell style={{ width: '150px' }}>{formatDate(request_row.requestUpdateDate)}</TableCell>
                       <TableCell>
-                        {row.topic !== 'ROOM_REQUEST' ? (
-                          <IconButton
-                            sx={{ color: '#1565c0' }}
-                            onClick={() => navigate(`/request-detail/${request_row.requestId}`)}>
-                            <RemoveRedEyeIcon />
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            sx={{ color: '#1565c0' }}
-                            onClick={() => navigate(`/book-room-detail-manager/${request_row.requestId}`)}>
-                            <AssignmentTurnedInIcon />
-                          </IconButton>
-                        )}
+                        <IconButton
+                          sx={{ color: '#1565c0' }}
+                          onClick={() =>
+                            navigate(`/request-detail/${request_row.requestId}`)
+                          }>
+                          <RemoveRedEyeIcon />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -236,8 +234,8 @@ const TableRowsLoader = ({ rowsNum }) => {
     </TableRow>
   ))
 }
-export default function RequestManagerList() {
-  const currentUser = useSelector((state) => state.auth.login?.currentUser)
+export default function RequestListEmployee() {
+  const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const [listRequestAndTicket, setListRequestAndTicket] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
@@ -261,7 +259,7 @@ export default function RequestManagerList() {
     }
     fetchListRequestAndTicketByAdmin()
   }, [])
-  console.log(currentUser?.accountId)
+  console.log(currentUser?.accountId);
   return (
     <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">
       <Box flex={1} sx={{ overflowX: 'hidden' }}>
@@ -286,31 +284,30 @@ export default function RequestManagerList() {
             <TableHead>
               <TableRow>
                 <TableCell style={{ width: '10px' }} />
-                <TableCell style={{ width: '160px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
                   TicketID
                 </TableCell>
-                <TableCell style={{ width: '160px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell style={{ width: '80px', fontWeight: 'bold', fontSize: '18px' }}>
                   Topic
                 </TableCell>
-                <TableCell style={{ width: '300px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell style={{ width: '250px', fontWeight: 'bold', fontSize: '18px' }}>
                   Title
                 </TableCell>
-                <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell style={{ width: '250px', fontWeight: 'bold', fontSize: '18px' }}>
                   Create Date
                 </TableCell>
-                <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell style={{ width: '250px', fontWeight: 'bold', fontSize: '18px' }}>
                   Update Date
                 </TableCell>
-                <TableCell
-                  align="center"
-                  style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell align='center' style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
                   Status
                 </TableCell>
                 <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
                   Action
                 </TableCell>
-                <TableCell
-                  style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}></TableCell>
+                <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+
+                </TableCell>
               </TableRow>
             </TableHead>
             {isLoading ? (

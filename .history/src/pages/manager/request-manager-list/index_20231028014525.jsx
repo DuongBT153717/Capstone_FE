@@ -192,8 +192,9 @@ function Row(props) {
                           </IconButton>
                         ) : (
                           <IconButton
+                            disabled={request_row.requestStatus === 'PENDING' ? true : false}
                             sx={{ color: '#1565c0' }}
-                            onClick={() => navigate(`/book-room-detail-manager/${request_row.requestId}`)}>
+                            onClick={() => navigate(`/room-detail/${request_row.requestId}`)}>
                             <AssignmentTurnedInIcon />
                           </IconButton>
                         )}

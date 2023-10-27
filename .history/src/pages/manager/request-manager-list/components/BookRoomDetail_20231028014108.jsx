@@ -17,6 +17,7 @@ import requestApi from '../../../../services/requestApi'
 import axiosClient from '../../../../utils/axios-config'
 import { BASE_URL } from '../../../../services/constraint'
 import { toast } from 'react-toastify'
+import { useSelector } from 'react-redux'
 
 const style = {
   position: 'absolute',
@@ -33,12 +34,7 @@ const BookListDetail = () => {
   const { ticketId } = useParams()
   const [bookRoomDetail, setBookRoomDetail] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const [isLoadingAccept, setIsLoadingAccept] = useState(false)
-  const [contentReason, setContentReason] = useState('')
-  const [open, setOpen] = useState(false)
-  const navigate = useNavigate()
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   useEffect(() => {
     setIsLoading(true)
     const fetchGetRequestDetailByAdmin = async () => {
@@ -51,33 +47,8 @@ const BookListDetail = () => {
 
   console.log(bookRoomDetail)
 
-  const handleAcceptBookRoom = async () => {
-    if (bookRoomDetail) {
-      let data = {
-        roomBookingFormRoomId: bookRoomDetail[0]?.object?.roomBookingRequestId,
-        content: ''
-      }
-      try {
-        setIsLoadingAccept(true)
-        await axiosClient.post(`${BASE_URL}/acceptBookRoom`, data)
-        setIsLoadingAccept(false)
-
-        toast.success('Accept book room successfully!')
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }
-
-  const handleRejectRequest = () => {
-    let data = {
-      roomBookingFormRoomId: bookRoomDetail[0]?.object?.roomBookingRequestId,
-      content: contentReason
-    }
-    console.log(data)
-    requestApi.rejectBookRoomRequest(data)
-    navigate('/manage-list-admin')
-  }
+ 
+ 
 
   return (
     <Box height="100vh" bgcolor="seashell">
@@ -151,57 +122,44 @@ const BookListDetail = () => {
                 </CardContent>
                 <Divider />
                 <CardActions sx={{ justifyContent: 'space-between', py: '8px' }}>
-                  <Link to="/manage-list-admin">
-                    <Button variant="contained" sx={{ bgcolor: 'rgb(94, 53, 177)' }}>
-                      Back to Dashboard
-                    </Button>
-                  </Link>
-                  <Box display="flex" gap="10px">
-                    {bookRoomDetail[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' ? (
-                      <Box display="flex" gap="10px" justifyContent="flex-end">
-                        <Button onClick={handleOpen} variant="contained" sx={{ bgcolor: 'red' }}>
-                          Reject
-                        </Button>
-                        <LoadingButton
-                          loading={isLoadingAccept}
-                          onClick={handleAcceptBookRoom}
-                          variant="contained"
-                          sx={{ bgcolor: 'green' }}>
-                          Accept
-                        </LoadingButton>
-                      </Box>
-                    ) : (
-                      <></>
-                    )}
-                  </Box>
+                {currentUser?.role === 'hr' ? (
+              <Link to="/manage-user">
+                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                  Back to Dashboard
+                </Button>
+              </Link>
+            ) : currentUser?.role === 'employee' ? (
+              <Link to="/request-list-employee">
+                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                  Back to Dashboard
+                </Button>
+              </Link>
+            ) : currentUser?.role === 'manager' ? (
+              <Link to="/request-list-manager">
+                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                  Back to Dashboard
+                </Button>
+              </Link>
+            ) : currentUser?.role === 'admin' ? (
+              <Link to="/request-list-admin">
+                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                  Back to Dashboard
+                </Button>
+              </Link>
+            ) : currentUser?.role === 'security' ? (
+              <Link to="/manage-user">
+                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                  Back to Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <></>
+            )}
                 </CardActions>
               </Card>
             </form>
           </Grid>
         </Grid>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description">
-          <Box sx={style} display="flex" flexDirection="column">
-            <Typography fontSize="20px" fontWeight="700" mb={2}>
-              Reason reject
-            </Typography>
-            <textarea
-              value={contentReason}
-              onChange={(e) => setContentReason(e.target.value)}
-              style={{ width: '100%' }}
-              rows={6}
-            />
-            <Button
-              onClick={handleRejectRequest}
-              variant="contained"
-              sx={{ alignSelf: 'flex-end', mt: 2 }}>
-              Save
-            </Button>
-          </Box>
-        </Modal>
       </Box>
     </Box>
   )

@@ -193,7 +193,7 @@ function Row(props) {
                         ) : (
                           <IconButton
                             sx={{ color: '#1565c0' }}
-                            onClick={() => navigate(`/book-room-detail-manager/${request_row.requestId}`)}>
+                            onClick={() => navigate(`/room-detail/${request_row.requestId}`)}>
                             <AssignmentTurnedInIcon />
                           </IconButton>
                         )}

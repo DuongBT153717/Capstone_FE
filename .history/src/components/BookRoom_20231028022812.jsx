@@ -248,6 +248,7 @@ import requestApi from '../services/requestApi'
           <DateNavigator />
           <TodayButton />
           <Appointments />
+          <AppointmentTooltip contentComponent={Content} showOpenButton />
           <Resources data={resources} mainResourceName="roomId" />
           <IntegratedGrouping />
           <IntegratedEditing />

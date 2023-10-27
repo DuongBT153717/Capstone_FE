@@ -213,9 +213,8 @@ import requestApi from '../services/requestApi'
           <Box display="flex" alignItems="center" justifyContent="center" height="100%">
             <CircularProgress />
           </Box>
-          ) :         
-            currentUser?.role === 'manager' || currentUser?.role === 'hr' ? 
-            <Scheduler data={data}>
+        ) : (
+          <Scheduler data={data}>
             <ViewState />
             <EditingState onCommitChanges={commitChanges} />
             <GroupingState grouping={grouping}  />
@@ -223,39 +222,39 @@ import requestApi from '../services/requestApi'
             <Toolbar />
             <DateNavigator />
             <TodayButton />
+  
             <Appointments />
             <Resources data={resources} mainResourceName="roomId" />
             <IntegratedGrouping />
             <IntegratedEditing />
-            <AppointmentTooltip contentComponent={Content} showOpenButton />
+            {/* <AppointmentTooltip contentComponent={Content} showOpenButton />
             <AppointmentForm
               booleanEditorComponent={BoolEditor}
               labelComponent={LabelComponent}
               dateEditorComponent={DateEditor}
               textEditorComponent={TextEditor}
               basicLayoutComponent={BasicLayout}
-            />
+            /> */}
             <GroupingPanel />
             <DragDropProvider />
-          </Scheduler> :  
-          currentUser?.role === 'admin' || currentUser?.role === 'security' ? 
-          <Scheduler data={data}>
-          <ViewState />
-          <EditingState onCommitChanges={commitChanges} />
-          <GroupingState grouping={grouping}  />
-          <DayView Time startDayHour={8} cellDuration={60} endDayHour={24} />
-          <Toolbar />
-          <DateNavigator />
-          <TodayButton />
-          <Appointments />
-          <Resources data={resources} mainResourceName="roomId" />
-          <IntegratedGrouping />
-          <IntegratedEditing />
-          <GroupingPanel />
-          <DragDropProvider /> 
           </Scheduler>
-          : <></>
-        }
+          //   <Scheduler
+          //   timeZone="America/Los_Angeles"
+          //   dataSource={data}
+          //   defaultCurrentView="timelineDay"
+          //   groups={grouping}
+          //   cellDuration={60}
+          //   firstDayOfWeek={0}
+          //   startDayHour={8}
+          //   endDayHour={20}>
+          //   <Resource
+          //     fieldExpr="roomId"
+          //     dataSource={room}
+          //     label="Room"
+          //   />
+  
+          // </Scheduler>
+        )}
       </Paper>
     )
   }

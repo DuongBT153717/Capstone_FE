@@ -132,11 +132,11 @@ const BookListDetail = () => {
                         <Typography>
                           Status: {
                             bookRoomDetail[0]?.requestMessageResponse?.requestTicketStatus !== 'CLOSED' ?
-                            <span style={{ color: 'brown' }}>Waiting</span> :
+                            <span>Waiting</span> :
                           bookRoomDetail[0]?.object?.status === true ? (
-                            <span style={{ color: 'green' }}>Accepted</span>
+                            <span style={{ color: 'green' }}>Accept</span>
                           ) : bookRoomDetail[0]?.object?.status === false ? (
-                            <span style={{ color: 'red' }}>Rejected</span>
+                            <span style={{ color: 'red' }}>Reject</span>
                           ) : <></>
                           }
                         </Typography>
