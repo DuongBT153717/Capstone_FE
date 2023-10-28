@@ -10,14 +10,12 @@ import {
   TextField,
   Typography
 } from '@mui/material'
+import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
+import { BASE_URL } from '../../../../services/constraint'
 import userApi from '../../../../services/userApi'
 import axiosClient from '../../../../utils/axios-config'
-import { BASE_URL } from '../../../../services/constraint'
-import { toast } from 'react-toastify'
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
 import { validationSchema } from './until/validationSchema'
 
 const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAllUser }) => {
@@ -87,8 +85,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
     initialValues: {
       username: '',
       role: '',
-      departmentName: '',
-
+      department: ''
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -96,7 +93,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
         username: values.username,
         password: '123',
         role: values.role,
-        departmentName: values.departmentName
+        departmentName: values.department
       }
       console.log(data)
       try {
@@ -117,12 +114,12 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
           toast.error('Username already exists!')
         }
       }
-    },
-  });
+    }
+  })
 
+  console.log(formik.values)
   const handleSetRole = () => {
-
-    if (department === 'security') {
+    if (formik.values.department === 'security') {
       return (
         <>
           <FormControl fullWidth sx={{ mb: 2 }}>
@@ -130,20 +127,21 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              label="Age"
+              name="role"
+              label="Department"
               onBlur={formik.handleBlur}
               value={formik.values.role}
               onChange={formik.handleChange}
-            >
-              {formik.touched.role && formik.errors.role && (
-                <div className="error-message">{formik.errors.role}</div>
-              )}
+              InputLabelProps={{ shrink: true }}>
               <MenuItem value="security">Security</MenuItem>
             </Select>
           </FormControl>
+          {formik.touched.role && formik.errors.role && (
+            <div className="error-message">{formik.errors.role}</div>
+          )}
         </>
       )
-    } else if (department === 'human resources') {
+    } else if (formik.values.department === 'human resources') {
       return (
         <>
           <FormControl fullWidth sx={{ mb: 2 }}>
@@ -151,15 +149,21 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
+              name="role"
+              label="Department"
+              InputLabelProps={{ shrink: true }}
               onBlur={formik.handleBlur}
               value={formik.values.role}
               onChange={formik.handleChange}>
               <MenuItem value="hr">HR</MenuItem>
             </Select>
           </FormControl>
+          {formik.touched.role && formik.errors.role && (
+            <div className="error-message">{formik.errors.role}</div>
+          )}
         </>
       )
-    } else if (department === 'Admin') {
+    } else if (formik.values.department === 'Admin') {
       return (
         <>
           <FormControl fullWidth sx={{ mb: 2 }}>
@@ -167,21 +171,27 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
+              name="role"
+              label="Department"
+              InputLabelProps={{ shrink: true }}
               onBlur={formik.handleBlur}
               value={formik.values.role}
               onChange={formik.handleChange}>
               <MenuItem value="admin">Admin</MenuItem>
             </Select>
           </FormControl>
+          {formik.touched.role && formik.errors.role && (
+            <div className="error-message">{formik.errors.role}</div>
+          )}
         </>
       )
     } else if (
-      department === 'tech D1' ||
-      department === 'tech D2' ||
-      department === 'tech D3' ||
-      department === 'tech D4' ||
-      department === 'tech D5' ||
-      department === 'tech D6'
+      formik.values.department === 'tech D1' ||
+      formik.values.department === 'tech D2' ||
+      formik.values.department === 'tech D3' ||
+      formik.values.department === 'tech D4' ||
+      formik.values.department === 'tech D5' ||
+      formik.values.department === 'tech D6'
     ) {
       return (
         <>
@@ -191,13 +201,17 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={formik.values.role}
-              label="Age"
+              InputLabelProps={{ shrink: true }}
+              name="role"
+              label="Role"
               onChange={formik.handleChange}>
-
               <MenuItem value="manager">Manager</MenuItem>
               <MenuItem value="employee">Employee</MenuItem>
             </Select>
           </FormControl>
+          {formik.touched.role && formik.errors.role && (
+            <div className="error-message">{formik.errors.role}</div>
+          )}
         </>
       )
     }
@@ -234,9 +248,10 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={department}
-              onChange={handleChangeDepartment}
+              value={formik.values.department}
+              onChange={formik.handleChange}
               label="Department"
+              name="department"
               InputLabelProps={{ shrink: true }}>
               {listDepartment.map((item, index) => (
                 <MenuItem key={index} value={item.departmentName}>
@@ -245,6 +260,9 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
               ))}
             </Select>
           </FormControl>
+          {formik.touched.department && formik.errors.department && (
+            <div className="error-message">{formik.errors.department}</div>
+          )}
 
           {handleSetRole()}
 

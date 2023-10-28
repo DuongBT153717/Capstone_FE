@@ -44,10 +44,24 @@ const userApi = {
     try {
       const response = await axiosClient.post(`${BASE_URL}/getInfoUser`, data)
       dispatch(getUserInfoSuccess(response))
+      return response
+      
     } catch (error) {
       if (error.response.status === 404) {
         toast.error('User not found!')
         dispatch(getUserInfoFailed())
+      }
+    }
+  },
+  getUserInfo2: async (data) => {
+
+    try {
+      const response = await axiosClient.post(`${BASE_URL}/getInfoUser`, data)
+      return response
+      
+    } catch (error) {
+      if (error.response.status === 404) {
+        toast.error('User not found!')
       }
     }
   },
