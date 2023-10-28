@@ -4,5 +4,5 @@ export const validationSchema =  Yup.object({
       .matches(/^[a-zA-Z0-9_]+$/, 'Username should only contain letters, numbers, and underscores')
       .required('Username is required'),
       role: Yup.string().required("Role is require!"),
-      department: Yup.string().required("Required"),
+      departmentName: Yup.string().required("Required"),
   });

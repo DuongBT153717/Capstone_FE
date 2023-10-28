@@ -639,7 +639,7 @@ const LeaveRequest = ({ userId }) => {
               placeholder="Enter the duration evaluation"
               type="number"
             />
-            {formik.touched.durationEvaluation && formik.errors.durationEvaluation && (
+            {formik.touched.title && formik.errors.title && (
               <div className="error-message">{formik.errors.durationEvaluation}</div>
             )}
           </Grid>

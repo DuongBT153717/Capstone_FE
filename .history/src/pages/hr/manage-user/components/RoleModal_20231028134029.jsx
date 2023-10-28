@@ -25,40 +25,33 @@ const RoleModal = ({ open, handleClose, user, setAllUser }) => {
     p: 2
   }
   const [role, setRole] = useState('')
-  const [allDepartment, setAllDepartment] = useState('')
   const [department, setDepartment] = useState('')
+  const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const dispatch = useDispatch()
   const handleChange = (event) => {
     setRole(event.target.value)
   }
-
-  const handleChangeDepartment = (event) => {
-    setDepartment(event.target.value)
-  }
   const isLoading = useSelector((state) => state.user.changeRoleAccount.isFetching)
   useEffect(() => {
-    const fetchAllDepartmentManager = async () => {
-      const res = await userApi.getAllDepartmentManager()
-      setAllDepartment(res)
+    const fetchAllDepartmentManager = () => {
+      const res = userApi.getAllDepartmentManager()
+      setDepartment(res)
     }
     fetchAllDepartmentManager()
   },[])
-
+  console.log(department);
   const handleSubmit = () => {
     let data = {
       accountId: user.accountId,
-      roleName: role,
-      departmentId: department
+      roleName: role
     }
-    console.log(data);
     userApi.changeRoleAccount(data, dispatch)
     setAllUser((prevUser) =>
       prevUser.map((userInfo) => {
         if (userInfo.accountId === user.accountId) {
           return {
             ...userInfo,
-            roleName: role,
-            departmentId: department
+            roleName: role
           }
         } else {
           return userInfo;
@@ -84,29 +77,31 @@ const RoleModal = ({ open, handleClose, user, setAllUser }) => {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={role}
-              label="Role"
+              label="Age"
               onChange={handleChange}>
               <MenuItem value="admin">Admin</MenuItem>
               <MenuItem value="hr">HR</MenuItem>
+              <MenuItem value="director">Director</MenuItem>
               <MenuItem value="security">Security</MenuItem>
               <MenuItem value="employee">Employee</MenuItem>
               <MenuItem value="manager">Manager</MenuItem>
             </Select>
           </FormControl>
           {
-            role === 'manager' || role === 'employee' ? <FormControl fullWidth sx={{ mb: 2 }}>
-            <InputLabel id="demo-simple-select-label">Department</InputLabel>
+            role === 'manager' ? <FormControl fullWidth sx={{ mb: 2 }}>
+            <InputLabel id="demo-simple-select-label">Role</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={department}
-              label="Department"
-              onChange={handleChangeDepartment}>
-                {
-                  allDepartment.map((item) => (
-                    <MenuItem key={item.departmentId} value={item.departmentId}>{item.departmentName}</MenuItem>
-                  ))
-                }
+              value={role}
+              label="Age"
+              onChange={handleChange}>
+              <MenuItem value="admin">Admin</MenuItem>
+              <MenuItem value="hr">HR</MenuItem>
+              <MenuItem value="director">Director</MenuItem>
+              <MenuItem value="security">Security</MenuItem>
+              <MenuItem value="employee">Employee</MenuItem>
+              <MenuItem value="manager">Manager</MenuItem>
             </Select>
           </FormControl>: <></>
           }

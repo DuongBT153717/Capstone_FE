@@ -107,9 +107,6 @@ const userApi = {
       if (error.response.status === 404) {
         toast.error('Role not found!')
         dispatch(changeRoleAccountFailed())
-      }else if (error.response.status === 400) {
-        toast.error('Your department has manager already')
-        dispatch(changeRoleAccountFailed())
       }
     }
   },
@@ -123,9 +120,6 @@ const userApi = {
       }
       if (error.response.status === 400) {
         toast.error('Username already exists!')
-      }
-      if (error.response.status === 409) {
-        toast.error('Your department has manager already!')
       }
     }
   }

@@ -27,6 +27,7 @@ const RoleModal = ({ open, handleClose, user, setAllUser }) => {
   const [role, setRole] = useState('')
   const [allDepartment, setAllDepartment] = useState('')
   const [department, setDepartment] = useState('')
+  const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const dispatch = useDispatch()
   const handleChange = (event) => {
     setRole(event.target.value)
