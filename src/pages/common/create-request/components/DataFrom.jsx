@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
 import { validationSchema } from '../until/validationSchema'
+import {validationSchema2} from '../until/validationSchema2'
 
 const AttendenceFrom = ({ userId }) => {
   const [from, setFrom] = useState(dayjs(new Date()));
@@ -50,6 +51,8 @@ const AttendenceFrom = ({ userId }) => {
   const formik = useFormik({
     initialValues: {
       title: '',
+      content:'',
+    
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -88,7 +91,7 @@ const AttendenceFrom = ({ userId }) => {
               placeholder="Enter the request title"
             />
             {formik.touched.title && formik.errors.title && (
-              <div className="error-message">{formik.errors.title}</div>
+              <div className="error-message" >{formik.errors.title}</div>
             )}
           </Grid>
           <Grid item xs={4} mb={2}>
@@ -563,16 +566,17 @@ const LeaveRequest = ({ userId }) => {
   const formik = useFormik({
     initialValues: {
       title: '',
+      durationEvaluation:'',
     },
-    validationSchema: validationSchema,
+    validationSchema:validationSchema2 ,
     onSubmit: (values) => {
       let data = {
         userId: userId,
         title: values.title,
-        content: values.content,
+        content: content,
         fromDate: dateFrom.format('YYYY-MM-DD'),
         toDate: dateTo.format('YYYY-MM-DD'),
-        halfDay: values.checked,
+        halfDay: checked,
         durationEvaluation: values.durationEvaluation,
         departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
         receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
@@ -638,7 +642,7 @@ const LeaveRequest = ({ userId }) => {
               placeholder="Enter the duration evaluation"
               type="number"
             />
-            {formik.touched.title && formik.errors.title && (
+            {formik.touched.durationEvaluation && formik.errors.durationEvaluation && (
               <div className="error-message">{formik.errors.durationEvaluation}</div>
             )}
           </Grid>

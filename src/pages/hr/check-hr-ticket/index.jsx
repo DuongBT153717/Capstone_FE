@@ -25,6 +25,16 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
+function formatDate(date) {
+  const createDate = new Date(date);
+  const year = createDate.getFullYear().toString().slice(-2);
+  const month = String(createDate.getMonth() + 1).padStart(2, '0');
+  const day = String(createDate.getDate()).padStart(2, '0');
+  const hours = String(createDate.getHours()).padStart(2, '0');
+  const minutes = String(createDate.getMinutes()).padStart(2, '0');
+  const seconds = String(createDate.getSeconds()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
 function Row(props) {
   const { row } = props
   const [open, setOpen] = useState(false)
@@ -52,8 +62,8 @@ function Row(props) {
           {row.topic}
         </TableCell>
         <TableCell>{row.requestTickets[row.requestTickets.length - 1].title}</TableCell>
-        <TableCell>{row.createDate}</TableCell>
-        <TableCell>{row.updateDate}</TableCell>
+        <TableCell>{formatDate(row.createDate)}</TableCell>
+        <TableCell>{formatDate(row.createDate)}</TableCell>
         <TableCell> {row.status === false ? (
           <Box
             width="80%"

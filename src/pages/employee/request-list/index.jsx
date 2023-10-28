@@ -38,7 +38,13 @@ function formatDate(date) {
 function Row(props) {
   const { row } = props
   const [open, setOpen] = useState(false)
-
+  const handelAcceptOtherRequest = (ticketId) => {
+    let data = {
+      ticketId: ticketId,
+    }
+    requestApi.acceptStatutOtherRequest(data)
+    
+  }
   const navigate = useNavigate()
   return (
     <>
@@ -57,7 +63,7 @@ function Row(props) {
         <TableCell>{row.requestTickets[row.requestTickets.length - 1].title}</TableCell>
         <TableCell>{formatDate(row.createDate)}</TableCell>
         <TableCell>{formatDate(row.updateDate)}</TableCell>
-        <TableCell> {row.status === false ? (
+        <TableCell> {row.status === false ?(
           <Box
             width="80%"
             margin="0 auto"
@@ -89,7 +95,7 @@ function Row(props) {
         </TableCell>
         <TableCell>
           { row.topic ==='OTHER_REQUEST' && row.status===true ? (
-            <Button >
+            <Button   onClick={() =>handelAcceptOtherRequest(row.ticketId)}>
               <CloseIcon />
               <Typography fontSize={'13px'} color="#000">
                 Finish
