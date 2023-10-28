@@ -191,8 +191,8 @@ function Row(props) {
                       </TableCell>
                       <TableCell key={request_row.userId}
                       >{request_row.receiverFirstName}</TableCell>
-                      <TableCell>{request_row.requestCreateDate}</TableCell>
-                      <TableCell>{request_row.requestUpdateDate}</TableCell>
+                      <TableCell>{formatDate(request_row.requestCreateDate)}</TableCell>
+                      <TableCell>{formatDate(request_row.requestUpdateDate)}</TableCell>
                       <TableCell>
                       {row.topic !== 'ROOM_REQUEST' && (
                         <IconButton

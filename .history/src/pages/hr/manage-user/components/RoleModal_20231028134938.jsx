@@ -27,6 +27,7 @@ const RoleModal = ({ open, handleClose, user, setAllUser }) => {
   const [role, setRole] = useState('')
   const [allDepartment, setAllDepartment] = useState('')
   const [department, setDepartment] = useState('')
+  const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const dispatch = useDispatch()
   const handleChange = (event) => {
     setRole(event.target.value)
@@ -94,7 +95,7 @@ const RoleModal = ({ open, handleClose, user, setAllUser }) => {
             </Select>
           </FormControl>
           {
-            role === 'manager' || role === 'employee' ? <FormControl fullWidth sx={{ mb: 2 }}>
+            role === 'manager' ? <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel id="demo-simple-select-label">Department</InputLabel>
             <Select
               labelId="demo-simple-select-label"

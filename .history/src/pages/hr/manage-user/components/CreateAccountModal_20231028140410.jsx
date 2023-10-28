@@ -88,7 +88,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
       department: ''
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       let data = {
         username: values.username,
         password: '123',
@@ -97,14 +97,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
       }
       console.log(data)
       try {
-        await axiosClient.post(`${BASE_URL}/register`, data)
-        let dataInfo = {
-          username: values.username,
-          statusId: '1',
-          statusName: 'active',
-          roleName: values.role
-        }
-        setAllUser((prevUser) => [...prevUser, dataInfo])
+        axiosClient.post(`${BASE_URL}/register`, data)
         toast.success('Create account succesfully!')
       } catch (error) {
         if (error.response.status === 404) {
@@ -117,7 +110,13 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
           toast.error('Your department has manager already!')
         }
       }
- 
+      let dataInfo = {
+        username: values.username,
+        statusId: '1',
+        statusName: 'active',
+        roleName: values.role
+      }
+      setAllUser((prevUser) => [...prevUser, dataInfo])
       handleCloseCreateAccount()
     }
   })
