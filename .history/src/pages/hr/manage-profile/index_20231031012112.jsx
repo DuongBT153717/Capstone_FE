@@ -47,19 +47,14 @@ const ManageProfile = () => {
     }
   }
   const imgurl = async () => {
-    if (usersProfile.length > 0) {
+    if(usersProfile.length > 0){
       try {
         const downloadURLPromises = usersProfile.map((item) => {
-          if (item.image === 'unknown') {
-            return Promise.resolve(null);
-          } else {
-            const storageRef = ref(storage, `/${item.image}`);
-            return getDownloadURL(storageRef);
-          }
-        });
-
+          const storageRef = ref(storage, `/${item.image}`)
+          return getDownloadURL(storageRef)
+        })
+  
         const downloadURLs = await Promise.all(downloadURLPromises)
-        console.log(downloadURLs);
         const updatedUsersProfile = usersProfile.map((item, index) => ({
           ...item,
           image: downloadURLs[index]
@@ -75,8 +70,6 @@ const ManageProfile = () => {
     imgurl()
   }, [usersProfile])
 
-
-  console.log(usersProfile);
   const columns = [
     {
       field: 'image',
@@ -151,10 +144,7 @@ const ManageProfile = () => {
               <CheckIcon sx={{ color: '#00FF00' }} />
             </IconButton>
             <IconButton>
-              <ClearIcon
-                onClick={() => handleRejectRequest(params.row.accountId)}
-                sx={{ color: 'red' }}
-              />
+              <ClearIcon onClick={() => handleRejectRequest(params.row.accountId)} sx={{ color: 'red' }} />
             </IconButton>
           </Box>
         )

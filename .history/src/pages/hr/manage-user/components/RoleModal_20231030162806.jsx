@@ -1,11 +1,19 @@
 import { LoadingButton } from '@mui/lab'
-import { Box, FormControl, InputLabel, MenuItem, Modal, Select, Typography } from '@mui/material'
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Modal,
+  Select,
+  Typography
+} from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
-import { BASE_URL } from '../../../../services/constraint'
+import { useDispatch, useSelector } from 'react-redux'
 import userApi from '../../../../services/userApi'
 import axiosClient from '../../../../utils/axios-config'
+import { BASE_URL } from '../../../../services/constraint'
+import { toast } from 'react-toastify'
 
 const RoleModal = ({ open, handleClose, user, setAllUser }) => {
   const style = {
@@ -22,6 +30,7 @@ const RoleModal = ({ open, handleClose, user, setAllUser }) => {
   const [role, setRole] = useState('')
   const [allDepartment, setAllDepartment] = useState('')
   const [department, setDepartment] = useState('')
+  const dispatch = useDispatch()
   const handleChange = (event) => {
     setRole(event.target.value)
   }
@@ -36,41 +45,41 @@ const RoleModal = ({ open, handleClose, user, setAllUser }) => {
       setAllDepartment(res)
     }
     fetchAllDepartmentManager()
-  }, [])
+  },[])
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     let data = {
       accountId: user.accountId,
       roleName: role,
       departmentId: department
     }
+    console.log(data);
     try {
       await axiosClient.post(`${BASE_URL}/changeRoleAccount`, data)
       toast.success('Change role successfully')
       setAllUser((prevUser) =>
-        prevUser.map((userInfo) => {
-          if (userInfo.accountId === user.accountId) {
-            return {
-              ...userInfo,
-              roleName: role,
-              departmentId: department
-            }
-          } else {
-            return userInfo
+      prevUser.map((userInfo) => {
+        if (userInfo.accountId === user.accountId) {
+          return {
+            ...userInfo,
+            roleName: role,
+            departmentId: department
           }
-        })
-      )
+        } else {
+          return userInfo;
+        }
+      })
+    );
+    handleClose()
     } catch (error) {
       if (error.response.status === 404) {
         toast.error('Role not found!')
-      } else if (error.response.status === 400) {
+      }else if (error.response.status === 400) {
         toast.error('Your department has manager already')
-      } else if (error.response.status === 409) {
+      }else if (error.response.status === 409) {
         toast.error('You are not allowed to change role this account')
       }
-    }
-    handleClose()
+    } 
   }
   return (
     <Modal
@@ -98,31 +107,30 @@ const RoleModal = ({ open, handleClose, user, setAllUser }) => {
               <MenuItem value="manager">Manager</MenuItem>
             </Select>
           </FormControl>
-          {role === 'manager' || role === 'employee' ? (
-            <FormControl fullWidth sx={{ mb: 2 }}>
-              <InputLabel id="demo-simple-select-label">Department</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={department}
-                label="Department"
-                onChange={handleChangeDepartment}>
-                {allDepartment.map((item) => (
-                  <MenuItem key={item.departmentId} value={item.departmentId}>
-                    {item.departmentName}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          ) : (
-            <></>
-          )}
+          {
+            role === 'manager' || role === 'employee' ? <FormControl fullWidth sx={{ mb: 2 }}>
+            <InputLabel id="demo-simple-select-label">Department</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={department}
+              label="Department"
+              onChange={handleChangeDepartment}>
+                {
+                  allDepartment.map((item) => (
+                    <MenuItem key={item.departmentId} value={item.departmentId}>{item.departmentName}</MenuItem>
+                  ))
+                }
+            </Select>
+          </FormControl>: <></>
+          }
           <Box width="100%" display="flex" justifyContent="flex-end">
             <LoadingButton
               variant="contained"
               loading={isLoading}
               sx={{ bgcolor: 'rgb(94, 53, 177)' }}
-              type="submit">
+              type="submit"
+              >
               Save
             </LoadingButton>
           </Box>

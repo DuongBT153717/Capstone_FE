@@ -86,8 +86,8 @@ const ManageUser = () => {
   console.log(allUser)
   const handleDelete = (user) => {
     Swal.fire({
-      title: 'Are you sure to delete this account?',
-      icon: 'warning',
+      title: 'Are you sure to change this status?',
+      icon: 'info',
       cancelButtonText: 'Cancel!',
       showCancelButton: true,
       cancelButtonColor: 'red',

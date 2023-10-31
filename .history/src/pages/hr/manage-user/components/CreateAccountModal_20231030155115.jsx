@@ -48,6 +48,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
 
   const decoded = jwtDecode(currentUser?.jwtToken);
 
+  console.log(decoded);
 
   const formik = useFormik({
     initialValues: {
@@ -71,8 +72,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
           username: values.username,
           statusId: '1',
           statusName: 'active',
-          roleName: values.role,
-          createdBy: decoded.sub
+          roleName: values.role
         }
         setAllUser((prevUser) => [...prevUser, dataInfo])
         toast.success('Create account succesfully!')

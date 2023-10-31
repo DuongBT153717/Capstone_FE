@@ -1,11 +1,11 @@
 import { LoadingButton } from '@mui/lab'
 import { Box, FormControl, InputLabel, MenuItem, Modal, Select, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
-import { BASE_URL } from '../../../../services/constraint'
+import { useDispatch, useSelector } from 'react-redux'
 import userApi from '../../../../services/userApi'
 import axiosClient from '../../../../utils/axios-config'
+import { BASE_URL } from '../../../../services/constraint'
+import { toast } from 'react-toastify'
 
 const RoleModal = ({ open, handleClose, user, setAllUser }) => {
   const style = {
@@ -38,8 +38,7 @@ const RoleModal = ({ open, handleClose, user, setAllUser }) => {
     fetchAllDepartmentManager()
   }, [])
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     let data = {
       accountId: user.accountId,
       roleName: role,

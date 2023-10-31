@@ -18,7 +18,7 @@ import axiosClient from '../../../utils/axios-config'
 import CreateAccountModal from './components/CreateAccountModal'
 import DataTableManageUser from './components/DataTable'
 import RoleModal from './components/RoleModal'
-import DeleteIcon from '@mui/icons-material/Delete'
+import DeleteIcon from '@mui/icons-material/Delete';
 import { toast } from 'react-toastify'
 const ManageUser = () => {
   const userId = useSelector((state) => state.auth.login.currentUser.accountId)
@@ -28,7 +28,7 @@ const ManageUser = () => {
   const [open, setOpen] = useState(false)
   const [openCreateAccount, setOpenCreateAccount] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const currentUser = useSelector((state) => state.auth.login?.currentUser)
+  const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const navigate = useNavigate()
   const handleOpen = (data) => {
     setOpen(true)
@@ -52,75 +52,65 @@ const ManageUser = () => {
 
   const handleChangeStatus = (user) => {
     Swal.fire({
-      title: 'Are you sure to change this status?',
-      icon: 'info',
+      title: "Are you sure to change this status?",
+      icon: "info",
       cancelButtonText: 'Cancel!',
       showCancelButton: true,
       cancelButtonColor: 'red',
       confirmButtonColor: 'green'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        let data = {
-          accountId: user.accountId,
-          statusName: user.statusName === 'active' ? 'inactive' : 'active'
-        }
-        userApi.changeUserStatus(data, dispatch)
-        setAllUser((prevUser) =>
-          prevUser.map((userInfo) => {
-            if (userInfo.accountId === user.accountId) {
-              return {
-                ...userInfo,
-                statusName: user.statusName === 'active' ? 'inactive' : 'active'
-              }
-            } else {
-              return userInfo
-            }
-          })
-        )
-      } else {
-        navigate('/manage-user')
-      }
     })
+      .then(result => {
+        if (result.isConfirmed) {
+          let data = {
+            accountId: user.accountId,
+            statusName: user.statusName === 'active' ? 'inactive' : 'active'
+          }
+          userApi.changeUserStatus(data, dispatch)
+          setAllUser((prevUser) =>
+            prevUser.map((userInfo) => {
+              if (userInfo.accountId === user.accountId) {
+                return {
+                  ...userInfo,
+                  statusName: user.statusName === 'active' ? 'inactive' : 'active'
+                }
+              } else {
+                return userInfo
+              }
+            })
+          )
+        } else {
+          navigate('/manage-user')
+        }
+      });
   }
-
-  console.log(allUser)
-  const handleDelete = (user) => {
-    Swal.fire({
-      title: 'Are you sure to delete this account?',
-      icon: 'warning',
-      cancelButtonText: 'Cancel!',
-      showCancelButton: true,
-      cancelButtonColor: 'red',
-      confirmButtonColor: 'green'
-    }).then((result) => {
-      if (result.isConfirmed) {
+  const handleDelete = (username) => {
+    if (window.confirm('Are you sure you want to delete this account?')) {
       let data = {
-        username: user.username,
-        hrId: currentUser?.accountId
+        username: username,
+        hrId: currentUser
       }
       axiosClient
-        .post(`${BASE_URL}/deleteAccount`, data)
+        .post(`${BASE_URL}/deleteAccount`, { username }) 
         .then(() => {
-          toast.success('Account deleted successfully!')
-          setAllUser((prevUser) =>
-            prevUser.filter((userInfo) => userInfo.accountId !== user.accountId)
-          )
+          toast.success('Account deleted successfully!');
+          setTimeout(() => {
+            window.location.reload();
+          }, 500); 
         })
         .catch((error) => {
           if (error.response.status === 400) {
-            toast.error('Username is null!')
+            toast.error('Username is null!');
           } else if (error.response.status === 404) {
-            toast.error('Username does not exist!')
+            toast.error('Username does not exist!');
           } else if (error.response.status === 500) {
-            toast.error('Unable to delete the account!')
+            toast.error('Unable to delete the account!');
           } else {
-            toast.error('An error occurred while deleting the account.')
+            toast.error('An error occurred while deleting the account.');
           }
-        })
+        });
     }
-  })
-}
-
+  };
+  
   const columns = [
     {
       field: 'username',
@@ -208,7 +198,8 @@ const ManageUser = () => {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            borderRadius="4px">
+            borderRadius="4px"
+          >
             <IconButton onClick={() => handleOpen(params.row)}>
               <EditIcon sx={{ color: '#00FF00' }} />
             </IconButton>
@@ -221,8 +212,8 @@ const ManageUser = () => {
                 <CheckIcon sx={{ color: '#009900' }} />
               </IconButton>
             )}
-
-            <IconButton onClick={() => handleDelete(params.row)}>
+        
+            <IconButton onClick={() => handleDelete(params.row.username)}>
               <DeleteIcon sx={{ color: '#2596be' }} />
             </IconButton>
           </Box>
@@ -233,18 +224,14 @@ const ManageUser = () => {
   return (
     <>
       <Header title="TEAM" subtitle="Managing the team Members" />
-      <DataTableManageUser
-        rows={allUser}
-        columns={columns}
-        handleOpenCreateAccount={handleOpenCreateAccount}
-        isLoading={isLoading}
-      />
+      <DataTableManageUser rows={allUser} columns={columns} handleOpenCreateAccount={handleOpenCreateAccount} isLoading={isLoading} />
       <RoleModal setAllUser={setAllUser} user={user} open={open} handleClose={handleClose} />
       <CreateAccountModal
         setAllUser={setAllUser}
         allUser={allUser}
         openCreateAccount={openCreateAccount}
         handleCloseCreateAccount={handleCloseCreateAccount}
+
       />
     </>
   )

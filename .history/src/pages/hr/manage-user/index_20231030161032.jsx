@@ -85,15 +85,7 @@ const ManageUser = () => {
 
   console.log(allUser)
   const handleDelete = (user) => {
-    Swal.fire({
-      title: 'Are you sure to delete this account?',
-      icon: 'warning',
-      cancelButtonText: 'Cancel!',
-      showCancelButton: true,
-      cancelButtonColor: 'red',
-      confirmButtonColor: 'green'
-    }).then((result) => {
-      if (result.isConfirmed) {
+    if (window.confirm('Are you sure you want to delete this account?')) {
       let data = {
         username: user.username,
         hrId: currentUser?.accountId
@@ -118,8 +110,7 @@ const ManageUser = () => {
           }
         })
     }
-  })
-}
+  }
 
   const columns = [
     {
