@@ -38,8 +38,7 @@ const RoleModal = ({ open, handleClose, user, setAllUser }) => {
     fetchAllDepartmentManager()
   }, [])
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     let data = {
       accountId: user.accountId,
       roleName: role,

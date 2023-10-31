@@ -17,8 +17,7 @@ import { BASE_URL } from '../../../../services/constraint'
 import userApi from '../../../../services/userApi'
 import axiosClient from '../../../../utils/axios-config'
 import { validationSchema } from './until/validationSchema'
-import { useSelector } from 'react-redux'
-import { jwtDecode } from "jwt-decode";
+
 const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAllUser }) => {
   const style = {
     position: 'absolute',
@@ -46,8 +45,6 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
     getAllDepartment()
   }, [])
 
-  const decoded = jwtDecode(currentUser?.jwtToken);
-
 
   const formik = useFormik({
     initialValues: {
@@ -71,8 +68,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
           username: values.username,
           statusId: '1',
           statusName: 'active',
-          roleName: values.role,
-          createdBy: decoded.sub
+          roleName: values.role
         }
         setAllUser((prevUser) => [...prevUser, dataInfo])
         toast.success('Create account succesfully!')

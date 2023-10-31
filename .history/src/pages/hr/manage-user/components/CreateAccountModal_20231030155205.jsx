@@ -72,7 +72,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
           statusId: '1',
           statusName: 'active',
           roleName: values.role,
-          createdBy: decoded.sub
+          createdBy: decoded
         }
         setAllUser((prevUser) => [...prevUser, dataInfo])
         toast.success('Create account succesfully!')

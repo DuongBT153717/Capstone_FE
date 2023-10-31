@@ -49,14 +49,11 @@ const ManageProfile = () => {
   const imgurl = async () => {
     if (usersProfile.length > 0) {
       try {
-        const downloadURLPromises = usersProfile.map((item) => {
-          if (item.image === 'unknown') {
-            return Promise.resolve(null);
-          } else {
-            const storageRef = ref(storage, `/${item.image}`);
-            return getDownloadURL(storageRef);
-          }
-        });
+        const downloadURLPromises = usersProfile.map((item, index) => {
+            const storageRef = ref(storage, `/${item.image}`)
+            return getDownloadURL(storageRef)
+          
+        })
 
         const downloadURLs = await Promise.all(downloadURLPromises)
         console.log(downloadURLs);
