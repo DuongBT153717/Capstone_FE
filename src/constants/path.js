@@ -8,6 +8,7 @@ export const PUBLIC_PATH = {
     CREATE_REQUEST_EXISTED: '/create-request-existed/:ticketId',
     NOT_FOUND: '*',
     REQUEST_DETAIL: '/request-detail/:requestId',
+    NOTIFICATION_LIST: '/notification-list'
 }
 
 export const ADMIN_PATH = {
@@ -16,6 +17,7 @@ export const ADMIN_PATH = {
     BOOK_ROOM_DETAIL: '/room-detail/:ticketId',
     MANAGE_LIST_TICKET_ADMIN: '/manage-list-admin',
     CHECK_BOOK_ROOM: '/check-book-room',
+    NOTIFICATION_LIST_ADMIN: '/notification-list-admin'
 }
 
 export const MANAGER_PATH = {
@@ -24,12 +26,14 @@ export const MANAGER_PATH = {
     REQUEST_LIST_MANAGER: '/request-manager-list',
     BOOK_ROOM_MANAGER: '/book-room-manager',
     BOOK_ROOM_DETAIL_MANAGER: '/book-room-detail-manager/:ticketId',
+    NOTIFICATION_LIST_MANAGER: '/notification-list-manager'
 }
 
 export const EMPLOYEE_PATH = {
     LAYOUT: "/",
     CHECK_ATTENDACE: '/check-attendance',
-    REQUEST_LIST_EMPLOYEE: '/request-list-employee'
+    REQUEST_LIST_EMPLOYEE: '/request-list-employee',
+    NOTIFICATION_LIST_MANAGER: '/notification-list-employee'
 }
 
 export const HR_PATH = {
@@ -38,5 +42,6 @@ export const HR_PATH = {
     MANAGE_PROFILE: '/manage-profile',
     REQUEST_HR_LIST: '/request-hr-list',
     REQUEST_LIST_HR: '/request-list-hr',
-    BOOK_ROOM_HR: '/book-room-hr'
+    BOOK_ROOM_HR: '/book-room-hr',
+    NOTIFICATION_LIST_HR: '/notification-list-hr'
 }

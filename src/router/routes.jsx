@@ -29,6 +29,8 @@ import BookRoomManager from '../pages/manager/book-room-manager'
 import BookRoomHr from '../pages/hr/book-room-hr'
 import BookListDetailManager from '../pages/manager/request-manager-list/components/BookRoomDetail'
 import CheckBookRoom from '../pages/admin/check-book-room'
+import NotificationsList from '../pages/common/list-all-notification'
+import NotificationsHrList from '../pages/hr/hr-notification-list'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
 const RequestListAdmin = lazy(() => import('../pages/admin/request-list'))
@@ -72,6 +74,14 @@ export default function Router() {
       element: (
         <Suspense fallback={<>Loading...</>}>
           <TicketDetail />
+        </Suspense>
+      )
+    },
+    {
+      path: PUBLIC_PATH.NOTIFICATION_LIST,
+      element: (
+        <Suspense fallback={<>Loading...</>} >
+         <NotificationsList />
         </Suspense>
       )
     },
@@ -183,6 +193,14 @@ export default function Router() {
               )
             },
             {
+              path: HR_PATH.NOTIFICATION_LIST_HR,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <NotificationsHrList />
+                </Suspense>
+              )
+            },
+            {
               path: HR_PATH.BOOK_ROOM_HR,
               element: (
                 <Suspense fallback={<>Loading...</>}>
@@ -244,7 +262,8 @@ export default function Router() {
                   <RequestManagerList />
                 </Suspense>
               )
-            }
+            },
+            
           ]
         },
         {

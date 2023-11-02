@@ -31,7 +31,8 @@ const HrSidebar = () => {
             ? 2
             : window.location.pathname === '/request-hr-list'
               ? 3 : window.location.pathname === '/book-room-hr'
-                ? 4
+                ? 4 : window.location.pathname === '/notification-list-hr'
+                ? 5
                 : 0
     return initialIndex
   })
@@ -180,19 +181,19 @@ const HrSidebar = () => {
             <MenuItem
               active={activeIndex === 5}
               icon={<ClearAllIcon />}
-              component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
+              component={<Link to="/notification-list-hr" onClick={() => setActiveIndex(5)} />}>
               {' '}
               All Notification
             </MenuItem>
             <MenuItem
-              active={activeIndex === 5}
+              active={activeIndex === 6}
               icon={<DraftsIcon />}
               component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
               {' '}
               Draft
             </MenuItem>
             <MenuItem
-              active={activeIndex === 5}
+              active={activeIndex === 7}
               icon={<UploadIcon />}
               component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
               {' '}
@@ -204,14 +205,14 @@ const HrSidebar = () => {
 
             >
             <MenuItem
-              active={activeIndex === 5}
+              active={activeIndex === 8}
               icon={<DensitySmallIcon />}
               component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
               {' '}
               All
             </MenuItem> 
             <MenuItem
-              active={activeIndex === 5}
+              active={activeIndex === 9}
               icon={<ContactMailIcon />}
               component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
               {' '}
