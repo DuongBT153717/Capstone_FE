@@ -8,6 +8,7 @@ export const PUBLIC_PATH = {
     CREATE_REQUEST_EXISTED: '/create-request-existed/:ticketId',
     NOT_FOUND: '*',
     REQUEST_DETAIL: '/request-detail/:requestId',
+    CREATE_NOTIFICATION: '/create-notification',
     NOTIFICATION_LIST: '/notification-list'
 }
 

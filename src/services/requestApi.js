@@ -306,7 +306,7 @@ const requestApi = {
   },
   getAllBookRooms: () => {
     try {
-      const response = axiosClient.get(`${BASE_URL}/getBookedRoom`)
+      const response = axiosClient.get(`${BASE_URL}/getPendingAndAcceptedRoom`)
       return response
     } catch (error) {
       console.log(error);

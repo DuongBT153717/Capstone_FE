@@ -9,14 +9,27 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
-import { validationSchema } from '../until/validationSchema'
-import {validationSchema2} from '../until/validationSchema2'
+import { validationSchema } from '../util/validationSchema'
 
+
+ClassicEditor.defaultConfig = {
+  toolbar: {
+    items: [
+      'heading',
+      '|',
+      'bold',
+      'italic',
+      '|',
+      'bulletedList',
+      'numberedList',
+    ]
+  },
+  language: 'en'
+};
 const AttendenceFrom = ({ userId }) => {
   const [from, setFrom] = useState(dayjs(new Date()));
   const [to, setTo] = useState(dayjs(new Date()));
   const [date, setDate] = useState(dayjs(new Date()));
-  const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('');
   const currentUser = useSelector((state) => state.auth.login?.currentUser);

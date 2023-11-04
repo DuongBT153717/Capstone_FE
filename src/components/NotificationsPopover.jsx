@@ -1,12 +1,14 @@
+import React from 'react';
 import { Badge, Button, Box, Divider, IconButton, List, ListItemButton, ListItemText, ListSubheader, Popover, Typography } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import CampaignIcon from '@mui/icons-material/Campaign'; 
+import CampaignIcon from '@mui/icons-material/Campaign';
 import axiosClient from '../utils/axios-config';
 import { toast } from 'react-toastify';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BASE_URL } from '../services/constraint';
 import { format } from 'date-fns';
+import LensIcon from '@mui/icons-material/Lens'; // Import the LensIcon
 
 const NotificationsPopover = (props) => {
   const { row } = props;
@@ -64,19 +66,17 @@ const NotificationsPopover = (props) => {
       .slice()
       .sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
       .slice(0, viewAll ? listNotifications.notifications.length : (showMore ? listNotifications.notifications.length : 5))
-  : [];
+    : [];
 
-  const currentTime = new Date(); // Thời gian hiện tại
+  const currentTime = new Date();
 
   const newNotifications = sortedNotifications.filter((notification) => {
-
     const timeDifference = currentTime - new Date(notification.uploadDate);
-    const isRecent = timeDifference < 24 * 60 * 60 * 1000; // 24 giờ trong mili giây
+    const isRecent = timeDifference < 24 * 60 * 60 * 1000;
     return isRecent;
   });
 
   const otherNotifications = sortedNotifications.filter((notification) => {
-    // Các thông báo không nằm trong khoảng thời gian gần nhất
     const timeDifference = currentTime - new Date(notification.uploadDate);
     const isRecent = timeDifference < 24 * 60 * 60 * 1000;
     return !isRecent;
@@ -131,10 +131,11 @@ const NotificationsPopover = (props) => {
             <Typography variant="subtitle1">Notifications</Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               You have {listNotifications.total} notifications
-              {newNotifications.length > 0 && (
-                <span> ({newNotifications.length} unread)</span>
+              {listNotifications.notifications && (
+                <span> ({listNotifications.notifications.filter(notification => !notification.readStatus).length} unread)</span>
               )}
             </Typography>
+
           </Box>
         </Box>
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -158,14 +159,13 @@ const NotificationsPopover = (props) => {
               </ListSubheader>
               {newNotifications.map((notification) => (
                 <ListItemButton
-                  key={notification.notificationId}
+                  key={`new_${notification.notificationId}`}
                   sx={{
                     px: 2.5,
                     pb: 1,
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '5px',
-                    backgroundColor: 'lightgray',
                     alignItems: 'flex-start',
                   }}
                 >
@@ -177,11 +177,8 @@ const NotificationsPopover = (props) => {
                       primary={truncateText(notification.title, 30)}
                       sx={{ fontSize: '2.5rem', fontWeight: 'bold' }}
                     />
-                    {notification.readStatus ? false : (
-                      <CampaignIcon
-                        fontSize="large"
-                        sx={{ color: '#1976d2' }}
-                      />
+                    {!notification.readStatus === true && (
+                      <LensIcon color="primary" sx={{ position: 'absolute', top: '55%', right: 0, transform: 'translateY(-50%)', fontSize: '16px' }} />
                     )}
                   </Box>
                   <Typography
@@ -190,7 +187,7 @@ const NotificationsPopover = (props) => {
                     sx={{
                       fontSize: '0.9rem',
                       fontStyle: 'italic',
-                      color: 'grey'
+                      color: 'grey',
                     }}
                   >
                     {format(new Date(notification.uploadDate), 'yy/MM/dd HH:mm:ss')}
@@ -219,30 +216,27 @@ const NotificationsPopover = (props) => {
               </ListSubheader>
               {otherNotifications.map((notification) => (
                 <ListItemButton
-                  key={notification.notificationId}
+                  key={`other_${notification.notificationId}`}
                   sx={{
                     px: 2.5,
                     pb: 1,
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '5px',
-                    backgroundColor: 'transparent',
+
                     alignItems: 'flex-start',
                   }}
                 >
                   <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic', fontSize: '0.9rem' }}>
                     from {notification.department.departmentName}
                   </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space between' }}>
                     <ListItemText
                       primary={truncateText(notification.title, 30)}
                       sx={{ fontSize: '2.5rem', fontWeight: 'bold' }}
                     />
-                    {notification.readStatus ? false : (
-                      <CampaignIcon
-                        fontSize="large"
-                        sx={{ color: '#1976d2' }}
-                      />
+                    {!notification.readStatus === true && (
+                      <LensIcon color="primary" sx={{ position: 'absolute', top: '55%', right: 0, transform: 'translateY(-50%)', fontSize: '16px' }} />
                     )}
                   </Box>
                   <Typography
@@ -251,7 +245,7 @@ const NotificationsPopover = (props) => {
                     sx={{
                       fontSize: '0.9rem',
                       fontStyle: 'italic',
-                      color: 'grey'
+                      color: 'grey',
                     }}
                   >
                     {format(new Date(notification.uploadDate), 'yy/MM/dd HH:mm:ss')}

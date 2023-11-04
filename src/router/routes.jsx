@@ -31,6 +31,7 @@ import BookListDetailManager from '../pages/manager/request-manager-list/compone
 import CheckBookRoom from '../pages/admin/check-book-room'
 import NotificationsList from '../pages/common/list-all-notification'
 import NotificationsHrList from '../pages/hr/hr-notification-list'
+import CreateNotification from '../pages/common/create-notification'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
 const RequestListAdmin = lazy(() => import('../pages/admin/request-list'))
@@ -298,6 +299,26 @@ export default function Router() {
           path: PUBLIC_PATH.BOOK_ROOM,
           element: <BookRoom />
         }
+      ]
+    },
+    {
+      path: '/',
+      children: [
+        {
+          element: (
+            <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.SECURITY, ROLES.ADMIN, ROLES.HR]} />
+          ),
+          children: [
+            {
+              path: PUBLIC_PATH.CREATE_NOTIFICATION,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <CreateNotification />
+                </Suspense>
+              )
+            }
+          ]
+        },
       ]
     }
   ])

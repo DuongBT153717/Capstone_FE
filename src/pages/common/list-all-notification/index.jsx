@@ -56,7 +56,7 @@ const NotificationsList = (props) => {
       })
       setAllNoti(response)
       setIsLoading(false)
-      console.log(response)
+      console.log(userId)
     }
     fetchAllNoti()
   }, [])
