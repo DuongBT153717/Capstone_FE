@@ -62,12 +62,25 @@ const NotificationsPopover = (props) => {
   const sortedNotifications = listNotifications.notifications
     ? listNotifications.notifications
       .slice()
-      .sort((a, b) => (a.readStatus === b.readStatus ? 0 : a.readStatus ? 1 : -1))
+      .sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
       .slice(0, viewAll ? listNotifications.notifications.length : (showMore ? listNotifications.notifications.length : 5))
-    : [];
+  : [];
 
-  const newNotifications = sortedNotifications.filter(notification => !notification.readStatus);
-  const previousNotifications = sortedNotifications.filter(notification => notification.readStatus);
+  const currentTime = new Date(); // Thời gian hiện tại
+
+  const newNotifications = sortedNotifications.filter((notification) => {
+
+    const timeDifference = currentTime - new Date(notification.uploadDate);
+    const isRecent = timeDifference < 24 * 60 * 60 * 1000; // 24 giờ trong mili giây
+    return isRecent;
+  });
+
+  const otherNotifications = sortedNotifications.filter((notification) => {
+    // Các thông báo không nằm trong khoảng thời gian gần nhất
+    const timeDifference = currentTime - new Date(notification.uploadDate);
+    const isRecent = timeDifference < 24 * 60 * 60 * 1000;
+    return !isRecent;
+  });
 
   return (
     <>
@@ -157,14 +170,14 @@ const NotificationsPopover = (props) => {
                   }}
                 >
                   <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic', fontSize: '0.9rem' }}>
-                    from {notification.department.departmentName}
+                    From {notification.department.departmentName}
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <ListItemText
                       primary={truncateText(notification.title, 30)}
                       sx={{ fontSize: '2.5rem', fontWeight: 'bold' }}
                     />
-                    {notification.readStatus ? null : (
+                    {notification.readStatus ? false : (
                       <CampaignIcon
                         fontSize="large"
                         sx={{ color: '#1976d2' }}
@@ -187,7 +200,7 @@ const NotificationsPopover = (props) => {
             </>
           )}
 
-          {previousNotifications.length > 0 && (
+          {otherNotifications.length > 0 && (
             <>
               <ListSubheader
                 disableSticky
@@ -204,7 +217,7 @@ const NotificationsPopover = (props) => {
               >
                 Previous
               </ListSubheader>
-              {previousNotifications.map((notification) => (
+              {otherNotifications.map((notification) => (
                 <ListItemButton
                   key={notification.notificationId}
                   sx={{
@@ -225,10 +238,10 @@ const NotificationsPopover = (props) => {
                       primary={truncateText(notification.title, 30)}
                       sx={{ fontSize: '2.5rem', fontWeight: 'bold' }}
                     />
-                    {notification.readStatus ? null : (
+                    {notification.readStatus ? false : (
                       <CampaignIcon
                         fontSize="large"
-                        sx={{ color: 'deepskyblue' }}
+                        sx={{ color: '#1976d2' }}
                       />
                     )}
                   </Box>

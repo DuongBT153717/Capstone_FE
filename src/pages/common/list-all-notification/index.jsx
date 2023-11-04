@@ -13,6 +13,7 @@ import Header from '../../../components/Header'
 import { BASE_URL } from '../../../services/constraint'
 import axiosClient from '../../../utils/axios-config'
 import DataTableListNoti from './components/DataTable'
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 const NotificationsList = (props) => {
   const { row } = props
   const userId = useSelector((state) => state.auth.login.currentUser.accountId)
@@ -48,13 +49,14 @@ const NotificationsList = (props) => {
   useEffect(() => {
     setIsLoading(true)
     const fetchAllNoti = async () => {
-      const response = await axiosClient.get(`${BASE_URL}/getListNotificationByUserId`, {
+      const response = await axiosClient.get(`${BASE_URL}/getListNotificationByCreator`, {
         params: {
           userId: userId
         }
       })
       setAllNoti(response)
       setIsLoading(false)
+      console.log(response)
     }
     fetchAllNoti()
   }, [])
@@ -63,6 +65,35 @@ const NotificationsList = (props) => {
 
 
   const columns = [
+    {
+      field: 'priority',
+      headerName: 'Priority',
+      cellClassName: 'name-column--cell',
+      headerAlign: 'center',
+      align: 'center',
+      width: 60,
+      renderCell: (params) => {
+        return (
+          <Box
+            margin="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            borderRadius="4px"
+          >
+            <div>
+              {params.row.priority === true ? (
+                <PriorityHighIcon color='secondary'/>
+              ) : null
+              //   <Checkbox {...label} icon={<StarBorderIcon color='warning' />} checkedIcon={<StarIcon color='warning' />} />
+              // )
+            }
+            </div>
+          </Box>
+        )
+      }
+    },
     {
       field: 'personalPriority',
       headerName: '',
