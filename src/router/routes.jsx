@@ -32,6 +32,8 @@ import CheckBookRoom from '../pages/admin/check-book-room'
 import NotificationsList from '../pages/common/list-all-notification'
 import NotificationsHrList from '../pages/hr/hr-notification-list'
 import CreateNotification from '../pages/common/create-notification'
+import NotificationUploadReceiveHR from '../pages/hr/hr-notification-upload-receive'
+import NotificationUploadSentHR from '../pages/hr/hr-notification-upload-sent'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -199,6 +201,22 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <NotificationsHrList />
+                </Suspense>
+              )
+            },
+            {
+              path: HR_PATH.NOTIFICATION_UPLOAD_RECEIVE_HR,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <NotificationUploadReceiveHR />
+                </Suspense>
+              )
+            },
+            {
+              path: HR_PATH.NOTIFICATION_UPLOAD_SENT_HR,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <NotificationUploadSentHR />
                 </Suspense>
               )
             },

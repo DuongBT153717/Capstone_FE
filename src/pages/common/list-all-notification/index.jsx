@@ -14,6 +14,7 @@ import Header from '../../../components/Header'
 import { BASE_URL } from '../../../services/constraint'
 import axiosClient from '../../../utils/axios-config'
 import DataTableListNoti from './components/DataTable'
+import { SignalWifiStatusbarNullRounded } from '@mui/icons-material'
 const NotificationsList = (props) => {
   const { row } = props
   const userId = useSelector((state) => state.auth.login.currentUser.accountId)
@@ -30,7 +31,7 @@ const NotificationsList = (props) => {
     setUser(data)
   }
   const options = [
-    'Make as read(unread)',
+    'Make as read',
     'Delete',
     'Detail',
   ]
@@ -71,7 +72,7 @@ const NotificationsList = (props) => {
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      width: 60,
+      width: 80,
       renderCell: (params) => {
         return (
           <Box
@@ -84,11 +85,11 @@ const NotificationsList = (props) => {
           >
             <div>
               {params.row.priority === true ? (
-                <PriorityHighIcon color='secondary'/>
+                <PriorityHighIcon color='primary' />
               ) : null
-              //   <Checkbox {...label} icon={<StarBorderIcon color='warning' />} checkedIcon={<StarIcon color='warning' />} />
-              // )
-            }
+                //   <Checkbox {...label} icon={<StarBorderIcon color='warning' />} checkedIcon={<StarIcon color='warning' />} />
+                // )
+              }
             </div>
           </Box>
         )
@@ -123,33 +124,47 @@ const NotificationsList = (props) => {
       }
     },
     {
-      field: 'creatorLastName',
+      field: 'departmentName',
       headerName: 'From',
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
       width: 150,
+      renderCell: (params) => (
+        <Box
+          margin="0 auto"
+          p="5px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          borderRadius="4px"
+        >
+          <div>
+            {params.row.departmentUpload.departmentName}
+          </div>
+        </Box>
+      )
     },
     {
       field: 'title',
       headerName: 'Title',
       headerAlign: 'center',
       align: 'center',
-      width: 400,
+      width: 200,
     },
     {
       field: 'content',
       headerName: 'Content',
       headerAlign: 'center',
       align: 'center',
-      width: 450,
+      width: 300,
     },
     {
       field: 'imageFileName',
       headerName: '',
       headerAlign: 'center',
       align: 'center',
-      width: 350,
+      width: 250,
       sortable: false,
       filterable: false,
       renderCell: (params) => {
@@ -174,14 +189,15 @@ const NotificationsList = (props) => {
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      width: 330,
+      flex: 1,
+      width: 300,
     },
     {
       field: 'action',
       headerName: '',
       headerAlign: 'center',
       align: 'center',
-      width: 60,
+      width: 40,
       sortable: false,
       filterable: false,
       renderCell: (params) => {
@@ -222,7 +238,7 @@ const NotificationsList = (props) => {
                 }}
               >
                 {options.map((option) => (
-                  <MenuItem key={option} selected={option === 'Pyxis'} onClick={option === 'Detail' ? () => navigate(`/notification-detail/${params.row.notificationId}`): null}>
+                  <MenuItem key={option} selected={option === 'Pyxis'} onClick={option === 'Detail' ? () => navigate(`/notification-detail/${params.row.notificationId}`) : option === 'Make as read' ? console.log('aaaa') : SignalWifiStatusbarNullRounded}>
                     {option}
                   </MenuItem>
                 ))}
@@ -237,7 +253,7 @@ const NotificationsList = (props) => {
   ]
   return (
     <>
-      <Header title="NOTIFICATIONS" />
+      <Header title="ALL NOTIFICATIONS" />
       <DataTableListNoti
         rows={allNoti}
         columns={columns}
