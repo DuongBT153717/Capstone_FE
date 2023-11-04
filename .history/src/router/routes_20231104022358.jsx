@@ -299,6 +299,14 @@ export default function Router() {
                 </Suspense>
               )
             },
+            {
+              path: PUBLIC_PATH.NOTIFICATION_DETAIL,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <NotificationDetail />
+                </Suspense>
+              )
+            }
           ]
         },
       ]

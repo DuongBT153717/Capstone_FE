@@ -299,18 +299,6 @@ export default function Router() {
                 </Suspense>
               )
             },
-          ]
-        },
-      ]
-    },
-    {
-      path: '/',
-      children: [
-        {
-          element: (
-            <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.SECURITY, ROLES.ADMIN, ROLES.HR, ROLES.EMPLOYEE]} />
-          ),
-          children: [
             {
               path: PUBLIC_PATH.NOTIFICATION_DETAIL,
               element: (

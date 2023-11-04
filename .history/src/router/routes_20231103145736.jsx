@@ -30,8 +30,8 @@ import BookRoomHr from '../pages/hr/book-room-hr'
 import BookListDetailManager from '../pages/manager/request-manager-list/components/BookRoomDetail'
 import CheckBookRoom from '../pages/admin/check-book-room'
 import CreateNotification from '../pages/common/create-notification'
+import NotificationDetail from '../pages/common/notification-detail'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
-const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
 const RequestListAdmin = lazy(() => import('../pages/admin/request-list'))
 const BookListDetail = lazy(() => import('../pages/admin/manage-ticket-list/components/BookRoomDetail'))
@@ -299,20 +299,8 @@ export default function Router() {
                 </Suspense>
               )
             },
-          ]
-        },
-      ]
-    },
-    {
-      path: '/',
-      children: [
-        {
-          element: (
-            <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.SECURITY, ROLES.ADMIN, ROLES.HR, ROLES.EMPLOYEE]} />
-          ),
-          children: [
             {
-              path: PUBLIC_PATH.NOTIFICATION_DETAIL,
+              path: PUBLIC_PATH.CREATE_NOTIFICATION,
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <NotificationDetail />

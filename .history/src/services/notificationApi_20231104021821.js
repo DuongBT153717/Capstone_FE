@@ -21,8 +21,8 @@ const notificationApi = {
 
   getNotificationDetail: async (data) => {
     try {
-      const res = await axiosClient.post(`${BASE_URL}/getNotificationDetailByReceiver`, data)
-      return res
+      await axiosClient.post(`${BASE_URL}/getNotificationDetail`, data)
+      toast.success('Upload success')
     } catch (error) {
         console.log(error);   
     }

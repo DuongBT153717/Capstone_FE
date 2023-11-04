@@ -21,7 +21,7 @@ const notificationApi = {
 
   getNotificationDetail: async (data) => {
     try {
-      const res = await axiosClient.post(`${BASE_URL}/getNotificationDetailByReceiver`, data)
+      const res = await axiosClient.post(`${BASE_URL}/getNotificationDetail`, data)
       return res
     } catch (error) {
         console.log(error);   
