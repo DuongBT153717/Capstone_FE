@@ -222,7 +222,7 @@ const NotificationsList = (props) => {
                 }}
               >
                 {options.map((option) => (
-                  <MenuItem key={option} selected={option === 'Pyxis'} onClick={option === 'Detail' ? () => navigate(`/notification-detail/${params.row.notificationId}/${params.row.creatorId}`): null}>
+                  <MenuItem key={option} selected={option === 'Pyxis'} onClick={option === 'Detail' ? () => navigate(`/notification-detail/${params.row.notificationId}`): null}>
                     {option}
                   </MenuItem>
                 ))}

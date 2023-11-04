@@ -102,13 +102,11 @@ const NotificationsPopover = (props) => {
   })
 
   const handleGoToDetail = (notification) => {
-    if(notification.readStatus === false){
-      let data = {
-        notificationId: notification.notificationId,
-        userId: userId
-      }
-      notificationApi.markToRead(data)
+    let data = {
+      notificationId: notification.IdnotificationId,
+      userId: userId
     }
+    notificationApi.markToRead(data)
     navigate(`/notification-detail/${notification.notificationId}/${notification.userId}`)
   }
 
@@ -272,9 +270,7 @@ const NotificationsPopover = (props) => {
                     gap: '5px',
 
                     alignItems: 'flex-start'
-                  }}
-                  onClick={() => handleGoToDetail(notification)}
-                  >
+                  }}>
                   <Typography
                     variant="body2"
                     color="text.secondary"

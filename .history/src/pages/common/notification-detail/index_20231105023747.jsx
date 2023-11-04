@@ -53,22 +53,22 @@ const NotificationDetail = () => {
 
   useEffect(() => {
     const fetchNotificationDetail = async () => {
-      if (currentUser?.accountId === creatorId) {
+      if(currentUser?.accountId === creatorId){
         let data = {
           userId: currentUser?.accountId,
           notificationId: notificationId
         }
-
+  
         const res = await notificationApi.getNotificationDetailByCreator(data)
         setNotificationDetail(res)
         setNotificationFiles(res?.notificationFiles)
         setNotificationImages(res?.notificationImages)
-      } else {
+      }else{
         let data = {
           userId: currentUser?.accountId,
           notificationId: notificationId
         }
-
+  
         const res = await notificationApi.getNotificationDetailByReceiver(data)
         setNotificationDetail(res)
         setNotificationFiles(res?.notificationFiles)
@@ -152,15 +152,15 @@ const NotificationDetail = () => {
               __html: notificationDetail?.content
             }}></Typography>
         </Box>
-        {notificationFiles.length > 0 &&
-          notificationFiles.map((item) => (
-            <>
-            <Divider />
-              <Box mt={2}>
-                <Typography mb={2} fontWeight="700">
-                  Attachments:{' '}
-                </Typography>
-                <Box mb={3} alignItems="center" gap="10px" display="flex">
+        <Divider />
+        <Box mt={2}>
+          <Typography mb={2} fontWeight="700">
+            Attachments:{' '}
+          </Typography>
+          <Box mb={3} alignItems="center" gap="10px" display="flex">
+            {notificationFiles.length > 0 &&
+              notificationFiles.map((item) => (
+                <>
                   <Chip
                     sx={{
                       mr: 1
@@ -174,16 +174,16 @@ const NotificationDetail = () => {
                       </IconButton>
                     }
                   />
-                </Box>
-              </Box>
-            </>
-          ))}
-        {notificationImages.length > 0 &&
-          notificationImages.map((item, index) => (
-            <>
-              <img width="150px" height="100px" key={index} src={item?.imageFileName} />
-            </>
-          ))}
+                </>
+              ))}
+            {notificationImages.length > 0 &&
+              notificationImages.map((item, index) => (
+                <>
+                  <img width="150px" height="100px" key={index} src={item?.imageFileName} />
+                </>
+              ))}
+          </Box>
+        </Box>
         <Divider />
         <Box mt={2} display="flex" justifyContent="flex-start">
           {currentUser?.role === 'hr' ? (

@@ -1,4 +1,3 @@
-import DownloadIcon from '@mui/icons-material/Download'
 import {
   Avatar,
   Box,
@@ -10,18 +9,18 @@ import {
   Typography,
   useTheme
 } from '@mui/material'
-import { getDownloadURL, ref } from 'firebase/storage'
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
-import { storage } from '../../../firebase/config'
-import notificationApi from '../../../services/notificationApi'
 import ChatTopbar from '../chat/components/ChatTopbar'
-
+import DownloadIcon from '@mui/icons-material/Download'
+import { useEffect, useState } from 'react'
+import notificationApi from '../../../services/notificationApi'
+import ClearIcon from '@mui/icons-material/Clear'
+import { useSelector } from 'react-redux'
+import { getDownloadURL, ref } from 'firebase/storage'
+import { storage } from '../../../firebase/config'
+import { Link, useParams } from 'react-router-dom'
 const NotificationDetail = () => {
   const theme = useTheme()
-  const { notificationId, creatorId } = useParams()
-  const [imageSender, setImageSender] = useState('')
+  const { notificationId } = useParams()
   const [notificationDetail, setNotificationDetail] = useState('')
   const [notificationFiles, setNotificationFiles] = useState([])
   const [notificationImages, setNotificationImages] = useState([])
@@ -53,31 +52,20 @@ const NotificationDetail = () => {
 
   useEffect(() => {
     const fetchNotificationDetail = async () => {
-      if (currentUser?.accountId === creatorId) {
-        let data = {
-          userId: currentUser?.accountId,
-          notificationId: notificationId
-        }
-
-        const res = await notificationApi.getNotificationDetailByCreator(data)
-        setNotificationDetail(res)
-        setNotificationFiles(res?.notificationFiles)
-        setNotificationImages(res?.notificationImages)
-      } else {
-        let data = {
-          userId: currentUser?.accountId,
-          notificationId: notificationId
-        }
-
-        const res = await notificationApi.getNotificationDetailByReceiver(data)
-        setNotificationDetail(res)
-        setNotificationFiles(res?.notificationFiles)
-        setNotificationImages(res?.notificationImages)
+      let data = {
+        userId: currentUser?.accountId,
+        notificationId: notificationId
       }
+
+      const res = await notificationApi.getNotificationDetailByCreator(data)
+      setNotificationDetail(res)
+      setNotificationFiles(res?.notificationFiles)
+      setNotificationImages(res?.notificationImages)
     }
 
     fetchNotificationDetail()
   }, [])
+
   const imgurl = async () => {
     if (notificationImages.length > 0) {
       try {
@@ -107,20 +95,6 @@ const NotificationDetail = () => {
     imgurl()
   }, [notificationImages])
 
-  const imgurlSender = async () => {
-    const storageRef = ref(storage, `/${notificationDetail?.creatorImage}`)
-    try {
-      const url = await getDownloadURL(storageRef)
-      setImageSender(url)
-    } catch (error) {
-      console.error('Error getting download URL:', error)
-    }
-  }
-
-  if (notificationDetail?.creatorImage) {
-    imgurlSender()
-  }
-
   console.log(notificationDetail)
   console.log(notificationImages)
   return (
@@ -129,11 +103,7 @@ const NotificationDetail = () => {
       <Paper sx={{ padding: 2, m: 2 }}>
         <Box display="flex" justifyContent="space-between">
           <Box display="flex" gap={1} alignItems="center" mb={2}>
-            {notificationDetail?.creatorImage === null ? (
-              <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
-            ) : (
-              <Avatar src={imageSender} alt="Avatar" />
-            )}
+            <Avatar src="/path/to/avatar.jpg" alt="Avatar" />
             <Box display="flex" flexDirection="column">
               <Typography fontSize="16px" variant="body1">
                 {notificationDetail?.creatorFirstName} {notificationDetail?.creatorLastName}
@@ -152,15 +122,15 @@ const NotificationDetail = () => {
               __html: notificationDetail?.content
             }}></Typography>
         </Box>
-        {notificationFiles.length > 0 &&
-          notificationFiles.map((item) => (
-            <>
-            <Divider />
-              <Box mt={2}>
-                <Typography mb={2} fontWeight="700">
-                  Attachments:{' '}
-                </Typography>
-                <Box mb={3} alignItems="center" gap="10px" display="flex">
+        <Divider />
+        <Box mt={2}>
+          <Typography mb={2} fontWeight="700">
+            Attachments:{' '}
+          </Typography>
+          <Box mb={3} alignItems="center" gap="10px" display="flex">
+            {notificationFiles.length > 0 &&
+              notificationFiles.map((item) => (
+                <>
                   <Chip
                     sx={{
                       mr: 1
@@ -174,18 +144,17 @@ const NotificationDetail = () => {
                       </IconButton>
                     }
                   />
-                </Box>
-              </Box>
-            </>
-          ))}
-        {notificationImages.length > 0 &&
-          notificationImages.map((item, index) => (
-            <>
-              <img width="150px" height="100px" key={index} src={item?.imageFileName} />
-            </>
-          ))}
-        <Divider />
-        <Box mt={2} display="flex" justifyContent="flex-start">
+                </>
+              ))}
+            {notificationImages.length > 0 &&
+              notificationImages.map((item, index) => (
+                <>
+                  <img width="150px" height="100px" key={index} src={item?.imageFileName} />
+                </>
+              ))}
+          </Box>
+        </Box>
+        <Box display="flex" justifyContent="flex-start">
           {currentUser?.role === 'hr' ? (
             <Link to="/manage-user">
               <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>

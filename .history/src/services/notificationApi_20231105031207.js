@@ -37,7 +37,8 @@ const notificationApi = {
   },
   markToRead: async (data) => {
     try {
-      await axiosClient.post(`${BASE_URL}/markToRead`, data)
+      const res = await axiosClient.post(`${BASE_URL}/markToRead`, data)
+      return res
     } catch (error) {
         console.log(error);   
     }
