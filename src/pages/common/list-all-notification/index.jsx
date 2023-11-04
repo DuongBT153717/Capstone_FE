@@ -1,24 +1,20 @@
-import { Box, IconButton, Typography } from '@mui/material'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+import StarIcon from '@mui/icons-material/Star'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
+import { Box, IconButton } from '@mui/material'
+import Checkbox from '@mui/material/Checkbox'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
 import Header from '../../../components/Header'
 import { BASE_URL } from '../../../services/constraint'
-import userApi from '../../../services/userApi'
 import axiosClient from '../../../utils/axios-config'
-import { toast } from 'react-toastify'
 import DataTableListNoti from './components/DataTable'
-import Checkbox from '@mui/material/Checkbox';
-import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
-import Favorite from '@mui/icons-material/Favorite';
-import StarIcon from '@mui/icons-material/Star';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import * as React from 'react';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-const NotificationsList = () => {
+const NotificationsList = (props) => {
+  const { row } = props
   const userId = useSelector((state) => state.auth.login.currentUser.accountId)
   const dispatch = useDispatch()
   const [allNoti, setAllNoti] = useState([])
@@ -35,6 +31,7 @@ const NotificationsList = () => {
   const options = [
     'Make as read(unread)',
     'Delete',
+    'Detail',
   ]
   const ITEM_HEIGHT = 58;
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -67,7 +64,7 @@ const NotificationsList = () => {
 
   const columns = [
     {
-      field: '',
+      field: 'personalPriority',
       headerName: '',
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
@@ -81,10 +78,14 @@ const NotificationsList = () => {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            borderRadius="4px">
+            borderRadius="4px"
+          >
             <div>
-              <Checkbox {...label} icon={<StarBorderIcon />} checkedIcon={<StarIcon
-                color='warning' />} />
+              {params.row.personalPriority === true ? (
+                <Checkbox {...label} icon={<StarIcon color='warning' />} checkedIcon={<StarBorderIcon color='warning' />} />
+              ) : (
+                <Checkbox {...label} icon={<StarBorderIcon color='warning' />} checkedIcon={<StarIcon color='warning' />} />
+              )}
             </div>
           </Box>
         )
@@ -103,14 +104,14 @@ const NotificationsList = () => {
       headerName: 'Title',
       headerAlign: 'center',
       align: 'center',
-      width: 300,
+      width: 400,
     },
     {
       field: 'content',
       headerName: 'Content',
       headerAlign: 'center',
       align: 'center',
-      width: 250,
+      width: 450,
     },
     {
       field: 'imageFileName',
@@ -120,6 +121,21 @@ const NotificationsList = () => {
       width: 350,
       sortable: false,
       filterable: false,
+      renderCell: (params) => {
+        if (
+          params.row.notificationFiles &&
+          params.row.notificationFiles.length > 0
+        ) {
+          return 'There are attached files';
+        } else if (
+          params.row.notificationImages &&
+          params.row.notificationImages.length > 0
+        ) {
+          return 'There are attached files';
+        } else {
+          return '';
+        }
+      },
     },
     {
       field: 'uploadDate',
@@ -127,7 +143,7 @@ const NotificationsList = () => {
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      width: 230,
+      width: 330,
     },
     {
       field: 'action',
@@ -169,7 +185,7 @@ const NotificationsList = () => {
                   style: {
                     maxHeight: ITEM_HEIGHT * 4.5,
                     width: '25ch',
-                    boxShadow:'1px 1px 1px #999'
+                    boxShadow: '1px 1px 1px #999'
 
                   },
                 }}

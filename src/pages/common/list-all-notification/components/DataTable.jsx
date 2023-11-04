@@ -4,7 +4,7 @@ import {
 } from "@mui/x-data-grid";
 
 
-const DataTableListNoti = ({ rows, columns }) => {
+const DataTableListNoti = ({ rows, columns,isLoading }) => {
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -78,7 +78,7 @@ const DataTableListNoti = ({ rows, columns }) => {
           pagination: { paginationModel: { pageSize: 5 } },
         }}
         pageSizeOptions={[5, 10, 20, 50]}
-        // loading={isLoading}
+         loading={isLoading}
         getRowId={(row) => row.notificationId}
       />
     </Box>
