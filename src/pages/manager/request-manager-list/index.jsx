@@ -30,7 +30,15 @@ import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
 function Row(props) {
   const { row } = props
   const [open, setOpen] = React.useState(false)
-
+  const handelAcceptOtherRequest = (ticketId) => {
+    let data = {
+      ticketId: ticketId,
+    }
+    requestApi.acceptStatutOtherRequest(data)
+    setTimeout(() => {
+      window.location.reload();
+    }, 500); 
+  }
   const navigate = useNavigate()
   return (
     <>
@@ -88,7 +96,7 @@ function Row(props) {
         </TableCell>
         <TableCell>
           {row.topic === 'OTHER_REQUEST' && row.status === true ? (
-            <Button>
+            <Button  onClick={() =>handelAcceptOtherRequest(row.ticketId)}>
               <CloseIcon />
               <Typography fontSize={'13px'} color="#000">
                 Finish

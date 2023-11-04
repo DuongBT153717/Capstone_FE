@@ -9,7 +9,7 @@ export const PUBLIC_PATH = {
     NOT_FOUND: '*',
     REQUEST_DETAIL: '/request-detail/:requestId',
     CREATE_NOTIFICATION: '/create-notification',
-    NOTIFICATION_DETAIL: '/notification-detail/:notificationId',
+    NOTIFICATION_DETAIL: '/notification-detail/:notificationId'
     NOTIFICATION_LIST: '/notification-list'
 }
 

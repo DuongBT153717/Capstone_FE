@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
 import { validationSchema } from '../util/validationSchema'
 
+
 ClassicEditor.defaultConfig = {
   toolbar: {
     items: [
@@ -63,6 +64,8 @@ const AttendenceFrom = ({ userId }) => {
   const formik = useFormik({
     initialValues: {
       title: '',
+      content:'',
+    
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -101,7 +104,7 @@ const AttendenceFrom = ({ userId }) => {
               placeholder="Enter the request title"
             />
             {formik.touched.title && formik.errors.title && (
-              <div className="error-message">{formik.errors.title}</div>
+              <div className="error-message" >{formik.errors.title}</div>
             )}
           </Grid>
           <Grid item xs={4} mb={2}>
@@ -578,7 +581,7 @@ const LeaveRequest = ({ userId }) => {
       title: '',
       durationEvaluation: '',   
     },
-    validationSchema: validationSchema,
+    validationSchema:validationSchema2 ,
     onSubmit: (values) => {
       let data = {
         userId: userId,
@@ -586,7 +589,7 @@ const LeaveRequest = ({ userId }) => {
         content: content,
         fromDate: dateFrom.format('YYYY-MM-DD'),
         toDate: dateTo.format('YYYY-MM-DD'),
-        halfDay: values.checked,
+        halfDay: checked,
         durationEvaluation: values.durationEvaluation,
         departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
         receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId

@@ -1,13 +1,24 @@
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
-import { Menu, MenuItem, Sidebar, useProSidebar } from 'react-pro-sidebar'
+import { Menu, MenuItem, Sidebar, SubMenu, useProSidebar } from 'react-pro-sidebar'
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
+import ClearAllIcon from '@mui/icons-material/ClearAll';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import UploadIcon from '@mui/icons-material/Upload';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import DensitySmallIcon from '@mui/icons-material/DensitySmall';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
 const HrSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => {
@@ -15,13 +26,14 @@ const HrSidebar = () => {
       window.location.pathname === '/manage-user'
         ? 0
         : window.location.pathname === '/manage-profile'
-        ? 1
-        : window.location.pathname === '/request-list-hr'
-        ? 2
-        : window.location.pathname === '/request-hr-list'
-        ? 3 : window.location.pathname === '/book-room-hr'
-        ? 4
-        : 0
+          ? 1
+          : window.location.pathname === '/request-list-hr'
+            ? 2
+            : window.location.pathname === '/request-hr-list'
+              ? 3 : window.location.pathname === '/book-room-hr'
+                ? 4 : window.location.pathname === '/notification-list-hr'
+                ? 5
+                : 0
     return initialIndex
   })
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -129,14 +141,14 @@ const HrSidebar = () => {
           }}>
           <MenuItem
             active={activeIndex === 0}
-            icon={<DashboardIcon />}
+            icon={<PersonAddIcon />}
             component={<Link to="/manage-user" onClick={() => setActiveIndex(0)} />}>
             {' '}
             Manage User
           </MenuItem>
           <MenuItem
             active={activeIndex === 1}
-            icon={<DashboardIcon />}
+            icon={<ManageAccountsIcon />}
             component={<Link to="/manage-profile" onClick={() => setActiveIndex(1)} />}>
             {' '}
             Manage Profile
@@ -150,18 +162,64 @@ const HrSidebar = () => {
           </MenuItem>
           <MenuItem
             active={activeIndex === 3}
-            icon={<AssignmentTurnedInIcon />}
+            icon={<ChecklistRtlIcon />}
             component={<Link to="/request-hr-list" onClick={() => setActiveIndex(3)} />}>
             {' '}
             Check Your Ticket
           </MenuItem>
           <MenuItem
             active={activeIndex === 4}
-            icon={<AssignmentTurnedInIcon />}
+            icon={<CalendarViewMonthIcon />}
             component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
             {' '}
             Book Room
           </MenuItem>
+          <SubMenu
+            label="Notification"
+            icon={<NotificationsIcon />}
+          >
+            <MenuItem
+              active={activeIndex === 5}
+              icon={<ClearAllIcon />}
+              component={<Link to="/notification-list-hr" onClick={() => setActiveIndex(5)} />}>
+              {' '}
+              All Notification
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 6}
+              icon={<DraftsIcon />}
+              component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
+              {' '}
+              Draft
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 7}
+              icon={<UploadIcon />}
+              component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
+              {' '}
+              Upload
+            </MenuItem>
+            <SubMenu
+            label='Scheduled'
+            icon={<CalendarTodayIcon/>}
+
+            >
+            <MenuItem
+              active={activeIndex === 8}
+              icon={<DensitySmallIcon />}
+              component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
+              {' '}
+              All
+            </MenuItem> 
+            <MenuItem
+              active={activeIndex === 9}
+              icon={<ContactMailIcon />}
+              component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
+              {' '}
+              Personal
+            </MenuItem> 
+            </SubMenu>
+          </SubMenu>
         </Menu>
       </Sidebar>
     </>

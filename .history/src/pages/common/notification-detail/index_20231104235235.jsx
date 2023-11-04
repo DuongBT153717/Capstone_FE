@@ -7,10 +7,8 @@ import ClearIcon from '@mui/icons-material/Clear'
 import { useSelector } from 'react-redux'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { storage } from '../../../firebase/config'
-import { useParams } from 'react-router-dom'
 const NotificationDetail = () => {
   const theme = useTheme()
-  const {notificationId} = useParams()
   const [notificationDetail, setNotificationDetail] = useState('')
   const [notificationFiles, setNotificationFiles] = useState([])
   const [notificationImages, setNotificationImages] = useState([])
@@ -44,10 +42,10 @@ const NotificationDetail = () => {
     const fetchNotificationDetail = async () => {
       let data = {
         userId: currentUser?.accountId,
-        notificationId: notificationId
+        notificationId: 'a6886d04-2b36-43b7-963e-5b294b6b4289'
       }
 
-      const res = await notificationApi.getNotificationDetailByCreator(data)
+      const res = await notificationApi.getNotificationDetail(data)
       setNotificationDetail(res)
       setNotificationFiles(res?.notificationFiles)
       setNotificationImages(res?.notificationImages)
@@ -118,30 +116,7 @@ const NotificationDetail = () => {
             Attachments:{' '}
           </Typography>
           <Box mb={3} alignItems="center" gap="10px" display="flex">
-            {notificationFiles.length > 0 &&
-              notificationFiles.map((item) => (
-                <>
-                  <Chip
-                    sx={{
-                      mr: 1
-                    }}
-                    variant="outlined"
-                    size="medium"
-                    label={item?.fileName}
-                    icon={
-                      <IconButton onClick={() => handleDownload(item)}>
-                        <DownloadIcon />
-                      </IconButton>
-                    }
-                  />
-                </>
-              ))}
-            {notificationImages.length > 0 &&
-              notificationImages.map((item, index) => (
-                <>
-                  <img width="150px" height="100px" key={index} src={item?.imageFileName} />
-                </>
-              ))}
+            
           </Box>
         </Box>
       </Paper>

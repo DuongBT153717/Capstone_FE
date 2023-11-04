@@ -15,7 +15,18 @@ const requestApi = {
       console.log(error);
     }
   },
-  
+  getAllNotibyUserId: (data) => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getNotificationByUserId`, {
+        params: {
+          userId: data
+        }
+      })
+      return response
+    } catch (error) {
+      console.log(error);
+    }
+  },
 
   getAllRequestAndTicketByHr: () => {
     try {

@@ -47,7 +47,7 @@ const NotificationDetail = () => {
         notificationId: notificationId
       }
 
-      const res = await notificationApi.getNotificationDetailByCreator(data)
+      const res = await notificationApi.getNotificationDetail(data)
       setNotificationDetail(res)
       setNotificationFiles(res?.notificationFiles)
       setNotificationImages(res?.notificationImages)
