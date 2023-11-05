@@ -75,16 +75,16 @@ const NotificationsPopover = (props) => {
 
   const sortedNotifications = listNotifications.notifications
     ? listNotifications.notifications
-        .slice()
-        .sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
-        .slice(
-          0,
-          viewAll
-            ? listNotifications.notifications.length
-            : showMore
+      .slice()
+      .sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
+      .slice(
+        0,
+        viewAll
+          ? listNotifications.notifications.length
+          : showMore
             ? listNotifications.notifications.length
             : 5
-        )
+      )
     : []
 
   const currentTime = new Date()
@@ -102,7 +102,7 @@ const NotificationsPopover = (props) => {
   })
 
   const handleGoToDetail = (notification) => {
-    if(notification.readStatus === false){
+    if (notification.readStatus === false) {
       let data = {
         notificationId: notification.notificationId,
         userId: userId
@@ -115,7 +115,7 @@ const NotificationsPopover = (props) => {
   return (
     <>
       <IconButton sx={{ color: 'rgb(94, 53, 177)' }} onClick={handleOpen}>
-        <Badge badgeContent={newNotifications.length} color="error">
+        <Badge badgeContent={listNotifications.notifications && listNotifications.notifications.filter(notification => !notification.readStatus).length} color="error">
           <NotificationsIcon />
         </Badge>
       </IconButton>
@@ -274,7 +274,7 @@ const NotificationsPopover = (props) => {
                     alignItems: 'flex-start'
                   }}
                   onClick={() => handleGoToDetail(notification)}
-                  >
+                >
                   <Typography
                     variant="body2"
                     color="text.secondary"
