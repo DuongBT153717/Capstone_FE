@@ -19,7 +19,11 @@ export const ADMIN_PATH = {
     BOOK_ROOM_DETAIL: '/room-detail/:ticketId',
     MANAGE_LIST_TICKET_ADMIN: '/manage-list-admin',
     CHECK_BOOK_ROOM: '/check-book-room',
-    NOTIFICATION_LIST_ADMIN: '/notification-list-admin'
+    NOTIFICATION_LIST_ADMIN: '/notification-list-admin',
+    NOTIFICATION_DRAFT_ADMIN: '/notification-draft-admin',
+    NOTIFICATION_SEND_ADMIN: '/notification-send-admin',
+    NOTIFICATION_RECEIVE_ADMIN: '/notification-receive-admin',
+    NOTIFICATION_SCHEDULED_ADMIN: '/notification-schedule-admin',
 }
 
 export const MANAGER_PATH = {

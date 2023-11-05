@@ -42,6 +42,11 @@ import ListNotificationDarfEmp from '../pages/employee/employee-notification-dra
 import ListNoitificationRecive from '../pages/employee/employee-notification-recive'
 import ListNotificationSend from '../pages/employee/employee-notification-send'
 import ListNOtificationSchedulePersonal from '../pages/employee/employee-notification-schedule'
+import ListAllNotificationAdmin from '../pages/admin/admin-notification-list-all'
+import ListNotificationDraftAdmin from '../pages/admin/admin-notification-draft'
+import ListNotificationSendAdmin from '../pages/admin/admin-notification-send'
+import ListNotificationReceiveAdmin from '../pages/admin/admin-notification-receive'
+import ListNotificationScheduleAdmin from '../pages/admin/admin-notification-scheduled'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -130,6 +135,51 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <CheckBookRoom />
+                </Suspense>
+              )
+            }
+            ,
+            {
+              path: ADMIN_PATH.NOTIFICATION_LIST_ADMIN,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationAdmin />
+                </Suspense>
+              )
+            }
+            ,
+            {
+              path: ADMIN_PATH.NOTIFICATION_DRAFT_ADMIN,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationDraftAdmin />
+                </Suspense>
+              )
+            }
+            ,
+            {
+              path: ADMIN_PATH.NOTIFICATION_SEND_ADMIN,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationSendAdmin/>
+                </Suspense>
+              )
+            }
+            ,
+            {
+              path: ADMIN_PATH.NOTIFICATION_RECEIVE_ADMIN,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationReceiveAdmin/>
+                </Suspense>
+              )
+            }
+            ,
+            {
+              path: ADMIN_PATH.NOTIFICATION_SCHEDULED_ADMIN,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationScheduleAdmin/>
                 </Suspense>
               )
             }
