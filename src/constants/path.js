@@ -24,6 +24,7 @@ export const ADMIN_PATH = {
     NOTIFICATION_SEND_ADMIN: '/notification-send-admin',
     NOTIFICATION_RECEIVE_ADMIN: '/notification-receive-admin',
     NOTIFICATION_SCHEDULED_ADMIN: '/notification-schedule-admin',
+    NOTIFICATION_SCHEDULED_DEPARTMENT_ADMIN: '/notification-department-admin'
 }
 
 export const MANAGER_PATH = {
@@ -37,6 +38,7 @@ export const MANAGER_PATH = {
     NOTIFICATION_SEND_MANAGER: '/notification-send-manager',
     NOTIFICATION_RECEIVE_MANAGER: '/notification-receive-manager',
     NOTIFICATION_SCHEDULED_MANAGER: '/notification-schedule-manager',
+    NOTIFICATION_SCHEDULED_DEPARTMENT_MANAGER: '/notification-department-manager'
 }
 
 export const EMPLOYEE_PATH = {
@@ -48,6 +50,7 @@ export const EMPLOYEE_PATH = {
     NOTIFCAITON_RECEIVE_LIST_EMPLOYEE: 'notification-receive-emp',
     NOTIFICATION_SEND_LIST_EMPLOYEE: 'notification-send-emp',
     NOTIFICATION_SCHEDULED_LIST_EMPLOYEE: 'notification-schedule-emp',
+    NOTIFICATION_SCHEDULED_DEPARTMENT_EMPLOYEE: '/notification-department-employee'
 }
 
 export const HR_PATH = {
@@ -61,6 +64,7 @@ export const HR_PATH = {
     NOTIFICATION_UPLOAD_SENT_HR: 'notification-uploadsent',
     NOTIFICATION_UPLOAD_RECEIVE_HR: 'notification-uploadreceive',
     NOTIFICATION_DRAFT_LIST_HR: 'notification-draftlist',
-    NOTIFICATION_SCHEDULED_LIST_HR: 'notification-schedulelist'
+    NOTIFICATION_SCHEDULED_LIST_HR: 'notification-schedulelist',
+    NOTIFICATION_SCHEDULED_DEPARTMENT_HR: '/notification-department-hr'
 
 }
