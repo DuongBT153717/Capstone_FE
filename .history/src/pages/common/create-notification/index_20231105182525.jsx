@@ -51,7 +51,7 @@ ClassicEditor.defaultConfig = {
   language: 'en'
 }
 
-const CreateNotification = () => {
+const EditNotification = () => {
   const theme = useTheme()
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [checkedSetupTime, setCheckedSetupTime] = useState(true)
@@ -313,11 +313,6 @@ const CreateNotification = () => {
                             aria-labelledby="demo-radio-buttons-group-label"
                             onChange={(e) => {
                               formik.setFieldValue('isAllDepartment', e.target.value)
-                              if(formik.values.isAllDepartment === "allDepartment"){
-                                setDepartmentId([])
-                                setSelectedUsers([])
-                                setUpdateFilteredUsers([])
-                              }
                             }}
                             onBlur={formik.handleBlur}
                             value={formik.values.isAllDepartment}>
@@ -579,4 +574,4 @@ const CreateNotification = () => {
   )
 }
 
-export default CreateNotification
+export default EditNotification

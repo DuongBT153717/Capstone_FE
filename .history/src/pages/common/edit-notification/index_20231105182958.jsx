@@ -33,7 +33,7 @@ import dayjs from 'dayjs'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Header from '../../../components/Header'
 import { BASE_URL } from '../../../services/constraint'
@@ -42,6 +42,7 @@ import userApi from '../../../services/userApi'
 import axiosClient from '../../../utils/axios-config'
 import ChatTopbar from '../chat/components/ChatTopbar'
 import { validationSchema } from './util/validationSchema'
+import notificationApi from '../../../services/notificationApi'
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
 ClassicEditor.defaultConfig = {
@@ -69,6 +70,7 @@ const CreateNotification = () => {
     filepreview: []
   })
   const [progress, setProgress] = useState(0)
+  const {notificationId} = useParams()
   useEffect(() => {
     const fetchAllUsers = async () => {
       const response = await userApi.getAllUserByUserId(currentUser?.accountId)
@@ -88,6 +90,25 @@ const CreateNotification = () => {
   const handleSaveDraft = (event) => {
     setIsSave(event.target.checked)
   }
+
+  useEffect(() => {
+    const fetchNotificationDetail = async () => {
+
+        let data = {
+          userId: currentUser?.accountId,
+          notificationId: notificationId
+        }
+
+        const res = await notificationApi.getNotificationDetailByCreator(data)
+        setNotificationDetail(res)
+        setNotificationFiles(res?.notificationFiles)
+        setNotificationImages(res?.notificationImages)
+    
+      
+    }
+
+    fetchNotificationDetail()
+  }, [])
 
 
   const handleChangeDepartment = (event) => {
@@ -313,11 +334,6 @@ const CreateNotification = () => {
                             aria-labelledby="demo-radio-buttons-group-label"
                             onChange={(e) => {
                               formik.setFieldValue('isAllDepartment', e.target.value)
-                              if(formik.values.isAllDepartment === "allDepartment"){
-                                setDepartmentId([])
-                                setSelectedUsers([])
-                                setUpdateFilteredUsers([])
-                              }
                             }}
                             onBlur={formik.handleBlur}
                             value={formik.values.isAllDepartment}>

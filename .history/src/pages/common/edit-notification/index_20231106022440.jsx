@@ -33,7 +33,7 @@ import dayjs from 'dayjs'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Header from '../../../components/Header'
 import { BASE_URL } from '../../../services/constraint'
@@ -41,7 +41,10 @@ import requestApi from '../../../services/requestApi'
 import userApi from '../../../services/userApi'
 import axiosClient from '../../../utils/axios-config'
 import ChatTopbar from '../chat/components/ChatTopbar'
-import { validationSchema } from './util/validationSchema'
+import notificationApi from '../../../services/notificationApi'
+import { validationSchema } from '../edit-notification/util/validationSchema'
+import { storage } from '../../../firebase/config'
+import { getDownloadURL, ref } from 'firebase/storage'
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
 ClassicEditor.defaultConfig = {
@@ -51,7 +54,7 @@ ClassicEditor.defaultConfig = {
   language: 'en'
 }
 
-const CreateNotification = () => {
+const EditNotification = () => {
   const theme = useTheme()
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [checkedSetupTime, setCheckedSetupTime] = useState(true)
@@ -68,7 +71,16 @@ const CreateNotification = () => {
     file: [],
     filepreview: []
   })
+
+  const [notificationDetail, setNotificationDetail] = useState('')
+  const [notificationFiles, setNotificationFiles] = useState([])
+  const [notificationImages, setNotificationImages] = useState([])
+  const [keepReceiver, setKeepReceiver] = useState('yes')
   const [progress, setProgress] = useState(0)
+  const [imageDelete, setImageDelete] = useState([])
+  const [fileDelete, setFileDelete] = useState([])
+  const [receiverId, setReceiverId] = useState([])
+  const { notificationId } = useParams()
   useEffect(() => {
     const fetchAllUsers = async () => {
       const response = await userApi.getAllUserByUserId(currentUser?.accountId)
@@ -89,6 +101,40 @@ const CreateNotification = () => {
     setIsSave(event.target.checked)
   }
 
+  useEffect(() => {
+    const fetchNotificationDetail = async () => {
+      let data = {
+        userId: currentUser?.accountId,
+        notificationId: notificationId
+      }
+
+      const res = await notificationApi.getNotificationDetailByCreator(data)
+      setNotificationDetail(res)
+      setNotificationFiles(res?.notificationFiles)
+      setNotificationImages(res?.notificationImages)
+      const updateReceiver = res.receiver.map((item) => {
+        return item.accountId
+      })
+
+      setReceiverId(updateReceiver)
+    }
+
+    fetchNotificationDetail()
+  }, [])
+
+
+  const handleDeleteImageNotAvailable = (index) => {
+    const updatedFiles = [...fileImage.file]
+    const updatedPreviews = [...fileImage.filepreview]
+
+    updatedFiles.splice(index, 1)
+    updatedPreviews.splice(index, 1)
+
+    setFileImage({
+      file: updatedFiles,
+      filepreview: updatedPreviews
+    })
+  }
 
   const handleChangeDepartment = (event) => {
     const { name, checked } = event.target
@@ -161,10 +207,18 @@ const CreateNotification = () => {
     }
   }
 
-  const handleDelete = (fileToDelete) => () => {
+  const handleDeleteFileUnAvailable = (fileToDelete) => () => {
     const updatedFiles = file.filter((file) => file !== fileToDelete)
     setFile(updatedFiles)
   }
+
+  const handleDeleteFileAvailable = (fileToDelete, index) => () => {
+    const updatedFiles = [...notificationFiles];
+    updatedFiles.splice(index, 1)
+    console.log(updatedFiles);
+    setFileDelete((prevFileDelete) => [...prevFileDelete, updatedFiles.fileId])
+  }
+
 
   const handleInputImageChange = (event) => {
     if (event && event.target.files) {
@@ -180,39 +234,46 @@ const CreateNotification = () => {
     }
   }
 
-  const handleDeleteImage = (index) => {
-    const updatedFiles = [...fileImage.file]
-    const updatedPreviews = [...fileImage.filepreview]
-
-    updatedFiles.splice(index, 1)
-    updatedPreviews.splice(index, 1)
-
-    setFileImage({
-      file: updatedFiles,
-      filepreview: updatedPreviews
-    })
+  const handleDeleteImage = (index, notificationImage) => {
+    const updatedImages = [...notificationImages]
+    updatedImages.splice(index, 1)
+    const regex = /\/([^/?]+)\?/
+    const match = notificationImage.imageFileName.match(regex)
+    if (match && match[1]) {
+      const filename = match[1]
+      setImageDelete((prevImageDelete) => [...prevImageDelete, filename]);
+    }
+    setNotificationImages(updatedImages)
   }
+
+
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      title: '',
-      priority: false,
+      title: notificationDetail?.title,
+      priority: notificationDetail?.priority,
       isAllDepartment: 'allDepartment',
-      content: ''
+      content: notificationDetail?.content
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       if (isSave) {
         let formData = new FormData()
         const data = {
+          notificationId: notificationId,
           buttonStatus: 'save',
           userId: currentUser?.accountId,
           title: values.title,
-          sendAllStatus: values.isAllDepartment === 'allDepartment' ? true : false,
-          receiverId: values.isAllDepartment === 'allDepartment' ? [] : selectedUsers,
+          sendAllStatus: keepReceiver === 'yes' ? false : keepReceiver === 'no' && values.isAllDepartment === 'allDepartment' ? true : false,
+          receiverId: keepReceiver === 'yes' ? receiverId : values.isAllDepartment === 'allDepartment' ? [] : selectedUsers,
           priority: values.priority,
           content: values.content,
+          deleteFileId: [],
+          deleteImage: imageDelete,
           uploadDatePlan: checkedSetupTime ? setupTime.format('YYYY-MM-DD HH:mm:ss') : null
         }
+
+        console.log(data);
         formData.append('data', JSON.stringify(data))
         fileImage.file.forEach((file) => {
           formData.append(`image[]`, file)
@@ -221,7 +282,7 @@ const CreateNotification = () => {
           formData.append(`file[]`, files)
         })
         try {
-          await axiosClient.post(`${BASE_URL}/saveNewNotification`, formData, {
+          await axiosClient.post(`${BASE_URL}/editNotification`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             },
@@ -229,7 +290,7 @@ const CreateNotification = () => {
               setProgress(Math.round((100 * data.loaded) / data.total))
             }
           })
-          toast.success('Save draft notification successfully!!')
+          toast.success('Edit draft notification successfully!!')
         } catch (error) {
           if (error.response.status === 400) {
             toast.error("You can't select upload time before current time!")
@@ -272,6 +333,38 @@ const CreateNotification = () => {
       }
     }
   })
+
+  const imgurl = async () => {
+    if (notificationImages.length > 0) {
+      try {
+        const downloadURLPromises = notificationImages.map((item) => {
+          if (item.imageFileName === 'unknown') {
+            return Promise.resolve(null)
+          } else {
+            const storageRef = ref(storage, `/${item.imageFileName}`)
+            return getDownloadURL(storageRef)
+          }
+        })
+
+        const downloadURLs = await Promise.all(downloadURLPromises)
+        console.log(downloadURLs)
+        const updatedFileImage = notificationImages.map((item, index) => ({
+          ...item,
+          imageFileName: downloadURLs[index]
+        }))
+        setNotificationImages(updatedFileImage)
+      } catch (error) {
+        console.error('Error getting download URLs:', error)
+      }
+    }
+  }
+
+  useEffect(() => {
+    imgurl()
+  }, [notificationImages])
+
+  console.log(departmentId)
+  console.log(formik.values.priority)
   return (
     <Box bgcolor={theme.palette.bgColorPrimary.main}>
       <ChatTopbar />
@@ -299,6 +392,7 @@ const CreateNotification = () => {
                           label="Title"
                           type="text"
                           name="title"
+                          InputLabelProps={{ shrink: true }}
                         />
                         {formik.touched.title && formik.errors.title ? (
                           <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
@@ -306,36 +400,59 @@ const CreateNotification = () => {
                           </Typography>
                         ) : null}
                       </Grid>
-                      <Grid item xs={7}>
-                        <Typography>Choose Receiver: </Typography>
+                      <Grid item xs={12}>
+                        <Typography mb={2}>Receiver: </Typography>
+                        <Box mb={3} alignItems="center" gap="10px" display="flex">
+                          {notificationDetail?.receiver?.map((item, index) => (
+                            <Chip key={index} label={item.username} />
+                          ))}
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Typography>Keep Receiver: </Typography>
                         <FormControl>
                           <RadioGroup
                             aria-labelledby="demo-radio-buttons-group-label"
-                            onChange={(e) => {
-                              formik.setFieldValue('isAllDepartment', e.target.value)
-                              if(formik.values.isAllDepartment === "allDepartment"){
-                                setDepartmentId([])
-                                setSelectedUsers([])
-                                setUpdateFilteredUsers([])
-                              }
-                            }}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.isAllDepartment}>
-                            <FormControlLabel
-                              value="allDepartment"
-                              control={<Radio />}
-                              label="All"
-                            />
-                            <FormControlLabel value="other" control={<Radio />} label="Other" />
+                            onChange={(e) => setKeepReceiver(e.target.value)}
+                            value={keepReceiver}>
+                            <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                            <FormControlLabel value="no" control={<Radio />} label="No" />
                           </RadioGroup>
                         </FormControl>
-                        {formik.touched.isAllDepartment && formik.errors.isAllDepartment ? (
-                          <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                            {formik.errors.isAllDepartment}
-                          </Typography>
-                        ) : null}
                       </Grid>
-                      {formik.values.isAllDepartment === 'other' && (
+
+                      {keepReceiver === 'no' && (
+                        <Grid item xs={7}>
+                          <Typography>Choose Receiver: </Typography>
+                          <FormControl>
+                            <RadioGroup
+                              aria-labelledby="demo-radio-buttons-group-label"
+                              onChange={(e) => {
+                                formik.setFieldValue('isAllDepartment', e.target.value)
+                                if (formik.values.isAllDepartment === 'allDepartment') {
+                                  setDepartmentId([])
+                                  setSelectedUsers([])
+                                  setUpdateFilteredUsers([])
+                                }
+                              }}
+                              onBlur={formik.handleBlur}
+                              value={formik.values.isAllDepartment}>
+                              <FormControlLabel
+                                value="allDepartment"
+                                control={<Radio />}
+                                label="All"
+                              />
+                              <FormControlLabel value="other" control={<Radio />} label="Other" />
+                            </RadioGroup>
+                          </FormControl>
+                          {formik.touched.isAllDepartment && formik.errors.isAllDepartment ? (
+                            <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
+                              {formik.errors.isAllDepartment}
+                            </Typography>
+                          ) : null}
+                        </Grid>
+                      )}
+                      {keepReceiver === 'no' && formik.values.isAllDepartment === 'other' && (
                         <>
                           <Grid item xs={6}>
                             <FormControl component="fieldset" variant="standard">
@@ -393,10 +510,9 @@ const CreateNotification = () => {
                           <FormControlLabel
                             control={
                               <Checkbox
-                                checked={formik.values.priority}
+                                checked={formik.values.priority || false}
                                 onChange={(e) => {
                                   formik.setFieldValue('priority', e.target.checked)
-                                  formik.setFieldTouched('priority', true)
                                 }}
                               />
                             }
@@ -406,10 +522,29 @@ const CreateNotification = () => {
                       <Grid item xs={7}>
                         <Typography mb={2}>Attach file: </Typography>
                         <Box mb={3} alignItems="center" gap="10px" display="flex">
-                          {file.length > 0 &&
+                          {notificationFiles.length > 0 &&
+                            notificationFiles.map((item, index) => (
+                              <>
+                                <Chip
+                                  key={index}
+                                  label={item.fileName}
+                                  onDelete={handleDeleteFileAvailable(item, index)}
+                                />
+                              </>
+                            ))}
+                            {file.length > 0 &&
                             file.map((item, index) => (
                               <>
-                                <Chip key={index} label={item.name} onDelete={handleDelete(item)} />
+                                <Chip key={index} label={item.name} onDelete={handleDeleteFileUnAvailable(item)} />
+                              </>
+                            ))}
+                          {notificationImages.length > 0 &&
+                            notificationImages.map((item, index) => (
+                              <>
+                                <img width="150px" height="100px" key={index} src={item.imageFileName} />
+                                <IconButton>
+                                  <ClearIcon onClick={() => handleDeleteImage(index, item)} />
+                                </IconButton>
                               </>
                             ))}
                           {fileImage.filepreview.length > 0 &&
@@ -417,7 +552,7 @@ const CreateNotification = () => {
                               <>
                                 <img width="150px" height="100px" key={index} src={item} />
                                 <IconButton>
-                                  <ClearIcon onClick={() => handleDeleteImage(index)} />
+                                  <ClearIcon onClick={() => handleDeleteImageNotAvailable(index)} />
                                 </IconButton>
                               </>
                             ))}
@@ -579,4 +714,4 @@ const CreateNotification = () => {
   )
 }
 
-export default CreateNotification
+export default EditNotification

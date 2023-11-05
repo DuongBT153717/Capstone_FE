@@ -33,7 +33,7 @@ import dayjs from 'dayjs'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Header from '../../../components/Header'
 import { BASE_URL } from '../../../services/constraint'
@@ -41,7 +41,10 @@ import requestApi from '../../../services/requestApi'
 import userApi from '../../../services/userApi'
 import axiosClient from '../../../utils/axios-config'
 import ChatTopbar from '../chat/components/ChatTopbar'
-import { validationSchema } from './util/validationSchema'
+import notificationApi from '../../../services/notificationApi'
+import { validationSchema } from '../edit-notification/util/validationSchema'
+import { storage } from '../../../firebase/config'
+import { getDownloadURL, ref } from 'firebase/storage'
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
 ClassicEditor.defaultConfig = {
@@ -51,7 +54,7 @@ ClassicEditor.defaultConfig = {
   language: 'en'
 }
 
-const CreateNotification = () => {
+const EditNotification = () => {
   const theme = useTheme()
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [checkedSetupTime, setCheckedSetupTime] = useState(true)
@@ -68,7 +71,13 @@ const CreateNotification = () => {
     file: [],
     filepreview: []
   })
+
+  const [notificationDetail, setNotificationDetail] = useState('')
+  const [notificationFiles, setNotificationFiles] = useState([])
+  const [notificationImages, setNotificationImages] = useState([])
+  const [keepReceiver, setKeepReceiver] = useState('yes')
   const [progress, setProgress] = useState(0)
+  const { notificationId } = useParams()
   useEffect(() => {
     const fetchAllUsers = async () => {
       const response = await userApi.getAllUserByUserId(currentUser?.accountId)
@@ -89,7 +98,24 @@ const CreateNotification = () => {
     setIsSave(event.target.checked)
   }
 
+  useEffect(() => {
+    const fetchNotificationDetail = async () => {
+      let data = {
+        userId: currentUser?.accountId,
+        notificationId: notificationId
+      }
 
+      const res = await notificationApi.getNotificationDetailByCreator(data)
+      setNotificationDetail(res)
+      setNotificationFiles(res?.notificationFiles)
+      setNotificationImages(res?.notificationImages)
+    }
+
+    fetchNotificationDetail()
+  }, [])
+
+  console.log(notificationDetail)
+  console.log(filteredUsers)
   const handleChangeDepartment = (event) => {
     const { name, checked } = event.target
     let updatedDepartmentId
@@ -193,11 +219,12 @@ const CreateNotification = () => {
     })
   }
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      title: '',
-      priority: false,
+      title: notificationDetail?.title,
+      priority: notificationDetail?.priority,
       isAllDepartment: 'allDepartment',
-      content: ''
+      content: notificationDetail?.content
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -272,6 +299,37 @@ const CreateNotification = () => {
       }
     }
   })
+
+  const imgurl = async () => {
+    if (notificationImages.length > 0) {
+      try {
+        const downloadURLPromises = notificationImages.map((item) => {
+          if (item.imageFileName === 'unknown') {
+            return Promise.resolve(null)
+          } else {
+            const storageRef = ref(storage, `/${item.imageFileName}`)
+            return getDownloadURL(storageRef)
+          }
+        })
+
+        const downloadURLs = await Promise.all(downloadURLPromises)
+        console.log(downloadURLs)
+        const updatedUsersProfile = notificationImages.map((item, index) => ({
+          ...item,
+          imageFileName: downloadURLs[index]
+        }))
+        setNotificationImages(updatedUsersProfile)
+      } catch (error) {
+        console.error('Error getting download URLs:', error)
+      }
+    }
+  }
+
+  useEffect(() => {
+    imgurl()
+  }, [notificationImages])
+
+  console.log(selectedUsers);
   return (
     <Box bgcolor={theme.palette.bgColorPrimary.main}>
       <ChatTopbar />
@@ -299,6 +357,7 @@ const CreateNotification = () => {
                           label="Title"
                           type="text"
                           name="title"
+                          InputLabelProps={{ shrink: true }}
                         />
                         {formik.touched.title && formik.errors.title ? (
                           <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
@@ -306,18 +365,34 @@ const CreateNotification = () => {
                           </Typography>
                         ) : null}
                       </Grid>
-                      <Grid item xs={7}>
+                      <Grid item xs={12}>
+                        <Typography mb={2}>Receiver: </Typography>
+                        <Box mb={3} alignItems="center" gap="10px" display="flex">
+                          {notificationDetail?.receiver?.map((item, index) => (
+                            <Chip key={index} label={item.username} />
+                          ))}
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Typography>Keep Receiver: </Typography>
+                        <FormControl>
+                          <RadioGroup
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            onChange={(e) => setKeepReceiver(e.target.value)} value={keepReceiver}>
+                            <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                            <FormControlLabel value="no" control={<Radio />} label="No" />
+                          </RadioGroup>
+                        </FormControl>
+                      </Grid>
+
+                      {
+                        keepReceiver === 'no' ? <Grid item xs={7}>
                         <Typography>Choose Receiver: </Typography>
                         <FormControl>
                           <RadioGroup
                             aria-labelledby="demo-radio-buttons-group-label"
                             onChange={(e) => {
                               formik.setFieldValue('isAllDepartment', e.target.value)
-                              if(formik.values.isAllDepartment === "allDepartment"){
-                                setDepartmentId([])
-                                setSelectedUsers([])
-                                setUpdateFilteredUsers([])
-                              }
                             }}
                             onBlur={formik.handleBlur}
                             value={formik.values.isAllDepartment}>
@@ -335,7 +410,7 @@ const CreateNotification = () => {
                           </Typography>
                         ) : null}
                       </Grid>
-                      {formik.values.isAllDepartment === 'other' && (
+                      : keepReceiver === 'no' && formik.values.isAllDepartment === 'other' ? (
                         <>
                           <Grid item xs={6}>
                             <FormControl component="fieldset" variant="standard">
@@ -385,7 +460,8 @@ const CreateNotification = () => {
                             )}
                           </Grid>
                         </>
-                      )}
+                        ): <></>
+                      }
 
                       <Grid display="flex" alignItems="center" gap="10px" item xs={12}>
                         <Typography>Priority: </Typography>
@@ -406,16 +482,25 @@ const CreateNotification = () => {
                       <Grid item xs={7}>
                         <Typography mb={2}>Attach file: </Typography>
                         <Box mb={3} alignItems="center" gap="10px" display="flex">
-                          {file.length > 0 &&
-                            file.map((item, index) => (
+                          {notificationFiles.length > 0 &&
+                            notificationFiles.map((item, index) => (
                               <>
-                                <Chip key={index} label={item.name} onDelete={handleDelete(item)} />
+                                <Chip
+                                  key={index}
+                                  label={item.fileName}
+                                  onDelete={handleDelete(item)}
+                                />
                               </>
                             ))}
-                          {fileImage.filepreview.length > 0 &&
-                            fileImage.filepreview.map((item, index) => (
+                          {notificationImages.length > 0 &&
+                            notificationImages.map((item, index) => (
                               <>
-                                <img width="150px" height="100px" key={index} src={item} />
+                                <img
+                                  width="150px"
+                                  height="100px"
+                                  key={index}
+                                  src={item.imageFileName}
+                                />
                                 <IconButton>
                                   <ClearIcon onClick={() => handleDeleteImage(index)} />
                                 </IconButton>
@@ -579,4 +664,4 @@ const CreateNotification = () => {
   )
 }
 
-export default CreateNotification
+export default EditNotification

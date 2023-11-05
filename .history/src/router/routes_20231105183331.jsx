@@ -31,8 +31,6 @@ import BookListDetailManager from '../pages/manager/request-manager-list/compone
 import CheckBookRoom from '../pages/admin/check-book-room'
 import NotificationsList from '../pages/common/list-all-notification'
 import NotificationsHrList from '../pages/hr/hr-notification-list'
-import CreateNotification from '../pages/common/create-notification'
-import EditNotification from '../pages/common/edit-notification'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -315,7 +313,7 @@ export default function Router() {
               path: PUBLIC_PATH.CREATE_NOTIFICATION,
               element: (
                 <Suspense fallback={<>Loading...</>}>
-                  <CreateNotification />
+                  < />
                 </Suspense>
               )
             },

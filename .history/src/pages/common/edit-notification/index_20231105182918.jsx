@@ -89,6 +89,25 @@ const CreateNotification = () => {
     setIsSave(event.target.checked)
   }
 
+  useEffect(() => {
+    const fetchNotificationDetail = async () => {
+
+        let data = {
+          userId: currentUser?.accountId,
+          notificationId: notificationId
+        }
+
+        const res = await notificationApi.getNotificationDetailByCreator(data)
+        setNotificationDetail(res)
+        setNotificationFiles(res?.notificationFiles)
+        setNotificationImages(res?.notificationImages)
+    
+      
+    }
+
+    fetchNotificationDetail()
+  }, [])
+
 
   const handleChangeDepartment = (event) => {
     const { name, checked } = event.target
@@ -313,11 +332,6 @@ const CreateNotification = () => {
                             aria-labelledby="demo-radio-buttons-group-label"
                             onChange={(e) => {
                               formik.setFieldValue('isAllDepartment', e.target.value)
-                              if(formik.values.isAllDepartment === "allDepartment"){
-                                setDepartmentId([])
-                                setSelectedUsers([])
-                                setUpdateFilteredUsers([])
-                              }
                             }}
                             onBlur={formik.handleBlur}
                             value={formik.values.isAllDepartment}>

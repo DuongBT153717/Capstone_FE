@@ -313,11 +313,6 @@ const CreateNotification = () => {
                             aria-labelledby="demo-radio-buttons-group-label"
                             onChange={(e) => {
                               formik.setFieldValue('isAllDepartment', e.target.value)
-                              if(formik.values.isAllDepartment === "allDepartment"){
-                                setDepartmentId([])
-                                setSelectedUsers([])
-                                setUpdateFilteredUsers([])
-                              }
                             }}
                             onBlur={formik.handleBlur}
                             value={formik.values.isAllDepartment}>

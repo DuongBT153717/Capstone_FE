@@ -33,7 +33,7 @@ import dayjs from 'dayjs'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Header from '../../../components/Header'
 import { BASE_URL } from '../../../services/constraint'
@@ -42,6 +42,7 @@ import userApi from '../../../services/userApi'
 import axiosClient from '../../../utils/axios-config'
 import ChatTopbar from '../chat/components/ChatTopbar'
 import { validationSchema } from './util/validationSchema'
+import notificationApi from '../../../services/notificationApi'
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
 ClassicEditor.defaultConfig = {
@@ -51,7 +52,7 @@ ClassicEditor.defaultConfig = {
   language: 'en'
 }
 
-const CreateNotification = () => {
+const EditNotification = () => {
   const theme = useTheme()
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [checkedSetupTime, setCheckedSetupTime] = useState(true)
@@ -68,7 +69,12 @@ const CreateNotification = () => {
     file: [],
     filepreview: []
   })
+
+  const [notificationDetail, setNotificationDetail] = useState('')
+  const [notificationFiles, setNotificationFiles] = useState([])
+  const [notificationImages, setNotificationImages] = useState([])
   const [progress, setProgress] = useState(0)
+  const {notificationId} = useParams()
   useEffect(() => {
     const fetchAllUsers = async () => {
       const response = await userApi.getAllUserByUserId(currentUser?.accountId)
@@ -89,7 +95,26 @@ const CreateNotification = () => {
     setIsSave(event.target.checked)
   }
 
+  useEffect(() => {
+    const fetchNotificationDetail = async () => {
 
+        let data = {
+          userId: currentUser?.accountId,
+          notificationId: notificationId
+        }
+
+        const res = await notificationApi.getNotificationDetailByCreator(data)
+        setNotificationDetail(res)
+        setNotificationFiles(res?.notificationFiles)
+        setNotificationImages(res?.notificationImages)
+    
+      
+    }
+
+    fetchNotificationDetail()
+  }, [])
+
+  console.log(notificationDetail);
   const handleChangeDepartment = (event) => {
     const { name, checked } = event.target
     let updatedDepartmentId
@@ -194,8 +219,8 @@ const CreateNotification = () => {
   }
   const formik = useFormik({
     initialValues: {
-      title: '',
-      priority: false,
+      title: notificationDetail?.content,
+      priority: notificationDetail?.priority,
       isAllDepartment: 'allDepartment',
       content: ''
     },
@@ -313,11 +338,6 @@ const CreateNotification = () => {
                             aria-labelledby="demo-radio-buttons-group-label"
                             onChange={(e) => {
                               formik.setFieldValue('isAllDepartment', e.target.value)
-                              if(formik.values.isAllDepartment === "allDepartment"){
-                                setDepartmentId([])
-                                setSelectedUsers([])
-                                setUpdateFilteredUsers([])
-                              }
                             }}
                             onBlur={formik.handleBlur}
                             value={formik.values.isAllDepartment}>
@@ -579,4 +599,4 @@ const CreateNotification = () => {
   )
 }
 
-export default CreateNotification
+export default EditNotification
