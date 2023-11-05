@@ -19,6 +19,8 @@ import { BASE_URL } from '../../../services/constraint'
 import notificationApi from '../../../services/notificationApi'
 import axiosClient from '../../../utils/axios-config'
 import DataTableDepartMent from './components/DataTableDepartMent'
+import { toast } from 'react-toastify'
+import Swal from 'sweetalert2'
 const NotificationDepartMentScheduleList = (props) => {
     const { row } = props
     const userId = useSelector((state) => state.auth.login.currentUser.accountId)
@@ -35,7 +37,6 @@ const NotificationDepartMentScheduleList = (props) => {
       setUser(data)
     }
     const options = [
-      'Make as read',
       'Delete',
       'Detail',
     ]
@@ -67,7 +68,44 @@ const NotificationDepartMentScheduleList = (props) => {
     }, [])
   
     console.log(userId)
+    const handleDelete = (user) => {
+      Swal.fire({
+        title: 'Are you sure to delete this notification?',
+        icon: 'warning',
+        cancelButtonText: 'Cancel',
+        showCancelButton: true,
+        cancelButtonColor: 'red',
+        confirmButtonColor: 'green',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let data = {
+            notificationId: user.notificationId,
+            userId: userId
+          };
   
+          axiosClient
+            .post(`${BASE_URL}/deleteNotification`, data)
+            .then(() => {
+              const updatedNoti = allNoti.filter((item) => item.notificationId !== user.notificationId);
+              setAllNoti(updatedNoti);
+            })
+            .catch((error) => {
+              if (error.response.status === 400) {
+                toast.error('Notification is null!');
+              } else if (error.response.status === 404) {
+                toast.error('Notification does not exist!');
+              } else if (error.response.status === 500) {
+                toast.error('Unable to delete the notification!');
+              } else if (error.response.status === 409) {
+                toast.error('Notification have been upload,cant delete');
+              }
+              else {
+                toast.error('???');
+              }
+            });
+        }
+      });
+    };
     const handelSetPersonalPriority = async (notification) => {
       if (notification.personalPriority === false && !notification.personalPriority) {
         let data = {
@@ -320,7 +358,13 @@ const NotificationDepartMentScheduleList = (props) => {
                   }}
                 >
                   {options.map((option) => (
-                    <MenuItem key={option} selected={option === 'Pyxis'} onClick={option === 'Detail' ? () => navigate(`/notification-detail/${params.row.notificationId}`) : option === 'Make as read' ? console.log('aaaa') : SignalWifiStatusbarNullRounded}>
+                     <MenuItem key={option} selected={option === 'Pyxis'} onClick={
+                      option === 'Detail' ?
+                        () => navigate(`/notification-detail/${params.row.notificationId}`) :
+                          option === 'Delete' ?
+                            () => handleDelete(params.row) :
+                            () => SignalWifiStatusbarNullRounded
+                    }>
                       {option}
                     </MenuItem>
                   ))}

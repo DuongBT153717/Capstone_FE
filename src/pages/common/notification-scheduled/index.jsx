@@ -16,6 +16,8 @@ import { BASE_URL } from '../../../services/constraint'
 import notificationApi from '../../../services/notificationApi'
 import axiosClient from '../../../utils/axios-config'
 import DataTableScheduleList from './component/DataTabelScheduled'
+import Swal from 'sweetalert2'
+import { toast } from 'react-toastify'
 const NotificationScheduleList = (props) => {
     const { row } = props
     const userId = useSelector((state) => state.auth.login.currentUser.accountId)
@@ -45,6 +47,45 @@ const NotificationScheduleList = (props) => {
     const handleClose2 = () => {
         setAnchorEl(null);
     };
+
+    const handleDelete = (user) => {
+        Swal.fire({
+          title: 'Are you sure to delete this notification?',
+          icon: 'warning',
+          cancelButtonText: 'Cancel',
+          showCancelButton: true,
+          cancelButtonColor: 'red',
+          confirmButtonColor: 'green',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            let data = {
+              notificationId: user.notificationId,
+              userId: userId
+            };
+    
+            axiosClient
+              .post(`${BASE_URL}/deleteNotification`, data)
+              .then(() => {
+                const updatedNoti = allNoti.filter((item) => item.notificationId !== user.notificationId);
+                setAllNoti(updatedNoti);
+              })
+              .catch((error) => {
+                if (error.response.status === 400) {
+                  toast.error('Notification is null!');
+                } else if (error.response.status === 404) {
+                  toast.error('Notification does not exist!');
+                } else if (error.response.status === 500) {
+                  toast.error('Unable to delete the notification!');
+                } else if (error.response.status === 409) {
+                  toast.error('Notification have been upload,cant delete');
+                }
+                else {
+                  toast.error('???');
+                }
+              });
+          }
+        });
+      };
     const handleClose = () => setOpen(false)
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
     const handelSetPersonalPriority = async (notification) => {
@@ -296,9 +337,15 @@ const NotificationScheduleList = (props) => {
                                 }}
                             >
                                 {options.map((option) => (
-                                    <MenuItem key={option} selected={option === 'Pyxis'} onClick={option === 'Detail' ? () => navigate(`/notification-detail/${params.row.notificationId}`) : null}>
+                                       <MenuItem key={option} selected={option === 'Pyxis'} onClick={
+                                        option === 'Detail' ?
+                                          () => navigate(`/notification-detail/${params.row.notificationId}`) :
+                                            option === 'Delete' ?
+                                              () => handleDelete(params.row) :
+                                              () => SignalWifiStatusbarNullRounded
+                                      }>
                                         {option}
-                                    </MenuItem>
+                                      </MenuItem>
                                 ))}
                             </Menu>
                         </div>

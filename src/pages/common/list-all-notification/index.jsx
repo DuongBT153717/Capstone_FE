@@ -18,6 +18,10 @@ import { SignalWifiStatusbarNullRounded } from '@mui/icons-material'
 import { format } from 'date-fns'
 import notificationApi from '../../../services/notificationApi'
 import FilePresentIcon from '@mui/icons-material/FilePresent';
+import { toast } from 'react-toastify';
+
+import Swal from 'sweetalert2';
+
 const NotificationsList = (props) => {
   const { row } = props
   const userId = useSelector((state) => state.auth.login.currentUser.accountId)
@@ -34,7 +38,6 @@ const NotificationsList = (props) => {
     setUser(data)
   }
   const options = [
-    'Make as read',
     'Delete',
     'Detail',
   ]
@@ -67,9 +70,47 @@ const NotificationsList = (props) => {
 
   console.log(userId)
 
+  const handleDelete = (user) => {
+    Swal.fire({
+      title: 'Are you sure to delete this notification?',
+      icon: 'warning',
+      cancelButtonText: 'Cancel',
+      showCancelButton: true,
+      cancelButtonColor: 'red',
+      confirmButtonColor: 'green',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let data = {
+          notificationId: user.notificationId,
+          userId: userId
+        };
+
+        axiosClient
+          .post(`${BASE_URL}/deleteNotification`, data)
+          .then(() => {
+            const updatedNoti = allNoti.filter((item) => item.notificationId !== user.notificationId);
+            setAllNoti(updatedNoti);
+          })
+          .catch((error) => {
+            if (error.response.status === 400) {
+              toast.error('Notification is null!');
+            } else if (error.response.status === 404) {
+              toast.error('Notification does not exist!');
+            } else if (error.response.status === 500) {
+              toast.error('Unable to delete the notification!');
+            } else if (error.response.status === 409) {
+              toast.error('Notification have been upload,cant delete');
+            }
+            else {
+              toast.error('???');
+            }
+          });
+      }
+    });
+  };
+
   const handelSetPersonalPriority = async (notification) => {
     if (notification.personalPriority === false && !notification.personalPriority) {
-      // Đang ở trạng thái `false`, thực hiện API để đặt thành `true`
       let data = {
         notificationId: notification.notificationId,
         userId: userId
@@ -83,7 +124,6 @@ const NotificationsList = (props) => {
       });
       setAllNoti(updatedAllNoti);
     } else if (notification.personalPriority === true) {
-      // Đang ở trạng thái `true`, thực hiện API để đặt thành `false`
       let data = {
         notificationId: notification.notificationId,
         userId: userId
@@ -119,7 +159,6 @@ const NotificationsList = (props) => {
             borderRadius="4px"
           >
             <div>
-
               <Checkbox
                 {...label}
                 icon={params.row.personalPriority ? <StarIcon color='warning' /> : <StarBorderIcon color='warning' />}
@@ -127,9 +166,6 @@ const NotificationsList = (props) => {
                 onChange={() => handelSetPersonalPriority(params.row)}
                 checked={params.row.personalPriority}
               />
-
-
-
             </div>
           </Box>
         )
@@ -188,15 +224,14 @@ const NotificationsList = (props) => {
               {params.row.priority === true ? (
                 <PriorityHighIcon color='primary' />
               ) : null
-                //   <Checkbox {...label} icon={<StarBorderIcon color='warning' />} checkedIcon={<StarIcon color='warning' />} />
-                // )
+
               }
             </div>
           </Box>
         )
       }
     },
-   
+
     {
       field: 'departmentName',
       headerName: 'From',
@@ -234,23 +269,23 @@ const NotificationsList = (props) => {
       align: 'center',
       width: 300,
     },
- {
-  field: 'containImage',
-  headerName: 'Attached File',
-  headerAlign: 'center',
-  align: 'center',
-  width: 250,
-  sortable: false,
-  filterable: false,
-  renderCell: (params) => {
-    if (params.row.containFile === true || params.row.containImage === true) {
-      return <FilePresentIcon fontSize='large' color='primary'/>;
-    } else {
-      return null;
+    {
+      field: 'containImage',
+      headerName: 'Attached File',
+      headerAlign: 'center',
+      align: 'center',
+      width: 250,
+      sortable: false,
+      filterable: false,
+      renderCell: (params) => {
+        if (params.row.containFile === true || params.row.containImage === true) {
+          return <FilePresentIcon fontSize='large' color='primary' />;
+        } else {
+          return null;
+        }
+      },
     }
-  },
-}
-,
+    ,
     {
       field: 'uploadDate',
       headerName: 'Date',
@@ -321,7 +356,13 @@ const NotificationsList = (props) => {
                 }}
               >
                 {options.map((option) => (
-                  <MenuItem key={option} selected={option === 'Pyxis'} onClick={option === 'Detail' ? () => navigate(`/notification-detail/${params.row.notificationId}`) : option === 'Make as read' ? console.log('aaaa') : SignalWifiStatusbarNullRounded}>
+                  <MenuItem key={option} selected={option === 'Pyxis'} onClick={
+                    option === 'Detail' ?
+                      () => navigate(`/notification-detail/${params.row.notificationId}`) :
+                      option === 'Delete' ?
+                        () => handleDelete(params.row) :
+                        () => SignalWifiStatusbarNullRounded
+                  }>
                     {option}
                   </MenuItem>
                 ))}
