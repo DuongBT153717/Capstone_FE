@@ -20,7 +20,6 @@ import { toast } from 'react-toastify'
 import { BASE_URL } from '../services/constraint'
 import axiosClient from '../utils/axios-config'
 import notificationApi from '../services/notificationApi'
-import { useNavigate } from 'react-router-dom'
 
 const NotificationsPopover = (props) => {
   const { row } = props
@@ -29,7 +28,7 @@ const NotificationsPopover = (props) => {
   const [listNotifications, setListNotifications] = useState([])
   const [showMore, setShowMore] = useState(false)
   const [viewAll, setViewAll] = useState(false)
-  const navigate = useNavigate()
+
   const userId = useSelector((state) => state.auth.login.currentUser.accountId)
 
   const handleOpen = (event) => {
@@ -101,15 +100,12 @@ const NotificationsPopover = (props) => {
     return !isRecent
   })
 
-  const handleGoToDetail = (notification) => {
-    if(notification.readStatus === false){
-      let data = {
-        notificationId: notification.notificationId,
-        userId: userId
-      }
-      notificationApi.markToRead(data)
+  const handleGoToDetail = (notificationId) => {
+    let data = {
+      notificationId: notificationId,
+      userId: userId
     }
-    navigate(`/notification-detail/${notification.notificationId}/${notification.userId}`)
+    notificationApi.markToRead(data)
   }
 
   return (
@@ -204,7 +200,7 @@ const NotificationsPopover = (props) => {
                     gap: '5px',
                     alignItems: 'flex-start'
                   }}
-                  onClick={() => handleGoToDetail(notification)}>
+                  onClick={() => handleGoToDetail(notification.notificationId)}>
                   <Typography
                     variant="body2"
                     color="text.secondary"
@@ -272,9 +268,7 @@ const NotificationsPopover = (props) => {
                     gap: '5px',
 
                     alignItems: 'flex-start'
-                  }}
-                  onClick={() => handleGoToDetail(notification)}
-                  >
+                  }}>
                   <Typography
                     variant="body2"
                     color="text.secondary"

@@ -101,15 +101,13 @@ const NotificationsPopover = (props) => {
     return !isRecent
   })
 
-  const handleGoToDetail = (notification) => {
-    if(notification.readStatus === false){
-      let data = {
-        notificationId: notification.notificationId,
-        userId: userId
-      }
-      notificationApi.markToRead(data)
+  const handleGoToDetail = (notificationId) => {
+    let data = {
+      notificationId: notificationId,
+      userId: userId
     }
-    navigate(`/notification-detail/${notification.notificationId}/${notification.userId}`)
+    notificationApi.markToRead(data)
+    navigate
   }
 
   return (
@@ -204,7 +202,7 @@ const NotificationsPopover = (props) => {
                     gap: '5px',
                     alignItems: 'flex-start'
                   }}
-                  onClick={() => handleGoToDetail(notification)}>
+                  onClick={() => handleGoToDetail(notification.notificationId)}>
                   <Typography
                     variant="body2"
                     color="text.secondary"
@@ -272,9 +270,7 @@ const NotificationsPopover = (props) => {
                     gap: '5px',
 
                     alignItems: 'flex-start'
-                  }}
-                  onClick={() => handleGoToDetail(notification)}
-                  >
+                  }}>
                   <Typography
                     variant="body2"
                     color="text.secondary"

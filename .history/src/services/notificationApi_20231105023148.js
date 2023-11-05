@@ -27,21 +27,6 @@ const notificationApi = {
         console.log(error);   
     }
   },
-  getNotificationDetailByReceiver: async (data) => {
-    try {
-      const res = await axiosClient.post(`${BASE_URL}/getNotificationDetailByReceiver`, data)
-      return res
-    } catch (error) {
-        console.log(error);   
-    }
-  },
-  markToRead: async (data) => {
-    try {
-      await axiosClient.post(`${BASE_URL}/markToRead`, data)
-    } catch (error) {
-        console.log(error);   
-    }
-  },
 
 }
 

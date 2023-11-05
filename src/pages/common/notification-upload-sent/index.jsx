@@ -15,6 +15,7 @@ import Header from '../../../components/Header'
 import { BASE_URL } from '../../../services/constraint'
 import axiosClient from '../../../utils/axios-config'
 import DataTableListUploadSent from './components/DataTableUploadSent'
+import { format } from 'date-fns'
 const NotificationUploadSent = (props) => {
     const { row } = props
     const userId = useSelector((state) => state.auth.login.currentUser.accountId)
@@ -112,6 +113,7 @@ const NotificationUploadSent = (props) => {
                     justifyContent="center"
                     alignItems="center"
                     borderRadius="4px"
+                    color
                 >
                     <div>
                         {params.row.departmentUpload.departmentName}
@@ -165,6 +167,21 @@ const NotificationUploadSent = (props) => {
             align: 'center',
             flex: 1,
             width: 300,
+            renderCell: (params) => (
+                <Box
+                    margin="0 auto"
+                    p="5px"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    borderRadius="4px"
+                    color='#000'
+                >
+                    <div>
+                         {format(new Date(params.row.uploadDate), 'yyyy/MM/dd HH:mm:ss')}
+                    </div>
+                </Box>
+            )
         },
         {
             field: 'action',

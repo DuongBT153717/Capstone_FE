@@ -102,13 +102,12 @@ const NotificationsPopover = (props) => {
   })
 
   const handleGoToDetail = (notification) => {
-    if(notification.readStatus === false){
-      let data = {
-        notificationId: notification.notificationId,
-        userId: userId
-      }
-      notificationApi.markToRead(data)
+    console.log('ascas');
+    let data = {
+      notificationId: notification.notificationId,
+      userId: userId
     }
+    notificationApi.markToRead(data)
     navigate(`/notification-detail/${notification.notificationId}/${notification.userId}`)
   }
 

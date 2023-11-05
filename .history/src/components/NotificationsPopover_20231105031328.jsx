@@ -1,54 +1,40 @@
-import LensIcon from '@mui/icons-material/Lens' // Import the LensIcon
-import NotificationsIcon from '@mui/icons-material/Notifications'
-import {
-  Badge,
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  List,
-  ListItemButton,
-  ListItemText,
-  ListSubheader,
-  Popover,
-  Typography
-} from '@mui/material'
-import { format } from 'date-fns'
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
-import { BASE_URL } from '../services/constraint'
-import axiosClient from '../utils/axios-config'
-import notificationApi from '../services/notificationApi'
-import { useNavigate } from 'react-router-dom'
+import LensIcon from '@mui/icons-material/Lens'; // Import the LensIcon
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { Badge, Box, Button, Divider, IconButton, List, ListItemButton, ListItemText, ListSubheader, Popover, Typography } from '@mui/material';
+import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { BASE_URL } from '../services/constraint';
+import axiosClient from '../utils/axios-config';
 
 const NotificationsPopover = (props) => {
-  const { row } = props
-  const [open, setOpen] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [listNotifications, setListNotifications] = useState([])
-  const [showMore, setShowMore] = useState(false)
-  const [viewAll, setViewAll] = useState(false)
-  const navigate = useNavigate()
-  const userId = useSelector((state) => state.auth.login.currentUser.accountId)
+  const { row } = props;
+  const [open, setOpen] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [listNotifications, setListNotifications] = useState([]);
+  const [showMore, setShowMore] = useState(false);
+  const [viewAll, setViewAll] = useState(false);
+
+  const userId = useSelector((state) => state.auth.login.currentUser.accountId);
 
   const handleOpen = (event) => {
-    setOpen(event.currentTarget)
+    setOpen(event.currentTarget);
   }
 
   const handleClose = () => {
-    setOpen(null)
+    setOpen(null);
   }
 
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
-      return text.slice(0, maxLength) + '...'
+      return text.slice(0, maxLength) + '...';
     }
-    return text
+    return text;
   }
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     const fetchAllNotifications = async () => {
       try {
@@ -56,61 +42,48 @@ const NotificationsPopover = (props) => {
           params: {
             userId: userId
           }
-        })
+        });
 
         if (response) {
-          setListNotifications(response)
-          setIsLoading(false)
+          setListNotifications(response);
+          setIsLoading(false);
         } else {
-          toast.error('No data found')
+          toast.error('No data found');
         }
         console.log(response)
       } catch (error) {
-        console.error('API request failed', error)
-        toast.error('Failed to fetch data')
+        console.error('API request failed', error);
+        toast.error('Failed to fetch data');
       }
-    }
-    fetchAllNotifications()
-  }, [userId])
+    };
+    fetchAllNotifications();
+  }, [userId]);
 
   const sortedNotifications = listNotifications.notifications
     ? listNotifications.notifications
-        .slice()
-        .sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
-        .slice(
-          0,
-          viewAll
-            ? listNotifications.notifications.length
-            : showMore
-            ? listNotifications.notifications.length
-            : 5
-        )
-    : []
+      .slice()
+      .sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
+      .slice(0, viewAll ? listNotifications.notifications.length : (showMore ? listNotifications.notifications.length : 5))
+    : [];
 
-  const currentTime = new Date()
+  const currentTime = new Date();
 
   const newNotifications = sortedNotifications.filter((notification) => {
-    const timeDifference = currentTime - new Date(notification.uploadDate)
-    const isRecent = timeDifference < 24 * 60 * 60 * 1000
-    return isRecent
-  })
+    const timeDifference = currentTime - new Date(notification.uploadDate);
+    const isRecent = timeDifference < 24 * 60 * 60 * 1000;
+    return isRecent;
+  });
 
   const otherNotifications = sortedNotifications.filter((notification) => {
-    const timeDifference = currentTime - new Date(notification.uploadDate)
-    const isRecent = timeDifference < 24 * 60 * 60 * 1000
-    return !isRecent
-  })
+    const timeDifference = currentTime - new Date(notification.uploadDate);
+    const isRecent = timeDifference < 24 * 60 * 60 * 1000;
+    return !isRecent;
+  });
 
-  const handleGoToDetail = (notification) => {
-    if(notification.readStatus === false){
-      let data = {
-        notificationId: notification.notificationId,
-        userId: userId
-      }
-      notificationApi.markToRead(data)
-    }
-    navigate(`/notification-detail/${notification.notificationId}/${notification.userId}`)
+  const handleGoToDetail = async () => {
+    await notificationApi
   }
+
 
   return (
     <>
@@ -150,29 +123,22 @@ const NotificationsPopover = (props) => {
               transform: 'translateY(-50%) rotate(45deg)',
               zIndex: 0
             },
-            overflowY: 'auto'
+            overflowY: 'auto',
           }
         }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      >
         <Box sx={{ display: 'flex', alignItems: 'center', py: 1, px: 2.5 }}>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifications</Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               You have {listNotifications.total} notifications
               {listNotifications.notifications && (
-                <span>
-                  {' '}
-                  (
-                  {
-                    listNotifications.notifications.filter(
-                      (notification) => !notification.readStatus
-                    ).length
-                  }{' '}
-                  unread)
-                </span>
+                <span> ({listNotifications.notifications.filter(notification => !notification.readStatus).length} unread)</span>
               )}
             </Typography>
+
           </Box>
         </Box>
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -190,7 +156,8 @@ const NotificationsPopover = (props) => {
                   fontWeight: 'bold',
                   textTransform: 'uppercase',
                   color: 'rgb(94, 53, 177)'
-                }}>
+                }}
+              >
                 New
               </ListSubheader>
               {newNotifications.map((notification) => (
@@ -202,32 +169,20 @@ const NotificationsPopover = (props) => {
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '5px',
-                    alignItems: 'flex-start'
+                    alignItems: 'flex-start',
                   }}
-                  onClick={() => handleGoToDetail(notification)}>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ fontStyle: 'italic', fontSize: '0.9rem' }}>
+                  onClick={handleGoToDetail}
+                >
+                  <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic', fontSize: '0.9rem' }}>
                     From {notification.department.departmentName}
                   </Typography>
-                  <Box
-                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <ListItemText
                       primary={truncateText(notification.title, 30)}
                       sx={{ fontSize: '2.5rem', fontWeight: 'bold' }}
                     />
                     {!notification.readStatus === true && (
-                      <LensIcon
-                        color="primary"
-                        sx={{
-                          position: 'absolute',
-                          top: '55%',
-                          right: 0,
-                          transform: 'translateY(-50%)',
-                          fontSize: '16px'
-                        }}
-                      />
+                      <LensIcon color="primary" sx={{ position: 'absolute', top: '55%', right: 0, transform: 'translateY(-50%)', fontSize: '16px' }} />
                     )}
                   </Box>
                   <Typography
@@ -236,8 +191,9 @@ const NotificationsPopover = (props) => {
                     sx={{
                       fontSize: '0.9rem',
                       fontStyle: 'italic',
-                      color: 'grey'
-                    }}>
+                      color: 'grey',
+                    }}
+                  >
                     {format(new Date(notification.uploadDate), 'yyyy/MM/dd HH:mm:ss')}
                   </Typography>
                 </ListItemButton>
@@ -258,7 +214,8 @@ const NotificationsPopover = (props) => {
                   fontWeight: 'bold',
                   textTransform: 'uppercase',
                   color: 'rgb(94, 53, 177)'
-                }}>
+                }}
+              >
                 Previous
               </ListSubheader>
               {otherNotifications.map((notification) => (
@@ -271,33 +228,19 @@ const NotificationsPopover = (props) => {
                     flexDirection: 'column',
                     gap: '5px',
 
-                    alignItems: 'flex-start'
+                    alignItems: 'flex-start',
                   }}
-                  onClick={() => handleGoToDetail(notification)}
-                  >
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ fontStyle: 'italic', fontSize: '0.9rem' }}>
+                >
+                  <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic', fontSize: '0.9rem' }}>
                     from {notification.department.departmentName}
                   </Typography>
-                  <Box
-                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space between' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space between' }}>
                     <ListItemText
                       primary={truncateText(notification.title, 30)}
                       sx={{ fontSize: '2.5rem', fontWeight: 'bold' }}
                     />
                     {!notification.readStatus === true && (
-                      <LensIcon
-                        color="primary"
-                        sx={{
-                          position: 'absolute',
-                          top: '55%',
-                          right: 0,
-                          transform: 'translateY(-50%)',
-                          fontSize: '16px'
-                        }}
-                      />
+                      <LensIcon color="primary" sx={{ position: 'absolute', top: '55%', right: 0, transform: 'translateY(-50%)', fontSize: '16px' }} />
                     )}
                   </Box>
                   <Typography
@@ -306,8 +249,9 @@ const NotificationsPopover = (props) => {
                     sx={{
                       fontSize: '0.9rem',
                       fontStyle: 'italic',
-                      color: 'grey'
-                    }}>
+                      color: 'grey',
+                    }}
+                  >
                     {format(new Date(notification.uploadDate), 'yy/MM/dd HH:mm:ss')}
                   </Typography>
                 </ListItemButton>
@@ -323,7 +267,7 @@ const NotificationsPopover = (props) => {
         </Box>
       </Popover>
     </>
-  )
+  );
 }
 
-export default NotificationsPopover
+export default NotificationsPopover;

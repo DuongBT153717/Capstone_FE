@@ -152,10 +152,10 @@ const NotificationDetail = () => {
               __html: notificationDetail?.content
             }}></Typography>
         </Box>
+        <Divider />
         {notificationFiles.length > 0 &&
           notificationFiles.map((item) => (
             <>
-            <Divider />
               <Box mt={2}>
                 <Typography mb={2} fontWeight="700">
                   Attachments:{' '}

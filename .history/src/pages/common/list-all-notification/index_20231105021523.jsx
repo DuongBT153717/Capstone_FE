@@ -14,8 +14,6 @@ import Header from '../../../components/Header'
 import { BASE_URL } from '../../../services/constraint'
 import axiosClient from '../../../utils/axios-config'
 import DataTableListNoti from './components/DataTable'
-import { SignalWifiStatusbarNullRounded } from '@mui/icons-material'
-import { format } from 'date-fns'
 const NotificationsList = (props) => {
   const { row } = props
   const userId = useSelector((state) => state.auth.login.currentUser.accountId)
@@ -32,7 +30,7 @@ const NotificationsList = (props) => {
     setUser(data)
   }
   const options = [
-    'Make as read',
+    'Make as read(unread)',
     'Delete',
     'Detail',
   ]
@@ -73,7 +71,7 @@ const NotificationsList = (props) => {
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      width: 80,
+      width: 60,
       renderCell: (params) => {
         return (
           <Box
@@ -86,11 +84,11 @@ const NotificationsList = (props) => {
           >
             <div>
               {params.row.priority === true ? (
-                <PriorityHighIcon color='primary' />
+                <PriorityHighIcon color='secondary'/>
               ) : null
-                //   <Checkbox {...label} icon={<StarBorderIcon color='warning' />} checkedIcon={<StarIcon color='warning' />} />
-                // )
-              }
+              //   <Checkbox {...label} icon={<StarBorderIcon color='warning' />} checkedIcon={<StarIcon color='warning' />} />
+              // )
+            }
             </div>
           </Box>
         )
@@ -125,47 +123,33 @@ const NotificationsList = (props) => {
       }
     },
     {
-      field: 'departmentName',
+      field: 'creatorLastName',
       headerName: 'From',
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
       width: 150,
-      renderCell: (params) => (
-        <Box
-          margin="0 auto"
-          p="5px"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          borderRadius="4px"
-        >
-          <div>
-            {params.row.departmentUpload.departmentName}
-          </div>
-        </Box>
-      )
     },
     {
       field: 'title',
       headerName: 'Title',
       headerAlign: 'center',
       align: 'center',
-      width: 200,
+      width: 400,
     },
     {
       field: 'content',
       headerName: 'Content',
       headerAlign: 'center',
       align: 'center',
-      width: 300,
+      width: 450,
     },
     {
       field: 'imageFileName',
       headerName: '',
       headerAlign: 'center',
       align: 'center',
-      width: 250,
+      width: 350,
       sortable: false,
       filterable: false,
       renderCell: (params) => {
@@ -190,30 +174,14 @@ const NotificationsList = (props) => {
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      flex: 1,
-      width: 300,
-      renderCell: (params) => (
-        <Box
-            margin="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            borderRadius="4px"
-            color='#000'
-        >
-            <div>
-                 {format(new Date(params.row.uploadDate), 'yyyy/MM/dd HH:mm:ss')}
-            </div>
-        </Box>
-    )
+      width: 330,
     },
     {
       field: 'action',
       headerName: '',
       headerAlign: 'center',
       align: 'center',
-      width: 40,
+      width: 60,
       sortable: false,
       filterable: false,
       renderCell: (params) => {
@@ -254,7 +222,7 @@ const NotificationsList = (props) => {
                 }}
               >
                 {options.map((option) => (
-                  <MenuItem key={option} selected={option === 'Pyxis'} onClick={option === 'Detail' ? () => navigate(`/notification-detail/${params.row.notificationId}`) : option === 'Make as read' ? console.log('aaaa') : SignalWifiStatusbarNullRounded}>
+                  <MenuItem key={option} selected={option === 'Pyxis'} onClick={option === 'Detail' ? () => navigate(`/notification-detail/${params.row.notificationId}`): null}>
                     {option}
                   </MenuItem>
                 ))}
@@ -269,7 +237,7 @@ const NotificationsList = (props) => {
   ]
   return (
     <>
-      <Header title="ALL NOTIFICATIONS" />
+      <Header title="NOTIFICATIONS" />
       <DataTableListNoti
         rows={allNoti}
         columns={columns}

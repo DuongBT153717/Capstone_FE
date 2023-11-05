@@ -45,7 +45,5 @@ export const HR_PATH = {
     REQUEST_HR_LIST: '/request-hr-list',
     REQUEST_LIST_HR: '/request-list-hr',
     BOOK_ROOM_HR: '/book-room-hr',
-    NOTIFICATION_LIST_HR: '/notification-list-hr',
-    NOTIFICATION_UPLOAD_SENT_HR: 'notification-uploadsent',
-    NOTIFICATION_UPLOAD_RECEIVE_HR: 'notification-uploadreceive'
+    NOTIFICATION_LIST_HR: '/notification-list-hr'
 }
