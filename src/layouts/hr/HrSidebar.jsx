@@ -39,7 +39,8 @@ const HrSidebar = () => {
                 ? 7 :  window.location.pathname === '/notification-uploadsent'
                 ? 8 :  window.location.pathname === '/notification-uploadreceive'
                 ? 9 :  window.location.pathname === '/notification-list-hr'
-                ? 10
+                ? 10 : window.location.pathname === '/notification-schedulelist'
+                ? 11 
                 : 0
     return initialIndex
   })
@@ -225,14 +226,14 @@ const HrSidebar = () => {
             <MenuItem
               active={activeIndex === 9}
               icon={<DensitySmallIcon />}
-              component={<Link to="/book-room-hr" onClick={() => setActiveIndex(9)} />}>
+              component={<Link to="/" onClick={() => setActiveIndex(9)} />}>
               {' '}
               All
             </MenuItem> 
             <MenuItem
               active={activeIndex === 10}
               icon={<ContactMailIcon />}
-              component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
+              component={<Link to="/notification-schedulelist" onClick={() => setActiveIndex(10)} />}>
               {' '}
               Personal
             </MenuItem> 

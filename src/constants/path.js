@@ -48,5 +48,6 @@ export const HR_PATH = {
     NOTIFICATION_LIST_HR: '/notification-list-hr',
     NOTIFICATION_UPLOAD_SENT_HR: 'notification-uploadsent',
     NOTIFICATION_UPLOAD_RECEIVE_HR: 'notification-uploadreceive',
-    NOTIFICATION_DRAFT_LIST_HR: 'notification-draftlist'
+    NOTIFICATION_DRAFT_LIST_HR: 'notification-draftlist',
+    NOTIFICATION_SCHEDULED_LIST_HR: 'notification-schedulelist'
 }
