@@ -50,6 +50,7 @@ const NotificationUploadSent = (props) => {
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
     const handelSetPersonalPriority = async (notification) => {
         if (notification.personalPriority === false && !notification.personalPriority) {
+            // Đang ở trạng thái `false`, thực hiện API để đặt thành `true`
             let data = {
                 notificationId: notification.notificationId,
                 userId: userId
@@ -61,7 +62,20 @@ const NotificationUploadSent = (props) => {
                 }
                 return item;
             });
-            //    updatedAllNoti.sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
+            setAllNoti(updatedAllNoti);
+        } else if (notification.personalPriority === true) {
+            // Đang ở trạng thái `true`, thực hiện API để đặt thành `false`
+            let data = {
+                notificationId: notification.notificationId,
+                userId: userId
+            };
+            await notificationApi.unSetPersonalPriority(data);
+            const updatedAllNoti = allNoti.map((item) => {
+                if (item.notificationId === notification.notificationId) {
+                    return { ...item, personalPriority: false };
+                }
+                return item;
+            });
             setAllNoti(updatedAllNoti);
         }
     };
@@ -165,6 +179,7 @@ const NotificationUploadSent = (props) => {
                             />
 
 
+
                         </div>
                     </Box>
                 )
@@ -176,7 +191,7 @@ const NotificationUploadSent = (props) => {
             headerAlign: 'center',
             align: 'center',
             width: 200,
-            flex:1,
+            flex: 1,
         },
         {
             field: 'content',
@@ -184,7 +199,7 @@ const NotificationUploadSent = (props) => {
             headerAlign: 'center',
             align: 'center',
             width: 300,
-            flex:1,
+            flex: 1,
         },
         {
             field: 'imageFileName',
@@ -194,7 +209,7 @@ const NotificationUploadSent = (props) => {
             width: 250,
             sortable: false,
             filterable: false,
-            flex:1,
+            flex: 1,
             renderCell: (params) => {
                 if (
                     params.row.notificationFiles &&
@@ -230,7 +245,7 @@ const NotificationUploadSent = (props) => {
                     color='#000'
                 >
                     <div>
-                         {format(new Date(params.row.uploadDate), 'yyyy/MM/dd HH:mm:ss')}
+                        {format(new Date(params.row.uploadDate), 'yyyy/MM/dd HH:mm:ss')}
                     </div>
                 </Box>
             )
@@ -243,7 +258,7 @@ const NotificationUploadSent = (props) => {
             width: 10,
             sortable: false,
             filterable: false,
-            flex:-5,
+            flex: -5,
             renderCell: (params) => {
                 return (
                     <Box

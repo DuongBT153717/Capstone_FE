@@ -49,21 +49,35 @@ const NotificationScheduleList = (props) => {
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
     const handelSetPersonalPriority = async (notification) => {
         if (notification.personalPriority === false && !notification.personalPriority) {
-            let data = {
-                notificationId: notification.notificationId,
-                userId: userId
-            };
-            await notificationApi.setPersonalPriority(data);
-            const updatedAllNoti = allNoti.map((item) => {
-                if (item.notificationId === notification.notificationId) {
-                    return { ...item, personalPriority: true };
-                }
-                return item;
-            });
-            //    updatedAllNoti.sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
-            setAllNoti(updatedAllNoti);
+          // Đang ở trạng thái `false`, thực hiện API để đặt thành `true`
+          let data = {
+            notificationId: notification.notificationId,
+            userId: userId
+          };
+          await notificationApi.setPersonalPriority(data);
+          const updatedAllNoti = allNoti.map((item) => {
+            if (item.notificationId === notification.notificationId) {
+              return { ...item, personalPriority: true };
+            }
+            return item;
+          });
+          setAllNoti(updatedAllNoti);
+        } else if (notification.personalPriority === true) {
+          // Đang ở trạng thái `true`, thực hiện API để đặt thành `false`
+          let data = {
+            notificationId: notification.notificationId,
+            userId: userId
+          };
+          await notificationApi.unSetPersonalPriority(data);
+          const updatedAllNoti = allNoti.map((item) => {
+            if (item.notificationId === notification.notificationId) {
+              return { ...item, personalPriority: false };
+            }
+            return item;
+          });
+          setAllNoti(updatedAllNoti);
         }
-    };
+      };
     useEffect(() => {
         setIsLoading(true)
         const fetchAllNoti = async () => {
@@ -144,31 +158,32 @@ const NotificationScheduleList = (props) => {
             align: 'center',
             width: 60,
             renderCell: (params) => {
-                return (
-                    <Box
-                        margin="0 auto"
-                        p="5px"
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        borderRadius="4px"
-                    >
-                        <div>
-
-                            <Checkbox
-                                {...label}
-                                icon={params.row.personalPriority ? <StarIcon color='warning' /> : <StarBorderIcon color='warning' />}
-                                checkedIcon={params.row.personalPriority ? <StarIcon color='warning' /> : <StarBorderIcon color='warning' />}
-                                onChange={() => handelSetPersonalPriority(params.row)}
-                                checked={params.row.personalPriority}
-                            />
-
-
-                        </div>
-                    </Box>
-                )
+              return (
+                <Box
+                  margin="0 auto"
+                  p="5px"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  borderRadius="4px"
+                >
+                  <div>
+      
+                    <Checkbox
+                      {...label}
+                      icon={params.row.personalPriority ? <StarIcon color='warning' /> : <StarBorderIcon color='warning' />}
+                      checkedIcon={params.row.personalPriority ? <StarIcon color='warning' /> : <StarBorderIcon color='warning' />}
+                      onChange={() => handelSetPersonalPriority(params.row)}
+                      checked={params.row.personalPriority}
+                    />
+      
+      
+      
+                  </div>
+                </Box>
+              )
             }
-        },
+          },
         {
             field: 'title',
             headerName: 'Title',
