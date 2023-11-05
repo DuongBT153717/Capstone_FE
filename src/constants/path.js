@@ -14,8 +14,8 @@ export const PUBLIC_PATH = {
 }
 
 export const ADMIN_PATH = {
-    LAYOUT: "/",   
-    REQUEST_LIST_ADMIN:'/request-list-admin',
+    LAYOUT: "/",
+    REQUEST_LIST_ADMIN: '/request-list-admin',
     BOOK_ROOM_DETAIL: '/room-detail/:ticketId',
     MANAGE_LIST_TICKET_ADMIN: '/manage-list-admin',
     CHECK_BOOK_ROOM: '/check-book-room',
@@ -27,12 +27,16 @@ export const ADMIN_PATH = {
 }
 
 export const MANAGER_PATH = {
-    LAYOUT: "/",   
-    MANAGE_LIST_TICKET_MANAGER:'/request-list-manager',
+    LAYOUT: "/",
+    MANAGE_LIST_TICKET_MANAGER: '/request-list-manager',
     REQUEST_LIST_MANAGER: '/request-manager-list',
     BOOK_ROOM_MANAGER: '/book-room-manager',
     BOOK_ROOM_DETAIL_MANAGER: '/book-room-detail-manager/:ticketId',
-    NOTIFICATION_LIST_MANAGER: '/notification-list-manager'
+    NOTIFICATION_LIST_MANAGER: '/notification-list-manager',
+    NOTIFICATION_DRAFT_MANAGER: '/notification-draft-manager',
+    NOTIFICATION_SEND_MANAGER: '/notification-send-manager',
+    NOTIFICATION_RECEIVE_MANAGER: '/notification-receive-manager',
+    NOTIFICATION_SCHEDULED_MANAGER: '/notification-schedule-manager',
 }
 
 export const EMPLOYEE_PATH = {
@@ -43,7 +47,7 @@ export const EMPLOYEE_PATH = {
     NOTIFICATION_DRAFT_LIST_EMPLOYEE: 'notification-draft-emp',
     NOTIFCAITON_RECEIVE_LIST_EMPLOYEE: 'notification-receive-emp',
     NOTIFICATION_SEND_LIST_EMPLOYEE: 'notification-send-emp',
-    NOTIFICATION_SCHEDULED_LIST_EMPLOYEE :'notification-schedule-emp',
+    NOTIFICATION_SCHEDULED_LIST_EMPLOYEE: 'notification-schedule-emp',
 }
 
 export const HR_PATH = {

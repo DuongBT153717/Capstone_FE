@@ -1,14 +1,23 @@
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
+import ClearAllIcon from '@mui/icons-material/ClearAll'
+import ContactMailIcon from '@mui/icons-material/ContactMail'
+import DensitySmallIcon from '@mui/icons-material/DensitySmall'
+import DraftsIcon from '@mui/icons-material/Drafts'
+import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox'
+import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox'
 import MenuIcon from '@mui/icons-material/Menu'
+import NotificationsIcon from '@mui/icons-material/Notifications'
+import UploadIcon from '@mui/icons-material/Upload'
 import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useState } from 'react'
-import { Menu, MenuItem, Sidebar, useProSidebar } from 'react-pro-sidebar'
+import { Menu, MenuItem, Sidebar, SubMenu, useProSidebar } from 'react-pro-sidebar'
 import { Link } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
 const ManagerSidebar = () => {
-  const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
+  const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar() 
   const [activeIndex, setActiveIndex] = useState(() => {
     const initialIndex =
       window.location.pathname === '/request-list-manager'
@@ -17,7 +26,20 @@ const ManagerSidebar = () => {
         ? 1
         : window.location.pathname === '/request-manager-list'
         ? 2
-        : 0
+        : window.location.pathname === '/request-manager-list'
+        ? 3
+        : window.location.pathname === '/notification-list-manager'
+        ? 4
+        : window.location.pathname === '/notification-draft-manager'
+        ? 5
+        : window.location.pathname === '/notification-send-manager'
+        ? 6
+        : window.location.pathname === '/notification-receive-manager'
+        ? 8
+        : window.location.pathname === '/notification-scheduled-manager'
+        ? 7
+        : window.location.pathname === '/notification-list-manager'
+         0
     return initialIndex
   })
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -145,6 +167,63 @@ const ManagerSidebar = () => {
             {' '}
             Check Your Ticket
           </MenuItem>
+          <SubMenu
+            label="Notification"
+            icon={<NotificationsIcon />}
+          >
+            <MenuItem
+              active={activeIndex === 3}
+              icon={<ClearAllIcon />}
+              component={<Link to="/notification-list-manager" onClick={() => setActiveIndex(6)} />}>
+              {' '}
+              All Notification
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 4}
+              icon={<DraftsIcon />}
+              component={<Link to="/notification-draft-manager" onClick={() => setActiveIndex(7)} />}>
+              {' '}
+              Draft
+            </MenuItem>
+            <SubMenu
+            label='Send&Receive'
+            icon={<UploadIcon />}>
+            <MenuItem
+              active={activeIndex === 5}
+              icon={<ForwardToInboxIcon />}
+              component={<Link to="/notification-send-manager" onClick={() => setActiveIndex(8)} />}>
+              {' '}
+              Send
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 6}
+              icon={<MarkunreadMailboxIcon />}
+              component={<Link to="/notification-receive-manager" onClick={() => setActiveIndex(10)} />}>
+              {' '}
+              Receive
+            </MenuItem>
+            </SubMenu>
+          
+            <SubMenu
+            label='Scheduled'
+            icon={<CalendarTodayIcon/>}
+            >
+            <MenuItem
+              active={activeIndex === 7}
+              icon={<DensitySmallIcon />}
+              component={<Link to="/" onClick={() => setActiveIndex(11)} />}>
+              {' '}
+              All
+            </MenuItem> 
+            <MenuItem
+              active={activeIndex === 8}
+              icon={<ContactMailIcon />}
+              component={<Link to="/notification-schedule-manager" onClick={() => setActiveIndex(12)} />}>
+              {' '}
+              Personal
+            </MenuItem> 
+            </SubMenu>
+          </SubMenu>
         </Menu>
       </Sidebar>
     </>

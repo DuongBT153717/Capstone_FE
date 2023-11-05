@@ -47,6 +47,12 @@ import ListNotificationDraftAdmin from '../pages/admin/admin-notification-draft'
 import ListNotificationSendAdmin from '../pages/admin/admin-notification-send'
 import ListNotificationReceiveAdmin from '../pages/admin/admin-notification-receive'
 import ListNotificationScheduleAdmin from '../pages/admin/admin-notification-scheduled'
+import ListAllNotificationManager from '../pages/manager/manager-notification-list-all'
+import ListAllNotificationDraftAdmin from '../pages/manager/manager-notification-draft'
+import ListAllNotificationDraftManager from '../pages/manager/manager-notification-draft'
+import ListAllNotificationReceiveManager from '../pages/manager/manager-notification-receive'
+import ListAllNotificationSendManager from '../pages/manager/manager-notification-send'
+import ListAllNotificationScheduleManager from '../pages/manager/manager-notification-schedule'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -98,7 +104,7 @@ export default function Router() {
       path: PUBLIC_PATH.NOTIFICATION_LIST,
       element: (
         <Suspense fallback={<>Loading...</>} >
-         <NotificationsList />
+          <NotificationsList />
         </Suspense>
       )
     },
@@ -161,7 +167,7 @@ export default function Router() {
               path: ADMIN_PATH.NOTIFICATION_SEND_ADMIN,
               element: (
                 <Suspense fallback={<>Loading...</>}>
-                  <ListNotificationSendAdmin/>
+                  <ListNotificationSendAdmin />
                 </Suspense>
               )
             }
@@ -170,7 +176,7 @@ export default function Router() {
               path: ADMIN_PATH.NOTIFICATION_RECEIVE_ADMIN,
               element: (
                 <Suspense fallback={<>Loading...</>}>
-                  <ListNotificationReceiveAdmin/>
+                  <ListNotificationReceiveAdmin />
                 </Suspense>
               )
             }
@@ -179,7 +185,7 @@ export default function Router() {
               path: ADMIN_PATH.NOTIFICATION_SCHEDULED_ADMIN,
               element: (
                 <Suspense fallback={<>Loading...</>}>
-                  <ListNotificationScheduleAdmin/>
+                  <ListNotificationScheduleAdmin />
                 </Suspense>
               )
             }
@@ -246,7 +252,7 @@ export default function Router() {
                   <RequestListHr />
                 </Suspense>
               )
-            },{
+            }, {
               path: HR_PATH.REQUEST_HR_LIST,
               element: (
                 <Suspense fallback={<>Loading...</>}>
@@ -397,7 +403,46 @@ export default function Router() {
                 </Suspense>
               )
             },
-            
+            {
+              path: MANAGER_PATH.NOTIFICATION_LIST_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationManager />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.NOTIFICATION_DRAFT_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationDraftManager />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.NOTIFICATION_SEND_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationSendManager />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.NOTIFICATION_RECEIVE_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationReceiveManager />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.NOTIFICATION_SCHEDULED_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationScheduleManager />
+                </Suspense>
+              )
+            },
           ]
         },
         {

@@ -64,10 +64,11 @@ const NotificationsList = (props) => {
     fetchAllNoti()
   }, [])
 
-  console.log(allNoti)
+  console.log(userId)
 
   const handelSetPersonalPriority = async (notification) => {
     if (notification.personalPriority === false && !notification.personalPriority) {
+      // Đang ở trạng thái `false`, thực hiện API để đặt thành `true`
       let data = {
         notificationId: notification.notificationId,
         userId: userId
@@ -79,10 +80,24 @@ const NotificationsList = (props) => {
         }
         return item;
       });
-      //    updatedAllNoti.sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
+      setAllNoti(updatedAllNoti);
+    } else if (notification.personalPriority === true) {
+      // Đang ở trạng thái `true`, thực hiện API để đặt thành `false`
+      let data = {
+        notificationId: notification.notificationId,
+        userId: userId
+      };
+      await notificationApi.unSetPersonalPriority(data);
+      const updatedAllNoti = allNoti.map((item) => {
+        if (item.notificationId === notification.notificationId) {
+          return { ...item, personalPriority: false };
+        }
+        return item;
+      });
       setAllNoti(updatedAllNoti);
     }
   };
+
 
   const columns = [
     {
@@ -103,12 +118,12 @@ const NotificationsList = (props) => {
           borderRadius="4px"
           color={
             params.row.notificationStatus === 'UPLOADED'
-              ? 'blue' 
+              ? 'blue'
               : params.row.notificationStatus === 'DRAFT'
-                ? 'red' 
+                ? 'red'
                 : params.row.notificationStatus === 'SCHEDULED'
-                  ? 'green' 
-                  : 'black' 
+                  ? 'green'
+                  : 'black'
           }
         >
           <div>{params.row.notificationStatus}</div>
@@ -172,6 +187,7 @@ const NotificationsList = (props) => {
                 onChange={() => handelSetPersonalPriority(params.row)}
                 checked={params.row.personalPriority}
               />
+
 
 
             </div>
