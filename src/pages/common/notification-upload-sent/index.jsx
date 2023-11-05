@@ -32,7 +32,6 @@ const NotificationUploadSent = (props) => {
         setUser(data)
     }
     const options = [
-        'Make as read(unread)',
         'Delete',
         'Detail',
         'Edit',
@@ -68,65 +67,66 @@ const NotificationUploadSent = (props) => {
 
 
     const columns = [
-        {
-            field: 'priority',
-            headerName: 'Priority',
-            cellClassName: 'name-column--cell',
-            headerAlign: 'center',
-            align: 'center',
-            width: 80,
-            renderCell: (params) => {
-                return (
-                    <Box
-                        margin="0 auto"
-                        p="5px"
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        borderRadius="4px"
-                    >
-                        <div>
-                            {params.row.priority === true ? (
-                                <PriorityHighIcon color='primary' />
-                            ) : null
-                                //   <Checkbox {...label} icon={<StarBorderIcon color='warning' />} checkedIcon={<StarIcon color='warning' />} />
-                                // )
-                            }
-                        </div>
-                    </Box>
-                )
-            }
-        },
+        // {
+        //     field: 'priority',
+        //     headerName: 'Priority',
+        //     cellClassName: 'name-column--cell',
+        //     headerAlign: 'center',
+        //     align: 'center',
+        //     width: 80,
+        //     renderCell: (params) => {
+        //         return (
+        //             <Box
+        //                 margin="0 auto"
+        //                 p="5px"
+        //                 display="flex"
+        //                 justifyContent="center"
+        //                 alignItems="center"
+        //                 borderRadius="4px"
+        //             >
+        //                 <div>
+        //                     {params.row.priority === true ? (
+        //                         <PriorityHighIcon color='primary' />
+        //                     ) : null
+        //                         //   <Checkbox {...label} icon={<StarBorderIcon color='warning' />} checkedIcon={<StarIcon color='warning' />} />
+        //                         // )
+        //                     }
+        //                 </div>
+        //             </Box>
+        //         )
+        //     }
+        // },
 
-        {
-            field: 'departmentName',
-            headerName: 'From',
-            cellClassName: 'name-column--cell',
-            headerAlign: 'center',
-            align: 'center',
-            width: 150,
-            renderCell: (params) => (
-                <Box
-                    margin="0 auto"
-                    p="5px"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    borderRadius="4px"
-                    color
-                >
-                    <div>
-                        {params.row.departmentUpload.departmentName}
-                    </div>
-                </Box>
-            )
-        },
+        // {
+        //     field: 'departmentName',
+        //     headerName: 'From',
+        //     cellClassName: 'name-column--cell',
+        //     headerAlign: 'center',
+        //     align: 'center',
+        //     width: 150,
+        //     renderCell: (params) => (
+        //         <Box
+        //             margin="0 auto"
+        //             p="5px"
+        //             display="flex"
+        //             justifyContent="center"
+        //             alignItems="center"
+        //             borderRadius="4px"
+        //             color
+        //         >
+        //             <div>
+        //                 {params.row.departmentUpload.departmentName}
+        //             </div>
+        //         </Box>
+        //     )
+        // },
         {
             field: 'title',
             headerName: 'Title',
             headerAlign: 'center',
             align: 'center',
             width: 200,
+            flex:1,
         },
         {
             field: 'content',
@@ -134,6 +134,7 @@ const NotificationUploadSent = (props) => {
             headerAlign: 'center',
             align: 'center',
             width: 300,
+            flex:1,
         },
         {
             field: 'imageFileName',
@@ -143,6 +144,7 @@ const NotificationUploadSent = (props) => {
             width: 250,
             sortable: false,
             filterable: false,
+            flex:1,
             renderCell: (params) => {
                 if (
                     params.row.notificationFiles &&
@@ -188,9 +190,10 @@ const NotificationUploadSent = (props) => {
             headerName: '',
             headerAlign: 'center',
             align: 'center',
-            width: 40,
+            width: 10,
             sortable: false,
             filterable: false,
+            flex:-5,
             renderCell: (params) => {
                 return (
                     <Box

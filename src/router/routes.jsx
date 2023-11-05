@@ -34,7 +34,7 @@ import NotificationsHrList from '../pages/hr/hr-notification-list'
 import CreateNotification from '../pages/common/create-notification'
 import NotificationUploadReceiveHR from '../pages/hr/hr-notification-upload-receive'
 import NotificationUploadSentHR from '../pages/hr/hr-notification-upload-sent'
-import NotificationDraftListHr from '../pages/hr/hr-notification-draf-list'
+import NotificationDraftListHr from '../pages/hr/hr-notification-draft-list'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))

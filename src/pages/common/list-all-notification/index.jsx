@@ -139,6 +139,7 @@ const NotificationsList = (props) => {
           justifyContent="center"
           alignItems="center"
           borderRadius="4px"
+          color='#000'
         >
           <div>
             {params.row.departmentUpload.departmentName}
