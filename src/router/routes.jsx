@@ -37,6 +37,8 @@ import NotificationUploadSentHR from '../pages/hr/hr-notification-upload-sent'
 import NotificationDraftListHr from '../pages/hr/hr-notification-draft-list'
 import NotificationScheduleList from '../pages/common/notification-scheduled'
 import NotificationScheduleListHr from '../pages/hr/hr-notification-scheduled-list'
+import ListAllNotificationEmp from '../pages/employee/employee-notification-list-all'
+import ListNotificationDarfEmp from '../pages/employee/employee-notification-draft'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -273,7 +275,23 @@ export default function Router() {
                   <RequestListEmployee />
                 </Suspense>
               )
-            }
+            },
+            {
+              path: EMPLOYEE_PATH.NOTIFICATION_LIST_EMPLOYEE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationEmp />
+                </Suspense>
+              )
+            },
+            {
+              path: EMPLOYEE_PATH.NOTIFICATION_DRAFT_LIST_EMPLOYEE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationDarfEmp />
+                </Suspense>
+              )
+            },
           ]
         }
       ]

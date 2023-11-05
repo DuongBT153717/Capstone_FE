@@ -35,7 +35,8 @@ export const EMPLOYEE_PATH = {
     LAYOUT: "/",
     CHECK_ATTENDACE: '/check-attendance',
     REQUEST_LIST_EMPLOYEE: '/request-list-employee',
-    NOTIFICATION_LIST_MANAGER: '/notification-list-employee'
+    NOTIFICATION_LIST_EMPLOYEE: '/notification-list-emp',
+    NOTIFICATION_DRAFT_LIST_EMPLOYEE: 'notification-draft-emp',
 }
 
 export const HR_PATH = {

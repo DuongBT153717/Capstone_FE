@@ -4,19 +4,28 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useState } from 'react'
-import { Menu, MenuItem, Sidebar, useProSidebar } from 'react-pro-sidebar'
+import { Menu, MenuItem, Sidebar,SubMenu, useProSidebar } from 'react-pro-sidebar'
 import { Link } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
+import ClearAllIcon from '@mui/icons-material/ClearAll';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import UploadIcon from '@mui/icons-material/Upload';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import DensitySmallIcon from '@mui/icons-material/DensitySmall';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
+import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox';
+import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 const EmployeeSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => {
     const initialIndex =
-      window.location.pathname === '/check-attendance'
-        ? 0
-        : window.location.pathname === '/request-list-employee'
-        ? 1
-        : 0
+      window.location.pathname === '/request-list-employee'
+        ? 1 : window.location.pathname === '/request-list-employee'
+        ? 2 : window.location.pathname === '/notification-list-emp'
+        ? 3 :  window.location.pathname === '/notification-list-emp'
+         0
     return initialIndex
   })
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -135,7 +144,65 @@ const EmployeeSidebar = () => {
             {' '}
             Check Your Ticket
           </MenuItem>
+          <SubMenu
+            label="Notification"
+            icon={<NotificationsIcon />}
+          >
+          <MenuItem
+              active={activeIndex === 2}
+              icon={<ClearAllIcon />}
+              component={<Link to="/notification-list-emp" onClick={() => setActiveIndex(5)} />}>
+              {' '}
+              All Notification
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 3}
+              icon={<DraftsIcon />}
+              component={<Link to="/notification-draft-emp" onClick={() => setActiveIndex(6)} />}>
+              {' '}
+              Draft
+            </MenuItem>
+            <SubMenu
+            label='Sent&Receive'
+            icon={<UploadIcon />}>
+            <MenuItem
+              active={activeIndex === 4}
+              icon={<ForwardToInboxIcon />}
+              component={<Link to="/notification-uploadsent" onClick={() => setActiveIndex(7)} />}>
+              {' '}
+              Sent
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 5}
+              icon={<MarkunreadMailboxIcon />}
+              component={<Link to="/notification-uploadreceive" onClick={() => setActiveIndex(8)} />}>
+              {' '}
+              Receive
+            </MenuItem>
+            </SubMenu>
+          
+            <SubMenu
+            label='Scheduled'
+            icon={<CalendarTodayIcon/>}
+            >
+            <MenuItem
+              active={activeIndex === 6}
+              icon={<DensitySmallIcon />}
+              component={<Link to="/" onClick={() => setActiveIndex(9)} />}>
+              {' '}
+              All
+            </MenuItem> 
+            <MenuItem
+              active={activeIndex === 7}
+              icon={<ContactMailIcon />}
+              component={<Link to="/notification-schedulelist" onClick={() => setActiveIndex(10)} />}>
+              {' '}
+              Personal
+            </MenuItem> 
+            </SubMenu>
+            </SubMenu>
         </Menu>
+        
       </Sidebar>
     </>
   )
