@@ -38,7 +38,7 @@ const ManagerSidebar = () => {
         ? 8
         : window.location.pathname === '/notification-scheduled-manager'
         ? 7
-        : window.location.pathname === '/notification-list-manager'
+        : window.location.pathname === '/notification-department-manager'
          0
     return initialIndex
   })
@@ -174,14 +174,14 @@ const ManagerSidebar = () => {
             <MenuItem
               active={activeIndex === 3}
               icon={<ClearAllIcon />}
-              component={<Link to="/notification-list-manager" onClick={() => setActiveIndex(6)} />}>
+              component={<Link to="/notification-list-manager" onClick={() => setActiveIndex(3)} />}>
               {' '}
               All Notification
             </MenuItem>
             <MenuItem
               active={activeIndex === 4}
               icon={<DraftsIcon />}
-              component={<Link to="/notification-draft-manager" onClick={() => setActiveIndex(7)} />}>
+              component={<Link to="/notification-draft-manager" onClick={() => setActiveIndex(4)} />}>
               {' '}
               Draft
             </MenuItem>
@@ -191,14 +191,14 @@ const ManagerSidebar = () => {
             <MenuItem
               active={activeIndex === 5}
               icon={<ForwardToInboxIcon />}
-              component={<Link to="/notification-send-manager" onClick={() => setActiveIndex(8)} />}>
+              component={<Link to="/notification-send-manager" onClick={() => setActiveIndex(5)} />}>
               {' '}
               Send
             </MenuItem>
             <MenuItem
               active={activeIndex === 6}
               icon={<MarkunreadMailboxIcon />}
-              component={<Link to="/notification-receive-manager" onClick={() => setActiveIndex(10)} />}>
+              component={<Link to="/notification-receive-manager" onClick={() => setActiveIndex(6)} />}>
               {' '}
               Receive
             </MenuItem>
@@ -211,14 +211,14 @@ const ManagerSidebar = () => {
             <MenuItem
               active={activeIndex === 7}
               icon={<DensitySmallIcon />}
-              component={<Link to="/" onClick={() => setActiveIndex(11)} />}>
+              component={<Link to="/notification-department-manager" onClick={() => setActiveIndex(7)} />}>
               {' '}
               All
             </MenuItem> 
             <MenuItem
               active={activeIndex === 8}
               icon={<ContactMailIcon />}
-              component={<Link to="/notification-schedule-manager" onClick={() => setActiveIndex(12)} />}>
+              component={<Link to="/notification-schedule-manager" onClick={() => setActiveIndex(8)} />}>
               {' '}
               Personal
             </MenuItem> 

@@ -29,8 +29,8 @@ const AdminSidebar = () => {
       window.location.pathname === '/notification-draft-admin' ? 7  :
       window.location.pathname === '/notification-send-admin' ? 8  :
       window.location.pathname === '/notification-receive-admin' ? 10  :
-      window.location.pathname === '/notification-schedule-admin' ? 11 :  
-      window.location.pathname === '/admin/change-password' ? 12 
+      window.location.pathname === '/notification-schedule-admin' ? 12 :  
+      window.location.pathname === '/notification-department-admin' ? 11 
           : 0; 
     return initialIndex; 
   });
@@ -195,7 +195,7 @@ const AdminSidebar = () => {
             <MenuItem
               active={activeIndex === 11}
               icon={<DensitySmallIcon />}
-              component={<Link to="/" onClick={() => setActiveIndex(11)} />}>
+              component={<Link to="/notification-department-admin" onClick={() => setActiveIndex(11)} />}>
               {' '}
               All
             </MenuItem> 

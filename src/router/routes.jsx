@@ -54,6 +54,8 @@ import ListAllNotificationReceiveManager from '../pages/manager/manager-notifica
 import ListAllNotificationSendManager from '../pages/manager/manager-notification-send'
 import ListAllNotificationScheduleManager from '../pages/manager/manager-notification-schedule'
 import ListNotificationDepartmentHR from '../pages/hr/hr-notification-deparment'
+import ListNotifcationDeparmentManager from '../pages/manager/manager-notification-deparment'
+import ListNotficationDepartmentAdmin from '../pages/admin/admin-notification-department'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -187,6 +189,14 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <ListNotificationScheduleAdmin />
+                </Suspense>
+              )
+            },
+            {
+              path: ADMIN_PATH.NOTIFICATION_SCHEDULED_DEPARTMENT_ADMIN,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotficationDepartmentAdmin />
                 </Suspense>
               )
             }
@@ -449,6 +459,14 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <ListAllNotificationScheduleManager />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.NOTIFICATION_SCHEDULED_DEPARTMENT_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotifcationDeparmentManager />
                 </Suspense>
               )
             },
