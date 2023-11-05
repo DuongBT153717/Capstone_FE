@@ -35,7 +35,7 @@ const HrSidebar = () => {
               ? 3 : window.location.pathname === '/book-room-hr'
                 ? 4 : window.location.pathname === '/notification-list-hr'
                 ? 5 : window.location.pathname === '/notification-list-hr'
-                ? 6 :  window.location.pathname === '/notification-list-hr'
+                ? 6 :  window.location.pathname === '/notification-draftlist'
                 ? 7 :  window.location.pathname === '/notification-uploadsent'
                 ? 8 :  window.location.pathname === '/notification-uploadreceive'
                 ? 9 :  window.location.pathname === '/notification-list-hr'
@@ -195,7 +195,7 @@ const HrSidebar = () => {
             <MenuItem
               active={activeIndex === 6}
               icon={<DraftsIcon />}
-              component={<Link to="/book-room-hr" onClick={() => setActiveIndex(6)} />}>
+              component={<Link to="/notification-draftlist" onClick={() => setActiveIndex(6)} />}>
               {' '}
               Draft
             </MenuItem>

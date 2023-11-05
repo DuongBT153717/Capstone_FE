@@ -34,6 +34,7 @@ import NotificationsHrList from '../pages/hr/hr-notification-list'
 import CreateNotification from '../pages/common/create-notification'
 import NotificationUploadReceiveHR from '../pages/hr/hr-notification-upload-receive'
 import NotificationUploadSentHR from '../pages/hr/hr-notification-upload-sent'
+import NotificationDraftListHr from '../pages/hr/hr-notification-draf-list'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -217,6 +218,14 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <NotificationUploadSentHR />
+                </Suspense>
+              )
+            },
+            {
+              path: HR_PATH.NOTIFICATION_DRAFT_LIST_HR,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <NotificationDraftListHr />
                 </Suspense>
               )
             },
