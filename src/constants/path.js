@@ -37,6 +37,9 @@ export const EMPLOYEE_PATH = {
     REQUEST_LIST_EMPLOYEE: '/request-list-employee',
     NOTIFICATION_LIST_EMPLOYEE: '/notification-list-emp',
     NOTIFICATION_DRAFT_LIST_EMPLOYEE: 'notification-draft-emp',
+    NOTIFCAITON_RECEIVE_LIST_EMPLOYEE: 'notification-receive-emp',
+    NOTIFICATION_SEND_LIST_EMPLOYEE: 'notification-send-emp',
+    NOTIFICATION_SCHEDULED_LIST_EMPLOYEE :'notification-schedule-emp',
 }
 
 export const HR_PATH = {
@@ -51,4 +54,5 @@ export const HR_PATH = {
     NOTIFICATION_UPLOAD_RECEIVE_HR: 'notification-uploadreceive',
     NOTIFICATION_DRAFT_LIST_HR: 'notification-draftlist',
     NOTIFICATION_SCHEDULED_LIST_HR: 'notification-schedulelist'
+
 }

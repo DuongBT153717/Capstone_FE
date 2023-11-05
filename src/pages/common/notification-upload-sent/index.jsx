@@ -297,7 +297,7 @@ const NotificationUploadSent = (props) => {
     ]
     return (
         <>
-            <Header title="SENT" />
+            <Header title="SEND" />
             <DataTableListUploadSent
                 rows={allNoti}
                 columns={columns}

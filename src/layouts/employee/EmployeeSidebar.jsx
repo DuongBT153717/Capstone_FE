@@ -24,7 +24,11 @@ const EmployeeSidebar = () => {
       window.location.pathname === '/request-list-employee'
         ? 1 : window.location.pathname === '/request-list-employee'
         ? 2 : window.location.pathname === '/notification-list-emp'
-        ? 3 :  window.location.pathname === '/notification-list-emp'
+        ? 3 :  window.location.pathname === '/notification-draft-emp'
+        ? 4 : window.location.pathname === '/notification-receive-emp'
+        ? 5 : window.location.pathname === '/notification-send-emp'
+        ? 6 : window.location.pathname === '/notification-send-emp'
+        ? 7 : window.location.pathname === '/notification-schedule-emp'
          0
     return initialIndex
   })
@@ -151,14 +155,14 @@ const EmployeeSidebar = () => {
           <MenuItem
               active={activeIndex === 2}
               icon={<ClearAllIcon />}
-              component={<Link to="/notification-list-emp" onClick={() => setActiveIndex(5)} />}>
+              component={<Link to="/notification-list-emp" onClick={() => setActiveIndex(2)} />}>
               {' '}
               All Notification
             </MenuItem>
             <MenuItem
               active={activeIndex === 3}
               icon={<DraftsIcon />}
-              component={<Link to="/notification-draft-emp" onClick={() => setActiveIndex(6)} />}>
+              component={<Link to="/notification-draft-emp" onClick={() => setActiveIndex(3)} />}>
               {' '}
               Draft
             </MenuItem>
@@ -168,14 +172,14 @@ const EmployeeSidebar = () => {
             <MenuItem
               active={activeIndex === 4}
               icon={<ForwardToInboxIcon />}
-              component={<Link to="/notification-uploadsent" onClick={() => setActiveIndex(7)} />}>
+              component={<Link to="/notification-send-emp" onClick={() => setActiveIndex(4)} />}>
               {' '}
-              Sent
+              Send
             </MenuItem>
             <MenuItem
               active={activeIndex === 5}
               icon={<MarkunreadMailboxIcon />}
-              component={<Link to="/notification-uploadreceive" onClick={() => setActiveIndex(8)} />}>
+              component={<Link to="/notification-receive-emp" onClick={() => setActiveIndex(5)} />}>
               {' '}
               Receive
             </MenuItem>
@@ -195,7 +199,7 @@ const EmployeeSidebar = () => {
             <MenuItem
               active={activeIndex === 7}
               icon={<ContactMailIcon />}
-              component={<Link to="/notification-schedulelist" onClick={() => setActiveIndex(10)} />}>
+              component={<Link to="/notification-schedule-emp" onClick={() => setActiveIndex(7)} />}>
               {' '}
               Personal
             </MenuItem> 

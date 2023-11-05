@@ -39,6 +39,9 @@ import NotificationScheduleList from '../pages/common/notification-scheduled'
 import NotificationScheduleListHr from '../pages/hr/hr-notification-scheduled-list'
 import ListAllNotificationEmp from '../pages/employee/employee-notification-list-all'
 import ListNotificationDarfEmp from '../pages/employee/employee-notification-draft'
+import ListNoitificationRecive from '../pages/employee/employee-notification-recive'
+import ListNotificationSend from '../pages/employee/employee-notification-send'
+import ListNOtificationSchedulePersonal from '../pages/employee/employee-notification-schedule'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -289,6 +292,30 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <ListNotificationDarfEmp />
+                </Suspense>
+              )
+            },
+            {
+              path: EMPLOYEE_PATH.NOTIFCAITON_RECEIVE_LIST_EMPLOYEE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNoitificationRecive />
+                </Suspense>
+              )
+            },
+            {
+              path: EMPLOYEE_PATH.NOTIFICATION_SEND_LIST_EMPLOYEE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationSend />
+                </Suspense>
+              )
+            },
+            {
+              path: EMPLOYEE_PATH.NOTIFICATION_SCHEDULED_LIST_EMPLOYEE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNOtificationSchedulePersonal />
                 </Suspense>
               )
             },
