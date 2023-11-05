@@ -17,6 +17,9 @@ import axiosClient from '../../../utils/axios-config'
 import DataTableListUploadReceive from './components/DataTableUploadReceive'
 import CircleIcon from '@mui/icons-material/Circle';
 import { format } from 'date-fns'
+import notificationApi from '../../../services/notificationApi'
+import { toast } from 'react-toastify';
+
 const NotificationUploadReceive = (props) => {
     const { row } = props
     const userId = useSelector((state) => state.auth.login.currentUser.accountId)
@@ -33,7 +36,7 @@ const NotificationUploadReceive = (props) => {
         setUser(data)
     }
     const options = [
-        'Make as read(unread)',
+        'Make as read',
         'Delete',
         'Detail',
     ]
@@ -48,6 +51,37 @@ const NotificationUploadReceive = (props) => {
     };
     const handleClose = () => setOpen(false)
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
+    const handelChangeStatus = (notification) => {
+        if (notification.readStatus === false) {
+            let data = {
+                notificationId: notification.notificationId,
+                userId: userId
+            }
+            notificationApi.markToRead(data)
+        }
+
+    }
+
+    const handelSetPersonalPriority = async (notification) => {
+        if (notification.personalPriority === false && !notification.personalPriority) {
+            let data = {
+                notificationId: notification.notificationId,
+                userId: userId
+            };
+            await notificationApi.setPersonalPriority(data);
+            const updatedAllNoti = allNoti.map((item) => {
+                if (item.notificationId === notification.notificationId) {
+                    return { ...item, personalPriority: true };
+                }
+                return item;
+            });
+            //    updatedAllNoti.sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
+            setAllNoti(updatedAllNoti);
+        }
+    };
+
+
 
     useEffect(() => {
         setIsLoading(true)
@@ -115,11 +149,16 @@ const NotificationUploadReceive = (props) => {
                         borderRadius="4px"
                     >
                         <div>
-                            {params.row.personalPriority === true ? (
-                                <Checkbox {...label} icon={<StarIcon color='warning' />} checkedIcon={<StarBorderIcon color='warning' />} />
-                            ) : (
-                                <Checkbox {...label} icon={<StarBorderIcon color='warning' />} checkedIcon={<StarIcon color='warning' />} />
-                            )}
+
+                            <Checkbox
+                                {...label}
+                                icon={params.row.personalPriority ? <StarIcon color='warning' /> : <StarBorderIcon color='warning' />}
+                                checkedIcon={params.row.personalPriority ? <StarIcon color='warning' /> : <StarBorderIcon color='warning' />}
+                                onChange={() => handelSetPersonalPriority(params.row)}
+                                checked={params.row.personalPriority}
+                            />
+
+
                         </div>
                     </Box>
                 )
@@ -168,8 +207,8 @@ const NotificationUploadReceive = (props) => {
             headerAlign: 'center',
             align: 'center',
             width: 60,
-        
-            
+
+
             renderCell: (params) => {
                 return (
                     <Box
@@ -235,7 +274,7 @@ const NotificationUploadReceive = (props) => {
                     color='#000'
                 >
                     <div>
-                         {format(new Date(params.row.uploadDate), 'yyyy/MM/dd HH:mm:ss')}
+                        {format(new Date(params.row.uploadDate), 'yyyy/MM/dd HH:mm:ss')}
                     </div>
                 </Box>
             )
@@ -286,7 +325,10 @@ const NotificationUploadReceive = (props) => {
                                 }}
                             >
                                 {options.map((option) => (
-                                    <MenuItem key={option} selected={option === 'Pyxis'} onClick={option === 'Detail' ? () => navigate(`/notification-detail/${params.row.notificationId}`) : null}>
+                                    <MenuItem key={option} selected={option === 'Pyxis'} onClick={
+                                        option === 'Detail' ? () => navigate(`/notification-detail/${params.row.notificationId}`) :
+                                            option === 'Make as read' ? () => handelChangeStatus(params.row) : null
+                                    }>
                                         {option}
                                     </MenuItem>
                                 ))}

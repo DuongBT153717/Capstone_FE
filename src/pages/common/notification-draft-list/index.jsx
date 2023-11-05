@@ -1,7 +1,7 @@
 
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh'
-import { Box, IconButton } from '@mui/material'
+import { Box, Checkbox, IconButton } from '@mui/material'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import * as React from 'react'
@@ -11,9 +11,11 @@ import { useNavigate } from 'react-router-dom'
 import Header from '../../../components/Header'
 import { BASE_URL } from '../../../services/constraint'
 import axiosClient from '../../../utils/axios-config'
-
+import StarIcon from '@mui/icons-material/Star'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
 import { format } from 'date-fns'
 import DataTableDraft from './components/DataTableDraft'
+import notificationApi from '../../../services/notificationApi'
 const NotificationDraftList = (props) => {
     const { row } = props
     const userId = useSelector((state) => state.auth.login.currentUser.accountId)
@@ -61,10 +63,54 @@ const NotificationDraftList = (props) => {
     }, [])
 
     console.log(allNoti)
-
-
+    const handelSetPersonalPriority = async (notification) => {
+        if (notification.personalPriority === false && !notification.personalPriority) {
+            let data = {
+                notificationId: notification.notificationId,
+                userId: userId
+            };
+            await notificationApi.setPersonalPriority(data);
+            const updatedAllNoti = allNoti.map((item) => {
+                if (item.notificationId === notification.notificationId) {
+                    return { ...item, personalPriority: true };
+                }
+                return item;
+            });
+            //    updatedAllNoti.sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
+            setAllNoti(updatedAllNoti);
+        }
+    };
     const columns = [
-
+        {
+            field: 'personalPriority',
+            headerName: '',
+            cellClassName: 'name-column--cell',
+            headerAlign: 'center',
+            align: 'center',
+            width: 60,
+            renderCell: (params) => {
+                return (
+                    <Box
+                        margin="0 auto"
+                        p="5px"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        borderRadius="4px"
+                    >
+                        <div>
+                            <Checkbox
+                                {...label}
+                                icon={params.row.personalPriority ? <StarIcon color='warning' /> : <StarBorderIcon color='warning' />}
+                                checkedIcon={params.row.personalPriority ? <StarIcon color='warning' /> : <StarBorderIcon color='warning' />}
+                                onChange={() => handelSetPersonalPriority(params.row)}
+                                checked={params.row.personalPriority}
+                            />
+                        </div>
+                    </Box>
+                )
+            }
+        },
 
         {
             field: 'notificationStatus',

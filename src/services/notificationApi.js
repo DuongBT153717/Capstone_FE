@@ -42,7 +42,13 @@ const notificationApi = {
         console.log(error);   
     }
   },
-
+  setPersonalPriority: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/setPersonalPriority`, data)
+    } catch (error) {
+        console.log(error);   
+    }
+  },
 }
 
 export default notificationApi

@@ -16,6 +16,7 @@ import axiosClient from '../../../utils/axios-config'
 import DataTableListNoti from './components/DataTable'
 import { SignalWifiStatusbarNullRounded } from '@mui/icons-material'
 import { format } from 'date-fns'
+import notificationApi from '../../../services/notificationApi'
 const NotificationsList = (props) => {
   const { row } = props
   const userId = useSelector((state) => state.auth.login.currentUser.accountId)
@@ -65,8 +66,57 @@ const NotificationsList = (props) => {
 
   console.log(allNoti)
 
+  const handelSetPersonalPriority = async (notification) => {
+    if (notification.personalPriority === false && !notification.personalPriority) {
+      let data = {
+        notificationId: notification.notificationId,
+        userId: userId
+      };
+      await notificationApi.setPersonalPriority(data);
+      const updatedAllNoti = allNoti.map((item) => {
+        if (item.notificationId === notification.notificationId) {
+          return { ...item, personalPriority: true };
+        }
+        return item;
+      });
+      //    updatedAllNoti.sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
+      setAllNoti(updatedAllNoti);
+    }
+  };
 
   const columns = [
+    {
+      field: 'notificationStatus',
+      headerName: '',
+      cellClassName: 'name-column--cell',
+      headerAlign: 'center',
+      align: 'center',
+      width: 150,
+      flex: 1,
+      renderCell: (params) => (
+        <Box
+          margin="0 auto"
+          p="5px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          borderRadius="4px"
+          color={
+            params.row.notificationStatus === 'UPLOADED'
+              ? 'blue' 
+              : params.row.notificationStatus === 'DRAFT'
+                ? 'red' 
+                : params.row.notificationStatus === 'SCHEDULED'
+                  ? 'green' 
+                  : 'black' 
+          }
+        >
+          <div>{params.row.notificationStatus}</div>
+        </Box>
+      )
+
+    },
+
     {
       field: 'priority',
       headerName: 'Priority',
@@ -114,11 +164,16 @@ const NotificationsList = (props) => {
             borderRadius="4px"
           >
             <div>
-              {params.row.personalPriority === true ? (
-                <Checkbox {...label} icon={<StarIcon color='warning' />} checkedIcon={<StarBorderIcon color='warning' />} />
-              ) : (
-                <Checkbox {...label} icon={<StarBorderIcon color='warning' />} checkedIcon={<StarIcon color='warning' />} />
-              )}
+
+              <Checkbox
+                {...label}
+                icon={params.row.personalPriority ? <StarIcon color='warning' /> : <StarBorderIcon color='warning' />}
+                checkedIcon={params.row.personalPriority ? <StarIcon color='warning' /> : <StarBorderIcon color='warning' />}
+                onChange={() => handelSetPersonalPriority(params.row)}
+                checked={params.row.personalPriority}
+              />
+
+
             </div>
           </Box>
         )
@@ -195,19 +250,19 @@ const NotificationsList = (props) => {
       width: 300,
       renderCell: (params) => (
         <Box
-            margin="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            borderRadius="4px"
-            color='#000'
+          margin="0 auto"
+          p="5px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          borderRadius="4px"
+          color='#000'
         >
-            <div>
-                 {format(new Date(params.row.uploadDate), 'yyyy/MM/dd HH:mm:ss')}
-            </div>
+          <div>
+            {format(new Date(params.row.uploadDate), 'yyyy/MM/dd HH:mm:ss')}
+          </div>
         </Box>
-    )
+      )
     },
     {
       field: 'action',
