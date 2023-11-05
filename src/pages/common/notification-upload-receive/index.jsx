@@ -18,6 +18,7 @@ import DataTableListUploadReceive from './components/DataTableUploadReceive'
 import CircleIcon from '@mui/icons-material/Circle';
 import { format } from 'date-fns'
 import notificationApi from '../../../services/notificationApi'
+import FilePresentIcon from '@mui/icons-material/FilePresent';
 import { toast } from 'react-toastify';
 
 const NotificationUploadReceive = (props) => {
@@ -232,29 +233,21 @@ const NotificationUploadReceive = (props) => {
             }
         },
         {
-            field: 'imageFileName',
-            headerName: '',
+            field: 'containImage',
+            headerName: 'Attached File',
             headerAlign: 'center',
             align: 'center',
             width: 250,
             sortable: false,
             filterable: false,
             renderCell: (params) => {
-                if (
-                    params.row.notificationFiles &&
-                    params.row.notificationFiles.length > 0
-                ) {
-                    return 'There are attached files';
-                } else if (
-                    params.row.notificationImages &&
-                    params.row.notificationImages.length > 0
-                ) {
-                    return 'There are attached files';
-                } else {
-                    return '';
-                }
+              if (params.row.containFile === true || params.row.containImage === true) {
+                return <FilePresentIcon fontSize='large' color='primary'/>;
+              } else {
+                return null;
+              }
             },
-        },
+          },
         {
             field: 'uploadDate',
             headerName: 'Date',

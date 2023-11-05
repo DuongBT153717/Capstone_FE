@@ -17,6 +17,7 @@ import DataTableListNoti from './components/DataTable'
 import { SignalWifiStatusbarNullRounded } from '@mui/icons-material'
 import { format } from 'date-fns'
 import notificationApi from '../../../services/notificationApi'
+import FilePresentIcon from '@mui/icons-material/FilePresent';
 const NotificationsList = (props) => {
   const { row } = props
   const userId = useSelector((state) => state.auth.login.currentUser.accountId)
@@ -101,6 +102,40 @@ const NotificationsList = (props) => {
 
   const columns = [
     {
+      field: 'personalPriority',
+      headerName: '',
+      cellClassName: 'name-column--cell',
+      headerAlign: 'center',
+      align: 'center',
+      width: 60,
+      renderCell: (params) => {
+        return (
+          <Box
+            margin="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            borderRadius="4px"
+          >
+            <div>
+
+              <Checkbox
+                {...label}
+                icon={params.row.personalPriority ? <StarIcon color='warning' /> : <StarBorderIcon color='warning' />}
+                checkedIcon={params.row.personalPriority ? <StarIcon color='warning' /> : <StarBorderIcon color='warning' />}
+                onChange={() => handelSetPersonalPriority(params.row)}
+                checked={params.row.personalPriority}
+              />
+
+
+
+            </div>
+          </Box>
+        )
+      }
+    },
+    {
       field: 'notificationStatus',
       headerName: '',
       cellClassName: 'name-column--cell',
@@ -161,40 +196,7 @@ const NotificationsList = (props) => {
         )
       }
     },
-    {
-      field: 'personalPriority',
-      headerName: '',
-      cellClassName: 'name-column--cell',
-      headerAlign: 'center',
-      align: 'center',
-      width: 60,
-      renderCell: (params) => {
-        return (
-          <Box
-            margin="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            borderRadius="4px"
-          >
-            <div>
-
-              <Checkbox
-                {...label}
-                icon={params.row.personalPriority ? <StarIcon color='warning' /> : <StarBorderIcon color='warning' />}
-                checkedIcon={params.row.personalPriority ? <StarIcon color='warning' /> : <StarBorderIcon color='warning' />}
-                onChange={() => handelSetPersonalPriority(params.row)}
-                checked={params.row.personalPriority}
-              />
-
-
-
-            </div>
-          </Box>
-        )
-      }
-    },
+   
     {
       field: 'departmentName',
       headerName: 'From',
@@ -232,30 +234,23 @@ const NotificationsList = (props) => {
       align: 'center',
       width: 300,
     },
-    {
-      field: 'imageFileName',
-      headerName: '',
-      headerAlign: 'center',
-      align: 'center',
-      width: 250,
-      sortable: false,
-      filterable: false,
-      renderCell: (params) => {
-        if (
-          params.row.notificationFiles &&
-          params.row.notificationFiles.length > 0
-        ) {
-          return 'There are attached files';
-        } else if (
-          params.row.notificationImages &&
-          params.row.notificationImages.length > 0
-        ) {
-          return 'There are attached files';
-        } else {
-          return '';
-        }
-      },
-    },
+ {
+  field: 'containImage',
+  headerName: 'Attached File',
+  headerAlign: 'center',
+  align: 'center',
+  width: 250,
+  sortable: false,
+  filterable: false,
+  renderCell: (params) => {
+    if (params.row.containFile === true || params.row.containImage === true) {
+      return <FilePresentIcon fontSize='large' color='primary'/>;
+    } else {
+      return null;
+    }
+  },
+}
+,
     {
       field: 'uploadDate',
       headerName: 'Date',

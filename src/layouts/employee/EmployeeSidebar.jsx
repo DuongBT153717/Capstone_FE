@@ -148,44 +148,44 @@ const EmployeeSidebar = () => {
             {' '}
             Check Your Ticket
           </MenuItem>
-          <SubMenu
+          {/* <SubMenu
             label="Notification"
             icon={<NotificationsIcon />}
-          >
-          <MenuItem
+          > */}
+          {/* <MenuItem
               active={activeIndex === 2}
               icon={<ClearAllIcon />}
               component={<Link to="/notification-list-emp" onClick={() => setActiveIndex(2)} />}>
               {' '}
               All Notification
-            </MenuItem>
-            <MenuItem
+            </MenuItem> */}
+            {/* <MenuItem
               active={activeIndex === 3}
               icon={<DraftsIcon />}
               component={<Link to="/notification-draft-emp" onClick={() => setActiveIndex(3)} />}>
               {' '}
               Draft
-            </MenuItem>
-            <SubMenu
+            </MenuItem> */}
+            {/* <SubMenu
             label='Sent&Receive'
-            icon={<UploadIcon />}>
-            <MenuItem
+            icon={<UploadIcon />}> */}
+            {/* <MenuItem
               active={activeIndex === 4}
               icon={<ForwardToInboxIcon />}
               component={<Link to="/notification-send-emp" onClick={() => setActiveIndex(4)} />}>
               {' '}
               Send
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem
               active={activeIndex === 5}
               icon={<MarkunreadMailboxIcon />}
               component={<Link to="/notification-receive-emp" onClick={() => setActiveIndex(5)} />}>
               {' '}
-              Receive
+              Notifications
             </MenuItem>
-            </SubMenu>
-          
-            <SubMenu
+            {/* </SubMenu>
+           */}
+            {/* <SubMenu
             label='Scheduled'
             icon={<CalendarTodayIcon/>}
             >
@@ -203,8 +203,8 @@ const EmployeeSidebar = () => {
               {' '}
               Personal
             </MenuItem> 
-            </SubMenu>
-            </SubMenu>
+            </SubMenu> */}
+            {/* </SubMenu> */}
         </Menu>
         
       </Sidebar>

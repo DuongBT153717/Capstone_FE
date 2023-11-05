@@ -232,7 +232,7 @@ const CreateNotification = () => {
           toast.success('Save draft notification successfully!!')
         } catch (error) {
           if (error.response.status === 400) {
-            toast.error("You can't select upload time before current time!")
+            toast.error("You must setup schedule's time after 5 minutes from current !")
           }
         }
       } else {
