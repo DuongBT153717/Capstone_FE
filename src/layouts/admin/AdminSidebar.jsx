@@ -1,10 +1,19 @@
 import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt'
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
+import ClearAllIcon from '@mui/icons-material/ClearAll'
+import ContactMailIcon from '@mui/icons-material/ContactMail'
+import DensitySmallIcon from '@mui/icons-material/DensitySmall'
+import DraftsIcon from '@mui/icons-material/Drafts'
+import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox'
+import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox'
 import MenuIcon from '@mui/icons-material/Menu'
+import NotificationsIcon from '@mui/icons-material/Notifications'
+import UploadIcon from '@mui/icons-material/Upload'
 import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useState } from 'react'
-import { Menu, MenuItem, Sidebar, useProSidebar } from 'react-pro-sidebar'
+import { Menu, MenuItem, Sidebar, SubMenu, useProSidebar } from 'react-pro-sidebar'
 import { Link } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
@@ -15,7 +24,13 @@ const AdminSidebar = () => {
       window.location.pathname === '/request-list-admin' ? 0 
       : window.location.pathname === '/manage-list-admin' ? 1 : 
       window.location.pathname === '/check-book-room' ? 2 : 
-      window.location.pathname === '/admin/change-password' ? 5  
+      window.location.pathname === '/admin/change-password' ? 5  :
+      window.location.pathname === '/notification-list-admin' ? 6  :
+      window.location.pathname === '/notification-draft-admin' ? 7  :
+      window.location.pathname === '/notification-send-admin' ? 8  :
+      window.location.pathname === '/notification-receive-admin' ? 10  :
+      window.location.pathname === '/notification-schedule-admin' ? 12 :  
+      window.location.pathname === '/notification-department-admin' ? 11 
           : 0; 
     return initialIndex; 
   });
@@ -136,9 +151,65 @@ const AdminSidebar = () => {
               {' '}
               Check Book Room
             </MenuItem>
-          </Menu>
+            <SubMenu
+            label="Notification"
+            icon={<NotificationsIcon />}
+          >
+            <MenuItem
+              active={activeIndex === 6}
+              icon={<ClearAllIcon />}
+              component={<Link to="/notification-list-admin" onClick={() => setActiveIndex(6)} />}>
+              {' '}
+              All Notification
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 7}
+              icon={<DraftsIcon />}
+              component={<Link to="/notification-draft-admin" onClick={() => setActiveIndex(7)} />}>
+              {' '}
+              Draft
+            </MenuItem>
+            <SubMenu
+            label='Send&Receive'
+            icon={<UploadIcon />}>
+            <MenuItem
+              active={activeIndex === 8}
+              icon={<ForwardToInboxIcon />}
+              component={<Link to="/notification-send-admin" onClick={() => setActiveIndex(8)} />}>
+              {' '}
+              Send
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 10}
+              icon={<MarkunreadMailboxIcon />}
+              component={<Link to="/notification-receive-admin" onClick={() => setActiveIndex(10)} />}>
+              {' '}
+              Receive
+            </MenuItem>
+            </SubMenu>
           
-
+            <SubMenu
+            label='Scheduled'
+            icon={<CalendarTodayIcon/>}
+            >
+            <MenuItem
+              active={activeIndex === 11}
+              icon={<DensitySmallIcon />}
+              component={<Link to="/notification-department-admin" onClick={() => setActiveIndex(11)} />}>
+              {' '}
+              All
+            </MenuItem> 
+            <MenuItem
+              active={activeIndex === 12}
+              icon={<ContactMailIcon />}
+              component={<Link to="/notification-schedule-admin" onClick={() => setActiveIndex(12)} />}>
+              {' '}
+              Personal
+            </MenuItem> 
+            </SubMenu>
+          </SubMenu>
+          </Menu>
+        
       </Sidebar>
     </>
   )

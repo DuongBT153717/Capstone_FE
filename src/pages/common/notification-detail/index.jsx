@@ -152,10 +152,10 @@ const NotificationDetail = () => {
               __html: notificationDetail?.content
             }}></Typography>
         </Box>
-        {notificationFiles.length > 0 &&
+        {notificationFiles && notificationFiles.length > 0 &&
           notificationFiles.map((item) => (
             <>
-            <Divider />
+              <Divider />
               <Box mt={2}>
                 <Typography mb={2} fontWeight="700">
                   Attachments:{' '}
@@ -178,10 +178,10 @@ const NotificationDetail = () => {
               </Box>
             </>
           ))}
-        {notificationImages.length > 0 &&
+        {notificationImages && notificationImages.length > 0 &&
           notificationImages.map((item, index) => (
             <>
-              <img width="150px" height="100px" key={index} src={item?.imageFileName} />
+              <img width="150px" height="100px"  style={{ marginRight: '20px' }} key={index} src={item?.imageFileName} />
             </>
           ))}
         <Divider />

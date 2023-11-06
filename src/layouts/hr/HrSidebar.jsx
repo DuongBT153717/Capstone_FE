@@ -19,6 +19,8 @@ import UploadIcon from '@mui/icons-material/Upload';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DensitySmallIcon from '@mui/icons-material/DensitySmall';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
+import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox';
+import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox';
 const HrSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => {
@@ -32,8 +34,14 @@ const HrSidebar = () => {
             : window.location.pathname === '/request-hr-list'
               ? 3 : window.location.pathname === '/book-room-hr'
                 ? 4 : window.location.pathname === '/notification-list-hr'
-                ? 5
-                : 0
+                  ? 5 : window.location.pathname === '/notification-list-hr'
+                    ? 6 : window.location.pathname === '/notification-draftlist'
+                      ? 7 : window.location.pathname === '/notification-uploadsent'
+                        ? 8 : window.location.pathname === '/notification-uploadreceive'
+                          ? 9 : window.location.pathname === '/notification-list-hr'
+                            ? 10 : window.location.pathname === '/notification-schedulelist'
+                              ? 11 : window.location.pathname === '/notification-department-hr'
+    0
     return initialIndex
   })
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -188,36 +196,47 @@ const HrSidebar = () => {
             <MenuItem
               active={activeIndex === 6}
               icon={<DraftsIcon />}
-              component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
+              component={<Link to="/notification-draftlist" onClick={() => setActiveIndex(6)} />}>
               {' '}
               Draft
             </MenuItem>
-            <MenuItem
-              active={activeIndex === 7}
-              icon={<UploadIcon />}
-              component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
-              {' '}
-              Upload
-            </MenuItem>
             <SubMenu
-            label='Scheduled'
-            icon={<CalendarTodayIcon/>}
+              label='Sent&Receive'
+              icon={<UploadIcon />}>
+              <MenuItem
+                active={activeIndex === 7}
+                icon={<ForwardToInboxIcon />}
+                component={<Link to="/notification-uploadsent" onClick={() => setActiveIndex(7)} />}>
+                {' '}
+                Sent
+              </MenuItem>
+              <MenuItem
+                active={activeIndex === 8}
+                icon={<MarkunreadMailboxIcon />}
+                component={<Link to="/notification-uploadreceive" onClick={() => setActiveIndex(8)} />}>
+                {' '}
+                Receive
+              </MenuItem>
+            </SubMenu>
 
+            <SubMenu
+              label='Scheduled'
+              icon={<CalendarTodayIcon />}
             >
-            <MenuItem
-              active={activeIndex === 8}
-              icon={<DensitySmallIcon />}
-              component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
-              {' '}
-              All
-            </MenuItem> 
-            <MenuItem
-              active={activeIndex === 9}
-              icon={<ContactMailIcon />}
-              component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
-              {' '}
-              Personal
-            </MenuItem> 
+              <MenuItem
+                active={activeIndex === 9}
+                icon={<DensitySmallIcon />}
+                component={<Link to="/notification-department-hr" onClick={() => setActiveIndex(9)} />}>
+                {' '}
+                All
+              </MenuItem>
+              <MenuItem
+                active={activeIndex === 10}
+                icon={<ContactMailIcon />}
+                component={<Link to="/notification-schedulelist" onClick={() => setActiveIndex(10)} />}>
+                {' '}
+                Personal
+              </MenuItem>
             </SubMenu>
           </SubMenu>
         </Menu>
