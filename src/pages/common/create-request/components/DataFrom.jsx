@@ -217,18 +217,17 @@ const OtherRequest = ({ userId }) => {
     }
   }
  
-useEffect(()=>{
-  if(department !== ''){
-    getManagerByDepartment= async()=>{
-      let res = await requestApi.getManagerByDepartment(department);
-      setManager(res)
-      console.log(">>>>>>>>");
-      console.log(res);
-     }
-     getManagerByDepartment();
-  }
-  
-},[department])
+// useEffect(()=>{
+//   if(department !== ''){
+//    const getManagerByDepartment= async()=>{
+//       let res = await requestApi.getManagerByDepartment(department);
+//       setManager(res)
+//       console.log(">>>>>>>>");
+//       console.log(res);
+//      }
+//      getManagerByDepartment();
+//   }
+// },[department])
 
   const callApiOther = (e, departmentId) => {
     e.preventDefault()
