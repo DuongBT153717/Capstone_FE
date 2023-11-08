@@ -57,6 +57,7 @@ import ListAllNotificationScheduleManager from '../pages/manager/manager-notific
 import ListNotificationDepartmentHR from '../pages/hr/hr-notification-deparment'
 import ListNotifcationDeparmentManager from '../pages/manager/manager-notification-deparment'
 import ListNotficationDepartmentAdmin from '../pages/admin/admin-notification-department'
+import AttendanceMainManager from '../pages/manager/manager-attendence-main-screen'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -460,6 +461,14 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <ListAllNotificationScheduleManager />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.ATTENDENCE_MAIN_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <AttendanceMainManager />
                 </Suspense>
               )
             },
