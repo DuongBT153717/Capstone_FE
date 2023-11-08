@@ -39,7 +39,8 @@ export const MANAGER_PATH = {
     NOTIFICATION_SEND_MANAGER: '/notification-send-manager',
     NOTIFICATION_RECEIVE_MANAGER: '/notification-receive-manager',
     NOTIFICATION_SCHEDULED_MANAGER: '/notification-schedule-manager',
-    NOTIFICATION_SCHEDULED_DEPARTMENT_MANAGER: '/notification-department-manager'
+    NOTIFICATION_SCHEDULED_DEPARTMENT_MANAGER: '/notification-department-manager',
+    ATTENDENCE_MAIN_MANAGER: 'attendence-main-manager',
 }
 
 export const EMPLOYEE_PATH = {

@@ -19,6 +19,13 @@
         "@mui/lab": "^5.0.0-alpha.145",
         "@mui/material": "^5.14.13",
         "@mui/x-data-grid": "^6.14.0",
+<<<<<<< HEAD
+        "@mui/x-data-grid-premium": "^6.18.0",
+=======
+        "@mui/x-data-grid-generator": "^6.18.0",
+        "@mui/x-data-grid-premium": "^6.18.0",
+        "@mui/x-data-grid-pro": "^6.18.0",
+>>>>>>> d1cbdf0c8656d8b046d92417fab071ae4bbacf89
         "@mui/x-date-pickers": "^5.0.15",
         "@reduxjs/toolkit": "^1.9.6",
         "axios": "^1.5.0",
@@ -2538,6 +2545,119 @@
       "funding": {
         "type": "opencollective",
         "url": "https://opencollective.com/mui"
+      },
+      "peerDependencies": {
+        "@mui/material": "^5.4.1",
+        "@mui/system": "^5.4.1",
+        "react": "^17.0.0 || ^18.0.0",
+        "react-dom": "^17.0.0 || ^18.0.0"
+      }
+    },
+<<<<<<< HEAD
+=======
+    "node_modules/@mui/x-data-grid-generator": {
+      "version": "6.18.0",
+      "resolved": "https://registry.npmjs.org/@mui/x-data-grid-generator/-/x-data-grid-generator-6.18.0.tgz",
+      "integrity": "sha512-+Dp91tiVNS31dwfSpCCox4WYoY76SeOigOE1bBnf5EsHRvH85A33jKlCHTMUMkw/3nYj4E3dgxQunz157n+6Jw==",
+      "dependencies": {
+        "@babel/runtime": "^7.23.2",
+        "@mui/base": "^5.0.0-beta.22",
+        "@mui/x-data-grid-premium": "6.18.0",
+        "chance": "^1.1.11",
+        "clsx": "^2.0.0",
+        "lru-cache": "^7.18.3"
+      },
+      "engines": {
+        "node": ">=14.0.0"
+      },
+      "peerDependencies": {
+        "@mui/icons-material": "^5.4.1",
+        "@mui/material": "^5.4.1",
+        "react": "^17.0.0 || ^18.0.0"
+      }
+    },
+    "node_modules/@mui/x-data-grid-generator/node_modules/@mui/base": {
+      "version": "5.0.0-beta.23",
+      "resolved": "https://registry.npmjs.org/@mui/base/-/base-5.0.0-beta.23.tgz",
+      "integrity": "sha512-9L8SQUGAWtd/Qi7Qem26+oSSgpY7f2iQTuvcz/rsGpyZjSomMMO6lwYeQSA0CpWM7+aN7eGoSY/WV6wxJiIxXw==",
+      "dependencies": {
+        "@babel/runtime": "^7.23.2",
+        "@floating-ui/react-dom": "^2.0.2",
+        "@mui/types": "^7.2.8",
+        "@mui/utils": "^5.14.17",
+        "@popperjs/core": "^2.11.8",
+        "clsx": "^2.0.0",
+        "prop-types": "^15.8.1"
+      },
+      "engines": {
+        "node": ">=12.0.0"
+      },
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/mui"
+      },
+      "peerDependencies": {
+        "@types/react": "^17.0.0 || ^18.0.0",
+        "react": "^17.0.0 || ^18.0.0",
+        "react-dom": "^17.0.0 || ^18.0.0"
+      },
+      "peerDependenciesMeta": {
+        "@types/react": {
+          "optional": true
+        }
+      }
+    },
+    "node_modules/@mui/x-data-grid-generator/node_modules/lru-cache": {
+      "version": "7.18.3",
+      "resolved": "https://registry.npmjs.org/lru-cache/-/lru-cache-7.18.3.tgz",
+      "integrity": "sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==",
+      "engines": {
+        "node": ">=12"
+      }
+    },
+>>>>>>> d1cbdf0c8656d8b046d92417fab071ae4bbacf89
+    "node_modules/@mui/x-data-grid-premium": {
+      "version": "6.18.0",
+      "resolved": "https://registry.npmjs.org/@mui/x-data-grid-premium/-/x-data-grid-premium-6.18.0.tgz",
+      "integrity": "sha512-LjDDxxq7JOM3q3TrL1+fKZ1elxtlmnvMhj2PPERXmKcXSbM5i+02bvjqC7XH0MLIv5MGy1X/84swk2ZLEJU4nw==",
+      "dependencies": {
+        "@babel/runtime": "^7.23.2",
+        "@mui/utils": "^5.14.16",
+        "@mui/x-data-grid": "6.18.0",
+        "@mui/x-data-grid-pro": "6.18.0",
+        "@mui/x-license-pro": "6.10.2",
+        "@types/format-util": "^1.0.3",
+        "clsx": "^2.0.0",
+        "exceljs": "^4.3.0",
+        "prop-types": "^15.8.1",
+        "reselect": "^4.1.8"
+      },
+      "engines": {
+        "node": ">=14.0.0"
+      },
+      "peerDependencies": {
+        "@mui/material": "^5.4.1",
+        "@mui/system": "^5.4.1",
+        "react": "^17.0.0 || ^18.0.0",
+        "react-dom": "^17.0.0 || ^18.0.0"
+      }
+    },
+    "node_modules/@mui/x-data-grid-pro": {
+      "version": "6.18.0",
+      "resolved": "https://registry.npmjs.org/@mui/x-data-grid-pro/-/x-data-grid-pro-6.18.0.tgz",
+      "integrity": "sha512-V6EjWm9Mx/nCuNmLiay8TJLrQk6j/XKNZ4j5Ww15/lXTk59lGtB8+Q/tVZgN+8zo7ACq09JVLm+SVVnuaRgm9A==",
+      "dependencies": {
+        "@babel/runtime": "^7.23.2",
+        "@mui/utils": "^5.14.16",
+        "@mui/x-data-grid": "6.18.0",
+        "@mui/x-license-pro": "6.10.2",
+        "@types/format-util": "^1.0.3",
+        "clsx": "^2.0.0",
+        "prop-types": "^15.8.1",
+        "reselect": "^4.1.8"
+      },
+      "engines": {
+        "node": ">=14.0.0"
       },
       "peerDependencies": {
         "@mui/material": "^5.4.1",

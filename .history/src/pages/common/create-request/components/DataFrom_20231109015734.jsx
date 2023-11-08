@@ -707,9 +707,9 @@ const LateRequest = ({ userId }) => {
   const handleChange = (event) => {
     setRole(event.target.value)
   }
-  // const handleChangeDepartment = (event) => {
-  //   setDepartment(event.target.value)
-  // }
+  const handleChangeDepartment = (event) => {
+    setDepartment(event.target.value)
+  }
 
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {

@@ -298,13 +298,13 @@ const NotificationScheduleList = () => {
                   alignItems="center"
                   borderRadius="4px"
                   width="100%">
-                  <Button variant="contained" onClick={() => handleDetailClick(params.row)}>
+                  <Button variant="contained" onClick={() => handleDetailClick(params.row)} style={{ fontSize: '12px' }}>
                     Detail
                   </Button>
-                  <Button variant="contained" onClick={() => handleDelete(params.row)}>
+                  <Button variant="contained" onClick={() => handleDelete(params.row)} style={{ fontSize: '12px' }}>
                     Delete
                   </Button>
-                  <Button variant="contained" onClick={() => handleEditClick(params.row)}>
+                  <Button variant="contained" onClick={() => handleEditClick(params.row)} style={{ fontSize: '12px' }}>
                     Edit
                   </Button>
                 </Box>

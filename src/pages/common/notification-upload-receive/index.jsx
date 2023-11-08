@@ -34,7 +34,7 @@ const NotificationUploadReceive = () => {
       toast.success('Mask as read successfully!!')
       setAllNoti((prevNoti) =>
         prevNoti.map((noti) => {
-          if (noti.notificationId === notification.notificationId) {           
+          if (noti.notificationId === notification.notificationId) {
             return {
               ...noti,
               readStatus: true
@@ -44,9 +44,9 @@ const NotificationUploadReceive = () => {
           }
         })
       )
-    } 
+    }
   }
-  const handleHidden= (user) => {
+  const handleHidden = (user) => {
     Swal.fire({
       title: 'Are you sure to hidden this notification?',
       icon: 'warning',
@@ -95,22 +95,22 @@ const NotificationUploadReceive = () => {
       toast.success('Mask as unread successfully!!')
     }
     setAllNoti((prevNoti) =>
-        prevNoti.map((noti) => {
-          if (noti.notificationId === notification.notificationId) { 
-            return {
-              ...noti,
-              readStatus: false
-            }
-          } else {
-            return noti
+      prevNoti.map((noti) => {
+        if (noti.notificationId === notification.notificationId) {
+          return {
+            ...noti,
+            readStatus: false
           }
-        })
-      )
+        } else {
+          return noti
+        }
+      })
+    )
   }
 
   const handelSetPersonalPriority = async (notification) => {
     if (notification.personalPriority === false && !notification.personalPriority) {
-  
+
       let data = {
         notificationId: notification.notificationId,
         userId: userId
@@ -350,20 +350,21 @@ const NotificationUploadReceive = () => {
             justifyContent="space-between"
             alignItems="center"
             borderRadius="4px"
-            width="100%">
-            <Button variant="contained" onClick={() => handleDetailClick(params.row)}>
+            width="100%"
+          >
+            <Button variant="contained" onClick={() => handleDetailClick(params.row)} style={{ fontSize: '12px' }}>
               Detail
             </Button>
             {params.row.readStatus === false ? (
-              <Button variant="contained"  onClick={() => handelChangeStatusMarkAsRead(params.row)}>
+              <Button variant="contained" onClick={() => handelChangeStatusMarkAsRead(params.row)} style={{ fontSize: '12px' }}>
                 Mark as read
               </Button>
             ) : (
-              <Button variant="contained"  onClick={() => handelChangeStatusMarkAsUnRead(params.row)}>
+              <Button variant="contained" onClick={() => handelChangeStatusMarkAsUnRead(params.row)} style={{ fontSize: '12px' }}>
                 Mark as unread
               </Button>
             )}
-            <Button variant="contained" onClick={() => handleHidden(params.row)}>
+            <Button variant="contained" onClick={() => handleHidden(params.row)} style={{ fontSize: '12px' }}>
               Hidden
             </Button>
           </Box>

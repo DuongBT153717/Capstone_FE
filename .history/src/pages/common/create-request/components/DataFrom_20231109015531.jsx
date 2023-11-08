@@ -707,9 +707,9 @@ const LateRequest = ({ userId }) => {
   const handleChange = (event) => {
     setRole(event.target.value)
   }
-  // const handleChangeDepartment = (event) => {
-  //   setDepartment(event.target.value)
-  // }
+  const handleChangeDepartment = (event) => {
+    setDepartment(event.target.value)
+  }
 
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
@@ -871,60 +871,60 @@ const LateRequest = ({ userId }) => {
   //   },
   // });
 
-  // const handleDepartment = () => {
-  //   if (currentUser?.role === 'admin' && role === 'manager') {
-  //     return (
-  //       <>
-  //         <Typography mt={2} fontWeight="500">Department</Typography>
-  //         <Select
-  //           value={department}
-  //           sx={{ width: '100%' }}
-  //           onChange={handleChangeDepartment}
-  //           displayEmpty>
-  //           {
-  //             getAllManagerDepartment.map((item) => (
-  //               <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
-  //             ))
-  //           }
-  //         </Select>
-  //       </>
-  //     )
-  //   } else if (currentUser?.role === 'hr' && role === 'manager') {
-  //     return (
-  //       <>
-  //         <Typography mt={2} fontWeight="500">Department</Typography>
-  //         <Select
-  //           value={department}
-  //           sx={{ width: '100%' }}
-  //           onChange={handleChangeDepartment}
-  //           displayEmpty>
-  //           {
-  //             getAllManagerDepartment.map((item) => (
-  //               <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName}</MenuItem>
-  //             ))
-  //           }
-  //         </Select>
-  //       </>
-  //     )
-  //   } else if (currentUser?.role === 'security' && role === 'manager') {
-  //     return (
-  //       <>
-  //         <Typography mt={2} fontWeight="500">Department</Typography>
-  //         <Select
-  //           value={department}
-  //           sx={{ width: '100%' }}
-  //           onChange={handleChangeDepartment}
-  //           displayEmpty>
-  //           {
-  //             getAllManagerDepartment.map((item) => (
-  //               <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
-  //             ))
-  //           }
-  //         </Select>
-  //       </>
-  //     )
-  //   }
-  // }
+  const handleDepartment = () => {
+    if (currentUser?.role === 'admin' && role === 'manager') {
+      return (
+        <>
+          <Typography mt={2} fontWeight="500">Department</Typography>
+          <Select
+            value={department}
+            sx={{ width: '100%' }}
+            onChange={handleChangeDepartment}
+            displayEmpty>
+            {
+              getAllManagerDepartment.map((item) => (
+                <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
+              ))
+            }
+          </Select>
+        </>
+      )
+    } else if (currentUser?.role === 'hr' && role === 'manager') {
+      return (
+        <>
+          <Typography mt={2} fontWeight="500">Department</Typography>
+          <Select
+            value={department}
+            sx={{ width: '100%' }}
+            onChange={handleChangeDepartment}
+            displayEmpty>
+            {
+              getAllManagerDepartment.map((item) => (
+                <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName}</MenuItem>
+              ))
+            }
+          </Select>
+        </>
+      )
+    } else if (currentUser?.role === 'security' && role === 'manager') {
+      return (
+        <>
+          <Typography mt={2} fontWeight="500">Department</Typography>
+          <Select
+            value={department}
+            sx={{ width: '100%' }}
+            onChange={handleChangeDepartment}
+            displayEmpty>
+            {
+              getAllManagerDepartment.map((item) => (
+                <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
+              ))
+            }
+          </Select>
+        </>
+      )
+    }
+  }
 
   return (
     <Box p={3} pl={0}>

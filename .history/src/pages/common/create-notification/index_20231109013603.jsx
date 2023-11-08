@@ -407,7 +407,7 @@ const CreateNotification = () => {
                           />
                         </FormGroup>
                       </Grid>
-                      <Grid item xs={12}>
+                      <Grid item xs={7}>
                         <Typography mb={2}>Attach file: </Typography>
                         <Box mb={3} alignItems="center" gap="10px" display="flex" flexWrap='wrap'>
                           {file.length > 0 &&
