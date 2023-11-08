@@ -90,6 +90,7 @@ const NotificationsList = (props) => {
           .then(() => {
             const updatedNoti = allNoti.filter((item) => item.notificationId !== user.notificationId);
             setAllNoti(updatedNoti);
+            toast.success('Delete Successfully')
           })
           .catch((error) => {
             if (error.response.status === 400) {

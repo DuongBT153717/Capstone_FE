@@ -25,7 +25,6 @@ const NotificationUploadSent = () => {
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
     const handelSetPersonalPriority = async (notification) => {
         if (notification.personalPriority === false && !notification.personalPriority) {
-            // Đang ở trạng thái `false`, thực hiện API để đặt thành `true`
             let data = {
                 notificationId: notification.notificationId,
                 userId: userId
@@ -39,7 +38,7 @@ const NotificationUploadSent = () => {
             });
             setAllNoti(updatedAllNoti);
         } else if (notification.personalPriority === true) {
-            // Đang ở trạng thái `true`, thực hiện API để đặt thành `false`
+
             let data = {
                 notificationId: notification.notificationId,
                 userId: userId
@@ -261,6 +260,7 @@ const NotificationUploadSent = () => {
                     <Button variant="contained" onClick={() => handleEditClick(params.row)}>
                       Edit
                     </Button>
+
                   </Box>
                 </Box>
               )

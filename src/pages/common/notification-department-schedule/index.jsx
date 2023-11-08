@@ -68,7 +68,7 @@ const NotificationDepartMentScheduleList = (props) => {
     }, [])
   
     console.log(userId)
-    const handleDelete = (user) => {
+    const handleHidden = (user) => {
       Swal.fire({
         title: 'Are you sure to delete this notification?',
         icon: 'warning',
@@ -82,12 +82,12 @@ const NotificationDepartMentScheduleList = (props) => {
             notificationId: user.notificationId,
             userId: userId
           };
-  
           axiosClient
-            .post(`${BASE_URL}/deleteNotification`, data)
+            .post(`${BASE_URL}/setNotificationHidden`, data)
             .then(() => {
               const updatedNoti = allNoti.filter((item) => item.notificationId !== user.notificationId);
               setAllNoti(updatedNoti);
+              toast.success('Hidden Successfully')
             })
             .catch((error) => {
               if (error.response.status === 400) {
@@ -314,62 +314,38 @@ const NotificationDepartMentScheduleList = (props) => {
       },
       {
         field: 'action',
-        headerName: '',
+        headerName: 'Action',
         headerAlign: 'center',
         align: 'center',
-        width: 40,
+        width: 300,
         sortable: false,
         filterable: false,
         renderCell: (params) => {
+          const handleDetailClick = () => {
+            navigate(`/notification-detail/${params.row.notificationId}/${params.row.creatorId}`)
+          }
           return (
             <Box
-              margin="0 auto"
-              p="5px"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              borderRadius="4px">
-              <div>
-                <IconButton
-                  aria-label="more"
-                  id="long-button"
-                  aria-controls={openMenu ? 'long-menu' : undefined}
-                  aria-expanded={openMenu ? 'true' : undefined}
-                  aria-haspopup="true"
-                  onClick={handleClick}
-                >
-                  <MoreVertIcon />
-                </IconButton>
-                <Menu
-                  id="long-menu"
-                  MenuListProps={{
-                    'aria-labelledby': 'long-button',
-                  }}
-                  anchorEl={anchorEl}
-                  open={openMenu}
-                  onClose={handleClose2}
-                  PaperProps={{
-                    style: {
-                      maxHeight: ITEM_HEIGHT * 4.5,
-                      width: '25ch',
-                      boxShadow: '1px 1px 1px #999'
-  
-                    },
-                  }}
-                >
-                  {options.map((option) => (
-                     <MenuItem key={option} selected={option === 'Pyxis'} onClick={
-                      option === 'Detail' ?
-                        () => navigate(`/notification-detail/${params.row.notificationId}`) :
-                          option === 'Delete' ?
-                            () => handleDelete(params.row) :
-                            option === 'Edit' ?  () => navigate(`/edit-notification/${params.row.notificationId}`) : null
-                    }>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </div>
+            gap={2}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            borderRadius="4px"
+            width="100%">
+              <Box
+                gap={2}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                borderRadius="4px"
+                width="100%">
+                <Button variant="contained" onClick={() => handleDetailClick(params.row)}>
+                  Detail
+                </Button>
+                <Button variant="contained" onClick={() => handleHidden(params.row)}>
+                  Hidden
+                </Button>
+              </Box>
             </Box>
           )
         }

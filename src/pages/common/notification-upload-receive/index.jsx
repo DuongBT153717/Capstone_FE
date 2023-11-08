@@ -19,6 +19,7 @@ import notificationApi from '../../../services/notificationApi'
 import axiosClient from '../../../utils/axios-config'
 import DataTableListUploadReceive from './components/DataTableUploadReceive'
 import { toast } from 'react-toastify'
+import Swal from 'sweetalert2'
 
 const NotificationUploadReceive = () => {
   const userId = useSelector((state) => state.auth.login.currentUser.accountId)
@@ -50,7 +51,45 @@ const NotificationUploadReceive = () => {
       )
     } 
   }
+  const handleHidden= (user) => {
+    Swal.fire({
+      title: 'Are you sure to hidden this notification?',
+      icon: 'warning',
+      cancelButtonText: 'Cancel',
+      showCancelButton: true,
+      cancelButtonColor: 'red',
+      confirmButtonColor: 'green',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let data = {
+          notificationId: user.notificationId,
+          userId: userId
+        };
 
+        axiosClient
+          .post(`${BASE_URL}/setNotificationHidden`, data)
+          .then(() => {
+            const updatedNoti = allNoti.filter((item) => item.notificationId !== user.notificationId);
+            setAllNoti(updatedNoti);
+            toast.success('Hidden Successfully')
+          })
+          .catch((error) => {
+            if (error.response.status === 400) {
+              toast.error('Notification is null!');
+            } else if (error.response.status === 404) {
+              toast.error('Notification does not exist!');
+            } else if (error.response.status === 500) {
+              toast.error('Unable to delete the notification!');
+            } else if (error.response.status === 409) {
+              toast.error('Notification have been upload,cant delete');
+            }
+            else {
+              toast.error('???');
+            }
+          });
+      }
+    });
+  };
   const handelChangeStatusMarkAsUnRead = (notification) => {
     if (notification.readStatus === true) {
       let data = {
@@ -76,7 +115,7 @@ const NotificationUploadReceive = () => {
 
   const handelSetPersonalPriority = async (notification) => {
     if (notification.personalPriority === false && !notification.personalPriority) {
-      // Đang ở trạng thái `false`, thực hiện API để đặt thành `true`
+  
       let data = {
         notificationId: notification.notificationId,
         userId: userId
@@ -90,7 +129,6 @@ const NotificationUploadReceive = () => {
       })
       setAllNoti(updatedAllNoti)
     } else if (notification.personalPriority === true) {
-      // Đang ở trạng thái `true`, thực hiện API để đặt thành `false`
       let data = {
         notificationId: notification.notificationId,
         userId: userId
@@ -318,14 +356,17 @@ const NotificationUploadReceive = () => {
               Detail
             </Button>
             {params.row.readStatus === false ? (
-              <Button variant="contained" onClick={() => handelChangeStatusMarkAsRead(params.row)}>
+              <Button variant="contained"  onClick={() => handelChangeStatusMarkAsRead(params.row)}>
                 Mark as read
               </Button>
             ) : (
-              <Button variant="contained" onClick={() => handelChangeStatusMarkAsUnRead(params.row)}>
+              <Button variant="contained"  onClick={() => handelChangeStatusMarkAsUnRead(params.row)}>
                 Mark as unread
               </Button>
             )}
+            <Button variant="contained" onClick={() => handleHidden(params.row)}>
+              Hidden
+            </Button>
           </Box>
         )
       }

@@ -68,6 +68,7 @@ const NotificationScheduleList = (props) => {
               .then(() => {
                 const updatedNoti = allNoti.filter((item) => item.notificationId !== user.notificationId);
                 setAllNoti(updatedNoti);
+                toast.success('Delete Successfully')
               })
               .catch((error) => {
                 if (error.response.status === 400) {
@@ -291,67 +292,49 @@ const NotificationScheduleList = (props) => {
             )
         },
         {
-            field: 'action',
-            headerName: '',
-            headerAlign: 'center',
-            align: 'center',
-            width: 10,
-            sortable: false,
-            filterable: false,
-            flex:-5,
-            renderCell: (params) => {
-                return (
-                    <Box
-                        margin="0 auto"
-                        p="5px"
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        borderRadius="4px">
-                        <div>
-                            <IconButton
-                                aria-label="more"
-                                id="long-button"
-                                aria-controls={openMenu ? 'long-menu' : undefined}
-                                aria-expanded={openMenu ? 'true' : undefined}
-                                aria-haspopup="true"
-                                onClick={handleClick}
-                            >
-                                <MoreVertIcon />
-                            </IconButton>
-                            <Menu
-                                id="long-menu"
-                                MenuListProps={{
-                                    'aria-labelledby': 'long-button',
-                                }}
-                                anchorEl={anchorEl}
-                                open={openMenu}
-                                onClose={handleClose2}
-                                PaperProps={{
-                                    style: {
-                                        maxHeight: ITEM_HEIGHT * 4.5,
-                                        width: '25ch',
-                                        boxShadow: '1px 1px 1px #999'
-
-                                    },
-                                }}
-                            >
-                                {options.map((option) => (
-                                       <MenuItem key={option} selected={option === 'Pyxis'} onClick={
-                                        option === 'Detail' ?
-                                          () => navigate(`/notification-detail/${params.row.notificationId}/${params.row.creatorId}`) :
-                                            option === 'Delete' ?
-                                              () => handleDelete(params.row) :
-                                              () => SignalWifiStatusbarNullRounded
-                                      }>
-                                        {option}
-                                      </MenuItem>
-                                ))}
-                            </Menu>
-                        </div>
-                    </Box>
-                )
+          field: 'action',
+          headerName: 'Action',
+          headerAlign: 'center',
+          align: 'center',
+          width: 300,
+          sortable: false,
+          filterable: false,
+          renderCell: (params) => {
+            const handleDetailClick = () => {
+              navigate(`/notification-detail/${params.row.notificationId}/${params.row.creatorId}`)
             }
+    
+            const handleEditClick = () => {
+              navigate(`/edit-notification/${params.row.notificationId}`)
+            }
+            return (
+              <Box
+              gap={2}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              borderRadius="4px"
+              width="100%">
+                <Box
+                  gap={2}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  borderRadius="4px"
+                  width="100%">
+                  <Button variant="contained" onClick={() => handleDetailClick(params.row)}>
+                    Detail
+                  </Button>
+                  <Button variant="contained" onClick={() => handleDelete(params.row)}>
+                    Delete
+                  </Button>
+                  <Button variant="contained" onClick={() => handleEditClick(params.row)}>
+                    Edit
+                  </Button>
+                </Box>
+              </Box>
+            )
+          }
         }
         ,
 
