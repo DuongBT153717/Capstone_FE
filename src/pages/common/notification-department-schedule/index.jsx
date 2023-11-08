@@ -339,10 +339,10 @@ const NotificationDepartMentScheduleList = (props) => {
                 alignItems="center"
                 borderRadius="4px"
                 width="100%">
-                <Button variant="contained" onClick={() => handleDetailClick(params.row)}>
+                <Button variant="contained" onClick={() => handleDetailClick(params.row)} style={{ fontSize: '12px' }}>
                   Detail
                 </Button>
-                <Button variant="contained" onClick={() => handleHidden(params.row)}>
+                <Button variant="contained" onClick={() => handleHidden(params.row)} style={{ fontSize: '12px' }}>
                   Hidden
                 </Button>
               </Box>

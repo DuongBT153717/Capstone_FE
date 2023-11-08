@@ -178,7 +178,7 @@ const NotificationsList = (props) => {
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      width: 150,
+      width: 130,
       renderCell: (params) => (
         <Box
           margin="0 auto"
@@ -209,7 +209,7 @@ const NotificationsList = (props) => {
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      width: 80,
+      width: 75,
       renderCell: (params) => {
         return (
           <Box
@@ -267,16 +267,17 @@ const NotificationsList = (props) => {
       headerName: 'Content',
       headerAlign: 'center',
       align: 'center',
-      width: 300,
+      width: 250,
     },
     {
       field: 'containImage',
       headerName: 'Attached File',
       headerAlign: 'center',
       align: 'center',
-      width: 250,
+      width: 130,
       sortable: false,
       filterable: false,
+ 
       renderCell: (params) => {
         if (params.row.containFile === true || params.row.containImage === true) {
           return <FilePresentIcon fontSize='large' color='primary' />;
@@ -287,12 +288,37 @@ const NotificationsList = (props) => {
     }
     ,
     {
-      field: 'uploadDate',
-      headerName: 'Date',
+      field: 'updateDate',
+      headerName: 'Upload Date',
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      width: 300,
+      width: 165,
+    
+
+      renderCell: (params) => (
+        <Box
+          margin="0 auto"
+          p="5px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          borderRadius="4px"
+          color='#000'
+        >
+          <div>
+            {format(new Date(params.row.uploadDate), 'yyyy/MM/dd HH:mm:ss')}
+          </div>
+        </Box>
+      )
+    },
+    {
+      field: 'createdDate',
+      headerName: 'Create Date',
+      cellClassName: 'name-column--cell',
+      headerAlign: 'center',
+      align: 'center',
+      width: 170,
       renderCell: (params) => (
         <Box
           margin="0 auto"
@@ -337,12 +363,14 @@ const NotificationsList = (props) => {
               alignItems="center"
               borderRadius="4px"
               width="100%">
-              <Button variant="contained" onClick={() => handleDetailClick(params.row)}>
+              <Button variant="contained" onClick={() => handleDetailClick(params.row)} style={{ fontSize: '12px' }}>
                 Detail
               </Button>
-              <Button variant="contained" onClick={() => handleDelete(params.row)}>
-                Delete
-              </Button>
+              {params.row.notificationStatus !== 'UPLOADED' && (
+            <Button variant="contained" onClick={() => handleDelete(params.row)} style={{ fontSize: '12px' }}>
+              Delete
+            </Button>
+          )}
             </Box>
           </Box>
         )
