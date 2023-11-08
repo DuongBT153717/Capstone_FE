@@ -168,8 +168,7 @@ const NotificationDetail = () => {
           {notificationFiles && notificationFiles.length > 0 || notificationImages &&
             notificationImages.length > 0 && <Divider />}
           <Box mt={2}>
-            {notificationFiles && notificationFiles.length > 0 || notificationImages &&
-            notificationImages.length > 0 && (
+            {notificationFiles && notificationFiles.length > 0 && (
               <Typography mb={2} fontWeight="700">
                 Attachments:{' '}
               </Typography>
