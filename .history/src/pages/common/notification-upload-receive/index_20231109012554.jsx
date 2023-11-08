@@ -3,7 +3,7 @@ import FilePresentIcon from '@mui/icons-material/FilePresent'
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh'
 import StarIcon from '@mui/icons-material/Star'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -254,15 +254,11 @@ const NotificationUploadReceive = () => {
       width: 200
     },
     {
+      field: 'content',
       headerName: 'Content',
       headerAlign: 'center',
       align: 'center',
-      width: 300,
-      renderCell: (params) => (
-        <Typography dangerouslySetInnerHTML={{
-          __html: params.row.content
-        }}></Typography>
-      ),
+      width: 300
     },
     {
       field: 'readStatus',
@@ -298,7 +294,7 @@ const NotificationUploadReceive = () => {
       headerName: 'Attached File',
       headerAlign: 'center',
       align: 'center',
-      width: 150,
+      width: 100,
       sortable: false,
       filterable: false,
       renderCell: (params) => {

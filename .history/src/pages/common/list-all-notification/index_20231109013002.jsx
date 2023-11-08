@@ -245,11 +245,12 @@ const NotificationsList = () => {
       headerAlign: 'center',
       align: 'center',
       width: 300,
-      renderCell: (params) => (
+      renderCell: (params) => {
+        console.log(params.row.content);
         <Typography dangerouslySetInnerHTML={{
           __html: params.row.content
         }}></Typography>
-      ),
+      },
     },
     {
       field: 'containImage',
