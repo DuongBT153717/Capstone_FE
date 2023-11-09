@@ -230,8 +230,10 @@ export default function RequestListManager() {
       const response = await requestApi.getTicketDepartment(userInfo.departmentName)
       setListRequestAndTicket(response)
       setIsLoading(false)
+
     }
     fetchListRequestAndTicketByAdmin()
+
   }, [userInfo.departmentName])
 
   return (

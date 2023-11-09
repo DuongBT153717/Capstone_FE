@@ -35,13 +35,13 @@ const requestApi = {
     } catch (error) {
       console.log(error);
     }
-  
+
   },
   getDetailAttendanceMessageById: (data) => {
     try {
-      const response = axiosClient.get(`${BASE_URL}/getAttendanceMessage/`,{
-        params :{
-          request_id : data
+      const response = axiosClient.get(`${BASE_URL}/getAttendanceMessage/`, {
+        params: {
+          request_id: data
         }
       })
       return response
@@ -51,9 +51,9 @@ const requestApi = {
   },
   getManagerByDepartment: (data) => {
     try {
-      const response = axiosClient.get(`${BASE_URL}/getManagerByDepartment/`,{
-        params :{
-          department : data
+      const response = axiosClient.get(`${BASE_URL}/getManagerByDepartment/`, {
+        params: {
+          department: data
         }
       })
       return response
@@ -62,12 +62,24 @@ const requestApi = {
     }
   },
 
-  
+
   getDetailLeaveMessageById: (data) => {
     try {
-      const response = axiosClient.get(`${BASE_URL}/getLeaveMessage/`,{
-        params :{
-          request_id : data
+      const response = axiosClient.get(`${BASE_URL}/getLeaveMessage/`, {
+        params: {
+          request_id: data
+        }
+      })
+      return response
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  getDetailOverTimeMessageById: (data) => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getOverTimeMessage/`, {
+        params: {
+          request_id: data
         }
       })
       return response
@@ -77,9 +89,9 @@ const requestApi = {
   },
   getDetailOtherMessageById: (data) => {
     try {
-      const response = axiosClient.get(`${BASE_URL}/getOtherMessage/`,{
-        params :{
-          request_id : data
+      const response = axiosClient.get(`${BASE_URL}/getOtherMessage/`, {
+        params: {
+          request_id: data
         }
       })
       return response
@@ -91,8 +103,8 @@ const requestApi = {
   getTicketDepartment: (data) => {
     try {
       const response = axiosClient.get(`${BASE_URL}/getTicketDepartment`, {
-        params :{
-          department :data
+        params: {
+          department: data
         }
       })
       return response
@@ -108,67 +120,102 @@ const requestApi = {
   acceptStatutOtherRequest: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/closeOtherRequest`, data)
-     toast.success('Accept Request success')
-   } catch (error) {
-   console.log(error);
-   }
+      toast.success('Accept Request success')
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   acceptLeaveRequest: async (data) => {
-    let data1 ={
-      leaveRequestId : data
+    let data1 = {
+      leaveRequestId: data
     }
     try {
-       await axiosClient.post(`${BASE_URL}/acceptLeaveRequest`, data1)
+      await axiosClient.post(`${BASE_URL}/acceptLeaveRequest`, data1)
       toast.success('Accept request success')
     } catch (error) {
-    console.log(error);
+      console.log(error);
+    }
+  },
+  acceptOtRequest: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/acceptOvertimeRequest`, { params: { overtimeRequestId: data } })
+      toast.success('Accept request success')
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  acceptLateRequest: async (data) => {
+    let data1 = {
+      lateRequestId: data
+    }
+    try {
+      await axiosClient.post(`${BASE_URL}/acceptLateRequest`, data1)
+      toast.success('Accept request success')
+    } catch (error) {
+      console.log(error);
     }
   },
   acceptAttendanceRequest: async (data) => {
-    let data1 ={
-      attendanceRequestId : data
+    let data1 = {
+      attendanceRequestId: data
     }
     try {
-       await axiosClient.post(`${BASE_URL}/acceptAttendanceRequest`, data1)
+      await axiosClient.post(`${BASE_URL}/acceptAttendanceRequest`, data1)
       toast.success('Accept request success')
     } catch (error) {
-    console.log(error);
+      console.log(error);
     }
   },
   acceptRequest: async (data) => {
     try {
-       await axiosClient.post(`${BASE_URL}/changeReceiveId`, data)
+      await axiosClient.post(`${BASE_URL}/changeReceiveId`, data)
       toast.success('Accept Request success')
     } catch (error) {
-    console.log(error);
+      console.log(error);
     }
   },
 
   rejectLeaveRequest: async (data) => {
     try {
-       await axiosClient.post(`${BASE_URL}/rejectLeaveRequest`, data)
+      await axiosClient.post(`${BASE_URL}/rejectLeaveRequest`, data)
       toast.success('Reject request success')
     } catch (error) {
-    console.log(error);
+      console.log(error);
+    }
+  },
+  rejectLateRequest: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/rejectLateRequest`, data)
+      toast.success('Reject request success')
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  rejectOvertimeRequest: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/rejectOvertimeRequest`, data)
+      toast.success('Reject request success')
+    } catch (error) {
+      console.log(error);
     }
   },
 
   rejectAttendanceRequest: async (data) => {
     try {
-       await axiosClient.post(`${BASE_URL}/rejectAttendanceRequest`, data)
+      await axiosClient.post(`${BASE_URL}/rejectAttendanceRequest`, data)
       toast.success('Reject request success')
     } catch (error) {
-    console.log(error);
+      console.log(error);
     }
   },
 
   rejectBookRoomRequest: async (data) => {
     try {
-       await axiosClient.post(`${BASE_URL}/rejectBookRoom`, data)
+      await axiosClient.post(`${BASE_URL}/rejectBookRoom`, data)
       toast.success('Reject request success')
     } catch (error) {
-    console.log(error);
+      console.log(error);
     }
   },
   getReceiveIdAndDepartment: (data) => {
@@ -262,6 +309,20 @@ const requestApi = {
       }
     }
   },
+
+  requestOverTimeForm: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/overTimeForm`, data)
+      toast.success('Send request successfully')
+    } catch (error) {
+      if (error.response.status === 400) {
+        toast.error('Date to must be after date from!')
+      }
+      if (error.response.status === 404) {
+        toast.error('User not found!')
+      }
+    }
+  },
   requestOtherForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/otherForm`, data)
@@ -343,7 +404,7 @@ const requestApi = {
       console.log(error);
     }
   },
-  
+
   getRequestDetailByAdmin: (data) => {
     try {
       const response = axiosClient.get(`${BASE_URL}/getRoomBookingMessage`, {
@@ -370,12 +431,12 @@ const requestApi = {
     }
   },
   closeTicketAttendence: async (data) => {
-    
+
     try {
       await axiosClient.post(`${BASE_URL}/acceptChangeUserInfo`, data)
       toast.success('Finish Ticket Success !')
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   },
 }
