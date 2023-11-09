@@ -191,15 +191,18 @@ const AttendenceFrom = ({ userId }) => {
 
 
 
-const OtFrom = ({ userId }) => {
+const OtFrom = () => {
   const [from, setFrom] = useState(dayjs(new Date()));
   const [to, setTo] = useState(dayjs(new Date()));
   const [date, setDate] = useState(dayjs(new Date()));
   const [content, setContent] = useState('');
+  const [topicOvertime, settopicOvertime] = useState('');
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('');
+  const userId = useSelector((state) => state.auth.login?.currentUser?.accountId);
   const currentUser = useSelector((state) => state.auth.login?.currentUser);
-
-
+  const handleChange = (event) => {
+    settopicOvertime(event.target.value)
+  }
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
       const response = await requestApi.getReceiveIdAndDepartment(userId);
@@ -208,28 +211,12 @@ const OtFrom = ({ userId }) => {
     fetchReceiveIdAndDepartment();
   }, []);
 
-  // const handleCreateRequest = (e) => {
-  //   e.preventDefault();
-  //   let data = {
-  //     userId: userId,
-  //     title: title,
-  //     content: content,
-  //     manualDate: from.format('YYYY-MM-DD'),
-  //     manualFirstEntry: from.format('HH:mm:ss'),
-  //     manualLastExit: to.format('HH:mm:ss'),
-  //     departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-  //     receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
-  //   };
-  //   requestApi.requestAttendanceForm(data);
-  //   setTitle('');
-  //   setContent('');
-  //   console.log(data);
-  // };
-
   const formik = useFormik({
     initialValues: {
       title: '',
       content: '',
+      topicOvertime: '',
+      
 
     },
     validationSchema: validationSchema,
@@ -238,16 +225,18 @@ const OtFrom = ({ userId }) => {
         userId: userId,
         title: values.title,
         content: content,
-        manualDate: from.format('YYYY-MM-DD'),
-        manualFirstEntry: from.format('HH:mm:ss'),
-        manualLastExit: to.format('HH:mm:ss'),
+        topicOvertime: topicOvertime,
+        overtimeDate: from.format('YYYY-MM-DD'),
+        fromTime: from.format('HH:mm:ss'),
+        toTime: to.format('HH:mm:ss'),
         departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
         receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
       };
       console.log(data);
-      requestApi.requestAttendanceForm(data);
+      requestApi.requestOverTimeForm(data);
     },
   });
+
   return (
     <Box p={3} pl={0}>
       <form onSubmit={formik.handleSubmit}>
@@ -272,6 +261,12 @@ const OtFrom = ({ userId }) => {
               <div className="error-message" >{formik.errors.title}</div>
             )}
           </Grid>
+          <Grid item xs={12}>
+          <Select value={topicOvertime} sx={{ width: '100%' }} onChange={handleChange} displayEmpty>
+                <MenuItem value="WEEKEND_AND_NORMAL_DAY">WEEKEND AND NORMAL DAY</MenuItem>
+                <MenuItem value="HOLIDAY">HOLIDAY</MenuItem>
+              </Select>
+            </Grid>
           <Grid item xs={4} mb={2}>
             <Typography fontWeight="500">Date</Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -375,9 +370,12 @@ const OtherRequest = ({ userId }) => {
     const fetchReceiveIdAndDepartment = async () => {
       const response = await requestApi.getReceiveIdAndDepartment(userId)
       setReceiveIdAndDepartment(response)
+      console.log(response)
     }
     fetchReceiveIdAndDepartment()
+    
   }, [])
+
 
   useEffect(() => {
     const fetchAllManagerDepartment = async () => {
