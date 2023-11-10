@@ -106,11 +106,6 @@ const TicketDetail = () => {
         console.log(res)
         setRequest(res)
       }
-      else if (requestId.startsWith('OT')) {
-        const res = await requestApi.getDetailOverTimeMessageById(requestId)
-        console.log(res)
-        setRequest(res)
-      }
     }
     getMessageDetail()
   }, [])
@@ -130,15 +125,12 @@ const TicketDetail = () => {
 
   const handleAccept = () => {
     if (request[0]?.object?.topic === 'ATTENDANCE_REQUEST') {
-      requestApi.acceptAttendanceRequest(request[0]?.object?.attendanceRequestId);
+      requestApi.acceptAttendanceRequest(request[0]?.object?.attendanceRequestId)
     } else if (request[0]?.object?.topic === 'LEAVE_REQUEST') {
-      requestApi.acceptLeaveRequest(request[0]?.object?.leaveRequestId);
-    } else if (request[0]?.object?.topic === 'OVERTIME_REQUEST') {
-      requestApi.acceptOtRequest(request[0]?.object?.overTimeRequestId);
-    } else if (request[0]?.object?.topic === 'LATE_REQUEST') {
-      requestApi.acceptLateRequest(request[0]?.object?.lateMessageRequestId);
+      requestApi.acceptLeaveRequest(request[0]?.object?.leaveRequestId)
     }
   }
+
   useEffect(() => {
     scrollbarsRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [])
@@ -147,50 +139,29 @@ const TicketDetail = () => {
     if (request[0]?.object?.topic === 'ATTENDANCE_REQUEST') {
       let data = {
         attendanceRequestId: request[0]?.object?.attendanceRequestId,
-        content: contentReason,
-      };
-      console.log(data);
-      requestApi.rejectAttendanceRequest(data);
+        content: contentReason
+      }
+      console.log(data)
+      requestApi.rejectAttendanceRequest(data)
       if (currentUser?.role === 'manager') {
-        navigate('/request-list-manager');
+        navigate('/request-list-manager')
       } else if (currentUser?.role === 'hr') {
-        navigate('/request-list-hr');
+        navigate('/request-list-hr')
       }
     } else if (request[0]?.object?.topic === 'LEAVE_REQUEST') {
       let data = {
         leaveRequestId: request[0]?.object?.leaveRequestId,
-        content: contentReason,
-      };
-      console.log(data);
-      requestApi.rejectLeaveRequest(data);
+        content: contentReason
+      }
+      console.log(data)
+      requestApi.rejectLeaveRequest(data)
       if (currentUser?.role === 'manager') {
-        navigate('/request-list-manager');
+        navigate('/request-list-manager')
       } else if (currentUser?.role === 'hr') {
-        navigate('/request-list-hr');
-      }
-    } else if (request[0]?.object?.topic === 'OVERTIME_REQUEST') {
-      let data = {
-        overtimeRequestId: request[0]?.object?.overTimeRequestId,
-        content: contentReason,
-      };
-      console.log(data);
-      requestApi.rejectOvertimeRequest(data);
-      if (currentUser?.role === 'manager') {
-        navigate('/request-list-manager');
-      }
-    } else if (request[0]?.object?.topic === 'LATE_REQUEST') {
-      let data = {
-        lateRequestId: request[0]?.object?.lateRequestId,
-        content: contentReason,
-      };
-      console.log(data);
-      requestApi.rejectLateRequest(data);
-      if (currentUser?.role === 'manager') {
-        navigate('/request-list-manager');
+        navigate('/request-list-hr')
       }
     }
-  };
-
+  }
 
   const imgurlReceiver = async () => {
     const storageRef = ref(storage, `/${request[0]?.requestMessageResponse?.imageReceiver}`)
@@ -429,103 +400,6 @@ const TicketDetail = () => {
           </List>
         </>
       )
-
-    } else if (request[0]?.object?.topic === 'OVERTIME_REQUEST') {
-      return (
-        <>
-          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            <ListItem alignItems="flex-start">
-              <ListItemText
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: 'inline' }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary">
-                      Title : {request[0]?.requestMessageResponse?.title}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <ListItem alignItems="flex-start">
-              <ListItemText
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: 'inline' }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {request[0]?.object?.topicOvertime === 'WEEKEND_AND_NORMAL_DAY'
-                        ? 'WEEKEND AND NORMAL DAY'
-                        : 'HOLIDAY'}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <Divider component="li" />
-            <ListItem alignItems="flex-start">
-              <ListItemText
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: 'inline' }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary">
-                      Department :{' '}
-                      {request[0]?.requestMessageResponse?.receiverDepartment?.departmentName}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <ListItem alignItems="flex-start">
-              <ListItemText
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: 'inline' }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary">
-                      Date Over Time :{' '}
-                      {request[0]?.object?.overtimeDate}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <ListItem alignItems="flex-start">
-              <ListItemText
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: 'inline' }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary">
-                      From : {request[0]?.object?.fromTime +" "} 
-                    </Typography>
-                    <Typography
-                      sx={{ display: 'inline' }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary">
-                       - To : {request[0]?.object?.toTime}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <Divider component="li" />
-          </List>
-        </>
-      )
     }
   }
 
@@ -565,7 +439,7 @@ const TicketDetail = () => {
                                   <Box display="flex" flexDirection="column">
                                     <Typography fontSize="16px" variant="body1">
                                       {req?.requestMessageResponse?.senderFirstName === null ||
-                                        req?.requestMessageResponse?.senderLastName === null ? (
+                                      req?.requestMessageResponse?.senderLastName === null ? (
                                         <>unknown</>
                                       ) : (
                                         <>
@@ -590,7 +464,7 @@ const TicketDetail = () => {
                                   __html: req?.object?.content
                                 }}></Typography>
                               {request[0]?.object?.topic !== 'OTHER_REQUEST' &&
-                                request[0]?.requestMessageResponse?.requestTicketStatus !=
+                              request[0]?.requestMessageResponse?.requestTicketStatus !=
                                 'CLOSED' ? (
                                 <Box display="flex" gap="10px" justifyContent="flex-end">
                                   <Button
@@ -623,7 +497,7 @@ const TicketDetail = () => {
                                   <Box display="flex" flexDirection="column">
                                     <Typography fontSize="16px" variant="body1">
                                       {req?.requestMessageResponse?.senderFirstName === null ||
-                                        req?.requestMessageResponse?.senderLastName === null ? (
+                                      req?.requestMessageResponse?.senderLastName === null ? (
                                         <>unknown</>
                                       ) : (
                                         <>
@@ -664,7 +538,7 @@ const TicketDetail = () => {
                                 <Box display="flex" flexDirection="column">
                                   <Typography fontSize="16px" variant="body1">
                                     {req?.requestMessageResponse?.senderFirstName === null ||
-                                      req?.requestMessageResponse?.senderLastName === null ? (
+                                    req?.requestMessageResponse?.senderLastName === null ? (
                                       <>unknown</>
                                     ) : (
                                       <>
@@ -696,10 +570,10 @@ const TicketDetail = () => {
                 </div>
                 <Box style={{ display: 'flex', flexDirection: 'column' }}>
                   {currentUser?.role === 'hr' ||
-                    currentUser?.role === 'admin' ||
-                    currentUser?.role === 'security' ? (
+                  currentUser?.role === 'admin' ||
+                  currentUser?.role === 'security' ? (
                     request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' &&
-                      request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
+                    request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
                       <CKEditor
                         editor={ClassicEditor}
                         onChange={(event, editor) => {
@@ -757,10 +631,10 @@ const TicketDetail = () => {
                       <></>
                     )}
                     {currentUser?.role === 'hr' ||
-                      currentUser?.role === 'admin' ||
-                      currentUser?.role === 'security' ? (
+                    currentUser?.role === 'admin' ||
+                    currentUser?.role === 'security' ? (
                       request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' &&
-                        request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
+                      request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
                         <Button sx={{ mr: 2 }} type="submit" variant="contained" color="primary">
                           Send
                         </Button>
