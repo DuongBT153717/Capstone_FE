@@ -226,7 +226,7 @@ const OtFrom = () => {
         title: values.title,
         content: content,
         topicOvertime: topicOvertime,
-        overtimeDate: from.format('YYYY-MM-DD'),
+        overtimeDate: date.format('YYYY-MM-DD'),
         fromTime: from.format('HH:mm:ss'),
         toTime: to.format('HH:mm:ss'),
         departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
@@ -691,259 +691,83 @@ const OtherRequest = ({ userId }) => {
   )
 }
 
-const LateRequest = ({ userId }) => {
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const currentUser = useSelector((state) => state.auth.login?.currentUser)
-  const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
-  const [role, setRole] = useState('')
-  const [department, setDepartment] = useState()
-  const [duration, setDuration] = useState()
-  const [getAllManagerDepartment, setGetAllManagerDepartment] = useState([])
-  const [manager, setManager] = useState('')
-  const [date, setDate] = useState(dayjs(new Date()));
-  const handleChange = (event) => {
-    setRole(event.target.value)
-  }
-  // const handleChangeDepartment = (event) => {
-  //   setDepartment(event.target.value)
-  // }
 
+const LateRequest = () => {
+
+  const [date, setDate] = useState(dayjs(new Date()));
+  const [content, setContent] = useState('');
+  const [lateType, setLateType] = useState('');
+  const [lateDuration, setLateDuration] = useState('');
+  const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('');
+  const userId = useSelector((state) => state.auth.login?.currentUser?.accountId);
+  const currentUser = useSelector((state) => state.auth.login?.currentUser);
+  const handleChange = (event) => {
+    setLateType(event.target.value)
+  }
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
-      const response = await requestApi.getReceiveIdAndDepartment(userId)
-      setReceiveIdAndDepartment(response)
+      const response = await requestApi.getReceiveIdAndDepartment(userId);
+      setReceiveIdAndDepartment(response);
     }
-    fetchReceiveIdAndDepartment()
-  }, [])
+    fetchReceiveIdAndDepartment();
+  }, []);
 
-  useEffect(() => {
-    const fetchAllManagerDepartment = async () => {
-      const response = await requestApi.getAllManagerDepartment()
-      setGetAllManagerDepartment(response)
-    }
-    fetchAllManagerDepartment()
-  }, [])
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+      content: '',
+      lateType: '',
+      lateDuration: '',
 
-  console.log(department);
-  const handleCreateRequest = (e) => {
-    if (currentUser?.role === 'employee' && role === 'manager') {
-      callApiEmployee(e, receiveIdAndDepartment?.managerInfoResponse?.managerId)
-    } else if (currentUser?.role === 'employee' && role === 'hr') {
-      callApiOther(e, 3)
-    } else if (currentUser?.role === 'employee' && role === 'security') {
-      callApiOther(e, 10)
-    } else if (currentUser?.role === 'employee' && role === 'admin') {
-      callApiOther(e, 9)
-    } else if (currentUser?.role === 'manager' && role === 'admin') {
-      callApiOther(e, 9)
-    } else if (currentUser?.role === 'manager' && role === 'security') {
-      callApiOther(e, 10)
-    } else if (currentUser?.role === 'manager' && role === 'hr') {
-      callApiOther(e, 3)
-    } else if (currentUser?.role === 'hr' && role === 'admin') {
-      callApiOther(e, 9)
-    } else if (currentUser?.role === 'hr' && role === 'security') {
-      callApiOther(e, 10)
-    } else if (currentUser?.role === 'hr' && role === 'manager') {
-      callApiToManager(e, department)
-    } else if (currentUser?.role === 'security' && role === 'admin') {
-      callApiOther(e, 9)
-    } else if (currentUser?.role === 'security' && role === 'hr') {
-      callApiOther(e, 3)
-    } else if (currentUser?.role === 'security' && role === 'manager') {
-      callApiToManager(e, department)
-    } else if (currentUser?.role === 'admin' && role === 'security') {
-      callApiOther(e, 10)
-    } else if (currentUser?.role === 'admin' && role === 'hr') {
-      callApiOther(e, 3)
-    } else if (currentUser?.role === 'admin' && role === 'manager') {
-      callApiToManager(e, department)
-    }
-  }
-
-  useEffect(() => {
-    if (getAllManagerDepartment.length !== 0) {
-      const getManagerByDepartment = async () => {
-        let res = await requestApi.getManagerByDepartment(department)
-        setManager(res)
-      }
-      getManagerByDepartment()
-    }
-  }, [department])
-
-
-
-  const callApiOther = (e, departmentId) => {
-    e.preventDefault()
-    let data = {
-      userId: userId,
-      title: title,
-      content: content,
-      departmentId: departmentId,
-    }
-    console.log(data);
-    setTitle('')
-    setContent('')
-    setDepartment('')
-    requestApi.requestOtherForm(data)
-  }
-
-  const callApiToManager = (e, departmentId) => {
-    e.preventDefault()
-    let data = {
-      userId: userId,
-      title: title,
-      content: content,
-      departmentId: departmentId,
-      receivedId: manager[0].accountId
-    }
-    console.log(data);
-    setTitle('')
-    setContent('')
-    setDepartment('')
-    requestApi.requestOtherForm(data)
-  }
-
-  const callApiEmployee = (e, managerId) => {
-    e.preventDefault()
-    let data = {
-      userId: userId,
-      title: title,
-      content: content,
-      departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-      receivedId: managerId
-    }
-    setTitle('')
-    setContent('')
-    requestApi.requestOtherForm(data)
-  }
-
-  // const formik = useFormik({
-  //   initialValues: {
-  //     title: '',
-  //   },
-  //   validationSchema: validationSchema,
-  //   onSubmit: (values) => {
-  //     let data = {
-  //       userId: userId,
-  //       title: title,
-  //       content: content,
-  //       departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-  //       receivedId: managerId
-  //     };
-  //     console.log(data);
-  //     if (currentUser?.role === 'employee' && role === 'manager') {
-  //       callApiEmployee(e, receiveIdAndDepartment?.managerInfoResponse?.managerId)
-  //     } else if (currentUser?.role === 'employee' && role === 'hr') {
-  //       callApiOther(e, 3)
-  //     } else if (currentUser?.role === 'employee' && role === 'security') {
-  //       callApiOther(e, 10)
-  //     } else if (currentUser?.role === 'employee' && role === 'admin') {
-  //       callApiOther(e, 9)
-  //     } else if (currentUser?.role === 'manager' && role === 'admin') {
-  //       callApiOther(e, 9)
-  //     } else if (currentUser?.role === 'manager' && role === 'security') {
-  //       callApiOther(e, 10)
-  //     } else if (currentUser?.role === 'manager' && role === 'hr') {
-  //       callApiOther(e, 3)
-  //     } else if (currentUser?.role === 'hr' && role === 'admin') {
-  //       callApiOther(e, 9)
-  //     } else if (currentUser?.role === 'hr' && role === 'security') {
-  //       callApiOther(e, 10)
-  //     } else if (currentUser?.role === 'hr' && role === 'manager') {
-  //       callApiToManager(e, department)
-  //     } else if (currentUser?.role === 'security' && role === 'admin') {
-  //       callApiOther(e, 9)
-  //     } else if (currentUser?.role === 'security' && role === 'hr') {
-  //       callApiOther(e, 3)
-  //     } else if (currentUser?.role === 'security' && role === 'manager') {
-  //       callApiToManager(e, department)
-  //     } else if (currentUser?.role === 'admin' && role === 'security') {
-  //       callApiOther(e, 10)
-  //     } else if (currentUser?.role === 'admin' && role === 'hr') {
-  //       callApiOther(e, 3)
-  //     } else if (currentUser?.role === 'admin' && role === 'manager') {
-  //       callApiToManager(e, department)
-  //     }
-  //   },
-  // });
-
-  // const handleDepartment = () => {
-  //   if (currentUser?.role === 'admin' && role === 'manager') {
-  //     return (
-  //       <>
-  //         <Typography mt={2} fontWeight="500">Department</Typography>
-  //         <Select
-  //           value={department}
-  //           sx={{ width: '100%' }}
-  //           onChange={handleChangeDepartment}
-  //           displayEmpty>
-  //           {
-  //             getAllManagerDepartment.map((item) => (
-  //               <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
-  //             ))
-  //           }
-  //         </Select>
-  //       </>
-  //     )
-  //   } else if (currentUser?.role === 'hr' && role === 'manager') {
-  //     return (
-  //       <>
-  //         <Typography mt={2} fontWeight="500">Department</Typography>
-  //         <Select
-  //           value={department}
-  //           sx={{ width: '100%' }}
-  //           onChange={handleChangeDepartment}
-  //           displayEmpty>
-  //           {
-  //             getAllManagerDepartment.map((item) => (
-  //               <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName}</MenuItem>
-  //             ))
-  //           }
-  //         </Select>
-  //       </>
-  //     )
-  //   } else if (currentUser?.role === 'security' && role === 'manager') {
-  //     return (
-  //       <>
-  //         <Typography mt={2} fontWeight="500">Department</Typography>
-  //         <Select
-  //           value={department}
-  //           sx={{ width: '100%' }}
-  //           onChange={handleChangeDepartment}
-  //           displayEmpty>
-  //           {
-  //             getAllManagerDepartment.map((item) => (
-  //               <MenuItem key={item.departmentId} value={item.departmentId} >{item.departmentName} </MenuItem>
-  //             ))
-  //           }
-  //         </Select>
-  //       </>
-  //     )
-  //   }
-  // }
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      let data = {
+        userId: userId,
+        title: values.title,
+        content: content,
+        lateType: lateType,
+        lateDuration:lateDuration,
+        requestDate: date.format('YYYY-MM-DD'),
+        departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+        receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+      };
+      console.log(data);
+      requestApi.requestLateForm(data);
+    },
+  });
 
   return (
     <Box p={3} pl={0}>
-      <form onSubmit={handleCreateRequest}>
+      <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography fontWeight="700" fontSize="18px">
-              Request details{' '}
+              Request details
             </Typography>
           </Grid>
           <Grid item xs={12}>
-
+            <Typography fontWeight="500">Title</Typography>
+            <TextField
+              name="title"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.title}
+              sx={{ width: '100%' }}
+              size="small"
+              placeholder="Enter the request title"
+            />
+            {formik.touched.title && formik.errors.title && (
+              <div className="error-message" >{formik.errors.title}</div>
+            )}
           </Grid>
           <Grid item xs={12}>
-            <Typography fontWeight="500">Late Type</Typography>
-
-            <Select value={role} sx={{ width: '100%' }} onChange={handleChange} displayEmpty>
-              <MenuItem value="admin">Late Morning</MenuItem>
-              <MenuItem value="manager">Late AfterNoon</MenuItem>
-            </Select>
-          </Grid>
+            Type
+          <Select value={lateType} sx={{ width: '100%' }} onChange={handleChange} displayEmpty>
+                <MenuItem value="LATE_MORNING">MORNING</MenuItem>
+                <MenuItem value="LATE_AFTERNOON">AFTERNOON</MenuItem>
+              </Select>
+            </Grid>
           <Grid item xs={4} mb={2}>
             <Typography fontWeight="500">Date</Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -957,33 +781,34 @@ const LateRequest = ({ userId }) => {
           <Grid item xs={4} mb={2}>
             <Typography fontWeight="500">Duration</Typography>
             <TextField
-              value={duration}
+              value={lateDuration}
               onChange={(e) => {
                 const inputValue = parseInt(e.target.value, 10);
                 if (inputValue > 90) {
-                  setDuration(90); 
+                  setLateDuration(90); 
                 } else if (inputValue < 0) {
-                  setDuration(0);
+                  setLateDuration(0);
                 } else {
-                  setDuration(inputValue); 
+                  setLateDuration(inputValue); 
                 }
               }}
               sx={{ width: '100%' }}
               type="number"
             />
           </Grid>
-
-
           <Grid item xs={12}>
-            <Typography fontWeight="500">Content</Typography>
+            <Typography fontWeight="500">Reason</Typography>
             <CKEditor
               data={content}
               editor={ClassicEditor}
               onChange={(event, editor) => {
-                const data = editor.getData()
-                setContent(data)
+                const data = editor.getData();
+                setContent(data);
               }}
             />
+            {/* {formik.touched.content && formik.errors.content && (
+              <div className="error-message">{formik.errors.content}</div>
+            )} */}
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
@@ -994,7 +819,7 @@ const LateRequest = ({ userId }) => {
               </Button>
             </Link>
           ) : currentUser?.role === 'manager' ? (
-            <Link to="/request-manager-list'">
+            <Link to="/request-manager-list">
               <Button type="submit" variant="contained">
                 Back
               </Button>
@@ -1014,7 +839,7 @@ const LateRequest = ({ userId }) => {
           ) : (
             <></>
           )}
-          <Button type="submit" variant="contained">
+          <Button type='submit' variant="contained">
             Save
           </Button>
         </Box>
@@ -1022,6 +847,7 @@ const LateRequest = ({ userId }) => {
     </Box>
   )
 }
+
 
 
 const LeaveRequest = ({ userId }) => {
