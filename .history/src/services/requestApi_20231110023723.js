@@ -12,7 +12,7 @@ const requestApi = {
       })
       return response
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   getAllNotibyUserId: (data) => {
@@ -24,7 +24,7 @@ const requestApi = {
       })
       return response
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
 
@@ -33,8 +33,9 @@ const requestApi = {
       const response = axiosClient.get(`${BASE_URL}/getTicketHr`)
       return response
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
+
   },
   getDetailAttendanceMessageById: (data) => {
     try {
@@ -45,7 +46,7 @@ const requestApi = {
       })
       return response
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   getManagerByDepartment: (data) => {
@@ -57,9 +58,10 @@ const requestApi = {
       })
       return response
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
+
 
   getDetailLeaveMessageById: (data) => {
     try {
@@ -70,7 +72,7 @@ const requestApi = {
       })
       return response
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   getDetailOverTimeMessageById: (data) => {
@@ -82,7 +84,7 @@ const requestApi = {
       })
       return response
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   getDetailOtherMessageById: (data) => {
@@ -94,7 +96,7 @@ const requestApi = {
       })
       return response
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
 
@@ -120,7 +122,7 @@ const requestApi = {
       await axiosClient.post(`${BASE_URL}/closeOtherRequest`, data)
       toast.success('Accept Request success')
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
 
@@ -132,18 +134,19 @@ const requestApi = {
       await axiosClient.post(`${BASE_URL}/acceptLeaveRequest`, data1)
       toast.success('Accept request success')
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   acceptOtRequest: async (data) => {
-    let data1 = {
-      overTimeRequestId: data
-    }
     try {
-      await axiosClient.post(`${BASE_URL}/acceptOvertimeRequest`, data1)
+      await axiosClient.post(`${BASE_URL}/acceptOvertimeRequest`, {
+        params: {
+          overtimeRequestId: data
+        }
+      })
       toast.success('Accept request success')
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   acceptLateRequest: async (data) => {
@@ -154,7 +157,7 @@ const requestApi = {
       await axiosClient.post(`${BASE_URL}/acceptLateRequest`, data1)
       toast.success('Accept request success')
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   acceptAttendanceRequest: async (data) => {
@@ -165,7 +168,7 @@ const requestApi = {
       await axiosClient.post(`${BASE_URL}/acceptAttendanceRequest`, data1)
       toast.success('Accept request success')
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   acceptRequest: async (data) => {
@@ -173,7 +176,7 @@ const requestApi = {
       await axiosClient.post(`${BASE_URL}/changeReceiveId`, data)
       toast.success('Accept Request success')
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
 
@@ -182,7 +185,7 @@ const requestApi = {
       await axiosClient.post(`${BASE_URL}/rejectLeaveRequest`, data)
       toast.success('Reject request success')
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   rejectLateRequest: async (data) => {
@@ -190,7 +193,7 @@ const requestApi = {
       await axiosClient.post(`${BASE_URL}/rejectLateRequest`, data)
       toast.success('Reject request success')
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   rejectOvertimeRequest: async (data) => {
@@ -198,7 +201,7 @@ const requestApi = {
       await axiosClient.post(`${BASE_URL}/rejectOvertimeRequest`, data)
       toast.success('Reject request success')
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
 
@@ -207,7 +210,7 @@ const requestApi = {
       await axiosClient.post(`${BASE_URL}/rejectAttendanceRequest`, data)
       toast.success('Reject request success')
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
 
@@ -216,7 +219,7 @@ const requestApi = {
       await axiosClient.post(`${BASE_URL}/rejectBookRoom`, data)
       toast.success('Reject request success')
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   getReceiveIdAndDepartment: (data) => {
@@ -355,7 +358,7 @@ const requestApi = {
       const response = axiosClient.get(`${BASE_URL}/getAllDepartment`)
       return response
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   getAllRoom: () => {
@@ -363,7 +366,7 @@ const requestApi = {
       const response = axiosClient.get(`${BASE_URL}/getAllRooms`)
       return response
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   getAllBookRooms: () => {
@@ -371,7 +374,7 @@ const requestApi = {
       const response = axiosClient.get(`${BASE_URL}/getPendingAndAcceptedRoom`)
       return response
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   createRoomBookingTicket: async (data) => {
@@ -393,7 +396,7 @@ const requestApi = {
       const response = axiosClient.get(`${BASE_URL}/getTicketAdmin`)
       return response
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
 
@@ -402,7 +405,7 @@ const requestApi = {
       const response = axiosClient.get(`${BASE_URL}/getTicketHr`)
       return response
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
 
@@ -415,7 +418,7 @@ const requestApi = {
       })
       return response
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
 
@@ -428,17 +431,18 @@ const requestApi = {
       })
       toast.success('Accept book room successfully!')
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   closeTicketAttendence: async (data) => {
+
     try {
       await axiosClient.post(`${BASE_URL}/acceptChangeUserInfo`, data)
       toast.success('Finish Ticket Success !')
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  },
 }
 
 export default requestApi

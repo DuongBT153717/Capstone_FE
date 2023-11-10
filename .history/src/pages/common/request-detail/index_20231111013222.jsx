@@ -126,6 +126,7 @@ const TicketDetail = () => {
     }
   }, [request[0]?.requestMessageResponse?.senderId])
 
+  console.log('>>>' + request[0]?.object?.attendanceRequestId)
 
   const handleAccept = () => {
     if (request[0]?.object?.topic === 'ATTENDANCE_REQUEST') {
@@ -139,7 +140,7 @@ const TicketDetail = () => {
     }
   }
 
-  console.log(request[0]);
+  console.log(request[0]?.object?.overtimeRequestId);
 
   useEffect(() => {
     scrollbarsRef.current?.scrollIntoView({ behavior: 'smooth' })

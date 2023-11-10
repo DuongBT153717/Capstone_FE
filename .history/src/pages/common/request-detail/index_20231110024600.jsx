@@ -126,6 +126,7 @@ const TicketDetail = () => {
     }
   }, [request[0]?.requestMessageResponse?.senderId])
 
+  console.log('>>>' + request[0]?.object?.attendanceRequestId)
 
   const handleAccept = () => {
     if (request[0]?.object?.topic === 'ATTENDANCE_REQUEST') {
@@ -138,8 +139,6 @@ const TicketDetail = () => {
       requestApi.acceptLateRequest(request[0]?.object?.lateRequestId);
     }
   }
-
-  console.log(request[0]);
 
   useEffect(() => {
     scrollbarsRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -504,7 +503,6 @@ const TicketDetail = () => {
                 }
               />
             </ListItem>
-            <Divider component="li" />
             <ListItem alignItems="flex-start">
               <ListItemText
                 secondary={

@@ -126,6 +126,7 @@ const TicketDetail = () => {
     }
   }, [request[0]?.requestMessageResponse?.senderId])
 
+  console.log('>>>' + request[0]?.object?.attendanceRequestId)
 
   const handleAccept = () => {
     if (request[0]?.object?.topic === 'ATTENDANCE_REQUEST') {
@@ -133,13 +134,12 @@ const TicketDetail = () => {
     } else if (request[0]?.object?.topic === 'LEAVE_REQUEST') {
       requestApi.acceptLeaveRequest(request[0]?.object?.leaveRequestId);
     } else if (request[0]?.object?.topic === 'OVERTIME_REQUEST') {
-       requestApi.acceptOtRequest(request[0]?.object?.overtimeRequestId);
+      console.log('aaaaaaaaaaa')
+      requestApi.acceptOtRequest('9484e69c-6789-4e2a-99e7-4116eb5198ba');
     } else if (request[0]?.object?.topic === 'LATE_REQUEST') {
       requestApi.acceptLateRequest(request[0]?.object?.lateRequestId);
     }
   }
-
-  console.log(request[0]);
 
   useEffect(() => {
     scrollbarsRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -451,7 +451,6 @@ const TicketDetail = () => {
                 }
               />
             </ListItem>
-            <Divider component="li" />
             <ListItem alignItems="flex-start">
               <ListItemText
                 secondary={
@@ -487,7 +486,6 @@ const TicketDetail = () => {
                 }
               />
             </ListItem>
-            <Divider component="li" />
             <ListItem alignItems="flex-start">
               <ListItemText
                 secondary={
@@ -504,7 +502,6 @@ const TicketDetail = () => {
                 }
               />
             </ListItem>
-            <Divider component="li" />
             <ListItem alignItems="flex-start">
               <ListItemText
                 secondary={

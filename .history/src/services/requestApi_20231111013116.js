@@ -137,7 +137,7 @@ const requestApi = {
   },
   acceptOtRequest: async (data) => {
     let data1 = {
-      overTimeRequestId: data
+      overtimeRequestId: data
     }
     try {
       await axiosClient.post(`${BASE_URL}/acceptOvertimeRequest`, data1)
