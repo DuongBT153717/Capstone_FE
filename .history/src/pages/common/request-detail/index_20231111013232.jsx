@@ -111,11 +111,6 @@ const TicketDetail = () => {
         console.log(res)
         setRequest(res)
       }
-      else if (requestId.startsWith('LT')) {
-        const res = await requestApi.getDetailLateMessageById(requestId)
-        console.log(res)
-        setRequest(res)
-      }
     }
     getMessageDetail()
   }, [])
@@ -131,6 +126,7 @@ const TicketDetail = () => {
     }
   }, [request[0]?.requestMessageResponse?.senderId])
 
+  console.log('>>>' + request[0]?.object?.attendanceRequestId)
 
   const handleAccept = () => {
     if (request[0]?.object?.topic === 'ATTENDANCE_REQUEST') {
@@ -140,7 +136,7 @@ const TicketDetail = () => {
     } else if (request[0]?.object?.topic === 'OVERTIME_REQUEST') {
        requestApi.acceptOtRequest(request[0]?.object?.overtimeRequestId);
     } else if (request[0]?.object?.topic === 'LATE_REQUEST') {
-      requestApi.acceptLateRequest(request[0]?.object?.lateMessageRequestId);
+      requestApi.acceptLateRequest(request[0]?.object?.lateRequestId);
     }
   }
 
@@ -177,7 +173,7 @@ const TicketDetail = () => {
       }
     } else if (request[0]?.object?.topic === 'OVERTIME_REQUEST') {
       let data = {
-        overTimeRequestId: request[0]?.object?.overTimeRequestId,
+        overtimeRequestId: request[0]?.object?.overtimeRequestId,
         content: contentReason,
       };
       console.log(data);
@@ -536,50 +532,7 @@ const TicketDetail = () => {
           </List>
         </>
       )
-              }
-    else if (request[0]?.object?.topic === 'LATE_REQUEST') {
-      return (
-        <>
-          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            <ListItem alignItems="flex-start">
-              <ListItemText
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: 'inline' }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary">
-                      Title : {request[0]?.requestMessageResponse?.title}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <Divider component="li" />
-            <ListItem alignItems="flex-start">
-              <ListItemText
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: 'inline' }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary">
-                      Department :{' '}
-                      {request[0]?.requestMessageResponse?.receiverDepartment?.departmentName}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <Divider component="li" />
-          </List>
-        </>
-      )
-
     }
-    
   }
 
   console.log(request[0]?.requestMessageResponse?.requestTicketStatus)

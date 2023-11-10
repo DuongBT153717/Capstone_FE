@@ -85,18 +85,6 @@ const requestApi = {
       console.log(error)
     }
   },
-  getDetailLateMessageById: (data) => {
-    try {
-      const response = axiosClient.get(`${BASE_URL}/getLateRequestMessage/`, {
-        params: {
-          request_id: data
-        }
-      })
-      return response
-    } catch (error) {
-      console.log(error);
-    }
-  },
   getDetailOtherMessageById: (data) => {
     try {
       const response = axiosClient.get(`${BASE_URL}/getOtherMessage/`, {
@@ -158,10 +146,9 @@ const requestApi = {
       console.log(error)
     }
   },
-
   acceptLateRequest: async (data) => {
     let data1 = {
-      lateMessageRequestId: data
+      lateRequestId: data
     }
     try {
       await axiosClient.post(`${BASE_URL}/acceptLateRequest`, data1)
@@ -327,19 +314,6 @@ const requestApi = {
   requestOverTimeForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/overTimeForm`, data)
-      toast.success('Send request successfully')
-    } catch (error) {
-      if (error.response.status === 400) {
-        toast.error('Date to must be after date from!')
-      }
-      if (error.response.status === 404) {
-        toast.error('User not found!')
-      }
-    }
-  },
-  requestLateForm: async (data) => {
-    try {
-      await axiosClient.post(`${BASE_URL}/lateForm`, data)
       toast.success('Send request successfully')
     } catch (error) {
       if (error.response.status === 400) {
