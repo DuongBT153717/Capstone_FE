@@ -134,14 +134,11 @@ const TicketDetail = () => {
     } else if (request[0]?.object?.topic === 'LEAVE_REQUEST') {
       requestApi.acceptLeaveRequest(request[0]?.object?.leaveRequestId);
     } else if (request[0]?.object?.topic === 'OVERTIME_REQUEST') {
-      console.log('aaaaaaaaaaa')
-      requestApi.acceptOtRequest('9484e69c-6789-4e2a-99e7-4116eb5198ba');
+      requestApi.acceptOtRequest(request[0]?.object?.overTimeRequestId);
     } else if (request[0]?.object?.topic === 'LATE_REQUEST') {
-      requestApi.acceptLateRequest(request[0]?.object?.lateRequestId);
+      requestApi.acceptLateRequest(request[0]?.object?.lateMessageRequestId);
     }
   }
-console.log(request[0].object?.overtimeRequestId)
-
   useEffect(() => {
     scrollbarsRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [])
@@ -173,7 +170,7 @@ console.log(request[0].object?.overtimeRequestId)
       }
     } else if (request[0]?.object?.topic === 'OVERTIME_REQUEST') {
       let data = {
-        overtimeRequestId: request[0]?.object?.overtimeRequestId,
+        overtimeRequestId: request[0]?.object?.overTimeRequestId,
         content: contentReason,
       };
       console.log(data);

@@ -138,16 +138,20 @@ const requestApi = {
     }
   },
   acceptOtRequest: async (data) => {
+    let data1 = {
+      overTimeRequestId: data
+    }
     try {
-      await axiosClient.post(`${BASE_URL}/acceptOvertimeRequest`, { params: { overtimeRequestId: data } })
+      await axiosClient.post(`${BASE_URL}/acceptOvertimeRequest`, data1)
       toast.success('Accept request success')
     } catch (error) {
       console.log(error);
     }
   },
+
   acceptLateRequest: async (data) => {
     let data1 = {
-      lateRequestId: data
+      lateMessageRequestId: data
     }
     try {
       await axiosClient.post(`${BASE_URL}/acceptLateRequest`, data1)
