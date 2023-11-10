@@ -138,7 +138,7 @@ const TicketDetail = () => {
     } else if (request[0]?.object?.topic === 'LEAVE_REQUEST') {
       requestApi.acceptLeaveRequest(request[0]?.object?.leaveRequestId);
     } else if (request[0]?.object?.topic === 'OVERTIME_REQUEST') {
-       requestApi.acceptOtRequest(request[0]?.object?.overtimeRequestId);
+      requestApi.acceptOtRequest(request[0]?.object?.overtimeRequestId);
     } else if (request[0]?.object?.topic === 'LATE_REQUEST') {
       requestApi.acceptLateRequest(request[0]?.object?.lateRequestId);
     }
@@ -519,14 +519,14 @@ const TicketDetail = () => {
                       component="span"
                       variant="body2"
                       color="text.primary">
-                      From : {request[0]?.object?.fromTime +" "} 
+                      From : {request[0]?.object?.fromTime + " "}
                     </Typography>
                     <Typography
                       sx={{ display: 'inline' }}
                       component="span"
                       variant="body2"
                       color="text.primary">
-                       - To : {request[0]?.object?.toTime}
+                      - To : {request[0]?.object?.toTime}
                     </Typography>
                   </React.Fragment>
                 }
@@ -536,7 +536,7 @@ const TicketDetail = () => {
           </List>
         </>
       )
-              }
+    }
     else if (request[0]?.object?.topic === 'LATE_REQUEST') {
       return (
         <>
@@ -573,13 +573,49 @@ const TicketDetail = () => {
                 }
               />
             </ListItem>
+
             <Divider component="li" />
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      Type:{' '}
+                      {request[0]?.object?.lateType === 'EARLY_AFTERNOON'
+                        ? 'LEAVE EARLY AFTERNOON'
+                        : 'LATE MORNING'}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Duration :{' '}
+                      {request[0]?.object?.lateDuration}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
           </List>
         </>
       )
 
     }
-    
+
   }
 
   console.log(request[0]?.requestMessageResponse?.requestTicketStatus)
