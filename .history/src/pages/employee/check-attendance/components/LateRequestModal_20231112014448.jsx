@@ -97,29 +97,24 @@ const LateRequestModal = ({ openLateRequest, handleCloseLateRequest, dailyLogMod
                   placeholder="Enter the request title"
                 />
                 {formik.touched.title && formik.errors.title && (
-                  <Typography sx={{ color: 'red' }} className="error-message">
-                    {formik.errors.title}
-                  </Typography>
+                  <Typography sx={{color: 'red'}} className="error-message">{formik.errors.title}</Typography>
                 )}
               </Grid>
               <Grid item xs={12}>
                 Type
                 <Select
-                  onChange={(e) => {
-                    formik.handleChange(e)
-                  }}
+                    onChange={(e) => {
+                        formik.handleChange(e);
+                      }}
                   onBlur={formik.handleBlur}
                   value={formik.values.lateType}
                   sx={{ width: '100%' }}
-                  name="lateType"
                   displayEmpty>
                   <MenuItem value="LATE_MORNING">MORNING</MenuItem>
                   <MenuItem value="LATE_AFTERNOON">AFTERNOON</MenuItem>
                 </Select>
                 {formik.touched.lateType && formik.errors.lateType && (
-                  <Typography sx={{ color: 'red' }} className="error-message">
-                    {formik.errors.lateType}
-                  </Typography>
+                  <Typography sx={{color: 'red'}} className="error-message">{formik.errors.lateType}</Typography>
                 )}
               </Grid>
               <Grid item xs={4} mb={2}>

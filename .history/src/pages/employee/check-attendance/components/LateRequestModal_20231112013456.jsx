@@ -22,10 +22,15 @@ const style = {
 }
 
 const LateRequestModal = ({ openLateRequest, handleCloseLateRequest, dailyLogModal }) => {
+
   const [content, setContent] = useState('')
+  const [lateType, setLateType] = useState('')
   const [lateDuration, setLateDuration] = useState('')
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
+  const handleChange = (event) => {
+    setLateType(event.target.value)
+  }
 
   let inputDateString = dailyLogModal?.dateDaily
 
@@ -36,7 +41,7 @@ const LateRequestModal = ({ openLateRequest, handleCloseLateRequest, dailyLogMod
   let day = inputDate.getDate().toString().padStart(2, '0')
 
   let outputDateString = `${year}-${month}-${day}`
-
+  const [date, setDate] = useState(outputDateString)
   console.log(outputDateString)
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
@@ -59,13 +64,13 @@ const LateRequestModal = ({ openLateRequest, handleCloseLateRequest, dailyLogMod
         userId: userId,
         title: values.title,
         content: content,
-        lateType: values.lateType,
+        lateType: lateType,
         lateDuration: lateDuration,
         requestDate: outputDateString,
         departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
         receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
       }
-      console.log(data)
+      console.log(data);
       requestApi.requestLateForm(data)
       handleCloseLateRequest()
     }
@@ -97,30 +102,19 @@ const LateRequestModal = ({ openLateRequest, handleCloseLateRequest, dailyLogMod
                   placeholder="Enter the request title"
                 />
                 {formik.touched.title && formik.errors.title && (
-                  <Typography sx={{ color: 'red' }} className="error-message">
-                    {formik.errors.title}
-                  </Typography>
+                  <div className="error-message">{formik.errors.title}</div>
                 )}
               </Grid>
               <Grid item xs={12}>
                 Type
                 <Select
-                  onChange={(e) => {
-                    formik.handleChange(e)
-                  }}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.lateType}
+                  value={lateType}
                   sx={{ width: '100%' }}
-                  name="lateType"
+                  onChange={handleChange}
                   displayEmpty>
                   <MenuItem value="LATE_MORNING">MORNING</MenuItem>
                   <MenuItem value="LATE_AFTERNOON">AFTERNOON</MenuItem>
                 </Select>
-                {formik.touched.lateType && formik.errors.lateType && (
-                  <Typography sx={{ color: 'red' }} className="error-message">
-                    {formik.errors.lateType}
-                  </Typography>
-                )}
               </Grid>
               <Grid item xs={4} mb={2}>
                 <Typography fontWeight="500">Date</Typography>
@@ -128,6 +122,7 @@ const LateRequestModal = ({ openLateRequest, handleCloseLateRequest, dailyLogMod
                   <DatePicker
                     disabled
                     value={outputDateString}
+                    onChange={(e) => setDate(e)}
                     renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
                   />
                 </LocalizationProvider>

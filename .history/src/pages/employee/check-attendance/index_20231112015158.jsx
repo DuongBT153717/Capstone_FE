@@ -272,7 +272,7 @@ export default function CheckAttendance() {
               alignItems="center"
               borderRadius="4px"
               width="100%">
-              <Button variant="contained" onClick={() => navigate(`/attendance-detail/${params.row.dailyId}`)}>Detail</Button>
+              <Button variant="contained" onClick={() => navigate(`/attendance-detail/${params.row.dailyLogId}`)}>Detail</Button>
               {params.row.lateCheckin === true && (
                 <Button variant="contained" onClick={() => handleOpenLateRequest(params.row)}>
                   Late Request

@@ -1,13 +1,12 @@
 import axiosClient from '../utils/axios-config'
 import { BASE_URL } from './constraint'
 const attendanceApi = {
-    getAttendanceUser: (userId, month, year) => {
+    getAttendanceUser: (userId, month) => {
     try {
       const response = axiosClient.get(`${BASE_URL}/getAttendanceUser`,{
         params: {
             user_id: userId,
-            month: month,
-            year: year
+            month: month
         }
       })
       return response

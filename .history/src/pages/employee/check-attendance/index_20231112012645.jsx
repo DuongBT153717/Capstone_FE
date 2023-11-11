@@ -8,8 +8,6 @@ import { useSelector } from 'react-redux'
 import attendanceApi from '../../../services/attendanceApi'
 import DataTableCheckAttendance from './components/DataTable'
 import LateRequestModal from './components/LateRequestModal'
-import { formatDateNotTime } from '../../../utils/formatDate'
-import { useNavigate } from 'react-router-dom'
 
 export default function CheckAttendance() {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
@@ -21,16 +19,15 @@ export default function CheckAttendance() {
   const [openLateRequest, setOpenLateRequest] = useState(false)
   const [dailyLogModal, setDailyLogModal] = useState({})
   const [createdDate, setCreatedDate] = useState({})
-  const navigate = useNavigate()
   useEffect(() => {
     const fetchAllUserAttendance = async () => {
       setIsLoading(true)
       try {
         const response = await attendanceApi.getAttendanceUser(
           currentUser?.accountId,
-          format(month, 'MM'),
-          format(month, 'yyyy'),
+          format(month, 'MM')
         )
+        console.log(response)
         setUserAttendance(response)
         setDailyLog(response?.dailyLogList)
       } catch (error) {
@@ -49,6 +46,7 @@ export default function CheckAttendance() {
         const response = await attendanceApi.getCreatedDate(
           currentUser?.accountId
         )
+        console.log(response)
         setCreatedDate(response)
       } catch (error) {
         console.error('Error fetching user attendance:', error)
@@ -56,9 +54,7 @@ export default function CheckAttendance() {
     }
 
     fetchGetCreatedDate()
-  }, [])
-
-  console.log(formatDateNotTime(createdDate?.createdDate));
+  }, [month])
 
   const handleOpenLateRequest = (params) => {
     setOpenLateRequest(true)
@@ -66,7 +62,7 @@ export default function CheckAttendance() {
   }
 
   const handleCloseLateRequest = () => setOpenLateRequest(false)
-  console.log(dailyLog);
+  console.log(openLateRequest);
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -79,7 +75,6 @@ export default function CheckAttendance() {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 maxDate={new Date()}
-                minDate={formatDateNotTime(createdDate?.createdDate)}
                 value={month}
                 views={['month', 'year']}
                 onChange={(newDate) => setMonth(newDate.toDate())}
@@ -272,7 +267,7 @@ export default function CheckAttendance() {
               alignItems="center"
               borderRadius="4px"
               width="100%">
-              <Button variant="contained" onClick={() => navigate(`/attendance-detail/${params.row.dailyId}`)}>Detail</Button>
+              <Button variant="contained">Detail</Button>
               {params.row.lateCheckin === true && (
                 <Button variant="contained" onClick={() => handleOpenLateRequest(params.row)}>
                   Late Request

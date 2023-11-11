@@ -31,6 +31,7 @@ export default function CheckAttendance() {
           format(month, 'MM'),
           format(month, 'yyyy'),
         )
+        console.log(response)
         setUserAttendance(response)
         setDailyLog(response?.dailyLogList)
       } catch (error) {
@@ -49,6 +50,7 @@ export default function CheckAttendance() {
         const response = await attendanceApi.getCreatedDate(
           currentUser?.accountId
         )
+        console.log(response)
         setCreatedDate(response)
       } catch (error) {
         console.error('Error fetching user attendance:', error)
@@ -66,7 +68,7 @@ export default function CheckAttendance() {
   }
 
   const handleCloseLateRequest = () => setOpenLateRequest(false)
-  console.log(dailyLog);
+  console.log(openLateRequest);
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -272,7 +274,7 @@ export default function CheckAttendance() {
               alignItems="center"
               borderRadius="4px"
               width="100%">
-              <Button variant="contained" onClick={() => navigate(`/attendance-detail/${params.row.dailyId}`)}>Detail</Button>
+              <Button variant="contained">Detail</Button>
               {params.row.lateCheckin === true && (
                 <Button variant="contained" onClick={() => handleOpenLateRequest(params.row)}>
                   Late Request
