@@ -51,7 +51,8 @@ export const EMPLOYEE_PATH = {
     NOTIFCAITON_RECEIVE_LIST_EMPLOYEE: 'notification-receive-emp',
     NOTIFICATION_SEND_LIST_EMPLOYEE: 'notification-send-emp',
     NOTIFICATION_SCHEDULED_LIST_EMPLOYEE: 'notification-schedule-emp',
-    NOTIFICATION_SCHEDULED_DEPARTMENT_EMPLOYEE: '/notification-department-employee'
+    NOTIFICATION_SCHEDULED_DEPARTMENT_EMPLOYEE: '/notification-department-employee',
+    ATTENDANCE_EVALUATE_REPORT: 'attendence-evaluate-report-emp',
 }
 
 export const HR_PATH = {

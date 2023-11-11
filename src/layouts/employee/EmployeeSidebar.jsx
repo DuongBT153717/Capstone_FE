@@ -9,6 +9,7 @@ import { Menu, MenuItem, Sidebar, useProSidebar } from 'react-pro-sidebar'
 import { Link } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
+import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 const EmployeeSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => {
@@ -17,6 +18,7 @@ const EmployeeSidebar = () => {
         ? 0 : window.location.pathname === '/request-list-employee'
         ? 1 : window.location.pathname === '/notification-list-emp'
         ? 2 : window.location.pathname === '/notification-receive-emp'
+        ? 3 : window.location.pathname === '/attendence-evaluate-report-emp'
          0
     return initialIndex
   })
@@ -170,6 +172,13 @@ const EmployeeSidebar = () => {
               component={<Link to="/notification-receive-emp" onClick={() => setActiveIndex(2)} />}>
               {' '}
               Notifications
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 3}
+              icon={<HistoryEduIcon />}
+              component={<Link to="/attendence-evaluate-report-emp" onClick={() => setActiveIndex(3)} />}>
+              {' '}
+              Evaluate report
             </MenuItem>
             {/* </SubMenu>
            */}

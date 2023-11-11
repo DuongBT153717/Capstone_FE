@@ -55,6 +55,7 @@ import ListAllNotificationSendManager from '../pages/manager/manager-notificatio
 import RequestListManager from '../pages/manager/request-list'
 import RequestManagerList from '../pages/manager/request-manager-list'
 import BookListDetailManager from '../pages/manager/request-manager-list/components/BookRoomDetail'
+import EvaluateReport from '../pages/employee/attendance-evaluate-report'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -393,6 +394,15 @@ export default function Router() {
                 </Suspense>
               )
             },
+            {
+              path: EMPLOYEE_PATH.ATTENDANCE_EVALUATE_REPORT,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <EvaluateReport />
+                </Suspense>
+              )
+            },
+
           ]
         }
       ]
