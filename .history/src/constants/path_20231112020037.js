@@ -52,7 +52,7 @@ export const EMPLOYEE_PATH = {
     NOTIFICATION_SEND_LIST_EMPLOYEE: 'notification-send-emp',
     NOTIFICATION_SCHEDULED_LIST_EMPLOYEE: 'notification-schedule-emp',
     NOTIFICATION_SCHEDULED_DEPARTMENT_EMPLOYEE: '/notification-department-employee',
-    ATTENDANCE_DETAIL: 'attendance-detail/:dailyLogId/:date'
+    ATTENDANCE_DETAIL: 'attendance-detail/:dailyLogId'
 }
 
 export const HR_PATH = {

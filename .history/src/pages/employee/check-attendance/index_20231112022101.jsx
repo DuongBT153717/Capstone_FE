@@ -255,7 +255,7 @@ export default function CheckAttendance() {
       sortable: false,
       filterable: false,
       renderCell: (params) => {
-        let inputDateString = params.row?.dateDaily
+        let inputDateString = params.rows?.dateDaily
 
         let inputDate = new Date(inputDateString)
 
@@ -265,7 +265,7 @@ export default function CheckAttendance() {
 
         let outputDateString = `${year}-${month}-${day}`
 
-        console.log(params.row);
+        console.log(outputDateString);
         return (
           <Box
             gap={2}

@@ -10,7 +10,7 @@ import DataTableCheckAttendance from './components/DataTable'
 import LateRequestModal from './components/LateRequestModal'
 import { formatDateNotTime } from '../../../utils/formatDate'
 import { useNavigate } from 'react-router-dom'
-
+import { format } from 'date-fns'
 export default function CheckAttendance() {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
 
@@ -29,7 +29,7 @@ export default function CheckAttendance() {
         const response = await attendanceApi.getAttendanceUser(
           currentUser?.accountId,
           format(month, 'MM'),
-          format(month, 'yyyy')
+          format(month, 'yyyy'),
         )
         setUserAttendance(response)
         setDailyLog(response?.dailyLogList)
@@ -46,7 +46,9 @@ export default function CheckAttendance() {
   useEffect(() => {
     const fetchGetCreatedDate = async () => {
       try {
-        const response = await attendanceApi.getCreatedDate(currentUser?.accountId)
+        const response = await attendanceApi.getCreatedDate(
+          currentUser?.accountId
+        )
         setCreatedDate(response)
       } catch (error) {
         console.error('Error fetching user attendance:', error)
@@ -56,15 +58,15 @@ export default function CheckAttendance() {
     fetchGetCreatedDate()
   }, [])
 
-  console.log(formatDateNotTime(createdDate?.createdDate))
+  console.log(formatDateNotTime(createdDate?.createdDate));
 
   const handleOpenLateRequest = (params) => {
     setOpenLateRequest(true)
-    setDailyLogModal(params)
+    setDailyLogModal(params);
   }
 
   const handleCloseLateRequest = () => setOpenLateRequest(false)
-  console.log(dailyLog)
+  console.log(dailyLog);
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -255,17 +257,6 @@ export default function CheckAttendance() {
       sortable: false,
       filterable: false,
       renderCell: (params) => {
-        let inputDateString = params.row?.dateDaily
-
-        let inputDate = new Date(inputDateString)
-
-        let year = inputDate.getFullYear()
-        let month = (inputDate.getMonth() + 1).toString().padStart(2, '0')
-        let day = inputDate.getDate().toString().padStart(2, '0')
-
-        let outputDateString = `${year}-${month}-${day}`
-
-        console.log(params.row);
         return (
           <Box
             gap={2}
@@ -281,11 +272,7 @@ export default function CheckAttendance() {
               alignItems="center"
               borderRadius="4px"
               width="100%">
-              <Button
-                variant="contained"
-                onClick={() => navigate(`/attendance-detail/${params.row.dailyId}/${outputDateString}`)}>
-                Detail
-              </Button>
+              <Button variant="contained" onClick={() => navigate(`/attendance-detail/${params.row.dailyId}`)}>Detail</Button>
               {params.row.lateCheckin === true && (
                 <Button variant="contained" onClick={() => handleOpenLateRequest(params.row)}>
                   Late Request
@@ -305,7 +292,7 @@ export default function CheckAttendance() {
         CustomToolbar={CustomToolbar}
         isLoading={isLoading}
       />
-      <LateRequestModal
+      <LateRequestModal 
         handleCloseLateRequest={handleCloseLateRequest}
         openLateRequest={openLateRequest}
         dailyLogModal={dailyLogModal}

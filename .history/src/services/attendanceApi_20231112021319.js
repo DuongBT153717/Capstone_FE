@@ -29,12 +29,13 @@ const attendanceApi = {
     }
   },
 
-  getAttendanceUserDetail: (userId, date) => {
+  getAttendanceUserDetail: (userId, month, year) => {
     try {
-      const response = axiosClient.get(`${BASE_URL}/getAttendanceUserDetail`,{
+      const response = axiosClient.get(`${BASE_URL}/getAttendanceUser`,{
         params: {
             user_id: userId,
-            date: date
+            month: month,
+            year: year
         }
       })
       return response

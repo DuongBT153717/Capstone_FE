@@ -28,7 +28,6 @@ import CreateTicketExistRequest from '../pages/common/create-request-exist'
 import EditNotification from '../pages/common/edit-notification'
 import NotificationsList from '../pages/common/list-all-notification'
 import Profile from '../pages/common/profile'
-
 import CheckAttendance from '../pages/employee/check-attendance'
 import ListNotificationDarfEmp from '../pages/employee/employee-notification-draft'
 import ListAllNotificationEmp from '../pages/employee/employee-notification-list-all'
@@ -56,7 +55,7 @@ import ListAllNotificationSendManager from '../pages/manager/manager-notificatio
 import RequestListManager from '../pages/manager/request-list'
 import RequestManagerList from '../pages/manager/request-manager-list'
 import BookListDetailManager from '../pages/manager/request-manager-list/components/BookRoomDetail'
-import AttendanceDetail from '../pages/common/attendance-detail'
+import AttendanceDetail from '../pages/employee/attendance-detail'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -95,6 +94,10 @@ export default function Router() {
     {
       path: PUBLIC_PATH.CREATE_REQUEST_EXISTED,
       element: <CreateTicketExistRequest />
+    },
+    {
+      path: PUBLIC_PATH.ATTENDANCE_DETAIL,
+      element: <AttendanceDetail />
     },
     {
       path: PUBLIC_PATH.REQUEST_DETAIL,
