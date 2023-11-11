@@ -15,7 +15,18 @@ const requestApi = {
       console.log(error);
     }
   },
-  
+  getAllNotibyUserId: (data) => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getNotificationByUserId`, {
+        params: {
+          userId: data
+        }
+      })
+      return response
+    } catch (error) {
+      console.log(error);
+    }
+  },
 
   getAllRequestAndTicketByHr: () => {
     try {
@@ -114,7 +125,17 @@ const requestApi = {
     console.log(error);
     }
   },
-
+  acceptAttendanceRequest: async (data) => {
+    let data1 ={
+      attendanceRequestId : data
+    }
+    try {
+       await axiosClient.post(`${BASE_URL}/acceptAttendanceRequest`, data1)
+      toast.success('Accept request success')
+    } catch (error) {
+    console.log(error);
+    }
+  },
   acceptRequest: async (data) => {
     try {
        await axiosClient.post(`${BASE_URL}/changeReceiveId`, data)
@@ -163,6 +184,19 @@ const requestApi = {
       }
     }
   },
+  getAllManagerDepartment: () => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getManagerDepartment`)
+      return response
+    } catch (error) {
+      if (error.response.status === 400) {
+        toast.error('Request fail!')
+      }
+      if (error.response.status === 404) {
+        toast.error('User not found!')
+      }
+    }
+  },
   requestAttendanceForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/requestAttendanceForm`, data)
@@ -182,7 +216,7 @@ const requestApi = {
       toast.success('Send request successfully')
     } catch (error) {
       if (error.response.status === 400) {
-        toast.error('Request fail!')
+        toast.error('Date to must be after date from!')
       }
       if (error.response.status === 404) {
         toast.error('User not found!')
@@ -208,7 +242,7 @@ const requestApi = {
       toast.success('Send request successfully')
     } catch (error) {
       if (error.response.status === 400) {
-        toast.error('Request fail!')
+        toast.error('Date to must be after date from!')
       }
       if (error.response.status === 404) {
         toast.error('User not found!')
@@ -221,7 +255,7 @@ const requestApi = {
       toast.success('Send request successfully')
     } catch (error) {
       if (error.response.status === 400) {
-        toast.error('Request fail!')
+        toast.error('Date to must be after date from!')
       }
       if (error.response.status === 404) {
         toast.error('User not found!')
@@ -272,7 +306,7 @@ const requestApi = {
   },
   getAllBookRooms: () => {
     try {
-      const response = axiosClient.get(`${BASE_URL}/getBookedRoom`)
+      const response = axiosClient.get(`${BASE_URL}/getPendingAndAcceptedRoom`)
       return response
     } catch (error) {
       console.log(error);
@@ -284,7 +318,7 @@ const requestApi = {
       toast.success('Send request successfully')
     } catch (error) {
       if (error.response.status === 400) {
-        toast.error('Date to must be after date from')
+        toast.error("You can't book room before current time")
       }
       if (error.response.status === 404) {
         toast.error('User not found!')

@@ -3,8 +3,16 @@ import AccountPopover from './AccountPopover'
 import NotificationsPopover from './NotificationsPopover'
 import SearchIcon from '@mui/icons-material/Search'
 import ChatIcon from '@mui/icons-material/Chat'
+import userApi from '../services/userApi'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react';
 
 const Topbar = () => {
+  const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    userApi.getUserInfo(userId, dispatch)
+  }, [])
   return (
     <Box
       display="flex"
@@ -26,6 +34,7 @@ const Topbar = () => {
             startAdornment: (
               <InputAdornment position="start">
                 <SearchIcon sx={{ color: '#000' }} />
+                {userId.role}
               </InputAdornment>
             )
           }}
@@ -39,6 +48,11 @@ const Topbar = () => {
           </IconButton>
         </Link>
         <AccountPopover />
+        {userId && userId.role && (
+          <div>
+            User Role: 
+          </div>
+          )}
       </Box>
     </Box>
   )

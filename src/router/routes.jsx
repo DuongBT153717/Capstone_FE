@@ -23,12 +23,46 @@ import ManageProfile from '../pages/hr/manage-profile'
 import RequestListHr from '../pages/hr/request-list'
 import RequestListManager from '../pages/manager/request-list'
 import RequestManagerList from '../pages/manager/request-manager-list'
-import BookListDetail from '../pages/admin/manage-ticket-list/components/BookRoomDetail'
 import CheckHrList from '../pages/hr/check-hr-ticket'
+import BookRoom from '../components/BookRoom'
+import BookRoomManager from '../pages/manager/book-room-manager'
+import BookRoomHr from '../pages/hr/book-room-hr'
+import BookListDetailManager from '../pages/manager/request-manager-list/components/BookRoomDetail'
+import CheckBookRoom from '../pages/admin/check-book-room'
+import NotificationsList from '../pages/common/list-all-notification'
+import NotificationsHrList from '../pages/hr/hr-notification-list'
+import CreateNotification from '../pages/common/create-notification'
+import EditNotification from '../pages/common/edit-notification'
+import NotificationUploadReceiveHR from '../pages/hr/hr-notification-upload-receive'
+import NotificationUploadSentHR from '../pages/hr/hr-notification-upload-sent'
+import NotificationDraftListHr from '../pages/hr/hr-notification-draft-list'
+import NotificationScheduleList from '../pages/common/notification-scheduled'
+import NotificationScheduleListHr from '../pages/hr/hr-notification-scheduled-list'
+import ListAllNotificationEmp from '../pages/employee/employee-notification-list-all'
+import ListNotificationDarfEmp from '../pages/employee/employee-notification-draft'
+import ListNoitificationRecive from '../pages/employee/employee-notification-recive'
+import ListNotificationSend from '../pages/employee/employee-notification-send'
+import ListNOtificationSchedulePersonal from '../pages/employee/employee-notification-schedule'
+import ListAllNotificationAdmin from '../pages/admin/admin-notification-list-all'
+import ListNotificationDraftAdmin from '../pages/admin/admin-notification-draft'
+import ListNotificationSendAdmin from '../pages/admin/admin-notification-send'
+import ListNotificationReceiveAdmin from '../pages/admin/admin-notification-receive'
+import ListNotificationScheduleAdmin from '../pages/admin/admin-notification-scheduled'
+import ListAllNotificationManager from '../pages/manager/manager-notification-list-all'
+import ListAllNotificationDraftAdmin from '../pages/manager/manager-notification-draft'
+import ListAllNotificationDraftManager from '../pages/manager/manager-notification-draft'
+import ListAllNotificationReceiveManager from '../pages/manager/manager-notification-receive'
+import ListAllNotificationSendManager from '../pages/manager/manager-notification-send'
+import ListAllNotificationScheduleManager from '../pages/manager/manager-notification-schedule'
+import ListNotificationDepartmentHR from '../pages/hr/hr-notification-deparment'
+import ListNotifcationDeparmentManager from '../pages/manager/manager-notification-deparment'
+import ListNotficationDepartmentAdmin from '../pages/admin/admin-notification-department'
+import AttendanceDetail from '../pages/common/attendance-detail'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
+const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
 const RequestListAdmin = lazy(() => import('../pages/admin/request-list'))
-const BookRoom = lazy(() => import('../pages/common/book-room'))
+const BookListDetail = lazy(() => import('../pages/admin/manage-ticket-list/components/BookRoomDetail'))
 export default function Router() {
   let router = useRoutes([
     {
@@ -64,10 +98,22 @@ export default function Router() {
       element: <CreateTicketExistRequest />
     },
     {
+      path: PUBLIC_PATH.ATTENDANCE_DETAIL,
+      element: <AttendanceDetail />
+    },
+    {
       path: PUBLIC_PATH.REQUEST_DETAIL,
       element: (
         <Suspense fallback={<>Loading...</>}>
           <TicketDetail />
+        </Suspense>
+      )
+    },
+    {
+      path: PUBLIC_PATH.NOTIFICATION_LIST,
+      element: (
+        <Suspense fallback={<>Loading...</>} >
+          <NotificationsList />
         </Suspense>
       )
     },
@@ -92,11 +138,71 @@ export default function Router() {
               )
             },
             {
-              index: true,
               path: ADMIN_PATH.MANAGE_LIST_TICKET_ADMIN,
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <ManageTicketListAdmin />
+                </Suspense>
+              )
+            },
+            {
+              path: ADMIN_PATH.CHECK_BOOK_ROOM,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <CheckBookRoom />
+                </Suspense>
+              )
+            }
+            ,
+            {
+              path: ADMIN_PATH.NOTIFICATION_LIST_ADMIN,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationAdmin />
+                </Suspense>
+              )
+            }
+            ,
+            {
+              path: ADMIN_PATH.NOTIFICATION_DRAFT_ADMIN,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationDraftAdmin />
+                </Suspense>
+              )
+            }
+            ,
+            {
+              path: ADMIN_PATH.NOTIFICATION_SEND_ADMIN,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationSendAdmin />
+                </Suspense>
+              )
+            }
+            ,
+            {
+              path: ADMIN_PATH.NOTIFICATION_RECEIVE_ADMIN,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationReceiveAdmin />
+                </Suspense>
+              )
+            }
+            ,
+            {
+              path: ADMIN_PATH.NOTIFICATION_SCHEDULED_ADMIN,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationScheduleAdmin />
+                </Suspense>
+              )
+            },
+            {
+              path: ADMIN_PATH.NOTIFICATION_SCHEDULED_DEPARTMENT_ADMIN,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotficationDepartmentAdmin />
                 </Suspense>
               )
             }
@@ -113,6 +219,20 @@ export default function Router() {
           element: (
             <Suspense fallback={<>Loading...</>}>
               <BookListDetail />
+            </Suspense>
+          )
+        }
+      ]
+    },
+    {
+      path: '/',
+      element: <RequireAuth allowedRoles={ROLES.MANAGER} />,
+      children: [
+        {
+          path: MANAGER_PATH.BOOK_ROOM_DETAIL_MANAGER,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <BookListDetailManager />
             </Suspense>
           )
         }
@@ -149,7 +269,7 @@ export default function Router() {
                   <RequestListHr />
                 </Suspense>
               )
-            },{
+            }, {
               path: HR_PATH.REQUEST_HR_LIST,
               element: (
                 <Suspense fallback={<>Loading...</>}>
@@ -158,10 +278,58 @@ export default function Router() {
               )
             },
             {
-              path: PUBLIC_PATH.BOOK_ROOM,
+              path: HR_PATH.NOTIFICATION_LIST_HR,
               element: (
                 <Suspense fallback={<>Loading...</>}>
-                  <BookRoom />
+                  <NotificationsHrList />
+                </Suspense>
+              )
+            },
+            {
+              path: HR_PATH.NOTIFICATION_UPLOAD_RECEIVE_HR,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <NotificationUploadReceiveHR />
+                </Suspense>
+              )
+            },
+            {
+              path: HR_PATH.NOTIFICATION_UPLOAD_SENT_HR,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <NotificationUploadSentHR />
+                </Suspense>
+              )
+            },
+            {
+              path: HR_PATH.NOTIFICATION_DRAFT_LIST_HR,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <NotificationDraftListHr />
+                </Suspense>
+              )
+            },
+            {
+              path: HR_PATH.NOTIFICATION_SCHEDULED_LIST_HR,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <NotificationScheduleListHr />
+                </Suspense>
+              )
+            },
+            {
+              path: HR_PATH.NOTIFICATION_SCHEDULED_DEPARTMENT_HR,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationDepartmentHR />
+                </Suspense>
+              )
+            },
+            {
+              path: HR_PATH.BOOK_ROOM_HR,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <BookRoomHr />
                 </Suspense>
               )
             }
@@ -191,7 +359,47 @@ export default function Router() {
                   <RequestListEmployee />
                 </Suspense>
               )
-            }
+            },
+            {
+              path: EMPLOYEE_PATH.NOTIFICATION_LIST_EMPLOYEE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationEmp />
+                </Suspense>
+              )
+            },
+            {
+              path: EMPLOYEE_PATH.NOTIFICATION_DRAFT_LIST_EMPLOYEE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationDarfEmp />
+                </Suspense>
+              )
+            },
+            {
+              path: EMPLOYEE_PATH.NOTIFCAITON_RECEIVE_LIST_EMPLOYEE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNoitificationRecive />
+                </Suspense>
+              )
+            },
+            {
+              path: EMPLOYEE_PATH.NOTIFICATION_SEND_LIST_EMPLOYEE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationSend />
+                </Suspense>
+              )
+            },
+            {
+              path: EMPLOYEE_PATH.NOTIFICATION_SCHEDULED_LIST_EMPLOYEE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNOtificationSchedulePersonal />
+                </Suspense>
+              )
+            },
           ]
         }
       ]
@@ -219,17 +427,65 @@ export default function Router() {
                   <RequestManagerList />
                 </Suspense>
               )
-            }
+            },
+            {
+              path: MANAGER_PATH.NOTIFICATION_LIST_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationManager />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.NOTIFICATION_DRAFT_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationDraftManager />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.NOTIFICATION_SEND_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationSendManager />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.NOTIFICATION_RECEIVE_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationReceiveManager />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.NOTIFICATION_SCHEDULED_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationScheduleManager />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.NOTIFICATION_SCHEDULED_DEPARTMENT_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotifcationDeparmentManager />
+                </Suspense>
+              )
+            },
           ]
         },
         {
-          path: PUBLIC_PATH.BOOK_ROOM,
+          path: MANAGER_PATH.BOOK_ROOM_MANAGER,
           element: (
             <Suspense fallback={<>Loading...</>}>
-              <BookRoom />
+              <BookRoomManager />
             </Suspense>
           )
-        }
+        },
       ]
     },
     {
@@ -254,6 +510,54 @@ export default function Router() {
           path: PUBLIC_PATH.BOOK_ROOM,
           element: <BookRoom />
         }
+      ]
+    },
+    {
+      path: '/',
+      children: [
+        {
+          element: (
+            <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.SECURITY, ROLES.ADMIN, ROLES.HR]} />
+          ),
+          children: [
+            {
+              path: PUBLIC_PATH.CREATE_NOTIFICATION,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <CreateNotification />
+                </Suspense>
+              )
+            },
+            {
+              path: PUBLIC_PATH.EDIT_NOTIFICATION,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <EditNotification />
+                </Suspense>
+              )
+            },
+          ]
+        },
+      ]
+    },
+    {
+      path: '/',
+      children: [
+        {
+          element: (
+            <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.SECURITY, ROLES.ADMIN, ROLES.HR, ROLES.EMPLOYEE]} />
+          ),
+          children: [
+            {
+              path: PUBLIC_PATH.NOTIFICATION_DETAIL,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <NotificationDetail />
+                </Suspense>
+              )
+            }
+          ]
+        },
       ]
     }
   ])

@@ -22,6 +22,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import requestApi from '../../../services/requestApi'
 function Row(props) {
   const { row } = props
@@ -38,6 +39,16 @@ function Row(props) {
       location.reload()
     }, 500)
   }
+  function formatDate(date) {
+    const createDate = new Date(date);
+    const year = createDate.getFullYear().toString().slice(-2);
+    const month = String(createDate.getMonth() + 1).padStart(2, '0');
+    const day = String(createDate.getDate()).padStart(2, '0');
+    const hours = String(createDate.getHours()).padStart(2, '0');
+    const minutes = String(createDate.getMinutes()).padStart(2, '0');
+    const seconds = String(createDate.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
   return (
     <>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -53,31 +64,34 @@ function Row(props) {
           {row.topic}
         </TableCell>
         <TableCell>{row.requestTickets[row.requestTickets.length - 1].title}</TableCell>
-        <TableCell>{row.createDate}</TableCell>
-        <TableCell>{row.updateDate}</TableCell>
-        <TableCell> {row.status === false ? (
-          <Box
-            width="80%"
-            margin="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            borderRadius="4px">
-            <Typography color="#a9a9a9">CLOSE</Typography>
-          </Box>
-        ) : row.status === true ? (
-          <Box
-            width="80%"
-            margin="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            borderRadius="4px">
-            <Typography color="#000">AVALIABLE</Typography>
-          </Box>
-        ) : null}</TableCell>
+        <TableCell>{formatDate(row.createDate)}</TableCell>
+        <TableCell>{formatDate(row.updateDate)}</TableCell>
+        <TableCell>
+          {' '}
+          {row.status === false ? (
+            <Box
+              width="80%"
+              margin="0 auto"
+              p="5px"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              borderRadius="4px">
+              <Typography color="#a9a9a9">CLOSE</Typography>
+            </Box>
+          ) : row.status === true ? (
+            <Box
+              width="80%"
+              margin="0 auto"
+              p="5px"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              borderRadius="4px">
+              <Typography color="#000">AVALIABLE</Typography>
+            </Box>
+          ) : null}
+        </TableCell>
         {/* <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
           <IconButton  >
             <AddIcon />
@@ -95,10 +109,12 @@ function Row(props) {
                 <TableHead>
                   <TableRow>
                     <TableCell style={{ width: '120px' }}>Request ID</TableCell>
-                    <TableCell style={{ width: '200px' }} align="center">Status</TableCell>
+                    <TableCell style={{ width: '200px' }} align="center">
+                      Status
+                    </TableCell>
                     <TableCell style={{ width: '50px' }}>Receiver</TableCell>
-                    <TableCell style={{ width: '100px' }} >Create Date</TableCell>
-                    <TableCell style={{ width: '100px' }} >Update Date</TableCell>
+                    <TableCell style={{ width: '100px' }}>Create Date</TableCell>
+                    <TableCell style={{ width: '100px' }}>Update Date</TableCell>
                     <TableCell style={{ width: '10px' }}></TableCell>
                     <TableCell style={{ width: '10px' }}></TableCell>
                   </TableRow>
@@ -110,7 +126,7 @@ function Row(props) {
                         {request_row.requestId.slice(0, 10)}
                       </TableCell>
                       <TableCell>
-                      {request_row.requestStatus === 'PENDING' ? (
+                        {request_row.requestStatus === 'PENDING' ? (
                           <Box
                             width="80%"
                             margin="0 auto"
@@ -119,8 +135,7 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#FAFAD2'}
-                            borderRadius="4px"
-                          >
+                            borderRadius="4px">
                             <AccessTimeFilledIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
@@ -133,8 +148,7 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#2e7c67'}
-                            borderRadius="4px"
-                          >
+                            borderRadius="4px">
                             <CheckIcon />
                             <Typography color="#fff">{request_row.requestStatus}</Typography>
                           </Box>
@@ -147,8 +161,7 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#6495ED'}
-                            borderRadius="4px"
-                          >
+                            borderRadius="4px">
                             <RunningWithErrorsIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
@@ -161,27 +174,34 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#C0C0C0'}
-                            borderRadius="4px"
-                          >
+                            borderRadius="4px">
                             <CloseIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
-                        ) : null }
+                        ) : null}
                       </TableCell>
-                      <TableCell key={request_row.userId}
-                      >{request_row.receiverFirstName}</TableCell>
-                      <TableCell>{request_row.requestCreateDate}</TableCell>
-                      <TableCell>{request_row.requestUpdateDate}</TableCell>
+                      <TableCell key={request_row.userId}>
+                        {request_row.receiverFirstName}
+                      </TableCell>
+                      <TableCell>{formatDate(request_row.requestCreateDate)}</TableCell>
+                      <TableCell>{formatDate(request_row.requestUpdateDate)}</TableCell>
                       <TableCell>
+                      {row.topic === 'ROOM_REQUEST' ? (
+                          <IconButton
+                          disabled={request_row.requestStatus === 'PENDING' ? true : false}
+                            sx={{ color: '#1565c0' }}
+                            onClick={() => navigate(`/room-detail/${request_row.requestId}`)}>
+                            <AssignmentTurnedInIcon />
+                          </IconButton>
+                        ) : (
+                          <IconButton
+                            sx={{ color: '#1565c0' }}
+                            onClick={() => navigate(`/request-detail/${request_row.requestId}`)}>
+                            <RemoveRedEyeIcon />
+                          </IconButton>
+                        )}
                         <IconButton
-                          sx={{ color: '#1565c0' }}
-                          onClick={() =>
-                            navigate(`/room-detail/${request_row.requestId}`)
-                          }>
-                          <AssignmentTurnedInIcon />
-                        </IconButton>
-                        <IconButton
-                          disabled={request_row.requestStatus === 'PENDING' ? false : true}  
+                          disabled={request_row.requestStatus === 'PENDING' ? false : true}
                           onClick={() => handleAcceptRequest(request_row.requestId)}
                           sx={{ color: 'green' }}>
                           <CheckIcon />
@@ -287,7 +307,9 @@ export default function ManageTicketListAdmin() {
                 <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>
                   Update Date
                 </TableCell>
-                <TableCell align='center' style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell
+                  align="center"
+                  style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
                   Status
                 </TableCell>
                 {/* <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>

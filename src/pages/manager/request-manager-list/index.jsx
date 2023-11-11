@@ -26,10 +26,19 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
 function Row(props) {
   const { row } = props
   const [open, setOpen] = React.useState(false)
-
+  const handelAcceptOtherRequest = (ticketId) => {
+    let data = {
+      ticketId: ticketId,
+    }
+    requestApi.acceptStatutOtherRequest(data)
+    setTimeout(() => {
+      window.location.reload();
+    }, 500); 
+  }
   const navigate = useNavigate()
   return (
     <>
@@ -46,48 +55,54 @@ function Row(props) {
           {row.topic}
         </TableCell>
         <TableCell>{row.requestTickets[row.requestTickets.length - 1].title}</TableCell>
-        <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>{row.createDate}</TableCell>
-        <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>{row.updateDate}</TableCell>
-          <TableCell> {row.status === false ? (
-          <Box
-            width="85%"
-            margin="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            borderRadius="4px">
-            <Typography color="#a9a9a9">CLOSE</Typography>
-          </Box>
-        ) : row.status === true ? (
-          <Box
-            width="85%"
-            margin="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            borderRadius="4px">
-            <Typography color="#000">AVALIABLE</Typography>
-          </Box>
-        ) : null}</TableCell>
-         <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-        {row.status === true ? (
-          <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
-            <AddIcon />
-          </IconButton>
-        ): null }
+        <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>
+          {row.createDate}
+        </TableCell>
+        <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>
+          {row.updateDate}
         </TableCell>
         <TableCell>
-          { row.topic ==='OTHER_REQUEST' && row.status===true ? (
-            <Button>
+          {' '}
+          {row.status === false ? (
+            <Box
+              width="85%"
+              margin="0 auto"
+              p="5px"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              borderRadius="4px">
+              <Typography color="#a9a9a9">CLOSE</Typography>
+            </Box>
+          ) : row.status === true ? (
+            <Box
+              width="85%"
+              margin="0 auto"
+              p="5px"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              borderRadius="4px">
+              <Typography color="#000">AVALIABLE</Typography>
+            </Box>
+          ) : null}
+        </TableCell>
+        <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+          {row.status === true ? (
+            <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
+              <AddIcon />
+            </IconButton>
+          ) : null}
+        </TableCell>
+        <TableCell>
+          {row.topic === 'OTHER_REQUEST' && row.status === true ? (
+            <Button  onClick={() =>handelAcceptOtherRequest(row.ticketId)}>
               <CloseIcon />
               <Typography fontSize={'13px'} color="#000">
                 Finish
               </Typography>
             </Button>
           ) : null}
-
         </TableCell>
       </TableRow>
       <TableRow>
@@ -177,15 +192,19 @@ function Row(props) {
                       <TableCell>{request_row.requestCreateDate}</TableCell>
                       <TableCell>{request_row.requestUpdateDate}</TableCell>
                       <TableCell>
-                      {row.topic !== 'ROOM_REQUEST' && (
-                        <IconButton
-                          sx={{ color: '#1565c0' }}
-                          onClick={() =>
-                            navigate(`/request-detail/${request_row.requestId}`)
-                          }>
-                          <RemoveRedEyeIcon />
-                        </IconButton>
-                      )}
+                        {row.topic !== 'ROOM_REQUEST' ? (
+                          <IconButton
+                            sx={{ color: '#1565c0' }}
+                            onClick={() => navigate(`/request-detail/${request_row.requestId}`)}>
+                            <RemoveRedEyeIcon />
+                          </IconButton>
+                        ) : (
+                          <IconButton
+                            sx={{ color: '#1565c0' }}
+                            onClick={() => navigate(`/book-room-detail-manager/${request_row.requestId}`)}>
+                            <AssignmentTurnedInIcon />
+                          </IconButton>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -290,15 +309,16 @@ export default function RequestManagerList() {
                 <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>
                   Update Date
                 </TableCell>
-                <TableCell align='center' style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell
+                  align="center"
+                  style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
                   Status
                 </TableCell>
                 <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
                   Action
                 </TableCell>
-                <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-
-                </TableCell>
+                <TableCell
+                  style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}></TableCell>
               </TableRow>
             </TableHead>
             {isLoading ? (
