@@ -1,26 +1,61 @@
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, TextField, Typography } from '@mui/material';
+import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useState } from 'react';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { BASE_URL } from '../../../services/constraint';
+import axiosClient from '../../../utils/axios-config';
 
 const EvaluateReport = () => {
- 
-    const [selectedDate, setSelectedDate] = useState(null);
+    const currentUser = useSelector((state) => state.auth.login?.currentUser);
 
-    const handleDateChange = (date) => {
-        setSelectedDate(date);
+    const [month, setMonth] = useState(new Date());
+    const [evaluate, setEvaluate] = useState([]);
+    const setMonthYear = (newDate) => {
+        setMonth(newDate);
+
     };
+    const [minDate, setMinDate] = useState(new Date('1990'))
+    const maxDate = new Date();
+
+
+    useEffect(() => {
+        const fetchAllEvaluateAttendance = async () => {
+            let data = {
+                userId: currentUser?.accountId,
+                month: format(month, 'MM'),
+                year: format(month, 'yyyy')
+            }
+            try {
+                const response = await axiosClient.post(`${BASE_URL}/getEvaluate`, data)
+                console.log(data);
+                console.log(response);
+                if (response && response.hireDate) {
+                    setMinDate(new Date(response.hireDate));
+                }
+                setEvaluate(response)
+                return response
+            } catch (error) {
+                console.log(error);
+            }
+
+        };
+
+        fetchAllEvaluateAttendance();
+    }, [month]);
+
     return (
         <>
-            <Paper style={{ padding: '20px' }} >
+            <Paper style={{ padding: '20px' }}>
                 <Grid container spacing={6}>
                     <Grid item xs={6}>
-                        <Typography>Account</Typography>
+                        <Typography>User Name</Typography>
                         <TextField
                             sx={{ width: '100%', backgroundColor: '#f0f0f0' }}
                             InputProps={{ readOnly: true }}
-                            value="Your Account Value"
+                            value={`${evaluate.firstNameEmp} ${evaluate.lastNameEmp}`}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -28,10 +63,11 @@ const EvaluateReport = () => {
                         <TextField
                             sx={{ width: '100%', backgroundColor: '#f0f0f0' }}
                             InputProps={{ readOnly: true }}
-                            value="Your Hire Date Value"
+                            value={evaluate.hireDate ? format(new Date(evaluate.hireDate), 'yy-MM-dd HH:mm:ss') : ''}
                         />
                     </Grid>
-                    <Grid item xs={6}>
+
+                    <Grid item xs={6} sx={{ marginTop: '-20px' }}>
                         <Typography>Department</Typography>
                         <TextField
                             sx={{ width: '100%', backgroundColor: '#f0f0f0' }}
@@ -43,14 +79,16 @@ const EvaluateReport = () => {
 
                 <Grid container spacing={6}>
                     <Grid item xs={6}>
-                        <Typography fontWeight="500">Month-Year</Typography>
+                        <Typography fontWeight="500">Report By Month-Year</Typography>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                                 views={['year', 'month']}
                                 openTo="year"
-                                value={selectedDate}
-                                onChange={handleDateChange}
+                                value={month}
+                                onChange={(newDate) => setMonthYear(newDate)}
                                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
+                                maxDate={maxDate}
+                                minDate={minDate}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -60,7 +98,7 @@ const EvaluateReport = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Working day(day):</TableCell>
-                                <TableCell>Total attendence(h):</TableCell>
+                                <TableCell>Total attendance(h):</TableCell>
                                 <TableCell>Total Late(h):</TableCell>
                                 <TableCell>Total permitted leave:</TableCell>
                                 <TableCell>Total non-permitted leave:</TableCell>
@@ -70,28 +108,29 @@ const EvaluateReport = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-
-                            <TableRow >
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell>
+                            <TableRow key={evaluate.evaluateId}>
+                                <TableCell style={{ textAlign: 'center' }}>{evaluate.workingDay}</TableCell>
+                                <TableCell style={{ textAlign: 'center' }}>{evaluate.totalAttendance}</TableCell>
+                                <TableCell style={{ textAlign: 'center', color: evaluate.lateCheckin > 2 ? 'red' : evaluate.lateCheckin > 0 ? '#EC8F5E' : evaluate.lateCheckin == 0 ? 'green' : 'black' }}>
+                                    {evaluate.lateCheckin}
                                 </TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
+                                <TableCell style={{ textAlign: 'center' }}>{evaluate.permittedLeave}</TableCell>
+                                <TableCell style={{ textAlign: 'center' }}>{evaluate.nonPermittedLeave}</TableCell>
+                                <TableCell style={{ textAlign: 'center' }}>{evaluate.overTime}</TableCell>
+                                <TableCell style={{ textAlign: 'center', color: evaluate.violate > 3 ? 'red' : evaluate.violate >= 1 ? '#EC8F5E' : 'green' }}>
+                                    {evaluate.violate}
+                                </TableCell >
+                                <TableCell style={{ textAlign: 'center' }}> {evaluate.paidDay}</TableCell>
                             </TableRow>
-
                         </TableBody>
                     </Table>
-
-
                 </TableContainer>
                 <Typography style={{ fontStyle: 'italic', fontWeight: 'bold' }}>
-                    Evaluate of Manager: 
+                    Evaluate of Manager:{' '}
+                    <span style={{ color: evaluate.evaluateEnum === 'GOOD' ? 'green' : evaluate.evaluateEnum === 'BAD' ? 'red' : 'black' }}>
+                        {`${evaluate.evaluateEnum}`}
+                    </span>
                 </Typography>
-
                 <Typography>
                     Note
                 </Typography>
@@ -100,7 +139,7 @@ const EvaluateReport = () => {
                     InputProps={{ readOnly: true }}
                     multiline
                     rows={8}
-                    value="Note Data"
+                    value={`${evaluate.note}`}
                 />
             </Paper>
         </>

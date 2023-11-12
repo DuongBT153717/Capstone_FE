@@ -15,6 +15,14 @@ const attendanceApi = {
     }
   },
 
+    getEvaluate: async  (data) => {
+    try {
+      const response = await axiosClient.post(`${BASE_URL}/getEvaluate`,data)
+      return response
+    } catch (error) {
+        console.log(error);   
+    }
+  },
 }
 
 export default attendanceApi
