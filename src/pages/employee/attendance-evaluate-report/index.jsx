@@ -1,4 +1,4 @@
-import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -93,38 +93,50 @@ const EvaluateReport = () => {
                         </LocalizationProvider>
                     </Grid>
                 </Grid>
-                <TableContainer component={Paper} style={{ marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px' }}>
+                <TableContainer component={Paper} style={{ marginLeft: '20px', marginTop: '20px', marginBottom: '20px', width: '47%' }}>
                     <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Working day(day):</TableCell>
-                                <TableCell>Total attendance(h):</TableCell>
-                                <TableCell>Total Late(h):</TableCell>
-                                <TableCell>Total permitted leave:</TableCell>
-                                <TableCell>Total non-permitted leave:</TableCell>
-                                <TableCell>Overtime (h):</TableCell>
-                                <TableCell>Violate (times):</TableCell>
-                                <TableCell>Paid day(day):</TableCell>
-                            </TableRow>
-                        </TableHead>
                         <TableBody>
-                            <TableRow key={evaluate.evaluateId}>
-                                <TableCell style={{ textAlign: 'center' }}>{evaluate.workingDay}</TableCell>
+                            <TableRow>
+                                <TableCell style={{ width: '50%' }}>Working day(day):</TableCell>
+                                <TableCell style={{ textAlign: 'center', width: '50%' }}>{evaluate.workingDay}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>Total attendance(h):</TableCell>
                                 <TableCell style={{ textAlign: 'center' }}>{evaluate.totalAttendance}</TableCell>
-                                <TableCell style={{ textAlign: 'center', color: evaluate.lateCheckin > 2 ? 'red' : evaluate.lateCheckin > 0 ? '#EC8F5E' : evaluate.lateCheckin == 0 ? 'green' : 'black' }}>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell> Late(h):</TableCell>
+                                <TableCell style={{ textAlign: 'center', color: evaluate.lateCheckin > 2 ? 'red' : evaluate.lateCheckin > 0 ? '#EC8F5E' : evaluate.lateCheckin === 0 ? 'green' : 'black' }}>
                                     {evaluate.lateCheckin}
                                 </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell> Permitted leave:</TableCell>
                                 <TableCell style={{ textAlign: 'center' }}>{evaluate.permittedLeave}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell> non-permitted leave:</TableCell>
                                 <TableCell style={{ textAlign: 'center' }}>{evaluate.nonPermittedLeave}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>Overtime (h):</TableCell>
                                 <TableCell style={{ textAlign: 'center' }}>{evaluate.overTime}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>Violate (times):</TableCell>
                                 <TableCell style={{ textAlign: 'center', color: evaluate.violate > 3 ? 'red' : evaluate.violate >= 1 ? '#EC8F5E' : 'green' }}>
                                     {evaluate.violate}
-                                </TableCell >
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>Paid day(day):</TableCell>
                                 <TableCell style={{ textAlign: 'center' }}> {evaluate.paidDay}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
                 </TableContainer>
+
+
                 <Typography style={{ fontStyle: 'italic', fontWeight: 'bold' }}>
                     Evaluate of Manager:{' '}
                     <span style={{ color: evaluate.evaluateEnum === 'GOOD' ? 'green' : evaluate.evaluateEnum === 'BAD' ? 'red' : 'black' }}>

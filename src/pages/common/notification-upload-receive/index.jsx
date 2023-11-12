@@ -30,6 +30,7 @@ const NotificationUploadReceive = () => {
         notificationId: notification.notificationId,
         userId: userId
       }
+      console.log(userId)
       notificationApi.markToRead(data)
       toast.success('Mask as read successfully!!')
       setAllNoti((prevNoti) =>

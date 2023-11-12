@@ -749,8 +749,8 @@ const LateRequest = () => {
           <Grid item xs={12}>
             Type
             <Select value={lateType} sx={{ width: '100%' }} onChange={handleChange} displayEmpty>
-              <MenuItem value="LATE_MORNING">MORNING</MenuItem>
-              <MenuItem value="LATE_AFTERNOON">AFTERNOON</MenuItem>
+              <MenuItem value="LATE_MORNING">LATE MORNING</MenuItem>
+              <MenuItem value="EARLY_AFTERNOON">EARLY AFTERNOON</MenuItem>
             </Select>
           </Grid>
           <Grid item xs={4} mb={2}>

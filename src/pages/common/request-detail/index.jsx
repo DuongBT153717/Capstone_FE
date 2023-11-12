@@ -13,6 +13,7 @@ import {
   Paper,
   Typography
 } from '@mui/material'
+
 import { styled } from '@mui/system'
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -401,7 +402,7 @@ const TicketDetail = () => {
                 </ListItem>
                 <Divider component="li" />
               </>
-            ): request[0]?.object?.toDate === request[0]?.object?.fromDate && request[0]?.object?.halfDay == true ? (
+            ) : request[0]?.object?.toDate === request[0]?.object?.fromDate && request[0]?.object?.halfDay == true ? (
               <>
                 <ListItem alignItems="flex-start">
                   <ListItemText
@@ -420,7 +421,7 @@ const TicketDetail = () => {
                 </ListItem>
                 <Divider component="li" />
               </>
-            ): <></>}
+            ) : <></>}
           </List>
         </>
       )
@@ -437,7 +438,7 @@ const TicketDetail = () => {
                       component="span"
                       variant="body2"
                       color="text.primary">
-                      Title : {request[0]?.requestMessageResponse?.title} 
+                      Title : {request[0]?.requestMessageResponse?.title}
                     </Typography>
                   </React.Fragment>
                 }
@@ -557,6 +558,27 @@ const TicketDetail = () => {
                 }
               />
             </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Status :
+                      {request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE'
+                        ? <span style={{ color: 'red' }}>Reject</span>
+                        : request[0]?.object?.status === true && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE'
+                          ? <span style={{ color: 'green' }}>Accept</span>
+                          : <span style={{ color: '#F3B664' }}>Pending</span>
+                      }
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
             <Divider component="li" />
           </List>
         </>
@@ -634,6 +656,27 @@ const TicketDetail = () => {
                 }
               />
             </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Status :
+                      {request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE'
+                        ? <span style={{ color: 'red' }}>Reject</span>
+                        : request[0]?.object?.status === true && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE'
+                          ? <span style={{ color: 'green' }}>Accept</span>
+                          : <span style={{ color: '#F3B664' }}>Pending</span>
+                      }
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
           </List>
         </>
       )
@@ -676,7 +719,7 @@ const TicketDetail = () => {
                                   <Box display="flex" flexDirection="column">
                                     <Typography fontSize="16px" variant="body1">
                                       {req?.requestMessageResponse?.senderFirstName === null ||
-                                      req?.requestMessageResponse?.senderLastName === null ? (
+                                        req?.requestMessageResponse?.senderLastName === null ? (
                                         <>unknown</>
                                       ) : (
                                         <>
@@ -701,7 +744,7 @@ const TicketDetail = () => {
                                   __html: req?.object?.content
                                 }}></Typography>
                               {request[0]?.object?.topic !== 'OTHER_REQUEST' &&
-                              request[0]?.requestMessageResponse?.requestTicketStatus !=
+                                request[0]?.requestMessageResponse?.requestTicketStatus !=
                                 'CLOSED' ? (
                                 <Box display="flex" gap="10px" justifyContent="flex-end">
                                   <Button
@@ -734,7 +777,7 @@ const TicketDetail = () => {
                                   <Box display="flex" flexDirection="column">
                                     <Typography fontSize="16px" variant="body1">
                                       {req?.requestMessageResponse?.senderFirstName === null ||
-                                      req?.requestMessageResponse?.senderLastName === null ? (
+                                        req?.requestMessageResponse?.senderLastName === null ? (
                                         <>unknown</>
                                       ) : (
                                         <>
@@ -775,7 +818,7 @@ const TicketDetail = () => {
                                 <Box display="flex" flexDirection="column">
                                   <Typography fontSize="16px" variant="body1">
                                     {req?.requestMessageResponse?.senderFirstName === null ||
-                                    req?.requestMessageResponse?.senderLastName === null ? (
+                                      req?.requestMessageResponse?.senderLastName === null ? (
                                       <>unknown</>
                                     ) : (
                                       <>
@@ -807,10 +850,10 @@ const TicketDetail = () => {
                 </div>
                 <Box style={{ display: 'flex', flexDirection: 'column' }}>
                   {currentUser?.role === 'hr' ||
-                  currentUser?.role === 'admin' ||
-                  currentUser?.role === 'security' ? (
+                    currentUser?.role === 'admin' ||
+                    currentUser?.role === 'security' ? (
                     request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' &&
-                    request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
+                      request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
                       <CKEditor
                         editor={ClassicEditor}
                         onChange={(event, editor) => {
@@ -868,10 +911,10 @@ const TicketDetail = () => {
                       <></>
                     )}
                     {currentUser?.role === 'hr' ||
-                    currentUser?.role === 'admin' ||
-                    currentUser?.role === 'security' ? (
+                      currentUser?.role === 'admin' ||
+                      currentUser?.role === 'security' ? (
                       request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' &&
-                      request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
+                        request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
                         <Button sx={{ mr: 2 }} type="submit" variant="contained" color="primary">
                           Send
                         </Button>
