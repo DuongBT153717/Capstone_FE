@@ -166,7 +166,7 @@ const TicketDetail = () => {
       }
     } else if (request[0]?.object?.topic === 'OVERTIME_REQUEST') {
       let data = {
-        overTimeRequestId: request[0]?.object.overtimeRequestId,
+        overTimeRequestId: request[0]?.object?.overTimeRequestId,
         content: contentReason
       }
       console.log(data)
@@ -176,7 +176,7 @@ const TicketDetail = () => {
       }
     } else if (request[0]?.object?.topic === 'LATE_REQUEST') {
       let data = {
-        lateRequestId: request[0]?.object.lateRequestId,
+        lateRequestId: request[0]?.object?.lateRequestId,
         content: contentReason
       }
       console.log(data)
@@ -187,7 +187,7 @@ const TicketDetail = () => {
     }
   }
 
-  console.log(request[0]?.object.overtimeRequestId);
+  console.log(request[0]?.object);
   const imgurlReceiver = async () => {
     const storageRef = ref(storage, `/${request[0]?.requestMessageResponse?.imageReceiver}`)
     try {
