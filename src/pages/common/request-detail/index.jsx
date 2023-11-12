@@ -176,7 +176,7 @@ const TicketDetail = () => {
       }
     } else if (request[0]?.object?.topic === 'LATE_REQUEST') {
       let data = {
-        lateRequestId: request[0]?.object?.lateRequestId,
+        lateMessageRequestId: request[0]?.object?.lateMessageRequestId,
         content: contentReason
       }
       console.log(data)
