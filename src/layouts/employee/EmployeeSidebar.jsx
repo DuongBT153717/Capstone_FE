@@ -10,16 +10,17 @@ import { Link } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
 import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
+import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 const EmployeeSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => {
     const initialIndex =
       window.location.pathname === '/check-attendance'
         ? 0 : window.location.pathname === '/request-list-employee'
-        ? 1 : window.location.pathname === '/notification-list-emp'
-        ? 2 : window.location.pathname === '/notification-receive-emp'
-        ? 3 : window.location.pathname === '/attendence-evaluate-report-emp'
-         0
+        ? 1 : window.location.pathname === '/notification-receive-emp'
+        ? 2 : window.location.pathname === '/overtime-log'
+        ? 3 : window.location.pathname === '/attendence-evaluate-report-emp' ? 4 :
+        0
     return initialIndex
   })
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -132,6 +133,12 @@ const EmployeeSidebar = () => {
             Check Attendace
           </MenuItem>
           <MenuItem
+            active={activeIndex === 3}
+            icon={<LibraryAddCheckIcon />}
+            component={<Link to="/overtime-log" onClick={() => setActiveIndex(3)} />}>
+            Check Overtime
+          </MenuItem>
+          <MenuItem
             active={activeIndex === 1}
             icon={<AppSettingsAltIcon />}
             component={<Link to="/request-list-employee" onClick={() => setActiveIndex(1)} />}>
@@ -174,9 +181,9 @@ const EmployeeSidebar = () => {
               Notifications
             </MenuItem>
             <MenuItem
-              active={activeIndex === 3}
+              active={activeIndex === 4}
               icon={<HistoryEduIcon />}
-              component={<Link to="/attendence-evaluate-report-emp" onClick={() => setActiveIndex(3)} />}>
+              component={<Link to="/attendence-evaluate-report-emp" onClick={() => setActiveIndex(4)} />}>
               {' '}
               Evaluate report
             </MenuItem>

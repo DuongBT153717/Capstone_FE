@@ -77,12 +77,12 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell width="250px">Request ID</TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell>Curator</TableCell>
-                    <TableCell>Create Date</TableCell>
-                    <TableCell>Update Date</TableCell>
-                    <TableCell>Action</TableCell>
+                  <TableCell style={{ width: '120px' }}>Request ID</TableCell>
+                    <TableCell style={{ width: '200px' }} align="center">Status</TableCell>
+                    <TableCell style={{ width: '50px' }}>Receiver</TableCell>
+                    <TableCell style={{ width: '100px' }} >Create Date</TableCell>
+                    <TableCell style={{ width: '100px' }} >Update Date</TableCell>
+                    <TableCell style={{ width: '100px' }}>Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -94,15 +94,15 @@ function Row(props) {
                       <TableCell>
                         {request_row.requestStatus === 'PENDING' ? (
                           <Box
-                            width="80%"
-                            margin="0 auto"
-                            p="5px"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            bgcolor={'#FAFAD2'}
-                            borderRadius="4px"
-                          >
+                          width="80%"
+                          margin="0 auto"
+                          p="5px"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          bgcolor={'#FAFAD2'}
+                          borderRadius="4px"
+                        >
                             <AccessTimeFilledIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
@@ -286,6 +286,7 @@ export default function RequestListManager() {
                       .toLowerCase()
                       .includes(searchTerm.toLowerCase())
                   })
+                  .filter((row) => row.topic !== 'ROOM_REQUEST')
                   .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                   .map((row) => (
                     <Row key={row.ticketId} row={row} />
@@ -295,7 +296,9 @@ export default function RequestListManager() {
           </Table>
           <TablePagination
             component="div"
-            count={listRequestAndTicket.length}
+            count={listRequestAndTicket
+              .filter((row) => row.topic !== 'ROOM_REQUEST') 
+              .length}
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
