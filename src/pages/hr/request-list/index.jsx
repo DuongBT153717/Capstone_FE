@@ -25,6 +25,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
 function Row(props) {
+  
   const { row } = props
   const [open, setOpen] = useState(false)
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
@@ -64,8 +65,8 @@ function Row(props) {
           {row.topic}
         </TableCell>
         <TableCell>{row.requestTickets[row.requestTickets.length - 1].title}</TableCell>
-        <TableCell>{row.createDate}</TableCell>
-        <TableCell>{row.updateDate}</TableCell>
+        <TableCell>{formatDate(row.createDate)}</TableCell>
+        <TableCell>{formatDate(row.updateDate)}</TableCell>
         <TableCell>
           {row.status === false ? (
             <Box

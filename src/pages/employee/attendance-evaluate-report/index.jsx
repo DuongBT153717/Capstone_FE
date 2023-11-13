@@ -72,7 +72,7 @@ const EvaluateReport = () => {
                         <TextField
                             sx={{ width: '100%', backgroundColor: '#f0f0f0' }}
                             InputProps={{ readOnly: true }}
-                            value="Your Department Value"
+                            value={`${evaluate.department?.departmentName || 'N/A'}`}
                         />
                     </Grid>
                 </Grid>
