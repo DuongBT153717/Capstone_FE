@@ -194,8 +194,8 @@ function Row(props) {
                       </TableCell>
                       <TableCell key={request_row.userId}
                       >{request_row.receiverFirstName} {request_row.receiverLastName}</TableCell>
-                      <TableCell>{request_row.requestCreateDate}</TableCell>
-                      <TableCell>{request_row.requestUpdateDate}</TableCell>
+                      <TableCell>{formatDate(request_row.requestCreateDate)}</TableCell>
+                      <TableCell>{formatDate(request_row.requestUpdateDate)}</TableCell>
                       <TableCell>
                         <IconButton
                           sx={{ color: '#1565c0' }}

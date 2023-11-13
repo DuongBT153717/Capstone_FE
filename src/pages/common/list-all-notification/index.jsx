@@ -247,7 +247,7 @@ const NotificationsList = () => {
       width: 300,
       renderCell: (params) => (
         <Typography dangerouslySetInnerHTML={{
-          __html: params.row.content
+          __html: params.row.content.substring(0, 20)
         }}></Typography>
       ),
     },
