@@ -244,11 +244,10 @@ const NotificationDepartMentScheduleList = () => {
       align: 'center',
       width: 300,
       renderCell: (params) => (
-        <Typography
-          dangerouslySetInnerHTML={{
-            __html: params.row.content
-          }}></Typography>
-      )
+        <Typography dangerouslySetInnerHTML={{
+          __html: params.row.content.substring(0, 20)
+        }}></Typography>
+      ),
     },
     {
       field: 'containImage',

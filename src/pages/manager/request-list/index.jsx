@@ -160,8 +160,8 @@ function Row(props) {
                         ) : null}
                       </TableCell>
                       <TableCell>{request_row.receiverFirstName} {request_row.receiverLastName}</TableCell>
-                      <TableCell>{request_row.requestCreateDate}</TableCell>
-                      <TableCell>{request_row.requestUpdateDate}</TableCell>
+                      <TableCell>{formatDate(request_row.requestCreateDate)}</TableCell>
+                      <TableCell>{formatDate(request_row.requestUpdateDate)}</TableCell>
                       <TableCell>
                         {' '}
                         <IconButton

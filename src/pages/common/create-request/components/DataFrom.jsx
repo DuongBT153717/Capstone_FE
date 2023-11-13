@@ -764,7 +764,7 @@ const LateRequest = () => {
             </LocalizationProvider>
           </Grid>
           <Grid item xs={4} mb={2}>
-            <Typography fontWeight="500">Duration</Typography>
+            <Typography fontWeight="500">Duration (minutes)</Typography>
             <TextField
               value={lateDuration}
               onChange={(e) => {

@@ -308,6 +308,27 @@ const TicketDetail = () => {
                 }
               />
             </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Status :
+                      {request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                        ? <span style={{ color: 'red' }}>Reject</span>
+                        : request[0]?.object?.status === true && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                          ? <span style={{ color: 'green' }}>Accept</span>
+                          : <span style={{ color: '#F3B664' }}>Pending</span>
+                      }
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
             <Divider component="li" />
           </List>
         </>
@@ -400,6 +421,7 @@ const TicketDetail = () => {
                     }
                   />
                 </ListItem>
+
                 <Divider component="li" />
               </>
             ) : request[0]?.object?.toDate === request[0]?.object?.fromDate && request[0]?.object?.halfDay == true ? (
@@ -414,6 +436,27 @@ const TicketDetail = () => {
                           variant="body2"
                           color="text.primary">
                           Duration : 4 hours
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+                <ListItem alignItems="flex-start">
+                  <ListItemText
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          sx={{ display: 'inline' }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary">
+                          Status :
+                          {request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                            ? <span style={{ color: 'red' }}>Reject</span>
+                            : request[0]?.object?.status === true && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                              ? <span style={{ color: 'green' }}>Accept</span>
+                              : <span style={{ color: '#F3B664' }}>Pending</span>
+                          }
                         </Typography>
                       </React.Fragment>
                     }
@@ -456,6 +499,27 @@ const TicketDetail = () => {
                       color="text.primary">
                       Department :{' '}
                       {request[0]?.requestMessageResponse?.receiverDepartment?.departmentName}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Status :
+                      {request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                        ? <span style={{ color: 'red' }}>Reject</span>
+                        : request[0]?.object?.status === true && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                          ? <span style={{ color: 'green' }}>Accept</span>
+                          : <span style={{ color: '#F3B664' }}>Pending</span>
+                      }
                     </Typography>
                   </React.Fragment>
                 }
@@ -649,8 +713,8 @@ const TicketDetail = () => {
                       component="span"
                       variant="body2"
                       color="text.primary">
-                      Duration :{' '}
-                      {request[0]?.object?.lateDuration}
+                      Duration :{' '} 
+                      {request[0]?.object?.lateDuration} minutes
                     </Typography>
                   </React.Fragment>
                 }
@@ -666,9 +730,9 @@ const TicketDetail = () => {
                       variant="body2"
                       color="text.primary">
                       Status :
-                      {request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE'
+                      {request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
                         ? <span style={{ color: 'red' }}>Reject</span>
-                        : request[0]?.object?.status === true && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE'
+                        : request[0]?.object?.status === true && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
                           ? <span style={{ color: 'green' }}>Accept</span>
                           : <span style={{ color: '#F3B664' }}>Pending</span>
                       }
