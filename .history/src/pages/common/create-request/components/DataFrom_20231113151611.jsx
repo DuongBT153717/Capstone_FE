@@ -183,7 +183,7 @@ const OtFrom = () => {
   const [to, setTo] = useState(dayjs(new Date()))
   const [date, setDate] = useState(dayjs(new Date()))
   const [content, setContent] = useState('')
-  const [topicOvertime, settopicOvertime] = useState('WEEKEND_AND_NORMAL_DAY')
+  const [topicOvertime, settopicOvertime] = useState('')
   const [overtimeSystem, setOvertimeSystem] = useState({})
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)

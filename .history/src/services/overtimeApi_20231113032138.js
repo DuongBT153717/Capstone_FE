@@ -15,12 +15,13 @@ const overtimeApi = {
         console.log(error);   
     }
   },
-  getOvertimeSystem: (userId, date) => {
+  getOvertimeSystem: (userId, month, year) => {
     try {
       const response = axiosClient.get(`${BASE_URL}/getOvertimeSystem`,{
         params: {
             user_id: userId,
-            date: date,
+            month: month,
+            year: year
         }
       })
       return response

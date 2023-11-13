@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import requestApi from '../../../../services/requestApi'
 import { validationSchema } from './util/validationSchema'
-import overtimeApi from '../../../../services/overtimeApi'
 
 const style = {
   position: 'absolute',
@@ -154,6 +153,7 @@ const OvertimeRequestModal = ({ openOvertimeRequest, handleCloseOvertimeRequest 
                 <Typography fontWeight="500">Date</Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
+                    minDate={new Date()}
                     value={date}
                     onChange={(e) => setDate(e)}
                     renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}

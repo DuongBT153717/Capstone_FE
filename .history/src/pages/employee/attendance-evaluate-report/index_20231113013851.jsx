@@ -85,8 +85,8 @@ const EvaluateReport = () => {
             />
           </Grid>
         </Grid>
-        <Grid item xs={6} sx={{ marginTop: '20px', width: '48%' }}>
-          <Typography>Report By Month-Year</Typography>
+        <Grid item xs={6} sx={{ marginTop: '20px' }}>
+          <Typography fontWeight="500">Report By Month-Year</Typography>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               views={['year', 'month']}
@@ -177,7 +177,7 @@ const EvaluateReport = () => {
             {`${evaluate.evaluateEnum}`}
           </span>
         </Typography>
-        <Typography mt={1}>Note</Typography>
+        <Typography mt={2}>Note</Typography>
         <TextField
           sx={{ width: '100%', backgroundColor: '#f0f0f0' }}
           InputProps={{ readOnly: true }}

@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import requestApi from '../../../../services/requestApi'
 import { validationSchema } from './util/validationSchema'
-import overtimeApi from '../../../../services/overtimeApi'
 
 const style = {
   position: 'absolute',
@@ -23,7 +22,10 @@ const style = {
   p: 4
 }
 
-const OvertimeRequestModal = ({ openOvertimeRequest, handleCloseOvertimeRequest }) => {
+const OvertimeRequestModal = ({
+  openOvertimeRequest,
+  handleCloseOvertimeRequest,
+}) => {
   const [from, setFrom] = useState(dayjs(new Date()))
   const [to, setTo] = useState(dayjs(new Date()))
   const [date, setDate] = useState(dayjs(new Date()))
@@ -67,6 +69,7 @@ const OvertimeRequestModal = ({ openOvertimeRequest, handleCloseOvertimeRequest 
       requestApi.requestOverTimeForm(data)
       handleCloseOvertimeRequest()
     }
+
   })
   return (
     <Modal
@@ -119,41 +122,11 @@ const OvertimeRequestModal = ({ openOvertimeRequest, handleCloseOvertimeRequest 
                   </Typography>
                 )}
               </Grid>
-              {overtimeSystem?.systemCheckin === null ? (
-                <Grid item xs={6} mb={2}>
-                  <Typography fontWeight="500">System Check In</Typography>
-                  <TextField sx={{ width: '100%' }} disabled value="0:00" />
-                </Grid>
-              ) : (
-                <Grid item xs={6} mb={2}>
-                  <Typography fontWeight="500">System Check In</Typography>
-                  <TextField
-                    sx={{ width: '100%' }}
-                    disabled
-                    value={overtimeSystem?.systemCheckin}
-                  />
-                </Grid>
-              )}
-
-              {overtimeSystem?.systemCheckout === null ? (
-                <Grid item xs={6} mb={2}>
-                  <Typography fontWeight="500">System Check Out</Typography>
-                  <TextField sx={{ width: '100%' }} disabled value="0:00" />
-                </Grid>
-              ) : (
-                <Grid item xs={6} mb={2}>
-                  <Typography fontWeight="500">System Check Out</Typography>
-                  <TextField
-                    sx={{ width: '100%' }}
-                    disabled
-                    value={overtimeSystem?.systemCheckout}
-                  />
-                </Grid>
-              )}
               <Grid item xs={4} mb={2}>
                 <Typography fontWeight="500">Date</Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
+                    minDate={new Date()}
                     value={date}
                     onChange={(e) => setDate(e)}
                     renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}

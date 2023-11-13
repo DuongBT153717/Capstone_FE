@@ -10,7 +10,6 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
 import { validationSchema } from '../util/validationSchema'
-import overtimeApi from '../../../../services/overtimeApi'
 
 ClassicEditor.defaultConfig = {
   toolbar: {
@@ -54,7 +53,7 @@ const AttendenceFrom = ({ userId }) => {
         userId: userId,
         title: values.title,
         content: content,
-        manualDate: date.format('YYYY-MM-DD'),
+        manualDate: from.format('YYYY-MM-DD'),
         manualFirstEntry: isFrom ? from.format('HH:mm:ss') : null,
         manualLastExit: isTo ? to.format('HH:mm:ss') : null,
         departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
@@ -183,7 +182,7 @@ const OtFrom = () => {
   const [to, setTo] = useState(dayjs(new Date()))
   const [date, setDate] = useState(dayjs(new Date()))
   const [content, setContent] = useState('')
-  const [topicOvertime, settopicOvertime] = useState('WEEKEND_AND_NORMAL_DAY')
+  const [topicOvertime, settopicOvertime] = useState('')
   const [overtimeSystem, setOvertimeSystem] = useState({})
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
@@ -200,14 +199,12 @@ const OtFrom = () => {
   }, [])
 
   useEffect(() => {
-    const fetchOvertimeSystem = async () => {
-      const response = await overtimeApi.getOvertimeSystem(userId, date.format('YYYY-MM-DD'))
-      setOvertimeSystem(response)
+    const fetchReceiveIdAndDepartment = async () => {
+      const response = await requestApi.getReceiveIdAndDepartment(userId)
+      setReceiveIdAndDepartment(response)
     }
-    fetchOvertimeSystem()
-  }, [date])
-
-  console.log(overtimeSystem)
+    fetchReceiveIdAndDepartment()
+  }, [])
 
   const formik = useFormik({
     initialValues: {
@@ -267,30 +264,22 @@ const OtFrom = () => {
               <MenuItem value="HOLIDAY">HOLIDAY</MenuItem>
             </Select>
           </Grid>
-          {overtimeSystem?.systemCheckin === null ? (
-            <Grid item xs={6} mb={2}>
-              <Typography fontWeight="500">System Check In</Typography>
-              <TextField sx={{ width: '100%' }} disabled value="0:00" />
-            </Grid>
-          ) : (
-            <Grid item xs={6} mb={2}>
-              <Typography fontWeight="500">System Check In</Typography>
-              <TextField sx={{ width: '100%' }} disabled value={overtimeSystem?.systemCheckin} />
-            </Grid>
-          )}
-
-          {overtimeSystem?.systemCheckout === null ? (
-            <Grid item xs={6} mb={2}>
-              <Typography fontWeight="500">System Check Out</Typography>
-              <TextField sx={{ width: '100%' }} disabled value="0:00" />
-            </Grid>
-          ) : (
-            <Grid item xs={6} mb={2}>
-              <Typography fontWeight="500">System Check Out</Typography>
-              <TextField sx={{ width: '100%' }} disabled value={overtimeSystem?.systemCheckout} />
-            </Grid>
-          )}
-
+          <Grid item xs={6} mb={2}>
+            <Typography fontWeight="500">System Check In</Typography>
+              <TextField
+                sx={{width: '100%'}}
+                disabled
+                value={new Date()}
+              />
+          </Grid>
+          <Grid item xs={6} mb={2}>
+            <Typography fontWeight="500">System Check Out</Typography>
+              <TextField
+                sx={{width: '100%'}}
+                disabled
+                value={new Date()}
+              />
+          </Grid>
           <Grid item xs={4} mb={2}>
             <Typography fontWeight="500">Date</Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>

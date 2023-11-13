@@ -85,8 +85,8 @@ const EvaluateReport = () => {
             />
           </Grid>
         </Grid>
-        <Grid item xs={6} sx={{ marginTop: '20px', width: '48%' }}>
-          <Typography>Report By Month-Year</Typography>
+        <Grid item xs={6} sx={{ marginTop: '20px' }}>
+          <Typography fontWeight="500">Report By Month-Year</Typography>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               views={['year', 'month']}

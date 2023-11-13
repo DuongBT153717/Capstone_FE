@@ -63,16 +63,17 @@ const DataTableCheckAttendance = ({ rows, columns, isLoading, CustomToolbar }) =
           showCellVerticalBorder
           showColumnVerticalBorder
           rowsPerPageOptions={[50]}
-          getRowClassName={(params) => {
-            const isLateCheckin = params.row.lateCheckin === true;
-            const isWeekend =
-              params.row.dateDaily &&
-              (params.row.dateDaily.startsWith('Sunday') ||
-                params.row.dateDaily.startsWith('Saturday'));
-          
-            return (isLateCheckin ? 'late-checkin-cell ' : '') + (isWeekend ? 'weekend-cell' : '');
-          }}
-          
+          getRowClassName={(params) =>
+            { 
+              console.log(params.row);
+              params.row.lateCheckin === true
+              ? 'late-checkin-cell'
+              : params.row?.dateDaily.startsWith('Sunday') ||
+                params.row.dateDaily.startsWith('Saturday')
+              ? 'weekend-cell'
+              : ''
+            }
+          }
           loading={isLoading}
           columns={columns}
           rows={rows}
