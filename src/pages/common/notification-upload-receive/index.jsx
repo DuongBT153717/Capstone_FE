@@ -15,6 +15,7 @@ import notificationApi from '../../../services/notificationApi'
 import axiosClient from '../../../utils/axios-config'
 import DataTableListUploadReceive from './components/DataTableUploadReceive'
 import Swal from 'sweetalert2'
+import { format } from 'date-fns'
 
 const NotificationUploadReceive = () => {
   const userId = useSelector((state) => state.auth.login.currentUser.accountId)
@@ -310,27 +311,27 @@ const NotificationUploadReceive = () => {
         }
       }
     },
-    // {
-    //   field: 'uploadDate',
-    //   headerName: 'Date',
-    //   cellClassName: 'name-column--cell',
-    //   headerAlign: 'center',
-    //   align: 'center',
-    //   flex: 1,
-    //   width: 300,
-    //   renderCell: (params) => (
-    //     <Box
-    //       margin="0 auto"
-    //       p="5px"
-    //       display="flex"
-    //       justifyContent="center"
-    //       alignItems="center"
-    //       borderRadius="4px"
-    //       color="#000">
-    //       <div>{format(new Date(params.row.uploadDate), 'yyyy/MM/dd HH:mm:ss')}</div>
-    //     </Box>
-    //   )
-    // },
+    {
+      field: 'uploadDate',
+      headerName: 'Date',
+      cellClassName: 'name-column--cell',
+      headerAlign: 'center',
+      align: 'center',
+   
+      width: 170,
+      renderCell: (params) => (
+        <Box
+          margin="0 auto"
+          p="5px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          borderRadius="4px"
+          color="#000">
+          <div>{format(new Date(params.row.uploadDate), 'yyyy/MM/dd HH:mm:ss')}</div>
+        </Box>
+      )
+    },
     {
       field: 'action',
       headerName: 'Action',
