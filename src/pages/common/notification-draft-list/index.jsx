@@ -221,8 +221,8 @@ const NotificationDraftList = () => {
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      flex: 1,
-      width: 300,
+    
+      width: 200,
       renderCell: (params) => (
         <Box
           margin="0 auto"

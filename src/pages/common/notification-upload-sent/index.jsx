@@ -11,6 +11,7 @@ import { BASE_URL } from '../../../services/constraint'
 import notificationApi from '../../../services/notificationApi'
 import axiosClient from '../../../utils/axios-config'
 import DataTableListUploadSent from './components/DataTableUploadSent'
+import FilePresentIcon from '@mui/icons-material/FilePresent'
 const NotificationUploadSent = () => {
   const userId = useSelector((state) => state.auth.login.currentUser.accountId)
   const [allNoti, setAllNoti] = useState([])
@@ -126,27 +127,24 @@ const NotificationUploadSent = () => {
       ),
     },
     {
-      field: 'imageFileName',
-      headerName: '',
+      field: 'containImage',
+      headerName: 'Attached File',
       headerAlign: 'center',
       align: 'center',
-      width: 250,
+      width: 150,
       sortable: false,
       filterable: false,
-      flex: 1,
       renderCell: (params) => {
-        if (params.row.notificationFiles && params.row.notificationFiles.length > 0) {
-          return 'There are attached files'
-        } else if (params.row.notificationImages && params.row.notificationImages.length > 0) {
-          return 'There are attached files'
+        if (params.row.containFile === true || params.row.containImage === true) {
+          return <FilePresentIcon fontSize="large" color="primary" />
         } else {
-          return ''
+          return null
         }
       }
     },
     {
       field: 'uploadDate',
-      headerName: 'Date',
+      headerName: 'Upload Date',
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
@@ -178,9 +176,6 @@ const NotificationUploadSent = () => {
           navigate(`/notification-detail/${params.row.notificationId}/${params.row.creatorId}`)
         }
 
-        const handleEditClick = () => {
-          navigate(`/edit-notification/${params.row.notificationId}`)
-        }
         return (
           <Box
             gap={2}
@@ -199,9 +194,7 @@ const NotificationUploadSent = () => {
               <Button variant="contained" onClick={() => handleDetailClick(params.row)}>
                 Detail
               </Button>
-              <Button variant="contained" onClick={() => handleEditClick(params.row)}>
-                Edit
-              </Button>
+           
             </Box>
           </Box>
         )
