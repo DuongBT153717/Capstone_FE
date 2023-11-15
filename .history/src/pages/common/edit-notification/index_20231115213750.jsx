@@ -29,6 +29,7 @@ import {
 } from '@mui/material'
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import dayjs from 'dayjs'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
@@ -57,6 +58,7 @@ const EditNotification = () => {
   const theme = useTheme()
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [checkedSetupTime, setCheckedSetupTime] = useState(true)
+  const [setupTime, setSetupTime] = useState(dayjs(new Date()))
   const [departments, setDepartments] = useState([])
   const [departmentId, setDepartmentId] = useState([])
   const [selectedUsers, setSelectedUsers] = useState([])
@@ -99,7 +101,7 @@ const EditNotification = () => {
     setIsSave(event.target.checked)
   }
 
-
+  console.log(setSetupTime)
 
   useEffect(() => {
     const fetchNotificationDetail = async () => {

@@ -212,25 +212,25 @@ const NotificationDetail = () => {
           <Divider />
           <Box mt={2} display="flex" justifyContent="flex-start">
             {currentUser?.role === 'hr' ? (
-              <Link to="/notification-list-hr">
+              <Link to="/manage-user">
                 <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
                   Back
                 </Button>
               </Link>
             ) : currentUser?.role === 'employee' ? (
-              <Link to="/notification-receive-emp">
+              <Link to="/check-attendance">
                 <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
                   Back
                 </Button>
               </Link>
             ) : currentUser?.role === 'manager' ? (
-              <Link to="/notification-list-manager">
+              <Link to="/request-list-manager">
                 <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
                   Back
                 </Button>
               </Link>
             ) : currentUser?.role === 'admin' ? (
-              <Link to="/notification-list-admin">
+              <Link to="/request-list-admin">
                 <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
                   Back
                 </Button>

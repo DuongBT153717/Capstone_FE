@@ -168,12 +168,12 @@ const NotificationDetail = () => {
           {notificationFiles && notificationFiles.length > 0 || notificationImages &&
             notificationImages.length > 0 && <Divider />}
           <Box mt={2}>
-            {(notificationFiles && notificationFiles.length > 0) || (notificationImages &&
-            notificationImages.length > 0) ? (
+            {notificationFiles && notificationFiles.length > 0 || notificationImages &&
+            notificationImages.length > 0 && (
               <Typography mb={2} fontWeight="700">
                 Attachments:{' '}
               </Typography>
-            ): ''}
+            )}
             <Box mb={3} alignItems="center" gap="10px" display="flex" flexWrap="wrap">
               {notificationFiles &&
                 notificationFiles.length > 0 &&
@@ -212,33 +212,33 @@ const NotificationDetail = () => {
           <Divider />
           <Box mt={2} display="flex" justifyContent="flex-start">
             {currentUser?.role === 'hr' ? (
-              <Link to="/notification-list-hr">
+              <Link to="/manage-user">
                 <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                  Back
+                  Back to Dashboard
                 </Button>
               </Link>
             ) : currentUser?.role === 'employee' ? (
-              <Link to="/notification-receive-emp">
+              <Link to="/check-attendance">
                 <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                  Back
+                  Back to Dashboard
                 </Button>
               </Link>
             ) : currentUser?.role === 'manager' ? (
-              <Link to="/notification-list-manager">
+              <Link to="/request-list-manager">
                 <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                  Back
+                  Back to Dashboard
                 </Button>
               </Link>
             ) : currentUser?.role === 'admin' ? (
-              <Link to="/notification-list-admin">
+              <Link to="/request-list-admin">
                 <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                  Back
+                  Back to Dashboard
                 </Button>
               </Link>
             ) : currentUser?.role === 'security' ? (
               <Link to="/manage-user">
                 <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                  Back
+                  Back to Dashboard
                 </Button>
               </Link>
             ) : (

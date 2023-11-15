@@ -29,6 +29,7 @@ import {
 } from '@mui/material'
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import dayjs from 'dayjs'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
@@ -57,6 +58,7 @@ const EditNotification = () => {
   const theme = useTheme()
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [checkedSetupTime, setCheckedSetupTime] = useState(true)
+  const [setupTime, setSetupTime] = useState(dayjs(new Date()))
   const [departments, setDepartments] = useState([])
   const [departmentId, setDepartmentId] = useState([])
   const [selectedUsers, setSelectedUsers] = useState([])
@@ -99,7 +101,7 @@ const EditNotification = () => {
     setIsSave(event.target.checked)
   }
 
-
+  console.log(setSetupTime);
 
   useEffect(() => {
     const fetchNotificationDetail = async () => {
@@ -206,6 +208,7 @@ const EditNotification = () => {
       }
     }
   }
+
 
   const handleDeleteFileUnAvailable = (fileToDelete) => () => {
     const updatedFiles = file.filter((file) => file !== fileToDelete)
@@ -394,7 +397,7 @@ const EditNotification = () => {
     imgurl()
   }, [notificationImages])
 
-  console.log(notificationDetail)
+  console.log(notificationDetail);
   return (
     <Box bgcolor={theme.palette.bgColorPrimary.main}>
       <ChatTopbar />
@@ -440,6 +443,7 @@ const EditNotification = () => {
                             fontSize="20px">
                             Receiver: <Typography color="blue">Send all staff</Typography>
                           </Typography>
+                          
                         </Grid>
                       ) : (
                         <Grid item xs={12}>
@@ -716,33 +720,33 @@ const EditNotification = () => {
                 <Divider />
                 <CardActions sx={{ justifyContent: 'space-between', py: '8px' }}>
                   {currentUser?.role === 'hr' ? (
-                    <Link to="/notification-list-hr">
+                    <Link to="/manage-user">
                       <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                        Back
+                        Back to Dashboard
                       </Button>
                     </Link>
                   ) : currentUser?.role === 'employee' ? (
-                    <Link to="/notification-receive-emp">
+                    <Link to="/request-list-employee">
                       <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                        Back
+                        Back to Dashboard
                       </Button>
                     </Link>
                   ) : currentUser?.role === 'manager' ? (
-                    <Link to="/notification-list-manager">
+                    <Link to="/request-list-manager">
                       <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                        Back
+                        Back to Dashboard
                       </Button>
                     </Link>
                   ) : currentUser?.role === 'admin' ? (
-                    <Link to="/notification-list-admin">
+                    <Link to="/request-list-admin">
                       <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                        Back
+                        Back to Dashboard
                       </Button>
                     </Link>
                   ) : currentUser?.role === 'security' ? (
                     <Link to="/manage-user">
                       <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                        Back
+                        Back to Dashboard
                       </Button>
                     </Link>
                   ) : (

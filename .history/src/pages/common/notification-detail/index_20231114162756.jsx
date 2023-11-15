@@ -230,7 +230,7 @@ const NotificationDetail = () => {
                 </Button>
               </Link>
             ) : currentUser?.role === 'admin' ? (
-              <Link to="/notification-list-admin">
+              <Link to="/request-list-admin">
                 <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
                   Back
                 </Button>
