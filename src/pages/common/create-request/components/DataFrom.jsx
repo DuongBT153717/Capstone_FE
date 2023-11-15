@@ -1,6 +1,6 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
-import { Box, Button, Checkbox, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
+import { Box, Button, Checkbox, FormControlLabel, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
 import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
@@ -1052,4 +1052,184 @@ const LeaveRequest = ({ userId }) => {
   )
 }
 
-export { AttendenceFrom, LeaveRequest, OtFrom, OtherRequest, LateRequest }
+
+const WorkingOutSideRequest = () => {
+  const [from, setFrom] = useState(dayjs(new Date()));
+  const [to, setTo] = useState(dayjs(new Date()));
+  const [date, setDate] = useState(dayjs(new Date()));
+  const [content, setContent] = useState('');
+  const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
+  const userId = useSelector((state) => state.auth.login?.currentUser?.accountId);
+  const currentUser = useSelector((state) => state.auth.login?.currentUser);
+  const [selectedFrom, setSelectedFrom] = useState(dayjs(new Date()).set({ hour: 8, minute: 30, second: 0 }));
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+
+    if (event.target.checked) {
+      setSelectedFrom(dayjs(new Date()).set({ hour: 8, minute: 30, second: 0 }));
+      setTo(dayjs(new Date()).set({ hour: 17, minute: 30, second: 0 }));
+    } else {
+      setSelectedFrom(dayjs(new Date()));
+      setTo(dayjs(new Date()));
+    }
+  };
+
+  useEffect(() => {
+    const fetchReceiveIdAndDepartment = async () => {
+      const response = await requestApi.getReceiveIdAndDepartment(userId);
+      setReceiveIdAndDepartment(response);
+    };
+    fetchReceiveIdAndDepartment();
+  }, []);
+
+  useEffect(() => {
+    const fetchOvertimeSystem = async () => {
+      const response = await overtimeApi.getOvertimeSystem(userId, date.format('YYYY-MM-DD'));
+      setOvertimeSystem(response);
+    };
+    fetchOvertimeSystem();
+  }, [date]);
+
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+      content: '',
+      topicOvertime: ''
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      let data = {
+        userId: userId,
+        title: values.title,
+        content: content,
+        overtimeDate: date.format('YYYY-MM-DD'),
+        fromTime: from.format('HH:mm:ss'),
+        toTime: to.format('HH:mm:ss'),
+        departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+        receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+      };
+      console.log(data);
+      requestApi.requestOverTimeForm(data);
+    }
+  });
+
+  return (
+    <Box p={3} pl={0}>
+      <form onSubmit={formik.handleSubmit}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography fontWeight="700" fontSize="18px">
+              Request details
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography fontWeight="500">Title</Typography>
+            <TextField
+              name="title"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.title}
+              sx={{ width: '100%' }}
+              size="small"
+              placeholder="Enter the request title"
+            />
+            {formik.touched.title && formik.errors.title && (
+              <div className="error-message">{formik.errors.title}</div>
+            )}
+          </Grid>
+          <Grid item xs={4} mb={2}>
+            <Typography fontWeight="500">Date</Typography>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                value={date}
+                onChange={(e) => setDate(e)}
+                renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
+              />
+            </LocalizationProvider>
+          </Grid>
+          <Grid item xs={4} mb={2}>
+            <Typography fontWeight="500">From</Typography>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <TimePicker
+               disabled={isChecked}
+                value={isChecked ? selectedFrom : selectedFrom}
+                onChange={(e) => setSelectedFrom(e)}
+                renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
+              />
+            </LocalizationProvider>
+          </Grid>
+          <Grid item xs={4} mb={2}>
+            <Typography fontWeight="500">To</Typography>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <TimePicker
+                value=""
+                onChange={(e) => setTo(e)}
+                renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
+              />
+            </LocalizationProvider>
+          </Grid>
+          <Grid item xs={12} mt={2}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isChecked}
+                  onChange={handleCheckboxChange}
+                />
+              }
+              label="All Day"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography fontWeight="500">Reason</Typography>
+            <CKEditor
+              data={content}
+              editor={ClassicEditor}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setContent(data);
+              }}
+            />
+            {/* {formik.touched.content && formik.errors.content && (
+              <div className="error-message">{formik.errors.content}</div>
+            )} */}
+          </Grid>
+        </Grid>
+        <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
+          {currentUser?.role === 'employee' ? (
+            <Link to="/request-list-employee">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'manager' ? (
+            <Link to="/request-manager-list">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-admin">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'hr' ? (
+            <Link to="/request-hr-list">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : (
+            <></>
+          )}
+          <Button type="submit" variant="contained">
+            Save
+          </Button>
+        </Box>
+      </form>
+    </Box>
+  );
+};
+
+export { AttendenceFrom, LeaveRequest, OtFrom, OtherRequest, LateRequest, WorkingOutSideRequest }

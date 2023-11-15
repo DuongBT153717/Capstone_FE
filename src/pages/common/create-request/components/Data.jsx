@@ -2,7 +2,7 @@ import { Box, Grid, MenuItem, Paper, Select, TextField, Typography, useTheme } f
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import useAuth from '../../../../hooks/useAuth'
-import { AttendenceFrom, LateRequest, LeaveRequest, OtFrom, OtherRequest } from './DataFrom'
+import { AttendenceFrom, LateRequest, LeaveRequest, OtFrom, OtherRequest, WorkingOutSideRequest } from './DataFrom'
 
 const Data = () => {
   const userInfo = useAuth()
@@ -66,6 +66,7 @@ const Data = () => {
                   <MenuItem value="late_request">Late Request</MenuItem>
                   <MenuItem value="attendence_request">Attendance Request</MenuItem>
                   <MenuItem value="other_request">Other Request</MenuItem>
+                  <MenuItem value="working_request"> Working OutSide</MenuItem>
                
                 </Select>
               ) : currentUser?.role === 'hr' ? (
@@ -117,6 +118,7 @@ const Data = () => {
               {selectedValue === 'leave_request' && <LeaveRequest userId={currentUser.accountId} />}
               {selectedValue === 'other_request' && <OtherRequest userId={currentUser.accountId} />}
               {selectedValue === 'late_request' && <LateRequest userId={currentUser.accountId} />}
+              {selectedValue === 'working_request' && <WorkingOutSideRequest userId={currentUser.accountId} />}
             </Grid>
           </Paper>
         </Box>
