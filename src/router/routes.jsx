@@ -59,6 +59,7 @@ import BookListDetailManager from '../pages/manager/request-manager-list/compone
 import AttendanceDetail from '../pages/common/attendance-detail'
 import CheckOvertime from '../pages/employee/check-overtime'
 import EvaluateReport from '../pages/employee/attendance-evaluate-report'
+import CreateEvaluate from '../pages/manager/create-evaluate'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -463,6 +464,7 @@ export default function Router() {
                 </Suspense>
               )
             },
+           
             {
               path: MANAGER_PATH.REQUEST_LIST_MANAGER,
               element: (
@@ -598,7 +600,28 @@ export default function Router() {
                   <NotificationDetail />
                 </Suspense>
               )
-            }
+            },
+            
+          ]
+        },
+      ]
+    },
+    {
+      path: '/',
+      children: [
+        {
+          element: (
+            <RequireAuth allowedRoles={[ROLES.MANAGER]} />
+          ),
+          children: [
+            {
+              path: MANAGER_PATH.CREATE_EVALUATE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <CreateEvaluate />
+                </Suspense>
+              )
+            },
           ]
         },
       ]
