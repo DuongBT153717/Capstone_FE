@@ -32,6 +32,7 @@ const AttendenceFrom = ({ userId }) => {
   const [from, setFrom] = useState(dayjs(new Date()))
   const [to, setTo] = useState(dayjs(new Date()))
   const [date, setDate] = useState(dayjs(new Date()))
+  const [content, setContent] = useState('')
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [isFrom, setIsFrom] = useState(true)
@@ -65,7 +66,7 @@ const AttendenceFrom = ({ userId }) => {
       let data = {
         userId: userId,
         title: values.title,
-        content: values.content,
+        content: content,
         manualDate: date.format('YYYY-MM-DD'),
         manualFirstEntry: isFrom ? from.format('HH:mm:ss') : null,
         manualLastExit: isTo ? to.format('HH:mm:ss') : null,
@@ -96,11 +97,9 @@ const AttendenceFrom = ({ userId }) => {
               size="small"
               placeholder="Enter the request title"
             />
-            {formik.touched.title && formik.errors.title ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.title}
-              </Typography>
-            ) : null}
+            {formik.touched.title && formik.errors.title && (
+              <div className="error-message">{formik.errors.title}</div>
+            )}
           </Grid>
           <Grid item xs={4} mb={2}>
             <Typography fontWeight="500">Date</Typography>
@@ -147,18 +146,16 @@ const AttendenceFrom = ({ userId }) => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Content</Typography>
             <CKEditor
+              data={content}
               editor={ClassicEditor}
-              data={formik.values.content}
               onChange={(event, editor) => {
                 const data = editor.getData()
-                formik.setFieldValue('content', data)
+                setContent(data)
               }}
             />
-            {formik.touched.content && formik.errors.content ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.content}
-              </Typography>
-            ) : null}
+            {/* {formik.touched.content && formik.errors.content && (
+              <div className="error-message">{formik.errors.content}</div>
+            )} */}
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
@@ -202,6 +199,7 @@ const OtFrom = () => {
   const [from, setFrom] = useState(dayjs(new Date()))
   const [to, setTo] = useState(dayjs(new Date()))
   const [date, setDate] = useState(dayjs(new Date()))
+  const [content, setContent] = useState('')
   const [topicOvertime, settopicOvertime] = useState('WEEKEND_AND_NORMAL_DAY')
   const [overtimeSystem, setOvertimeSystem] = useState({})
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
@@ -242,7 +240,7 @@ const OtFrom = () => {
       let data = {
         userId: userId,
         title: values.title,
-        content: values.content,
+        content: content,
         topicOvertime: topicOvertime,
         overtimeDate: date.format('YYYY-MM-DD'),
         fromTime: from.format('HH:mm:ss'),
@@ -275,11 +273,9 @@ const OtFrom = () => {
               size="small"
               placeholder="Enter the request title"
             />
-            {formik.touched.title && formik.errors.title ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.title}
-              </Typography>
-            ) : null}
+            {formik.touched.title && formik.errors.title && (
+              <div className="error-message">{formik.errors.title}</div>
+            )}
           </Grid>
           <Grid item xs={12}>
             <Select
@@ -350,18 +346,16 @@ const OtFrom = () => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Reason</Typography>
             <CKEditor
+              data={content}
               editor={ClassicEditor}
-              data={formik.values.content}
               onChange={(event, editor) => {
                 const data = editor.getData()
-                formik.setFieldValue('content', data)
+                setContent(data)
               }}
             />
-            {formik.touched.content && formik.errors.content ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.content}
-              </Typography>
-            ) : null}
+            {/* {formik.touched.content && formik.errors.content && (
+              <div className="error-message">{formik.errors.content}</div>
+            )} */}
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
@@ -903,6 +897,7 @@ const LateRequest = () => {
 }
 
 const LeaveRequest = ({ userId }) => {
+  const [content, setContent] = useState('')
   const [dateFrom, setDateFrom] = useState(dayjs(new Date()))
   const [dateTo, setDateTo] = useState(dayjs(new Date()))
   const [checked, setChecked] = useState(false)
@@ -934,7 +929,7 @@ const LeaveRequest = ({ userId }) => {
         let data = {
           userId: userId,
           title: values.title,
-          content: values.content,
+          content: content,
           fromDate: dateFrom.format('YYYY-MM-DD'),
           toDate: dateTo.format('YYYY-MM-DD'),
           halfDay: checked,
@@ -948,7 +943,7 @@ const LeaveRequest = ({ userId }) => {
         let data = {
           userId: userId,
           title: values.title,
-          content: values.content,
+          content: content,
           fromDate: dateFrom.format('YYYY-MM-DD'),
           toDate: dateTo.format('YYYY-MM-DD'),
           halfDay: false,
@@ -984,11 +979,9 @@ const LeaveRequest = ({ userId }) => {
               size="small"
               placeholder="Enter the request title"
             />
-            {formik.touched.title && formik.errors.title ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.title}
-              </Typography>
-            ) : null}
+            {formik.touched.title && formik.errors.title && (
+              <div className="error-message">{formik.errors.title}</div>
+            )}
           </Grid>
 
           <Grid item xs={6} mb={2}>
@@ -1045,18 +1038,13 @@ const LeaveRequest = ({ userId }) => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Content</Typography>
             <CKEditor
+              data={content}
               editor={ClassicEditor}
-              data={formik.values.content}
               onChange={(event, editor) => {
                 const data = editor.getData()
-                formik.setFieldValue('content', data)
+                setContent(data)
               }}
             />
-            {formik.touched.content && formik.errors.content ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.content}
-              </Typography>
-            ) : null}
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
@@ -1207,11 +1195,6 @@ const WorkingOutSideRequest = () => {
                 formik.setFieldValue('content', data)
               }}
             />
-            {formik.touched.content && formik.errors.content ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.content}
-              </Typography>
-            ) : null}
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">

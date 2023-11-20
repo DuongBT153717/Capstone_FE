@@ -3,5 +3,5 @@ export const validationSchema = Yup.object({
     title: Yup.string()
     .required('Title is required'), 
     content: Yup.string()
-    .required('Title is required') 
+    .required('Content is required')
 })

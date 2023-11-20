@@ -194,7 +194,7 @@ export default function CheckAttendanceManager() {
       headerName: 'Action',
       headerAlign: 'center',
       align: 'center',
-      width: 150,
+      width: 300,
       sortable: false,
       filterable: false,
       renderCell: (params) => {

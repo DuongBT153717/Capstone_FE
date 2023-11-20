@@ -118,6 +118,13 @@ export default function CheckAttendanceManager() {
       field: 'checkout',
       headerName: 'Check out',
       width: 100
+      // valueGetter: ({ row, value }) => {
+      //   if (row.id === 'TOTAL') {
+      //     const totalQuantity = items.reduce((total, item) => total + item.price, 0)
+      //     return `${totalQuantity.toFixed(2)}`
+      //   }
+      //   return value
+      // }
     },
     {
       field: 'totalAttendance',
@@ -194,7 +201,7 @@ export default function CheckAttendanceManager() {
       headerName: 'Action',
       headerAlign: 'center',
       align: 'center',
-      width: 150,
+      width: 300,
       sortable: false,
       filterable: false,
       renderCell: (params) => {

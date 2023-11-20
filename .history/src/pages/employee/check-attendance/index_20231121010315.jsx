@@ -11,7 +11,7 @@ import LateRequestModal from './components/LateRequestModal'
 import { formatDateNotTime } from '../../../utils/formatDate'
 import { useNavigate } from 'react-router-dom'
 
-export default function CheckAttendanceManager() {
+export default function CheckAttendance() {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
 
   const [isLoading, setIsLoading] = useState(false)
@@ -74,6 +74,8 @@ export default function CheckAttendanceManager() {
             <GridToolbarExport />
           </Box>
           <Box>
+          <Box>
+            <Button>Attendance Request</Button>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 maxDate={new Date()}
@@ -84,6 +86,7 @@ export default function CheckAttendanceManager() {
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
               />
             </LocalizationProvider>
+          </Box>
           </Box>
         </Box>
       </GridToolbarContainer>
@@ -118,6 +121,13 @@ export default function CheckAttendanceManager() {
       field: 'checkout',
       headerName: 'Check out',
       width: 100
+      // valueGetter: ({ row, value }) => {
+      //   if (row.id === 'TOTAL') {
+      //     const totalQuantity = items.reduce((total, item) => total + item.price, 0)
+      //     return `${totalQuantity.toFixed(2)}`
+      //   }
+      //   return value
+      // }
     },
     {
       field: 'totalAttendance',
@@ -179,7 +189,7 @@ export default function CheckAttendanceManager() {
     },
     {
       field: 'permittedLeave',
-      headerName: 'Leave',
+      headerName: 'Permitted Leave',
       width: 150,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
@@ -190,11 +200,61 @@ export default function CheckAttendanceManager() {
       }
     },
     {
+      field: 'nonPermittedLeave',
+      headerName: 'Non Permitted Leave',
+      width: 200,
+      valueGetter: ({ row, value }) => {
+        if (row.id === 'TOTAL') {
+          const nonPermittedLeave = dailyLog.reduce(
+            (total, item) => total + item.nonPermittedLeave,
+            0
+          )
+          return `${nonPermittedLeave}`
+        }
+        return value
+      }
+    },
+    {
+      field: 'violate',
+      headerName: 'Violate',
+      width: 150,
+      valueGetter: ({ row, value }) => {
+        if (row.id === 'TOTAL' && userAttendance && userAttendance.totalAttendanceUser) {
+          return `${userAttendance.totalAttendanceUser.violateTotal}`
+        }
+        return value === true ? 1 : 0
+      }
+    },
+    {
+      field: 'outsideWork',
+      headerName: 'Outside Work',
+      width: 150,
+      valueGetter: ({ row, value }) => {
+        if (row.id === 'TOTAL') {
+          const outsideWork = dailyLog.reduce((total, item) => total + item.outsideWork, 0)
+          return `${outsideWork}`
+        }
+        return value
+      }
+    },
+    {
+      field: 'paidDay',
+      headerName: 'Paid Day',
+      width: 120,
+      valueGetter: ({ row, value }) => {
+        if (row.id === 'TOTAL') {
+          const paidDay = dailyLog.reduce((total, item) => total + item.paidDay, 0)
+          return `${paidDay.toFixed(2)}`
+        }
+        return value
+      }
+    },
+    {
       field: 'action',
       headerName: 'Action',
       headerAlign: 'center',
       align: 'center',
-      width: 150,
+      width: 300,
       sortable: false,
       filterable: false,
       renderCell: (params) => {

@@ -1,16 +1,6 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Grid,
-  MenuItem,
-  Select,
-  TextField,
-  Typography
-} from '@mui/material'
+import { Box, Button, Checkbox, FormControlLabel, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
 import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
@@ -32,13 +22,14 @@ const AttendenceFrom = ({ userId }) => {
   const [from, setFrom] = useState(dayjs(new Date()))
   const [to, setTo] = useState(dayjs(new Date()))
   const [date, setDate] = useState(dayjs(new Date()))
+  const [content, setContent] = useState('')
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [isFrom, setIsFrom] = useState(true)
   const [isTo, setIsTo] = useState(true)
-  const currentDate = new Date()
-  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
-  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
+  const currentDate = new Date();
+  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
       const response = await requestApi.getReceiveIdAndDepartment(userId)
@@ -65,7 +56,7 @@ const AttendenceFrom = ({ userId }) => {
       let data = {
         userId: userId,
         title: values.title,
-        content: values.content,
+        content: content,
         manualDate: date.format('YYYY-MM-DD'),
         manualFirstEntry: isFrom ? from.format('HH:mm:ss') : null,
         manualLastExit: isTo ? to.format('HH:mm:ss') : null,
@@ -96,11 +87,9 @@ const AttendenceFrom = ({ userId }) => {
               size="small"
               placeholder="Enter the request title"
             />
-            {formik.touched.title && formik.errors.title ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.title}
-              </Typography>
-            ) : null}
+            {formik.touched.title && formik.errors.title && (
+              <div className="error-message">{formik.errors.title}</div>
+            )}
           </Grid>
           <Grid item xs={4} mb={2}>
             <Typography fontWeight="500">Date</Typography>
@@ -108,7 +97,8 @@ const AttendenceFrom = ({ userId }) => {
               <DatePicker
                 value={date}
                 onChange={(date) => {
-                  setDate(date)
+                  setDate(date);
+             
                 }}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
                 minDate={firstDayOfMonth}
@@ -147,18 +137,16 @@ const AttendenceFrom = ({ userId }) => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Content</Typography>
             <CKEditor
+              data={content}
               editor={ClassicEditor}
-              data={formik.values.content}
               onChange={(event, editor) => {
                 const data = editor.getData()
-                formik.setFieldValue('content', data)
+                setContent(data)
               }}
             />
-            {formik.touched.content && formik.errors.content ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.content}
-              </Typography>
-            ) : null}
+            {/* {formik.touched.content && formik.errors.content && (
+              <div className="error-message">{formik.errors.content}</div>
+            )} */}
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
@@ -202,12 +190,13 @@ const OtFrom = () => {
   const [from, setFrom] = useState(dayjs(new Date()))
   const [to, setTo] = useState(dayjs(new Date()))
   const [date, setDate] = useState(dayjs(new Date()))
+  const [content, setContent] = useState('')
   const [topicOvertime, settopicOvertime] = useState('WEEKEND_AND_NORMAL_DAY')
   const [overtimeSystem, setOvertimeSystem] = useState({})
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
-  const currentDate = new Date()
-  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
-  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
+  const currentDate = new Date();
+  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const handleChange = (event) => {
@@ -242,7 +231,7 @@ const OtFrom = () => {
       let data = {
         userId: userId,
         title: values.title,
-        content: values.content,
+        content: content,
         topicOvertime: topicOvertime,
         overtimeDate: date.format('YYYY-MM-DD'),
         fromTime: from.format('HH:mm:ss'),
@@ -275,11 +264,9 @@ const OtFrom = () => {
               size="small"
               placeholder="Enter the request title"
             />
-            {formik.touched.title && formik.errors.title ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.title}
-              </Typography>
-            ) : null}
+            {formik.touched.title && formik.errors.title && (
+              <div className="error-message">{formik.errors.title}</div>
+            )}
           </Grid>
           <Grid item xs={12}>
             <Select
@@ -350,18 +337,16 @@ const OtFrom = () => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Reason</Typography>
             <CKEditor
+              data={content}
               editor={ClassicEditor}
-              data={formik.values.content}
               onChange={(event, editor) => {
                 const data = editor.getData()
-                formik.setFieldValue('content', data)
+                setContent(data)
               }}
             />
-            {formik.touched.content && formik.errors.content ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.content}
-              </Typography>
-            ) : null}
+            {/* {formik.touched.content && formik.errors.content && (
+              <div className="error-message">{formik.errors.content}</div>
+            )} */}
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
@@ -750,9 +735,9 @@ const LateRequest = () => {
   const [lateType, setLateType] = useState('LATE_MORNING')
   const [lateDuration, setLateDuration] = useState('')
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
-  const currentDate = new Date()
-  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
-  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
+  const currentDate = new Date();
+  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const handleChange = (event) => {
@@ -903,13 +888,14 @@ const LateRequest = () => {
 }
 
 const LeaveRequest = ({ userId }) => {
+  const [content, setContent] = useState('')
   const [dateFrom, setDateFrom] = useState(dayjs(new Date()))
   const [dateTo, setDateTo] = useState(dayjs(new Date()))
   const [checked, setChecked] = useState(false)
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
-  const currentDate = new Date()
-  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
+  const currentDate = new Date();
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
 
   const handleChangeHalfDay = (event) => {
     setChecked(event.target.checked)
@@ -934,7 +920,7 @@ const LeaveRequest = ({ userId }) => {
         let data = {
           userId: userId,
           title: values.title,
-          content: values.content,
+          content: content,
           fromDate: dateFrom.format('YYYY-MM-DD'),
           toDate: dateTo.format('YYYY-MM-DD'),
           halfDay: checked,
@@ -948,7 +934,7 @@ const LeaveRequest = ({ userId }) => {
         let data = {
           userId: userId,
           title: values.title,
-          content: values.content,
+          content: content,
           fromDate: dateFrom.format('YYYY-MM-DD'),
           toDate: dateTo.format('YYYY-MM-DD'),
           halfDay: false,
@@ -984,11 +970,9 @@ const LeaveRequest = ({ userId }) => {
               size="small"
               placeholder="Enter the request title"
             />
-            {formik.touched.title && formik.errors.title ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.title}
-              </Typography>
-            ) : null}
+            {formik.touched.title && formik.errors.title && (
+              <div className="error-message">{formik.errors.title}</div>
+            )}
           </Grid>
 
           <Grid item xs={6} mb={2}>
@@ -1007,8 +991,8 @@ const LeaveRequest = ({ userId }) => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 value={dateTo}
-                minDate={dateFrom}
-                disablePast
+                minDate={dateFrom} 
+                disablePast   
                 onChange={(e) => setDateTo(e)}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
               />
@@ -1045,18 +1029,13 @@ const LeaveRequest = ({ userId }) => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Content</Typography>
             <CKEditor
+              data={content}
               editor={ClassicEditor}
-              data={formik.values.content}
               onChange={(event, editor) => {
                 const data = editor.getData()
-                formik.setFieldValue('content', data)
+                setContent(data)
               }}
             />
-            {formik.touched.content && formik.errors.content ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.content}
-              </Typography>
-            ) : null}
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
@@ -1096,39 +1075,40 @@ const LeaveRequest = ({ userId }) => {
   )
 }
 
+
 const WorkingOutSideRequest = () => {
-  const [date, setDate] = useState(dayjs(new Date()))
-  const [outSideType, setOutSideType] = useState('HALF_MORNING')
-  const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
-  const [isChecked, setIsChecked] = useState(true)
-  const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
-  const currentUser = useSelector((state) => state.auth.login?.currentUser)
+  const [date, setDate] = useState(dayjs(new Date()));
+  const [outSideType, setOutSideType] = useState('HALF_MORNING');
+  const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('');
+  const [isChecked, setIsChecked] = useState(true);
+  const userId = useSelector((state) => state.auth.login?.currentUser?.accountId);
+  const currentUser = useSelector((state) => state.auth.login?.currentUser);
 
   const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked)
-
+    setIsChecked(event.target.checked);
+    
     if (!event.target.checked) {
-      setOutSideType('HALF_MORNING')
+      setOutSideType('HALF_MORNING');
     }
-  }
+  };
 
   const handleChange = (event) => {
-    setOutSideType(event.target.value)
-  }
+    setOutSideType(event.target.value);
+  };
 
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
-      const response = await requestApi.getReceiveIdAndDepartment(userId)
-      setReceiveIdAndDepartment(response)
-    }
-    fetchReceiveIdAndDepartment()
-  }, [])
+      const response = await requestApi.getReceiveIdAndDepartment(userId);
+      setReceiveIdAndDepartment(response);
+    };
+    fetchReceiveIdAndDepartment();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
       title: '',
       content: '',
-      type: ''
+      type: '',
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -1136,15 +1116,15 @@ const WorkingOutSideRequest = () => {
         userId: userId,
         title: values.title,
         content: values.content,
-        type: outSideType,
+        type:outSideType,
         date: date.format('YYYY-MM-DD'),
         departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-        receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
-      }
-      console.log(data)
-      requestApi.requestOutSideWorkForm(data)
-    }
-  })
+        receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId,
+      };
+      console.log(data);
+      requestApi.requestOutSideWorkForm(data);
+    },
+  });
 
   return (
     <Box p={3} pl={0}>
@@ -1182,17 +1162,23 @@ const WorkingOutSideRequest = () => {
           </Grid>
           <Grid item xs={12} mt={-3}>
             <FormControlLabel
-              control={<Checkbox checked={isChecked} onChange={handleCheckboxChange} />}
+              control={
+                <Checkbox
+                  checked={isChecked}
+                  onChange={handleCheckboxChange}
+                />
+              }
               label="Half Day"
             />
           </Grid>
           <Grid item xs={12}>
             Type
             <Select
-              value={isChecked ? outSideType : 'ALL_DAY'}
+              value={isChecked ? outSideType : "ALL_DAY"}
               sx={{ width: '100%' }}
               onChange={handleChange}
-              disabled={!isChecked}>
+              disabled={!isChecked}
+            >
               <MenuItem value="HALF_MORNING">MORNING</MenuItem>
               <MenuItem value="HALF_AFTERNOON">AFTERNOON</MenuItem>
             </Select>
@@ -1200,18 +1186,13 @@ const WorkingOutSideRequest = () => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Reason</Typography>
             <CKEditor
+              data={content}
               editor={ClassicEditor}
-              data={formik.values.content}
               onChange={(event, editor) => {
-                const data = editor.getData()
-                formik.setFieldValue('content', data)
+                const data = editor.getData();
+                setContent(data);
               }}
             />
-            {formik.touched.content && formik.errors.content ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.content}
-              </Typography>
-            ) : null}
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
@@ -1248,7 +1229,8 @@ const WorkingOutSideRequest = () => {
         </Box>
       </form>
     </Box>
-  )
-}
+  );
+
+};
 
 export { AttendenceFrom, LeaveRequest, OtFrom, OtherRequest, LateRequest, WorkingOutSideRequest }

@@ -32,6 +32,7 @@ const AttendenceFrom = ({ userId }) => {
   const [from, setFrom] = useState(dayjs(new Date()))
   const [to, setTo] = useState(dayjs(new Date()))
   const [date, setDate] = useState(dayjs(new Date()))
+  const [content, setContent] = useState('')
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [isFrom, setIsFrom] = useState(true)
@@ -65,7 +66,7 @@ const AttendenceFrom = ({ userId }) => {
       let data = {
         userId: userId,
         title: values.title,
-        content: values.content,
+        content: content,
         manualDate: date.format('YYYY-MM-DD'),
         manualFirstEntry: isFrom ? from.format('HH:mm:ss') : null,
         manualLastExit: isTo ? to.format('HH:mm:ss') : null,
