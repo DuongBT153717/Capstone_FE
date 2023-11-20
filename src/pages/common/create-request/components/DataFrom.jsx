@@ -27,6 +27,9 @@ const AttendenceFrom = ({ userId }) => {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [isFrom, setIsFrom] = useState(true)
   const [isTo, setIsTo] = useState(true)
+  const currentDate = new Date();
+  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
       const response = await requestApi.getReceiveIdAndDepartment(userId)
@@ -93,8 +96,13 @@ const AttendenceFrom = ({ userId }) => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 value={date}
-                onChange={(e) => setDate(e)}
+                onChange={(date) => {
+                  setDate(date);
+             
+                }}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
+                minDate={firstDayOfMonth}
+                maxDate={lastDayOfMonth}
               />
             </LocalizationProvider>
           </Grid>
@@ -186,6 +194,9 @@ const OtFrom = () => {
   const [topicOvertime, settopicOvertime] = useState('WEEKEND_AND_NORMAL_DAY')
   const [overtimeSystem, setOvertimeSystem] = useState({})
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
+  const currentDate = new Date();
+  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const handleChange = (event) => {
@@ -298,6 +309,8 @@ const OtFrom = () => {
                 value={date}
                 onChange={(e) => setDate(e)}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
+                minDate={firstDayOfMonth}
+                maxDate={lastDayOfMonth}
               />
             </LocalizationProvider>
           </Grid>
@@ -722,6 +735,9 @@ const LateRequest = () => {
   const [lateType, setLateType] = useState('LATE_MORNING')
   const [lateDuration, setLateDuration] = useState('')
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
+  const currentDate = new Date();
+  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const handleChange = (event) => {
@@ -796,6 +812,8 @@ const LateRequest = () => {
                 value={date}
                 onChange={(e) => setDate(e)}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
+                minDate={firstDayOfMonth}
+                maxDate={lastDayOfMonth}
               />
             </LocalizationProvider>
           </Grid>
@@ -876,6 +894,8 @@ const LeaveRequest = ({ userId }) => {
   const [checked, setChecked] = useState(false)
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
+  const currentDate = new Date();
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
 
   const handleChangeHalfDay = (event) => {
     setChecked(event.target.checked)
@@ -960,6 +980,7 @@ const LeaveRequest = ({ userId }) => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 value={dateFrom}
+                minDate={firstDayOfMonth}
                 onChange={(e) => setDateFrom(e)}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
               />
@@ -970,6 +991,8 @@ const LeaveRequest = ({ userId }) => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 value={dateTo}
+                minDate={dateFrom} 
+                disablePast   
                 onChange={(e) => setDateTo(e)}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
               />
@@ -1054,25 +1077,24 @@ const LeaveRequest = ({ userId }) => {
 
 
 const WorkingOutSideRequest = () => {
-  const [from, setFrom] = useState(dayjs(new Date()));
-  const [to, setTo] = useState(dayjs(new Date()));
   const [date, setDate] = useState(dayjs(new Date()));
   const [content, setContent] = useState('');
+  const [outSideType, setOutSideType] = useState('HALF_MORNING');
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('');
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId);
   const currentUser = useSelector((state) => state.auth.login?.currentUser);
-  const [selectedFrom, setSelectedFrom] = useState(dayjs(new Date()).set({ hour: 8, minute: 30, second: 0 }));
+
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
-
-    if (event.target.checked) {
-      setSelectedFrom(dayjs(new Date()).set({ hour: 8, minute: 30, second: 0 }));
-      setTo(dayjs(new Date()).set({ hour: 17, minute: 30, second: 0 }));
-    } else {
-      setSelectedFrom(dayjs(new Date()));
-      setTo(dayjs(new Date()));
+    
+    if (!event.target.checked) {
+      setOutSideType('HALF_MORNING');
     }
+  };
+
+  const handleChange = (event) => {
+    setOutSideType(event.target.value);
   };
 
   useEffect(() => {
@@ -1083,19 +1105,11 @@ const WorkingOutSideRequest = () => {
     fetchReceiveIdAndDepartment();
   }, []);
 
-  useEffect(() => {
-    const fetchOvertimeSystem = async () => {
-      const response = await overtimeApi.getOvertimeSystem(userId, date.format('YYYY-MM-DD'));
-      setOvertimeSystem(response);
-    };
-    fetchOvertimeSystem();
-  }, [date]);
-
   const formik = useFormik({
     initialValues: {
       title: '',
       content: '',
-      topicOvertime: ''
+      type: '',
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -1103,15 +1117,14 @@ const WorkingOutSideRequest = () => {
         userId: userId,
         title: values.title,
         content: content,
-        overtimeDate: date.format('YYYY-MM-DD'),
-        fromTime: from.format('HH:mm:ss'),
-        toTime: to.format('HH:mm:ss'),
+        type:outSideType,
+        date: date.format('YYYY-MM-DD'),
         departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-        receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+        receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId,
       };
       console.log(data);
-      requestApi.requestOverTimeForm(data);
-    }
+      requestApi.requestOutSideWorkForm(data);
+    },
   });
 
   return (
@@ -1138,7 +1151,7 @@ const WorkingOutSideRequest = () => {
               <div className="error-message">{formik.errors.title}</div>
             )}
           </Grid>
-          <Grid item xs={4} mb={2}>
+          <Grid item xs={3} mb={2}>
             <Typography fontWeight="500">Date</Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
@@ -1148,28 +1161,7 @@ const WorkingOutSideRequest = () => {
               />
             </LocalizationProvider>
           </Grid>
-          <Grid item xs={4} mb={2}>
-            <Typography fontWeight="500">From</Typography>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker
-               disabled={isChecked}
-                value={isChecked ? selectedFrom : selectedFrom}
-                onChange={(e) => setSelectedFrom(e)}
-                renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
-              />
-            </LocalizationProvider>
-          </Grid>
-          <Grid item xs={4} mb={2}>
-            <Typography fontWeight="500">To</Typography>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker
-                value=""
-                onChange={(e) => setTo(e)}
-                renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
-              />
-            </LocalizationProvider>
-          </Grid>
-          <Grid item xs={12} mt={2}>
+          <Grid item xs={12} mt={-3}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -1177,8 +1169,20 @@ const WorkingOutSideRequest = () => {
                   onChange={handleCheckboxChange}
                 />
               }
-              label="All Day"
+              label="Half Day"
             />
+          </Grid>
+          <Grid item xs={12}>
+            Type
+            <Select
+              value={isChecked ? outSideType : "ALL_DAY"}
+              sx={{ width: '100%' }}
+              onChange={handleChange}
+              disabled={!isChecked}
+            >
+              <MenuItem value="HALF_MORNING">MORNING</MenuItem>
+              <MenuItem value="HALF_AFTERNOON">AFTERNOON</MenuItem>
+            </Select>
           </Grid>
           <Grid item xs={12}>
             <Typography fontWeight="500">Reason</Typography>
@@ -1190,9 +1194,6 @@ const WorkingOutSideRequest = () => {
                 setContent(data);
               }}
             />
-            {/* {formik.touched.content && formik.errors.content && (
-              <div className="error-message">{formik.errors.content}</div>
-            )} */}
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
@@ -1230,6 +1231,7 @@ const WorkingOutSideRequest = () => {
       </form>
     </Box>
   );
+
 };
 
 export { AttendenceFrom, LeaveRequest, OtFrom, OtherRequest, LateRequest, WorkingOutSideRequest }
