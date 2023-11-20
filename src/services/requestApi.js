@@ -337,6 +337,19 @@ const requestApi = {
       }
     }
   },
+  requestOutSideWorkForm: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/workingOutForm`, data)
+      toast.success('Send request successfully')
+    } catch (error) {
+      if (error.response.status === 400) {
+        toast.error('Date from must be after system check in!')
+      }
+      if (error.response.status === 404) {
+        toast.error('User not found!')
+      }
+    }
+  },
   requestLateForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/lateForm`, data)
