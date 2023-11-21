@@ -1089,7 +1089,7 @@ const WorkingOutSideRequest = () => {
     setIsChecked(event.target.checked);
 
     if (!event.target.checked) {
-      setOutSideType('HALF_MORNING');
+      setOutSideType('ALL_DAY');
     }
   };
 

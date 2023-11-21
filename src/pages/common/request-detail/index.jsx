@@ -190,7 +190,7 @@ const TicketDetail = () => {
       }
     }else if (request[0]?.object?.topic === 'OUTSIDE_REQUEST') {
       let data = {
-        workingOutsideId: request[0]?.object.workingOutsideId,
+        workOutsideRequestId: request[0]?.object.workOutsideRequestId,
         content: contentReason
       }
       console.log(data)
@@ -862,7 +862,7 @@ const TicketDetail = () => {
     }
   }
 
-  console.log(request[0]?.requestMessageResponse?.requestTicketStatus)
+  console.log(request[0]?.object?.type)
   return (
     <>
       {request.length === 0 ? (

@@ -184,7 +184,7 @@ const requestApi = {
   },
   acceptOutSideRequest: async (data) => {
     let data1 = {
-      workingOutsideId: data
+      workOutsideRequestId: data
     }
     try {
       await axiosClient.post(`${BASE_URL}/acceptWorkingOutside`, data1)
@@ -299,6 +299,8 @@ const requestApi = {
       }
       if (error.response.status === 404) {
         toast.error('User not found!')
+      } if (error.response.status === 500) {
+        toast.error('Can not accept')
       }
     }
   },
