@@ -158,7 +158,19 @@ const userApi = {
         toast.error('Can not delete!')
       }
     }
-  }
+  },
+  getAllEmployeeByDepartmentId: (data) => {
+    try {
+      let res =  axiosClient.get(`${BASE_URL}/getAllDepartmentEmployee`,{
+        params: {
+          department_id: data,
+        }
+      })
+      return res;
+    } catch (error) {
+
+    }
+  },
 }
 
 export default userApi
