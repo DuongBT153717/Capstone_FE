@@ -229,6 +229,14 @@ const requestApi = {
       console.log(error)
     }
   },
+  rejectOutSideRequest: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/rejectWorkingOutside`, data)
+      toast.success('Reject request success')
+    } catch (error) {
+      console.log(error)
+    }
+  },
   rejectOvertimeRequest: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/rejectOvertimeRequest`, data)

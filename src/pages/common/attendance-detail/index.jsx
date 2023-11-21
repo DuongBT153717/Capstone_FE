@@ -85,7 +85,7 @@ const AttendanceDetail = () => {
                               <Typography marginLeft="15px">{item?.log}</Typography>
                             </Box>
                           </Box>
-                          <Divider sx={{mb: 2}} />
+                          <Divider sx={{ mb: 2 }} />
                         </>
                       ))
                     ) : (
@@ -137,13 +137,7 @@ const AttendanceDetail = () => {
                 </Paper>
               )}
 
-              {isLoading ? (
-                <Paper sx={{ padding: 2, m: 2 }} elevation={4}>
-                  <Box display="flex" justifyContent="center" alignItems="center" height="300px">
-                    <CircularProgress />
-                  </Box>
-                </Paper>
-              ) : (
+              {currentUser?.role === 'employee' && !isLoading ? (
                 <Paper sx={{ margin: '40px 0px 0px 40px', p: '15px' }} elevation={4}>
                   <Typography fontWeight="700" fontSize="30px" mb={3}>
                     Violate{' '}
@@ -155,31 +149,20 @@ const AttendanceDetail = () => {
                       display="flex"
                       flexDirection="column"
                       gap="15px"
-                      borderRight="1px solid #999">
+                      borderRight="1px solid #999"
+                    >
                       <Typography>Authorized late </Typography>
                       <Typography>Authorized early </Typography>
                       <Typography>Leave without notice </Typography>
                     </Box>
                     <Box display="flex" flexDirection="column" gap="15px">
-                      <Checkbox
-                        sx={{ p: 0 }}
-                        disabled
-                        checked={userAttendanceDetail?.lateCheckin}
-                      />
-                      <Checkbox
-                        sx={{ p: 0 }}
-                        disabled
-                        checked={userAttendanceDetail?.earlyCheckout}
-                      />
-                      <Checkbox
-                        sx={{ p: 0 }}
-                        disabled
-                        checked={userAttendanceDetail?.nonPermittedLeave}
-                      />
+                      <Checkbox sx={{ p: 0 }} disabled checked={userAttendanceDetail?.lateCheckin} />
+                      <Checkbox sx={{ p: 0 }} disabled checked={userAttendanceDetail?.earlyCheckout} />
+                      <Checkbox sx={{ p: 0 }} disabled checked={userAttendanceDetail?.nonPermittedLeave} />
                     </Box>
                   </Box>
                 </Paper>
-              )}
+              ) : null}
             </Box>
           </Box>
         </Box>

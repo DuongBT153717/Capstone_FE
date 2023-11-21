@@ -188,6 +188,16 @@ const TicketDetail = () => {
       if (currentUser?.role === 'manager') {
         navigate('/request-list-manager')
       }
+    }else if (request[0]?.object?.topic === 'OUTSIDE_REQUEST') {
+      let data = {
+        workingOutsideId: request[0]?.object.workingOutsideId,
+        content: contentReason
+      }
+      console.log(data)
+      requestApi.rejectOutSideRequest(data)
+      if (currentUser?.role === 'manager') {
+        navigate('/request-list-manager')
+      }
     }
   }
 
