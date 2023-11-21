@@ -184,7 +184,7 @@ const requestApi = {
   },
   acceptOutSideRequest: async (data) => {
     let data1 = {
-      lateMessageRequestId: data
+      workingOutsideId: data
     }
     try {
       await axiosClient.post(`${BASE_URL}/acceptWorkingOutside`, data1)

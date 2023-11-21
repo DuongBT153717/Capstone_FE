@@ -133,7 +133,7 @@ const TicketDetail = () => {
       requestApi.acceptLateRequest(request[0]?.object?.lateRequestId)
     } else if (request[0]?.object?.topic === 'OUTSIDE_REQUEST') {
       requestApi.acceptOutSideRequest(request[0]?.object?.workingOutsideId)
-      console.log(request[0]?.object?.workingOutsideId);
+      // console.log(request[0]?.object?.workingOutsideId);
     }
   }
 
