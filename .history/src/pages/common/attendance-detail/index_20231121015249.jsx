@@ -120,12 +120,8 @@ const AttendanceDetail = () => {
                       <Typography mb={1}>Total Attendance </Typography>
                       <Typography mb={1}>Total Morning </Typography>
                       <Typography mb={1}>Total Afternoon </Typography>
-                      {currentUser?.role === 'employee' && (
-                        <>
-                          <Typography mb={1}>Permitted Leave </Typography>
-                          <Typography>Out-side Work </Typography>
-                        </>
-                      )}
+                      <Typography mb={1}>Permitted Leave </Typography>
+                      <Typography>Out-side Work </Typography>
                     </Box>
                     <Box flex="2" marginLeft="10px">
                       <Typography mb={1}>{userAttendanceDetail?.dateDaily} </Typography>

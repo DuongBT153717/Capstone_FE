@@ -526,6 +526,56 @@ const OtherRequest = ({ userId }) => {
     requestApi.requestOtherForm(data)
   }
 
+  // const formik = useFormik({
+  //   initialValues: {
+  //     title: '',
+  //   },
+  //   validationSchema: validationSchema,
+  //   onSubmit: (values) => {
+  //     let data = {
+  //       userId: userId,
+  //       title: title,
+  //       content: content,
+  //       departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+  //       receivedId: managerId
+  //     };
+  //     console.log(data);
+  //     if (currentUser?.role === 'employee' && role === 'manager') {
+  //       callApiEmployee(e, receiveIdAndDepartment?.managerInfoResponse?.managerId)
+  //     } else if (currentUser?.role === 'employee' && role === 'hr') {
+  //       callApiOther(e, 3)
+  //     } else if (currentUser?.role === 'employee' && role === 'security') {
+  //       callApiOther(e, 10)
+  //     } else if (currentUser?.role === 'employee' && role === 'admin') {
+  //       callApiOther(e, 9)
+  //     } else if (currentUser?.role === 'manager' && role === 'admin') {
+  //       callApiOther(e, 9)
+  //     } else if (currentUser?.role === 'manager' && role === 'security') {
+  //       callApiOther(e, 10)
+  //     } else if (currentUser?.role === 'manager' && role === 'hr') {
+  //       callApiOther(e, 3)
+  //     } else if (currentUser?.role === 'hr' && role === 'admin') {
+  //       callApiOther(e, 9)
+  //     } else if (currentUser?.role === 'hr' && role === 'security') {
+  //       callApiOther(e, 10)
+  //     } else if (currentUser?.role === 'hr' && role === 'manager') {
+  //       callApiToManager(e, department)
+  //     } else if (currentUser?.role === 'security' && role === 'admin') {
+  //       callApiOther(e, 9)
+  //     } else if (currentUser?.role === 'security' && role === 'hr') {
+  //       callApiOther(e, 3)
+  //     } else if (currentUser?.role === 'security' && role === 'manager') {
+  //       callApiToManager(e, department)
+  //     } else if (currentUser?.role === 'admin' && role === 'security') {
+  //       callApiOther(e, 10)
+  //     } else if (currentUser?.role === 'admin' && role === 'hr') {
+  //       callApiOther(e, 3)
+  //     } else if (currentUser?.role === 'admin' && role === 'manager') {
+  //       callApiToManager(e, department)
+  //     }
+  //   },
+  // });
+
   const handleDepartment = () => {
     if (currentUser?.role === 'admin' && role === 'manager') {
       return (

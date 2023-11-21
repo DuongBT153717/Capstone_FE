@@ -60,7 +60,6 @@ import AttendanceDetail from '../pages/common/attendance-detail'
 import CheckOvertime from '../pages/employee/check-overtime'
 import EvaluateReport from '../pages/employee/attendance-evaluate-report'
 import CheckAttendanceManager from '../pages/manager/check-attendance'
-import CreateEvaluate from '../pages/manager/create-evaluate'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))

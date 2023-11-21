@@ -27,7 +27,7 @@ const AttendanceDetail = () => {
     fetchUserAttendanceDetail()
   }, [])
 
-  console.log(userAttendanceDetail)
+  console.log(userAttendanceDetail);
 
   return (
     <>
@@ -85,7 +85,7 @@ const AttendanceDetail = () => {
                               <Typography marginLeft="15px">{item?.log}</Typography>
                             </Box>
                           </Box>
-                          <Divider sx={{ mb: 2 }} />
+                          <Divider sx={{mb: 2}} />
                         </>
                       ))
                     ) : (
@@ -120,86 +120,66 @@ const AttendanceDetail = () => {
                       <Typography mb={1}>Total Attendance </Typography>
                       <Typography mb={1}>Total Morning </Typography>
                       <Typography mb={1}>Total Afternoon </Typography>
-                      {currentUser?.role === 'employee' && (
-                        <>
-                          <Typography mb={1}>Permitted Leave </Typography>
-                          <Typography>Out-side Work </Typography>
-                        </>
-                      )}
+                      <Typography mb={1}>Permitted Leave </Typography>
+                      <Typography>Out-side Work </Typography>
                     </Box>
                     <Box flex="2" marginLeft="10px">
                       <Typography mb={1}>{userAttendanceDetail?.dateDaily} </Typography>
-                      <Typography mb={1}>
-                        {userAttendanceDetail?.checkin === null
-                          ? 'none'
-                          : userAttendanceDetail?.checkin}{' '}
-                      </Typography>
-                      <Typography mb={1}>
-                        {userAttendanceDetail?.checkout === null
-                          ? 'none'
-                          : userAttendanceDetail?.checkout}{' '}
-                      </Typography>
+                      <Typography mb={1}>{userAttendanceDetail?.checkin === null ? 'none' : userAttendanceDetail?.checkin} </Typography>
+                      <Typography mb={1}>{userAttendanceDetail?.checkout === null ? 'none' : userAttendanceDetail?.checkout} </Typography>
                       <Typography mb={1}>{userAttendanceDetail?.totalAttendance}</Typography>
                       <Typography mb={1}>{userAttendanceDetail?.morningTotal}</Typography>
                       <Typography mb={1}>{userAttendanceDetail?.afternoonTotal}</Typography>
-                      {currentUser?.role === 'employee' && (
-                        <>
-                          <Typography mb={1}>{userAttendanceDetail?.permittedLeave}</Typography>
-                          <Typography>{userAttendanceDetail?.outsideWork}</Typography>
-                        </>
-                      )}
+                      <Typography mb={1}>{userAttendanceDetail?.permittedLeave}</Typography>
+                      <Typography>{userAttendanceDetail?.outsideWork}</Typography>
                     </Box>
                   </Box>
                 </Paper>
               )}
 
-              {currentUser?.role === 'employee' ? (
-                isLoading ? (
-                  <Paper sx={{ padding: 2, m: 2 }} elevation={4}>
-                    <Box display="flex" justifyContent="center" alignItems="center" height="300px">
-                      <CircularProgress />
-                    </Box>
-                  </Paper>
-                ) : (
-                  <Paper sx={{ margin: '40px 0px 0px 40px', p: '15px' }} elevation={4}>
-                    <Typography fontWeight="700" fontSize="30px" mb={3}>
-                      Violate{' '}
-                    </Typography>
-                    <Box display="flex" marginTop="10px">
-                      <Box
-                        mr={2}
-                        pr={4}
-                        display="flex"
-                        flexDirection="column"
-                        gap="15px"
-                        borderRight="1px solid #999">
-                        <Typography>Authorized late </Typography>
-                        <Typography>Authorized early </Typography>
-                        <Typography>Leave without notice </Typography>
-                      </Box>
-                      <Box display="flex" flexDirection="column" gap="15px">
-                        <Checkbox
-                          sx={{ p: 0 }}
-                          disabled
-                          checked={userAttendanceDetail?.lateCheckin}
-                        />
-                        <Checkbox
-                          sx={{ p: 0 }}
-                          disabled
-                          checked={userAttendanceDetail?.earlyCheckout}
-                        />
-                        <Checkbox
-                          sx={{ p: 0 }}
-                          disabled
-                          checked={userAttendanceDetail?.nonPermittedLeave}
-                        />
-                      </Box>
-                    </Box>
-                  </Paper>
-                )
+              {currentUser?.role === 'employee' ? isLoading ? (
+                <Paper sx={{ padding: 2, m: 2 }} elevation={4}>
+                  <Box display="flex" justifyContent="center" alignItems="center" height="300px">
+                    <CircularProgress />
+                  </Box>
+                </Paper>
               ) : (
-                <></>
-              )}
+                <Paper sx={{ margin: '40px 0px 0px 40px', p: '15px' }} elevation={4}>
+                  <Typography fontWeight="700" fontSize="30px" mb={3}>
+                    Violate{' '}
+                  </Typography>
+                  <Box display="flex" marginTop="10px">
+                    <Box
+                      mr={2}
+                      pr={4}
+                      display="flex"
+                      flexDirection="column"
+                      gap="15px"
+                      borderRight="1px solid #999">
+                      <Typography>Authorized late </Typography>
+                      <Typography>Authorized early </Typography>
+                      <Typography>Leave without notice </Typography>
+                    </Box>
+                    <Box display="flex" flexDirection="column" gap="15px">
+                      <Checkbox
+                        sx={{ p: 0 }}
+                        disabled
+                        checked={userAttendanceDetail?.lateCheckin}
+                      />
+                      <Checkbox
+                        sx={{ p: 0 }}
+                        disabled
+                        checked={userAttendanceDetail?.earlyCheckout}
+                      />
+                      <Checkbox
+                        sx={{ p: 0 }}
+                        disabled
+                        checked={userAttendanceDetail?.nonPermittedLeave}
+                      />
+                    </Box>
+                  </Box>
+                </Paper>
+              ): <></>}
             </Box>
           </Box>
         </Box>

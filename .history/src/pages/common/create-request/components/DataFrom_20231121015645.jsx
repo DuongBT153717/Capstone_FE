@@ -526,6 +526,56 @@ const OtherRequest = ({ userId }) => {
     requestApi.requestOtherForm(data)
   }
 
+  // const formik = useFormik({
+  //   initialValues: {
+  //     title: '',
+  //   },
+  //   validationSchema: validationSchema,
+  //   onSubmit: (values) => {
+  //     let data = {
+  //       userId: userId,
+  //       title: title,
+  //       content: content,
+  //       departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+  //       receivedId: managerId
+  //     };
+  //     console.log(data);
+  //     if (currentUser?.role === 'employee' && role === 'manager') {
+  //       callApiEmployee(e, receiveIdAndDepartment?.managerInfoResponse?.managerId)
+  //     } else if (currentUser?.role === 'employee' && role === 'hr') {
+  //       callApiOther(e, 3)
+  //     } else if (currentUser?.role === 'employee' && role === 'security') {
+  //       callApiOther(e, 10)
+  //     } else if (currentUser?.role === 'employee' && role === 'admin') {
+  //       callApiOther(e, 9)
+  //     } else if (currentUser?.role === 'manager' && role === 'admin') {
+  //       callApiOther(e, 9)
+  //     } else if (currentUser?.role === 'manager' && role === 'security') {
+  //       callApiOther(e, 10)
+  //     } else if (currentUser?.role === 'manager' && role === 'hr') {
+  //       callApiOther(e, 3)
+  //     } else if (currentUser?.role === 'hr' && role === 'admin') {
+  //       callApiOther(e, 9)
+  //     } else if (currentUser?.role === 'hr' && role === 'security') {
+  //       callApiOther(e, 10)
+  //     } else if (currentUser?.role === 'hr' && role === 'manager') {
+  //       callApiToManager(e, department)
+  //     } else if (currentUser?.role === 'security' && role === 'admin') {
+  //       callApiOther(e, 9)
+  //     } else if (currentUser?.role === 'security' && role === 'hr') {
+  //       callApiOther(e, 3)
+  //     } else if (currentUser?.role === 'security' && role === 'manager') {
+  //       callApiToManager(e, department)
+  //     } else if (currentUser?.role === 'admin' && role === 'security') {
+  //       callApiOther(e, 10)
+  //     } else if (currentUser?.role === 'admin' && role === 'hr') {
+  //       callApiOther(e, 3)
+  //     } else if (currentUser?.role === 'admin' && role === 'manager') {
+  //       callApiToManager(e, department)
+  //     }
+  //   },
+  // });
+
   const handleDepartment = () => {
     if (currentUser?.role === 'admin' && role === 'manager') {
       return (
@@ -696,6 +746,7 @@ const OtherRequest = ({ userId }) => {
 
 const LateRequest = () => {
   const [date, setDate] = useState(dayjs(new Date()))
+  const [content, setContent] = useState('')
   const [lateType, setLateType] = useState('LATE_MORNING')
   const [lateDuration, setLateDuration] = useState('')
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
@@ -727,7 +778,7 @@ const LateRequest = () => {
       let data = {
         userId: userId,
         title: values.title,
-        content: values.content,
+        content: content,
         lateType: lateType,
         lateDuration: lateDuration,
         requestDate: date.format('YYYY-MM-DD'),
@@ -758,11 +809,9 @@ const LateRequest = () => {
               size="small"
               placeholder="Enter the request title"
             />
-            {formik.touched.title && formik.errors.title ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.title}
-              </Typography>
-            ) : null}
+            {formik.touched.title && formik.errors.title && (
+              <div className="error-message">{formik.errors.title}</div>
+            )}
           </Grid>
           <Grid item xs={12}>
             Type
@@ -804,18 +853,16 @@ const LateRequest = () => {
           <Grid item xs={12}>
             <Typography fontWeight="500">Reason</Typography>
             <CKEditor
+              data={content}
               editor={ClassicEditor}
-              data={formik.values.content}
               onChange={(event, editor) => {
                 const data = editor.getData()
-                formik.setFieldValue('content', data)
+                setContent(data)
               }}
             />
-            {formik.touched.content && formik.errors.content ? (
-              <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
-                {formik.errors.content}
-              </Typography>
-            ) : null}
+            {/* {formik.touched.content && formik.errors.content && (
+              <div className="error-message">{formik.errors.content}</div>
+            )} */}
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
