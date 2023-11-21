@@ -42,6 +42,8 @@ const ManagerSidebar = () => {
                         : window.location.pathname === '/notification-department-manager'
                         ? 7 : window.location.pathname === '/check-attendance-manager'
                         ? 9
+                        : window.location.pathname === '/log-management'
+                        ? 10 
                         : 0
     return initialIndex
   })
@@ -235,6 +237,13 @@ const ManagerSidebar = () => {
             component={<Link to="/check-attendance-manager" onClick={() => setActiveIndex(9)} />}>
             {' '}
             Check Your Attendance
+          </MenuItem>
+          <MenuItem
+            active={activeIndex === 10}
+            icon={<ChecklistRtlIcon />}
+            component={<Link to="/log-management" onClick={() => setActiveIndex(10)} />}>
+            {' '}
+           Log Management
           </MenuItem>
         </Menu>
       </Sidebar>

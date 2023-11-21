@@ -61,6 +61,8 @@ import CheckOvertime from '../pages/employee/check-overtime'
 import EvaluateReport from '../pages/employee/attendance-evaluate-report'
 import CheckAttendanceManager from '../pages/manager/check-attendance'
 import CreateEvaluate from '../pages/manager/create-evaluate'
+import AttendanceLogDetail from '../pages/manager/attendance-log-detail'
+import LogManagement from '../pages/manager/log-management'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -474,6 +476,15 @@ export default function Router() {
                 </Suspense>
               )
             },
+            
+            {
+              path: MANAGER_PATH.LOG_MANAGEMENT,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <LogManagement />
+                </Suspense>
+              )
+            },
             {
               path: MANAGER_PATH.NOTIFICATION_LIST_MANAGER,
               element: (
@@ -532,6 +543,7 @@ export default function Router() {
             </Suspense>
           )
         },
+      
       ]
     },
     {
@@ -620,6 +632,14 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <CreateEvaluate />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.ATTENDANCE_LOG_DETAIL,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <AttendanceLogDetail />
                 </Suspense>
               )
             },
