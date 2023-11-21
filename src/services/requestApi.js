@@ -97,6 +97,18 @@ const requestApi = {
       console.log(error);
     }
   },
+  getDetailOutSideWorkMessageById: (data) => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getWorkingOutsideMessage/`, {
+        params: {
+          request_id: data
+        }
+      })
+      return response
+    } catch (error) {
+      console.log(error);
+    }
+  },
   getDetailOtherMessageById: (data) => {
     try {
       const response = axiosClient.get(`${BASE_URL}/getOtherMessage/`, {
@@ -170,6 +182,17 @@ const requestApi = {
       console.log(error)
     }
   },
+  acceptOutSideRequest: async (data) => {
+    let data1 = {
+      lateMessageRequestId: data
+    }
+    try {
+      await axiosClient.post(`${BASE_URL}/acceptWorkingOutside`, data1)
+      toast.success('Accept request success')
+    } catch (error) {
+      console.log(error)
+    }
+  },
   acceptAttendanceRequest: async (data) => {
     let data1 = {
       attendanceRequestId: data
@@ -201,6 +224,14 @@ const requestApi = {
   rejectLateRequest: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/rejectLateRequest`, data)
+      toast.success('Reject request success')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  rejectOutSideRequest: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/rejectWorkingOutside`, data)
       toast.success('Reject request success')
     } catch (error) {
       console.log(error)

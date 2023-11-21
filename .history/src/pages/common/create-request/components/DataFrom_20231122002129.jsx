@@ -37,6 +37,7 @@ const AttendenceFrom = ({ userId }) => {
   const [isFrom, setIsFrom] = useState(true)
   const [isTo, setIsTo] = useState(true)
   const currentDate = new Date()
+  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
@@ -1057,7 +1058,11 @@ const WorkingOutSideRequest = () => {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
 
   const handleCheckboxChange = (event) => {
+<<<<<<< HEAD
     setIsChecked(event.target.checked)
+=======
+    setIsChecked(event.target.checked);
+>>>>>>> 036fd521847c166276bc908262c2fe910ebe8328
 
     if (!event.target.checked) {
       setOutSideType('HALF_MORNING')
@@ -1087,7 +1092,11 @@ const WorkingOutSideRequest = () => {
       let data = {
         userId: userId,
         title: values.title,
+<<<<<<< HEAD
         content: values.content,
+=======
+        content: content,
+>>>>>>> 036fd521847c166276bc908262c2fe910ebe8328
         type: outSideType,
         date: date.format('YYYY-MM-DD'),
         departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,

@@ -90,21 +90,21 @@ const TicketDetail = () => {
       if (requestId.startsWith('AT')) {
         const res = await requestApi.getDetailAttendanceMessageById(requestId)
         setRequest(res)
-        console.log(res)
       } else if (requestId.startsWith('LV')) {
         const res = await requestApi.getDetailLeaveMessageById(requestId)
         setRequest(res)
       } else if (requestId.startsWith('OR')) {
         const res = await requestApi.getDetailOtherMessageById(requestId)
-        console.log(res)
         setRequest(res)
       } else if (requestId.startsWith('OT')) {
         const res = await requestApi.getDetailOverTimeMessageById(requestId)
-        console.log(res)
         setRequest(res)
       } else if (requestId.startsWith('LT')) {
         const res = await requestApi.getDetailLateMessageById(requestId)
-        console.log(res)
+        setRequest(res)
+      } else if (requestId.startsWith('OW')) {
+        const res = await requestApi.getDetailOutSideWorkMessageById(requestId)
+        console.log(requestId)
         setRequest(res)
       }
     }
@@ -131,6 +131,9 @@ const TicketDetail = () => {
       requestApi.acceptOtRequest(request[0]?.object?.overtimeRequestId)
     } else if (request[0]?.object?.topic === 'LATE_REQUEST') {
       requestApi.acceptLateRequest(request[0]?.object?.lateRequestId)
+    } else if (request[0]?.object?.topic === 'OUTSIDE_REQUEST') {
+      requestApi.acceptOutSideRequest(request[0]?.object?.workingOutsideId)
+      console.log(request[0]?.object?.workingOutsideId);
     }
   }
 
@@ -182,6 +185,16 @@ const TicketDetail = () => {
       }
       console.log(data)
       requestApi.rejectLateRequest(data)
+      if (currentUser?.role === 'manager') {
+        navigate('/request-list-manager')
+      }
+    }else if (request[0]?.object?.topic === 'OUTSIDE_REQUEST') {
+      let data = {
+        workingOutsideId: request[0]?.object.workingOutsideId,
+        content: contentReason
+      }
+      console.log(data)
+      requestApi.rejectOutSideRequest(data)
       if (currentUser?.role === 'manager') {
         navigate('/request-list-manager')
       }
@@ -713,8 +726,110 @@ const TicketDetail = () => {
                       component="span"
                       variant="body2"
                       color="text.primary">
-                      Duration :{' '} 
+                      Duration :{' '}
                       {request[0]?.object?.lateDuration} minutes
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Status :
+                      {request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                        ? <span style={{ color: 'red' }}>Reject</span>
+                        : request[0]?.object?.status === true && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                          ? <span style={{ color: 'green' }}>Accept</span>
+                          : <span style={{ color: '#F3B664' }}>Pending</span>
+                      }
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+          </List>
+        </>
+      )
+    }
+    else if (request[0]?.object?.topic === 'OUTSIDE_REQUEST') {
+      return (
+        <>
+          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Title : {request[0]?.requestMessageResponse?.title}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Department :{' '}
+                      {request[0]?.requestMessageResponse?.receiverDepartment?.departmentName}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+
+            <Divider component="li" />
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      Type:{' '}
+                      {request[0]?.object?.type === 'HALF_MORNING'
+                        ? 'HALF MORNING'
+                        : request[0]?.object?.type === 'HALF_AFTERNOON'
+                          ? 'HALF AFTERNOON'
+                          : request[0]?.object?.type === 'ALL_DAY'
+                            ? 'ALL DAY'
+                            : ''}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Day outside work:{' '}
+                      {request[0]?.object?.date}
                     </Typography>
                   </React.Fragment>
                 }

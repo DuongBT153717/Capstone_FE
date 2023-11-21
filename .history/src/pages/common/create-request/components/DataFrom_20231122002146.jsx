@@ -37,6 +37,7 @@ const AttendenceFrom = ({ userId }) => {
   const [isFrom, setIsFrom] = useState(true)
   const [isTo, setIsTo] = useState(true)
   const currentDate = new Date()
+  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
