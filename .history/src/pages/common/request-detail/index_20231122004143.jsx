@@ -193,7 +193,6 @@ const TicketDetail = () => {
         workOutsideRequestId: request[0]?.object.workingOutsideId,
         content: contentReason
       }
-      console.log(data)
       requestApi.rejectOutSideRequest(data)
       if (currentUser?.role === 'manager') {
         navigate('/request-list-manager')

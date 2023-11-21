@@ -190,7 +190,7 @@ const TicketDetail = () => {
       }
     }else if (request[0]?.object?.topic === 'OUTSIDE_REQUEST') {
       let data = {
-        workOutsideRequestId: request[0]?.object.workingOutsideId,
+        workingOutsideId: request[0]?.object.workingOutsideId,
         content: contentReason
       }
       console.log(data)
