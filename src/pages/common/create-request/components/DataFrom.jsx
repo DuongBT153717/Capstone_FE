@@ -98,11 +98,11 @@ const AttendenceFrom = ({ userId }) => {
                 value={date}
                 onChange={(date) => {
                   setDate(date);
-             
+
                 }}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
                 minDate={firstDayOfMonth}
-                maxDate={lastDayOfMonth}
+                maxDate={currentDate}
               />
             </LocalizationProvider>
           </Grid>
@@ -991,8 +991,8 @@ const LeaveRequest = ({ userId }) => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 value={dateTo}
-                minDate={dateFrom} 
-                disablePast   
+                minDate={dateFrom}
+                disablePast
                 onChange={(e) => setDateTo(e)}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
               />
@@ -1087,7 +1087,7 @@ const WorkingOutSideRequest = () => {
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
-    
+
     if (!event.target.checked) {
       setOutSideType('HALF_MORNING');
     }
@@ -1117,7 +1117,7 @@ const WorkingOutSideRequest = () => {
         userId: userId,
         title: values.title,
         content: content,
-        type:outSideType,
+        type: outSideType,
         date: date.format('YYYY-MM-DD'),
         departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
         receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId,
