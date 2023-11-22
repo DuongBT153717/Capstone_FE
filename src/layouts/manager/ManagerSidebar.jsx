@@ -18,6 +18,8 @@ import { Menu, MenuItem, Sidebar, SubMenu, useProSidebar } from 'react-pro-sideb
 import { Link } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 
 const ManagerSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
@@ -148,6 +150,18 @@ const ManagerSidebar = () => {
               }
             }
           }}>
+             <SubMenu
+            label="Attendance"
+          icon={<CalendarMonthIcon />}
+          >
+             <MenuItem
+            active={activeIndex === 9}
+            icon={<EventAvailableIcon />}
+            component={<Link to="/check-attendance-manager" onClick={() => setActiveIndex(9)} />}>
+            {' '}
+            Check Your Attendance
+          </MenuItem>
+          </SubMenu>
           <MenuItem
             active={activeIndex === 0}
             icon={<AssignmentTurnedInIcon />}
@@ -170,8 +184,6 @@ const ManagerSidebar = () => {
             {' '}
             Book Room
           </MenuItem>
-
-
           <SubMenu
             label="Notification"
             icon={<NotificationsIcon />}
@@ -229,13 +241,6 @@ const ManagerSidebar = () => {
               </MenuItem>
             </SubMenu>
           </SubMenu>
-          <MenuItem
-            active={activeIndex === 9}
-            icon={<ChecklistRtlIcon />}
-            component={<Link to="/check-attendance-manager" onClick={() => setActiveIndex(9)} />}>
-            {' '}
-            Check Your Attendance
-          </MenuItem>
         </Menu>
       </Sidebar>
     </>

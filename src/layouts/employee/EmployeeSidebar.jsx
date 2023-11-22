@@ -1,26 +1,27 @@
 import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt'
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+import EventIcon from '@mui/icons-material/Event'
+import EventAvailableIcon from '@mui/icons-material/EventAvailable'
+import HistoryEduIcon from '@mui/icons-material/HistoryEdu'
 import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useState } from 'react'
-import { Menu, MenuItem, Sidebar, useProSidebar } from 'react-pro-sidebar'
+import { Menu, MenuItem, Sidebar, SubMenu, useProSidebar } from 'react-pro-sidebar'
 import { Link } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
-import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
-import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 const EmployeeSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => {
     const initialIndex =
       window.location.pathname === '/check-attendance-employee'
         ? 0 : window.location.pathname === '/request-list-employee'
-        ? 1 : window.location.pathname === '/notification-receive-emp'
-        ? 2 : window.location.pathname === '/overtime-log'
-        ? 3 : window.location.pathname === '/attendence-evaluate-report-emp' ? 4 :
-        0
+          ? 1 : window.location.pathname === '/notification-receive-emp'
+            ? 2 : window.location.pathname === '/overtime-log'
+              ? 3 : window.location.pathname === '/attendence-evaluate-report-emp' ? 4 :
+                0
     return initialIndex
   })
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -54,9 +55,9 @@ const EmployeeSidebar = () => {
           ml="15px"
           height="65px">
           {!collapsed ? (
-              <Typography fontWeight="800" color="#000" fontSize="22px" sx={{ cursor: 'pointer' }}>
-                BMS
-              </Typography>
+            <Typography fontWeight="800" color="#000" fontSize="22px" sx={{ cursor: 'pointer' }}>
+              BMS
+            </Typography>
           ) : null}
           <IconButton
             onClick={() => {
@@ -77,7 +78,7 @@ const EmployeeSidebar = () => {
             src={`${userProfileImage}`}
           />
           <Typography fontSize="15px" fontWeight="600">
-          {currentUser.firstName} {currentUser.lastName}
+            {currentUser.firstName} {currentUser.lastName}
           </Typography>
         </Box>
         <Divider />
@@ -126,18 +127,31 @@ const EmployeeSidebar = () => {
               }
             }
           }}>
-          <MenuItem
-            active={activeIndex === 0}
-            icon={<AssignmentTurnedInIcon />}
-            component={<Link to="/check-attendance-employee" onClick={() => setActiveIndex(0)} />}>
-            Check Attendace
-          </MenuItem>
-          <MenuItem
-            active={activeIndex === 3}
-            icon={<LibraryAddCheckIcon />}
-            component={<Link to="/overtime-log" onClick={() => setActiveIndex(3)} />}>
-            Check Overtime
-          </MenuItem>
+          <SubMenu
+            label="Attendance"
+          icon={<CalendarMonthIcon />}
+          >
+            <MenuItem
+              active={activeIndex === 0}
+              icon={<EventAvailableIcon />}
+              component={<Link to="/check-attendance-employee" onClick={() => setActiveIndex(0)} />}>
+              Check Attendace
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 3}
+              icon={<EventIcon />}
+              component={<Link to="/overtime-log" onClick={() => setActiveIndex(3)} />}>
+              Check Overtime
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 4}
+              icon={<HistoryEduIcon />}
+              component={<Link to="/attendence-evaluate-report-emp" onClick={() => setActiveIndex(4)} />}>
+              {' '}
+              Evaluate report
+            </MenuItem>
+          </SubMenu>
+
           <MenuItem
             active={activeIndex === 1}
             icon={<AppSettingsAltIcon />}
@@ -156,40 +170,34 @@ const EmployeeSidebar = () => {
               {' '}
               All Notification
             </MenuItem> */}
-            {/* <MenuItem
+          {/* <MenuItem
               active={activeIndex === 3}
               icon={<DraftsIcon />}
               component={<Link to="/notification-draft-emp" onClick={() => setActiveIndex(3)} />}>
               {' '}
               Draft
             </MenuItem> */}
-            {/* <SubMenu
+          {/* <SubMenu
             label='Sent&Receive'
             icon={<UploadIcon />}> */}
-            {/* <MenuItem
+          {/* <MenuItem
               active={activeIndex === 4}
               icon={<ForwardToInboxIcon />}
               component={<Link to="/notification-send-emp" onClick={() => setActiveIndex(4)} />}>
               {' '}
               Send
             </MenuItem> */}
-            <MenuItem
-              active={activeIndex === 2}
-              icon={<MarkunreadMailboxIcon />}
-              component={<Link to="/notification-receive-emp" onClick={() => setActiveIndex(2)} />}>
-              {' '}
-              Notifications
-            </MenuItem>
-            <MenuItem
-              active={activeIndex === 4}
-              icon={<HistoryEduIcon />}
-              component={<Link to="/attendence-evaluate-report-emp" onClick={() => setActiveIndex(4)} />}>
-              {' '}
-              Evaluate report
-            </MenuItem>
-            {/* </SubMenu>
+          <MenuItem
+            active={activeIndex === 2}
+            icon={<MarkunreadMailboxIcon />}
+            component={<Link to="/notification-receive-emp" onClick={() => setActiveIndex(2)} />}>
+            {' '}
+            Notifications
+          </MenuItem>
+
+          {/* </SubMenu>
            */}
-            {/* <SubMenu
+          {/* <SubMenu
             label='Scheduled'
             icon={<CalendarTodayIcon/>}
             >
@@ -208,9 +216,9 @@ const EmployeeSidebar = () => {
               Personal
             </MenuItem> 
             </SubMenu> */}
-            {/* </SubMenu> */}
+          {/* </SubMenu> */}
         </Menu>
-        
+
       </Sidebar>
     </>
   )
