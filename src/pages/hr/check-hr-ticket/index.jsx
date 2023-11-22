@@ -283,7 +283,7 @@ export default function CheckHrList() {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <InputLabel shrink variant="filled">
+                  <InputLabel >
                     Title, Topic, Date, ID
                   </InputLabel>
                 </InputAdornment>

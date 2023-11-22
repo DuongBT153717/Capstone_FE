@@ -6,7 +6,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors'
-import { Skeleton } from '@mui/material'
+import { InputAdornment, InputLabel, Skeleton } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Collapse from '@mui/material/Collapse'
@@ -43,7 +43,7 @@ function Row(props) {
       ticketId: ticketId,
     }
     requestApi.acceptStatutOtherRequest(data)
-    
+
   }
   const navigate = useNavigate()
   return (
@@ -63,7 +63,7 @@ function Row(props) {
         <TableCell>{row.requestTickets[row.requestTickets.length - 1].title}</TableCell>
         <TableCell>{formatDate(row.createDate)}</TableCell>
         <TableCell>{formatDate(row.updateDate)}</TableCell>
-        <TableCell> {row.status === false ?(
+        <TableCell> {row.status === false ? (
           <Box
             width="80%"
             margin="0 auto"
@@ -87,15 +87,15 @@ function Row(props) {
           </Box>
         ) : null}</TableCell>
         <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-        {row.status === true ? (
-          <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
-            <AddIcon />
-          </IconButton>
-        ): null }
+          {row.status === true ? (
+            <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
+              <AddIcon />
+            </IconButton>
+          ) : null}
         </TableCell>
         <TableCell>
-          { row.topic ==='OTHER_REQUEST' && row.status===true ? (
-            <Button   onClick={() =>handelAcceptOtherRequest(row.ticketId)}>
+          {row.topic === 'OTHER_REQUEST' && row.status === true ? (
+            <Button onClick={() => handelAcceptOtherRequest(row.ticketId)}>
               <CloseIcon />
               <Typography fontSize={'13px'} color="#000">
                 Finish
@@ -126,7 +126,7 @@ function Row(props) {
                 <TableBody>
                   {row.requestTickets.map((request_row) => (
                     <TableRow key={request_row.requestId}>
-                      <TableCell  style={{ width: '120px' }} component="th" scope="row">
+                      <TableCell style={{ width: '120px' }} component="th" scope="row">
                         {request_row.requestId.slice(0, 10)}
                       </TableCell>
                       <TableCell>
@@ -274,6 +274,18 @@ export default function RequestListEmployee() {
             value={searchTerm}
             fullWidth
             onChange={(e) => setSearchTerm(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <InputLabel >
+                    Title, Topic, Date, ID
+                  </InputLabel>
+                </InputAdornment>
+              ),
+            }}
           />
         </Paper>
         <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
@@ -321,11 +333,17 @@ export default function RequestListEmployee() {
               <TableBody>
                 {listRequestAndTicket
                   .filter((row) => {
-                    return Object.values(row)
-                      .map((value) => (value || '').toString())
-                      .join(' ')
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
+                    const searchString = searchTerm.toLowerCase();
+                    const statusLowerCase = typeof row.status === 'string' ? row.status.toLowerCase() : '';
+
+                    return (
+                      row.ticketId.toLowerCase().includes(searchString) ||
+                      row.topic.toLowerCase().includes(searchString) ||
+                      row.requestTickets[row.requestTickets.length - 1].title.toLowerCase().includes(searchString) ||
+                      formatDate(row.createDate).toLowerCase().includes(searchString) ||
+                      formatDate(row.updateDate).toLowerCase().includes(searchString) ||
+                      (statusLowerCase === "avaliable" || statusLowerCase === "close")
+                    );
                   })
                   .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                   .map((row) => (

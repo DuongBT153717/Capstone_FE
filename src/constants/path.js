@@ -43,6 +43,8 @@ export const MANAGER_PATH = {
     NOTIFICATION_SCHEDULED_DEPARTMENT_MANAGER: '/notification-department-manager',
     CHECK_ATTENDACE_MANAGER: '/check-attendance-manager',
     CREATE_EVALUATE: '/create-evaluate',
+    ATTENDANCE_LOG_DETAIL: '/attendance-log-detail/:employee_id/:date',
+    LOG_MANAGEMENT: '/log-management',
 }
 
 export const EMPLOYEE_PATH = {

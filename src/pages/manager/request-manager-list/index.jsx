@@ -6,7 +6,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors'
-import { Skeleton } from '@mui/material'
+import { InputAdornment, InputLabel, Skeleton } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Collapse from '@mui/material/Collapse'
@@ -27,19 +27,20 @@ import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
+function formatDate(date) {
+  const createDate = new Date(date);
+  const year = createDate.getFullYear().toString().slice(-2);
+  const month = String(createDate.getMonth() + 1).padStart(2, '0');
+  const day = String(createDate.getDate()).padStart(2, '0');
+  const hours = String(createDate.getHours()).padStart(2, '0');
+  const minutes = String(createDate.getMinutes()).padStart(2, '0');
+  const seconds = String(createDate.getSeconds()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
 function Row(props) {
   const { row } = props
   const [open, setOpen] = React.useState(false)
-  function formatDate(date) {
-    const createDate = new Date(date);
-    const year = createDate.getFullYear().toString().slice(-2);
-    const month = String(createDate.getMonth() + 1).padStart(2, '0');
-    const day = String(createDate.getDate()).padStart(2, '0');
-    const hours = String(createDate.getHours()).padStart(2, '0');
-    const minutes = String(createDate.getMinutes()).padStart(2, '0');
-    const seconds = String(createDate.getSeconds()).padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  }
+
   const handelAcceptOtherRequest = (ticketId) => {
     let data = {
       ticketId: ticketId,
@@ -283,12 +284,24 @@ export default function RequestManagerList() {
   return (
     <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">
       <Box flex={1} sx={{ overflowX: 'hidden' }}>
-        <Paper elevation={3} sx={{ padding: '16px' }}>
+      <Paper elevation={3} sx={{ padding: '16px' }}>
           <TextField
             label="Search"
             value={searchTerm}
             fullWidth
             onChange={(e) => setSearchTerm(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <InputLabel >
+                    Title, Topic, Date, ID
+                  </InputLabel>
+                </InputAdornment>
+              ),
+            }}
           />
         </Paper>
         <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
@@ -335,13 +348,19 @@ export default function RequestManagerList() {
               <TableRowsLoader rowsNum={5} />
             ) : (
               <TableBody>
-                {listRequestAndTicket
+                 {listRequestAndTicket
                   .filter((row) => {
-                    return Object.values(row)
-                      .map((value) => (value || '').toString())
-                      .join(' ')
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
+                    const searchString = searchTerm.toLowerCase();
+                    const statusLowerCase = typeof row.status === 'string' ? row.status.toLowerCase() : '';
+
+                    return (
+                      row.ticketId.toLowerCase().includes(searchString) ||
+                      row.topic.toLowerCase().includes(searchString) ||
+                      row.requestTickets[row.requestTickets.length - 1].title.toLowerCase().includes(searchString) ||
+                      formatDate(row.createDate).toLowerCase().includes(searchString) ||
+                      formatDate(row.updateDate).toLowerCase().includes(searchString) ||
+                      (statusLowerCase === "avaliable" || statusLowerCase === "close")
+                    );
                   })
                   .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                   .map((row) => (

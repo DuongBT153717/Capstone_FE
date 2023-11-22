@@ -1,7 +1,7 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
-import { Skeleton } from '@mui/material'
+import { InputAdornment, InputLabel, Skeleton } from '@mui/material'
 import Box from '@mui/material/Box'
 import Collapse from '@mui/material/Collapse'
 import IconButton from '@mui/material/IconButton'
@@ -21,19 +21,20 @@ import { useNavigate } from 'react-router-dom'
 import useAuth from '../../../hooks/useAuth'
 import requestApi from '../../../services/requestApi'
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+function formatDate(date) {
+  const createDate = new Date(date);
+  const year = createDate.getFullYear().toString().slice(-2);
+  const month = String(createDate.getMonth() + 1).padStart(2, '0');
+  const day = String(createDate.getDate()).padStart(2, '0');
+  const hours = String(createDate.getHours()).padStart(2, '0');
+  const minutes = String(createDate.getMinutes()).padStart(2, '0');
+  const seconds = String(createDate.getSeconds()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
 function Row(props) {
   const { row } = props
   const [open, setOpen] = React.useState(false)
-  function formatDate(date) {
-    const createDate = new Date(date);
-    const year = createDate.getFullYear().toString().slice(-2);
-    const month = String(createDate.getMonth() + 1).padStart(2, '0');
-    const day = String(createDate.getDate()).padStart(2, '0');
-    const hours = String(createDate.getHours()).padStart(2, '0');
-    const minutes = String(createDate.getMinutes()).padStart(2, '0');
-    const seconds = String(createDate.getSeconds()).padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  }
+
   const navigate = useNavigate()
   return (
     <>
@@ -44,14 +45,14 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.ticketId}
+          {row.ticketId.slice(0, 10)}
         </TableCell>
         <TableCell component="th" scope="row">
           {row.topic}
         </TableCell>
         <TableCell>{row.requestTickets[row.requestTickets.length - 1].title}</TableCell>
         <TableCell>{formatDate(row.createDate)}</TableCell>
-         <TableCell>{formatDate(row.updateDate)}</TableCell>
+        <TableCell>{formatDate(row.updateDate)}</TableCell>
         <TableCell> {row.status === false ? (
           <Box
             width="85%"
@@ -86,7 +87,7 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                  <TableCell style={{ width: '120px' }}>Request ID</TableCell>
+                    <TableCell style={{ width: '120px' }}>Request ID</TableCell>
                     <TableCell style={{ width: '200px' }} align="center">Status</TableCell>
                     <TableCell style={{ width: '50px' }}>Receiver</TableCell>
                     <TableCell style={{ width: '100px' }} >Create Date</TableCell>
@@ -98,20 +99,20 @@ function Row(props) {
                   {row.requestTickets.map((request_row) => (
                     <TableRow key={request_row.request_id}>
                       <TableCell component="th" scope="row">
-                        {request_row.requestId}
+                        {request_row.requestId.slice(0, 10)}
                       </TableCell>
                       <TableCell>
                         {request_row.requestStatus === 'PENDING' ? (
                           <Box
-                          width="80%"
-                          margin="0 auto"
-                          p="5px"
-                          display="flex"
-                          justifyContent="center"
-                          alignItems="center"
-                          bgcolor={'#FAFAD2'}
-                          borderRadius="4px"
-                        >
+                            width="80%"
+                            margin="0 auto"
+                            p="5px"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            bgcolor={'#FAFAD2'}
+                            borderRadius="4px"
+                          >
                             <AccessTimeFilledIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
@@ -254,6 +255,18 @@ export default function RequestListManager() {
             value={searchTerm}
             fullWidth
             onChange={(e) => setSearchTerm(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <InputLabel >
+                    Title, Topic, Date, ID
+                  </InputLabel>
+                </InputAdornment>
+              ),
+            }}
           />
         </Paper>
 
@@ -289,11 +302,17 @@ export default function RequestListManager() {
               <TableBody>
                 {listRequestAndTicket
                   .filter((row) => {
-                    return Object.values(row)
-                      .map((value) => (value || '').toString())
-                      .join(' ')
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
+                    const searchString = searchTerm.toLowerCase();
+                    const statusLowerCase = typeof row.status === 'string' ? row.status.toLowerCase() : '';
+
+                    return (
+                      row.ticketId.toLowerCase().includes(searchString) ||
+                      row.topic.toLowerCase().includes(searchString) ||
+                      row.requestTickets[row.requestTickets.length - 1].title.toLowerCase().includes(searchString) ||
+                      formatDate(row.createDate).toLowerCase().includes(searchString) ||
+                      formatDate(row.updateDate).toLowerCase().includes(searchString) ||
+                      (statusLowerCase === "avaliable" || statusLowerCase === "close")
+                    );
                   })
                   .filter((row) => row.topic !== 'ROOM_REQUEST')
                   .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
@@ -306,7 +325,7 @@ export default function RequestListManager() {
           <TablePagination
             component="div"
             count={listRequestAndTicket
-              .filter((row) => row.topic !== 'ROOM_REQUEST') 
+              .filter((row) => row.topic !== 'ROOM_REQUEST')
               .length}
             page={page}
             onPageChange={handleChangePage}
