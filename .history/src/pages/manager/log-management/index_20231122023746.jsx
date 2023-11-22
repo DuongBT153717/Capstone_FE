@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-  InputLabel
-} from '@mui/material'
+import { Box, Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import useAuth from '../../../hooks/useAuth'
 import userApi from '../../../services/userApi'
@@ -26,7 +17,7 @@ const LogManagement = () => {
   const [listLog, setListLog] = useState([])
   const [listEm, setListEm] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const [employee, setEmployee] = useState('none')
+  const [employee, setEmployee] = useState('Select Employee')
   const [month, setMonth] = useState(new Date())
 
   useEffect(() => {
@@ -36,8 +27,8 @@ const LogManagement = () => {
     }
     getListEmpByDepartment()
   }, [userInfo?.departmentId])
-  console.log(listEm)
-  console.log(userInfo?.departmentId)
+  console.log(listEm);
+  console.log(userInfo?.departmentId);
   const handleChangeEmployee = (e) => {
     setEmployee(e)
   }
@@ -174,13 +165,8 @@ const LogManagement = () => {
         <Box>
           {listEm.length >= 0 && (
             <>
-              <FormControl sx={{ width: '200px' }}>
-                <InputLabel id="demo-simple-select-label">Select Employee</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  label="Select Employee"
-                  value={employee}
-                  onChange={(e) => handleChangeEmployee(e.target.value)}>
+              <FormControl sx={{ width: '150px' }}>
+                <Select value={employee} onChange={(e) => handleChangeEmployee(e.target.value)}>
                   {listEm.map((item, index) => (
                     <MenuItem key={index} value={item}>
                       {item?.userName}

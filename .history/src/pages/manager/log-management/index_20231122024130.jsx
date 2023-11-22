@@ -26,7 +26,7 @@ const LogManagement = () => {
   const [listLog, setListLog] = useState([])
   const [listEm, setListEm] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const [employee, setEmployee] = useState('none')
+  const [employee, setEmployee] = useState('')
   const [month, setMonth] = useState(new Date())
 
   useEffect(() => {

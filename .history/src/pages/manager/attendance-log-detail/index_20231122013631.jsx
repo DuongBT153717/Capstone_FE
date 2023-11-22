@@ -158,7 +158,7 @@ const AttendanceLogDetail = () => {
                           <Typography mb={1}>Violate </Typography>
                         </Box>
                         <Box flex="1" ml={2}>
-                          <Typography mb={1}>{userAttendanceDetail?.outSideWork === -1 ? 'none' : userAttendanceDetail?.outSideWork} </Typography>
+                          <Typography mb={1}>{userAttendanceDetail?.outSideWork} </Typography>
                           <Checkbox
                             checked={userAttendanceDetail?.violate}
                             disabled

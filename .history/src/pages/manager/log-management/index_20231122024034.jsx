@@ -26,7 +26,7 @@ const LogManagement = () => {
   const [listLog, setListLog] = useState([])
   const [listEm, setListEm] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const [employee, setEmployee] = useState('none')
+  const [employee, setEmployee] = useState('Select Employee')
   const [month, setMonth] = useState(new Date())
 
   useEffect(() => {
@@ -174,11 +174,11 @@ const LogManagement = () => {
         <Box>
           {listEm.length >= 0 && (
             <>
-              <FormControl sx={{ width: '200px' }}>
+              <FormControl sx={{ width: '150px' }}>
                 <InputLabel id="demo-simple-select-label">Select Employee</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
-                  label="Select Employee"
+
                   value={employee}
                   onChange={(e) => handleChangeEmployee(e.target.value)}>
                   {listEm.map((item, index) => (

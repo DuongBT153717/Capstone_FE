@@ -51,12 +51,12 @@ const AttendanceLogDetail = () => {
                   <Box flex="1" borderRight="1px solid #999">
                     <Typography mb={2}>Employee </Typography>
                     <Typography mb={2}>Account </Typography>
-                    <Typography mb={2}>Department </Typography>
+                    <Typography>Department </Typography>
                   </Box>
                   <Box flex="2" marginLeft="10px">
-                    <Typography mb={2}>{userAttendanceDetail?.name}</Typography>
-                    <Typography mb={2}>{userAttendanceDetail?.username} </Typography>
-                    <Typography mb={2}>{userAttendanceDetail?.departmentName} </Typography>
+                    <Typography mb={1}>{userAttendanceDetail?.name}</Typography>
+                    <Typography mb={1}>{userAttendanceDetail?.username} </Typography>
+                    <Typography mb={1}>{userAttendanceDetail?.departmentName} </Typography>
                   </Box>
                 </Box>
               </Paper>
@@ -158,7 +158,7 @@ const AttendanceLogDetail = () => {
                           <Typography mb={1}>Violate </Typography>
                         </Box>
                         <Box flex="1" ml={2}>
-                          <Typography mb={1}>{userAttendanceDetail?.outSideWork === -1 ? 'none' : userAttendanceDetail?.outSideWork} </Typography>
+                          <Typography mb={1}>{userAttendanceDetail?.outSideWork} </Typography>
                           <Checkbox
                             checked={userAttendanceDetail?.violate}
                             disabled
@@ -169,7 +169,7 @@ const AttendanceLogDetail = () => {
                     </Box>
                   </Box>
                 </Paper>
-                <Paper sx={{ margin: '28px 0px 0px 40px', p: '15px' }} elevation={4}>
+                <Paper sx={{ margin: '50px 0px 0px 40px', p: '15px' }} elevation={4}>
                   <Typography fontWeight="700" fontSize="25px" mb={3}>
                     Reason{' '}
                   </Typography>

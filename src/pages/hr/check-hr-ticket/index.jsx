@@ -6,7 +6,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors'
-import { Skeleton } from '@mui/material'
+import { InputAdornment, InputLabel, Skeleton } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Collapse from '@mui/material/Collapse'
@@ -43,7 +43,7 @@ function Row(props) {
       ticketId: ticketId,
     }
     requestApi.acceptStatutOtherRequest(data)
-    
+
   }
 
   const navigate = useNavigate()
@@ -88,15 +88,15 @@ function Row(props) {
           </Box>
         ) : null}</TableCell>
         <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-        {row.topic !== 'ROOM_REQUEST' && row.status === true ? (
+          {row.topic !== 'ROOM_REQUEST' && row.status === true ? (
             <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
               <AddIcon />
             </IconButton>
-          ): null }
+          ) : null}
         </TableCell>
         <TableCell>
-          { row.topic ==='OTHER_REQUEST' &&  row.status===true ? (
-            <Button onClick={() =>handelAcceptOtherRequest(row.ticketId)}>
+          {row.topic === 'OTHER_REQUEST' && row.status === true ? (
+            <Button onClick={() => handelAcceptOtherRequest(row.ticketId)}>
               <CloseIcon />
               <Typography fontSize={'13px'} color="#000">
                 Finish
@@ -187,22 +187,22 @@ function Row(props) {
                             <CloseIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
-                        ) : null }
+                        ) : null}
                       </TableCell>
                       <TableCell key={request_row.userId}
                       >{request_row.receiverFirstName}</TableCell>
                       <TableCell>{formatDate(request_row.requestCreateDate)}</TableCell>
                       <TableCell>{formatDate(request_row.requestUpdateDate)}</TableCell>
                       <TableCell>
-                      {row.topic !== 'ROOM_REQUEST' && (
-                        <IconButton
-                          sx={{ color: '#1565c0' }}
-                          onClick={() =>
-                            navigate(`/request-detail/${request_row.requestId}`)
-                          }>
-                          <RemoveRedEyeIcon />
-                        </IconButton>
-                      )}
+                        {row.topic !== 'ROOM_REQUEST' && (
+                          <IconButton
+                            sx={{ color: '#1565c0' }}
+                            onClick={() =>
+                              navigate(`/request-detail/${request_row.requestId}`)
+                            }>
+                            <RemoveRedEyeIcon />
+                          </IconButton>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -243,7 +243,7 @@ const TableRowsLoader = ({ rowsNum }) => {
   ))
 }
 export default function CheckHrList() {
- const currentUser = useSelector((state) => state.auth.login?.currentUser);
+  const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const [listRequestAndTicket, setListRequestAndTicket] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
@@ -277,13 +277,25 @@ export default function CheckHrList() {
             value={searchTerm}
             fullWidth
             onChange={(e) => setSearchTerm(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <InputLabel shrink variant="filled">
+                    Title, Topic, Date, ID
+                  </InputLabel>
+                </InputAdornment>
+              ),
+            }}
           />
         </Paper>
         <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
-        <Link to="/create-request">
-          <Button variant="contained">
-            <Typography>Create Ticket</Typography>
-          </Button>
+          <Link to="/create-request">
+            <Button variant="contained">
+              <Typography>Create Ticket</Typography>
+            </Button>
           </Link>
         </Box>
 
@@ -291,7 +303,7 @@ export default function CheckHrList() {
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
-                <TableCell style={{ width: '10px' }} /> 
+                <TableCell style={{ width: '10px' }} />
                 <TableCell style={{ width: '160px', fontWeight: 'bold', fontSize: '18px' }}>
                   TicketID
                 </TableCell>
@@ -307,7 +319,7 @@ export default function CheckHrList() {
                 <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>
                   Update Date
                 </TableCell>
-                <TableCell align='center'  style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell align='center' style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
                   Status
                 </TableCell>
                 <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
@@ -323,11 +335,17 @@ export default function CheckHrList() {
               <TableBody>
                 {listRequestAndTicket
                   .filter((row) => {
-                    return Object.values(row)
-                      .map((value) => (value || '').toString())
-                      .join(' ')
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
+                    const searchString = searchTerm.toLowerCase();
+                    const statusLowerCase = typeof row.status === 'string' ? row.status.toLowerCase() : '';
+
+                    return (
+                      row.ticketId.toLowerCase().includes(searchString) ||
+                      row.topic.toLowerCase().includes(searchString) ||
+                      row.requestTickets[row.requestTickets.length - 1].title.toLowerCase().includes(searchString) ||
+                      formatDate(row.createDate).toLowerCase().includes(searchString) ||
+                      formatDate(row.updateDate).toLowerCase().includes(searchString) ||
+                      (statusLowerCase === "avaliable" || statusLowerCase === "close")
+                    );
                   })
                   .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                   .map((row) => (
