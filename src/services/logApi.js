@@ -11,6 +11,22 @@ const logApi = {
       toast.error("Fetch Error")
     }
   },
+  getEvaluateOfDepartment: async (departmentId, month, year) => {
+    try {
+      const response = await axiosClient.get('/getDepartmentEvaluate', {
+        params: {
+           department_id: departmentId,
+            month: month,
+            year: year,
+        },
+    });
+      return response;
+    } catch (error) {
+      console.error('Error fetching department evaluation:', error);
+      throw error; 
+    }
+  },
+
   getChangeLogDetail: async (data) => {
     try {
       const response = await axiosClient.get(`${BASE_URL}/getChangeLogDetail`, {

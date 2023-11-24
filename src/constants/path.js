@@ -45,6 +45,7 @@ export const MANAGER_PATH = {
     CREATE_EVALUATE: '/create-evaluate',
     ATTENDANCE_LOG_DETAIL: '/attendance-log-detail/:employee_id/:date',
     LOG_MANAGEMENT: '/log-management',
+    EMP_LOG_MANAGEMENT: '/emp-log-management'
 }
 
 export const EMPLOYEE_PATH = {

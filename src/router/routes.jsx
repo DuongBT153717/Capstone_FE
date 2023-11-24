@@ -63,6 +63,7 @@ import CheckAttendanceManager from '../pages/manager/check-attendance'
 import CreateEvaluate from '../pages/manager/create-evaluate'
 import AttendanceLogDetail from '../pages/manager/attendance-log-detail'
 import LogManagement from '../pages/manager/log-management'
+import EmpLogManagement from '../pages/manager/management-emp-log-by-manager'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -482,6 +483,14 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <LogManagement />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.EMP_LOG_MANAGEMENT,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <EmpLogManagement />
                 </Suspense>
               )
             },
