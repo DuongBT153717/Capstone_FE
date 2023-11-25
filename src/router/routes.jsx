@@ -64,6 +64,7 @@ import CreateEvaluate from '../pages/manager/create-evaluate'
 import AttendanceLogDetail from '../pages/manager/attendance-log-detail'
 import LogManagement from '../pages/manager/log-management'
 import EmpLogManagement from '../pages/manager/management-emp-log-by-manager'
+import LogEmpAttendanceById from '../pages/manager/log-emp-attendance-by-id'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -444,7 +445,26 @@ export default function Router() {
         },
       ]
     },
-
+    {
+      path: '/',
+      children: [
+        {
+          element: (
+            <RequireAuth allowedRoles={[ROLES.MANAGER]} />
+          ),
+          children: [
+            {
+              path: MANAGER_PATH.LOG_ATTENDACE_OF_EMP,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <LogEmpAttendanceById />
+                </Suspense>
+              )
+            },
+          ]
+        },
+      ]
+    },
     {
       path: MANAGER_PATH.LAYOUT,
       element: <ManagerLayout />,
@@ -468,7 +488,7 @@ export default function Router() {
                 </Suspense>
               )
             },
-           
+         
             {
               path: MANAGER_PATH.REQUEST_LIST_MANAGER,
               element: (

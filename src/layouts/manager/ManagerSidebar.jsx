@@ -21,6 +21,7 @@ import useAuth from '../../hooks/useAuth'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import EventNoteIcon from '@mui/icons-material/EventNote';
+import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 const ManagerSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => {
@@ -46,6 +47,8 @@ const ManagerSidebar = () => {
                         ? 9
                         : window.location.pathname === '/log-management'
                         ? 10 
+                        : window.location.pathname === '/emp-log-management'
+                        ? 11
                         : 0
     return initialIndex
   })
@@ -169,6 +172,13 @@ const ManagerSidebar = () => {
             component={<Link to="/log-management" onClick={() => setActiveIndex(10)} />}>
             {' '}
             Log Management
+          </MenuItem>
+          <MenuItem
+            active={activeIndex === 11}
+            icon={<PermContactCalendarIcon />}
+            component={<Link to="/emp-log-management" onClick={() => setActiveIndex(11)} />}>
+            {' '}
+            Employee Log
           </MenuItem>
           </SubMenu>
           <MenuItem

@@ -13,6 +13,7 @@ import userApi from '../../../services/userApi';
 import logApi from '../../../services/logApi';
 import DataTableListChangeLog from './component/DataTable';
 import formatDate from '../../../utils/formatDate';
+import { useNavigate } from 'react-router-dom';
 
 
 const EmpLogManagement = () => {
@@ -21,7 +22,7 @@ const EmpLogManagement = () => {
     const [listLog, setListLog] = useState([]);
     const [listEmployees, setListEmployees] = useState([]);
 
-
+    const navigate = useNavigate()
     const userInfo = useAuth();
 
     useEffect(() => {
@@ -77,12 +78,12 @@ const EmpLogManagement = () => {
 
     const columns = [
         {
-            field: 'evaluateId',
+            field: 'employeeUserName',
             headerName: 'Account',
             width: 150,
         },
         {
-            field: 'firstNameEmp',
+            field: '',
             headerName: 'Name',
             width: 180,
             renderCell: (params) => {
@@ -96,7 +97,7 @@ const EmpLogManagement = () => {
                         borderRadius="4px"
                     >
                         <Typography>
-                            {params.row.firstNameEmp}  {params.row.lastNameEmp}
+                            {params.row.firstNameEmp} {params.row.lastNameEmp} 
                         </Typography>
                     </Box>
                 )
@@ -126,7 +127,7 @@ const EmpLogManagement = () => {
             field: 'overTime',
             headerName: 'Overtime(h)',
             width: 150,
-            
+
         },
         {
             field: 'violate',
@@ -149,10 +150,10 @@ const EmpLogManagement = () => {
                         break;
                     case 'GOOD':
                         textColor = 'green';
-                        displayText = 'TỐT';
+                        displayText = 'GOOD';
                         break;
                     case 'NORMAL':
-                        textColor = 'yellow';
+                        textColor = 'black';
                         displayText = 'NORMAL';
                         break;
                     default:
@@ -183,7 +184,7 @@ const EmpLogManagement = () => {
             width: 200,
             sortable: false,
             filterable: false,
-      
+
             renderCell: (params) => {
                 return (
                     <Box
@@ -202,15 +203,11 @@ const EmpLogManagement = () => {
                             borderRadius="4px"
                             width="100%"
                         >
-                            <Button variant="contained" >
+                            <Button variant="contained" onClick={() =>
+                                navigate(`/log-attendance-emp/${params.row.employeeId}`)
+                            }>
                                 Detail
                             </Button>
-
-                            {params.row.approvedDate === null && (
-                                <Button variant="contained" color="primary" >
-                                    Edit
-                                </Button>
-                            )}
                         </Box>
                     </Box>
                 );
