@@ -208,9 +208,9 @@ const EmpLogManagement = () => {
             filterable: false,
             renderCell: (params) => {
                 const buttonStyle = {
-                    width: '80px',  // Adjust the width as needed
+                    width: '80px',
                     marginLeft: '10px',
-                    fontSize: '12px',  // Adjust the font size as needed
+                    fontSize: '12px', 
                 };
 
                 if (params.row.evaluateEnum !== null && params.row.approvedDate !== null && params.row.status === true) {

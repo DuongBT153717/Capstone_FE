@@ -24,7 +24,7 @@ const style = {
   p: 4,
 };
 
-const EditEmpLogAttendence = ({ openLateRequest, handleCloseLateRequest, dailyLogModal, userName }) => {
+const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, userName }) => {
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('');
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId);
 
@@ -54,7 +54,7 @@ const EditEmpLogAttendence = ({ openLateRequest, handleCloseLateRequest, dailyLo
         },
       });
       toast.success('Update successfully!');
-      handleCloseLateRequest();
+      handleCloseEditLog();
     } catch (error) {
       console.error('Error updating user information:', error);
       toast.error('Update failed. Please try again.');
@@ -81,7 +81,7 @@ const EditEmpLogAttendence = ({ openLateRequest, handleCloseLateRequest, dailyLo
         changeType: 'FROM_EDIT',
         violet: values.violate ? 1 : 0,
         employeeId: userId,
-        reason: values.content, // Adding reason field
+        reason: values.content, 
       };
 
       editEmpLog(data);
@@ -90,8 +90,8 @@ const EditEmpLogAttendence = ({ openLateRequest, handleCloseLateRequest, dailyLo
 
   return (
     <Modal
-      open={openLateRequest}
-      onClose={handleCloseLateRequest}
+      open={openEditLog}
+      onClose={handleCloseEditLog}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -101,7 +101,7 @@ const EditEmpLogAttendence = ({ openLateRequest, handleCloseLateRequest, dailyLo
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography fontWeight="700" fontSize="18px">
-                  Late Request
+                  Edit Log
                 </Typography>
               </Grid>
               <Grid item xs={12}>
@@ -207,7 +207,7 @@ const EditEmpLogAttendence = ({ openLateRequest, handleCloseLateRequest, dailyLo
               <Button type="submit" variant="contained" sx={{ marginRight: '10px' }}>
                 Save
               </Button>
-              <Button variant="contained" onClick={handleCloseLateRequest}>
+              <Button variant="contained" onClick={handleCloseEditLog}>
                 Cancel
               </Button>
             </Box>

@@ -7,11 +7,11 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import attendanceApi from '../../../services/attendanceApi';
-import overtimeApi from '../../../services/overtimeApi'; 
+import overtimeApi from '../../../services/overtimeApi';
 import { formatDateNotTime } from '../../../utils/formatDate';
 import ChatTopbar from '../../common/chat/components/ChatTopbar';
 import DataTableCheckAttendance from './components/DataTable';
-import EditEmpLogAttendance from './components/EditModal'; 
+import EditEmpLogAttendance from './components/EditModal';
 
 export default function LogEmpAttendanceById() {
     const currentUser = useSelector((state) => state.auth.login?.currentUser);
@@ -29,9 +29,6 @@ export default function LogEmpAttendanceById() {
     const { employee_id } = useParams();
     const [selectedOption, setSelectedOption] = useState('option1');
     const [option2Data, setOption2Data] = useState([]);
-
-    // ...
-
     useEffect(() => {
         const fetchAllUserAttendance = async () => {
             setIsLoading(true);
@@ -94,7 +91,7 @@ export default function LogEmpAttendanceById() {
         setSelectedOption(selectedValue);
     };
 
-    const handleCloseLateRequest = () => setOpenLateRequest(false);
+    const handleCloseEditLog = () => setOpenLateRequest(false);
 
     function CustomToolbar() {
         return (
@@ -104,11 +101,14 @@ export default function LogEmpAttendanceById() {
                         <GridToolbarFilterButton />
                         <GridToolbarExport />
                     </Box>
-                    <Box display="flex" gap={1} width="20%">
+                    <Box display="flex" alignItems="center" gap={1} width="20%">
+                        <Button variant="contained">
+                            Evaluate
+                        </Button>
                         <Select
                             value={selectedOption}
                             onChange={(e) => handleOptionChange(e.target.value)}
-                            style={{ width: '100%', marginRight: '20px' }}
+                            style={{ flex: 1, marginRight: '5px' }}
                         >
                             <MenuItem value="option1">Daily Log</MenuItem>
                             <MenuItem value="option2">Overtime</MenuItem>
@@ -123,11 +123,14 @@ export default function LogEmpAttendanceById() {
                                 views={['month', 'year']}
                                 onChange={(newDate) => setMonth(newDate.toDate())}
                                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
+                                style={{ marginLeft: '10px' }}
                             />
                         </LocalizationProvider>
                     </Box>
                 </Box>
             </GridToolbarContainer>
+
+
         );
     }
 
@@ -346,8 +349,8 @@ export default function LogEmpAttendanceById() {
                     getRowId={(row) => row.id}
                 />
                 <EditEmpLogAttendance
-                    handleCloseLateRequest={handleCloseLateRequest}
-                    openLateRequest={openLateRequest}
+                    handleCloseEditLog={handleCloseEditLog}
+                    openEditLog={openLateRequest}
                     dailyLogModal={dailyLogModal}
                     userName={userName}
                 />
