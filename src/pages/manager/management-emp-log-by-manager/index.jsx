@@ -97,7 +97,7 @@ const EmpLogManagement = () => {
                         borderRadius="4px"
                     >
                         <Typography>
-                            {params.row.firstNameEmp} {params.row.lastNameEmp} 
+                            {params.row.firstNameEmp} {params.row.lastNameEmp}
                         </Typography>
                     </Box>
                 )
@@ -173,9 +173,31 @@ const EmpLogManagement = () => {
             headerName: 'Approve Date',
             width: 180,
             renderCell: (params) => {
-                return <Box>{formatDate(params.row.approvedDate)}</Box>
-            }
+                if (params.row.approvedDate !== null || params.row.approvedDate === "1970-01-01 08:00:00") {
+                    return <Box>{formatDate(params.row.approvedDate)}</Box>;
+                } else {
+                    return <Box></Box>; 
+                }
+            },
         },
+          
+        {
+            field: 'status',
+            headerName: 'Status',
+            width: 150,
+            renderCell: (params) => {
+                if (params.row.approvedDate !== null || params.row.approvedDate === "1970-01-01 08:00:00") {
+                    if (params.row.status === true) {
+                        return <Typography style={{ color: 'green' }}>Accepted</Typography>;
+                    } else if (params.row.status === false) {
+                        return <Typography>Rejected</Typography>;
+                    }
+                } else {
+                    return <Typography></Typography>;
+                }
+            },
+        },
+
         {
             field: 'action',
             headerName: 'Action',
@@ -184,38 +206,51 @@ const EmpLogManagement = () => {
             width: 200,
             sortable: false,
             filterable: false,
-
             renderCell: (params) => {
-                return (
-                    <Box
-                        gap={2}
-                        display="flex"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        borderRadius="4px"
-                        width="100%"
-                    >
-                        <Box
-                            gap={2}
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            borderRadius="4px"
-                            width="100%"
-                        >
-                            <Button variant="contained" onClick={() =>
-                                navigate(`/log-attendance-emp/${params.row.employeeId}`)
-                            }>
+                if (params.row.rating !== null && params.row.approvedDate !== null && params.row.status === true) {
+                    return null;
+                } else if (params.row.rating !== null && params.row.approvedDate !== null && params.row.status === false) {
+                    return (
+                        <>
+                            <Button variant="contained" onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}`)}>
                                 Detail
                             </Button>
-                        </Box>
-                    </Box>
-                );
+                            <Button variant="contained" style={{ backgroundColor: 'red' }}>
+                                Evaluate
+                            </Button>
+                        </>
+                    );
+                } else if (params.row.rating !== null && params.row.approvedDate === null && params.row.status === false) {
+                    return (
+                        <>
+                            <Button variant="contained" onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}`)}>
+                                Detail
+                            </Button>
+                            <Box sx={{ marginLeft: '20px' }}>
+                                <Button variant="contained">
+                                    Edit
+                                </Button>
+                            </Box>
+                        </>
+                    );
+                } else if (params.row.rating === null && params.row.approvedDate === null && params.row.status === false) {
+                    return (
+                        <>
+                            <Button variant="contained" onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}`)}>
+                                Detail
+                            </Button>
+                            <Button variant="contained" style={{ color: 'black' }}>
+                                Evaluate
+                            </Button>
+                        </>
+                    );
+                } else {
+                    return null;
+                }
             },
         }
 
     ];
-
     return (
         <>
             <Box display="flex" alignItems="center" gap={3}>

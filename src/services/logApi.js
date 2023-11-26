@@ -40,6 +40,18 @@ const logApi = {
       toast.error("Fetch Error")
     }
   },
+  editEmpLog: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/changeUserInfo`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      toast.success('Update sucessfully!')
+    } catch (error) {
+      console.log(error)
+    }
+  },
 }
 
 export default logApi

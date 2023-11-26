@@ -1,73 +1,101 @@
-import { Box, Button, TextField } from '@mui/material'
-import { GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid'
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { format } from 'date-fns'
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import attendanceApi from '../../../services/attendanceApi'
-import DataTableCheckAttendance from './components/DataTable'
-import { formatDateNotTime } from '../../../utils/formatDate'
-import { useNavigate } from 'react-router-dom'
-import ChatTopbar from '../../common/chat/components/ChatTopbar'
-import EditEmpLogAttendence from './components/EditModal'
+import { Box, Button, MenuItem, Select, TextField } from '@mui/material';
+import { GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import attendanceApi from '../../../services/attendanceApi';
+import overtimeApi from '../../../services/overtimeApi'; 
+import { formatDateNotTime } from '../../../utils/formatDate';
+import ChatTopbar from '../../common/chat/components/ChatTopbar';
+import DataTableCheckAttendance from './components/DataTable';
+import EditEmpLogAttendance from './components/EditModal'; 
 
 export default function LogEmpAttendanceById() {
-    const currentUser = useSelector((state) => state.auth.login?.currentUser)
+    const currentUser = useSelector((state) => state.auth.login?.currentUser);
 
-    const [isLoading, setIsLoading] = useState(false)
-    const [userAttendance, setUserAttendance] = useState('')
-    const [dailyLog, setDailyLog] = useState([])
-    const [month, setMonth] = useState(new Date())
-    const [openLateRequest, setOpenLateRequest] = useState(false)
-    const [dailyLogModal, setDailyLogModal] = useState({})
-    const [createdDate, setCreatedDate] = useState({})
-    const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false);
+    const [userAttendance, setUserAttendance] = useState('');
+    const [dailyLog, setDailyLog] = useState([]);
+    const [month, setMonth] = useState(new Date());
+    const [openLateRequest, setOpenLateRequest] = useState(false);
+    const [dailyLogModal, setDailyLogModal] = useState({});
+    const [createdDate, setCreatedDate] = useState({});
+    const navigate = useNavigate();
     const [userName, setUserName] = useState('');
     const [hireDate, setHireDate] = useState('');
+    const { employee_id } = useParams();
+    const [selectedOption, setSelectedOption] = useState('option1');
+    const [option2Data, setOption2Data] = useState([]);
+
+    // ...
+
     useEffect(() => {
         const fetchAllUserAttendance = async () => {
-            setIsLoading(true)
+            setIsLoading(true);
             try {
-                const response = await attendanceApi.getAttendanceUser(
-                    currentUser?.accountId,
-                    format(month, 'MM'),
-                    format(month, 'yyyy')
-                )
-                const userNameFromAPI = response?.username;
-                const hireDateFromAPI = response?.hireDate;
-                setUserAttendance(response);
-                setDailyLog(response?.dailyLogList);
-                setUserName(userNameFromAPI);
-                setHireDate(hireDateFromAPI);
+                let response;
+                if (selectedOption === 'option1') {
+                    response = await attendanceApi.getAttendanceUser(
+                        employee_id,
+                        format(month, 'MM'),
+                        format(month, 'yyyy')
+                    );
+                    const { username, hireDate } = response;
+                    setUserAttendance(response);
+                    setDailyLog(response?.dailyLogList);
+                    setUserName(username);
+                    setHireDate(hireDate);
+                } else if (selectedOption === 'option2') {
+                    response = await overtimeApi.getOvertimeUser(
+                        employee_id,
+                        format(month, 'MM'),
+                        format(month, 'yyyy')
+                    );
+                    const option2DataWithId = response?.overTimeLogResponses.map((item, index) => ({
+                        ...item,
+                        id: index.toString(),
+                    })) || [];
+                    setOption2Data(option2DataWithId);
+                    console.log(option2DataWithId);
+                }
             } catch (error) {
-                console.error('Error fetching user attendance:', error)
+                console.error('Error fetching user attendance:', error);
             } finally {
-                setIsLoading(false)
+                setIsLoading(false);
             }
-        }
+        };
 
-        fetchAllUserAttendance()
-    }, [month])
+        fetchAllUserAttendance();
+    }, [month, selectedOption, employee_id]);
+
 
     useEffect(() => {
         const fetchGetCreatedDate = async () => {
             try {
-                const response = await attendanceApi.getCreatedDate(currentUser?.accountId)
-                setCreatedDate(response)
+                const response = await attendanceApi.getCreatedDate(currentUser?.accountId);
+                setCreatedDate(response);
             } catch (error) {
-                console.error('Error fetching user attendance:', error)
+                console.error('Error fetching user attendance:', error);
             }
-        }
+        };
 
-        fetchGetCreatedDate()
-    }, [])
+        fetchGetCreatedDate();
+    }, [currentUser]);
 
     const handleOpenLateRequest = (params) => {
-        setOpenLateRequest(true)
-        setDailyLogModal(params)
-    }
-    const handleCloseLateRequest = () => setOpenLateRequest(false)
+        setOpenLateRequest(true);
+        setDailyLogModal(params);
+    };
+
+    const handleOptionChange = (selectedValue) => {
+        setSelectedOption(selectedValue);
+    };
+
+    const handleCloseLateRequest = () => setOpenLateRequest(false);
+
     function CustomToolbar() {
         return (
             <GridToolbarContainer>
@@ -75,6 +103,16 @@ export default function LogEmpAttendanceById() {
                     <Box display="flex" gap={1} flex={1}>
                         <GridToolbarFilterButton />
                         <GridToolbarExport />
+                    </Box>
+                    <Box display="flex" gap={1} width="20%">
+                        <Select
+                            value={selectedOption}
+                            onChange={(e) => handleOptionChange(e.target.value)}
+                            style={{ width: '100%', marginRight: '20px' }}
+                        >
+                            <MenuItem value="option1">Daily Log</MenuItem>
+                            <MenuItem value="option2">Overtime</MenuItem>
+                        </Select>
                     </Box>
                     <Box>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -90,11 +128,10 @@ export default function LogEmpAttendanceById() {
                     </Box>
                 </Box>
             </GridToolbarContainer>
-        )
+        );
     }
 
-    const rows = [...dailyLog, { id: 'TOTAL', label: 'Total', dailyId: '12345' }]
-    const columns = [
+    const columnsOption1 = [
         {
             field: 'dateDaily',
             headerName: 'Date',
@@ -248,12 +285,55 @@ export default function LogEmpAttendanceById() {
                 );
             }
         }
-    ]
+    ];
+
+    const columnsOption2 = [
+        {
+            field: 'date',
+            headerName: 'Date',
+            width: 280
+        },
+        {
+            field: 'checkin',
+            headerName: 'Check In',
+            width: 100
+        },
+        {
+            field: 'checkout',
+            headerName: 'Check out',
+            width: 100
+        },
+        {
+            field: 'totalAttendance',
+            headerName: 'Total Attendance',
+            flex: 1
+        },
+        {
+            field: 'approveDate',
+            headerName: 'Approve Date',
+            flex: 1
+        },
+        {
+            field: 'dateType',
+            headerName: 'Date Type',
+            flex: 1
+        },
+        {
+            field: 'totalPaid',
+            headerName: 'Total Paid',
+            flex: 1
+        },
+    ];
+
+    const columns = selectedOption === 'option1' ? columnsOption1 : columnsOption2;
+
+    const rows = selectedOption === 'option1'
+        ? [...dailyLog, { id: 'TOTAL', label: 'Total', dailyId: '12345' }]
+        : [...option2Data];
+
+
     return (
-
         <>
-
-
             <Box sx={{ marginLeft: '10px' }}>
                 <ChatTopbar />
                 <DataTableCheckAttendance
@@ -263,8 +343,9 @@ export default function LogEmpAttendanceById() {
                     isLoading={isLoading}
                     userName={userName}
                     hireDate={hireDate}
+                    getRowId={(row) => row.id}
                 />
-                <EditEmpLogAttendence
+                <EditEmpLogAttendance
                     handleCloseLateRequest={handleCloseLateRequest}
                     openLateRequest={openLateRequest}
                     dailyLogModal={dailyLogModal}
@@ -275,5 +356,5 @@ export default function LogEmpAttendanceById() {
                 </Button>
             </Box>
         </>
-    )
+    );
 }
