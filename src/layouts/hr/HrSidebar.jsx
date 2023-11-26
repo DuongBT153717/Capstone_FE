@@ -11,6 +11,7 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
 import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox'
 import MenuIcon from '@mui/icons-material/Menu'
 import NotificationsIcon from '@mui/icons-material/Notifications'
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import UploadIcon from '@mui/icons-material/Upload'
 import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
@@ -20,6 +21,7 @@ import { Menu, MenuItem, Sidebar, SubMenu, useProSidebar } from 'react-pro-sideb
 import { Link } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 const HrSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => {
@@ -27,26 +29,28 @@ const HrSidebar = () => {
       window.location.pathname === '/manage-user'
         ? 0
         : window.location.pathname === '/manage-profile'
-        ? 1
-        : window.location.pathname === '/request-list-hr'
-        ? 2
-        : window.location.pathname === '/request-hr-list'
-        ? 3
-        : window.location.pathname === '/book-room-hr'
-        ? 4
-        : window.location.pathname === '/notification-list-hr'
-        ? 5
-        : window.location.pathname === '/notification-draftlist'
-        ? 6
-        : window.location.pathname === '/notification-uploadsent'
-        ? 7
-        : window.location.pathname === '/notification-uploadreceive'
-        ? 8
-        : window.location.pathname === '/notification-schedulelist'
-        ? 10
-        : window.location.pathname === '/notification-department-hr'
-        ? 9
-        : 0
+          ? 1
+          : window.location.pathname === '/request-list-hr'
+            ? 2
+            : window.location.pathname === '/request-hr-list'
+              ? 3
+              : window.location.pathname === '/book-room-hr'
+                ? 4
+                : window.location.pathname === '/notification-list-hr'
+                  ? 5
+                  : window.location.pathname === '/notification-draftlist'
+                    ? 6
+                    : window.location.pathname === '/notification-uploadsent'
+                      ? 7
+                      : window.location.pathname === '/notification-uploadreceive'
+                        ? 8
+                        : window.location.pathname === '/notification-schedulelist'
+                          ? 10
+                          : window.location.pathname === '/notification-department-hr'
+                            ? 9
+                            : window.location.pathname === '/view-list-evaluate'
+                            ? 11
+                            : 0
     return initialIndex
   })
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -173,6 +177,16 @@ const HrSidebar = () => {
             {' '}
             Ticket Management
           </MenuItem>
+          <SubMenu label="Attendence Management"   icon={<CalendarMonthIcon />}>
+            <MenuItem
+              active={activeIndex === 11}
+              icon={<ListAltIcon />}
+              component={<Link to="/view-list-evaluate" onClick={() => setActiveIndex(11)} />}>
+              {' '}
+              View Evaluate
+            </MenuItem>
+          </SubMenu>
+
           <MenuItem
             active={activeIndex === 3}
             icon={<ChecklistRtlIcon />}

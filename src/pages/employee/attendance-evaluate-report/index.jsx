@@ -37,7 +37,7 @@ const EvaluateReport = () => {
         year: format(month, 'yyyy')
       }
       try {
-        const response = await axiosClient.post(`${BASE_URL}/getEvaluate`, data)
+        const response = await axiosClient.post(`${BASE_URL}/getIndividualEvaluate`, data)
         console.log(data)
         console.log(response)
         if (response && response.hireDate) {

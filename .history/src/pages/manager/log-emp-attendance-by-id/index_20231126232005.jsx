@@ -109,7 +109,7 @@ export default function LogEmpAttendanceById() {
                         <GridToolbarExport />
                     </Box>
                     <Box display="flex" alignItems="center" gap={1} width="20%">
-                        <Button variant="contained" onClick={() => navigate('/create-evaluate')}>
+                        <Button variant="contained">
                             Evaluate
                         </Button>
                         <Select
@@ -244,7 +244,7 @@ export default function LogEmpAttendanceById() {
             headerName: 'Action',
             headerAlign: 'center',
             align: 'center',
-            flex: 1,
+            width: 150,
             sortable: false,
             filterable: false,
             renderCell: (params) => {
