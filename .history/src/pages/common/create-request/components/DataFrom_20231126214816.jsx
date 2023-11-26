@@ -17,7 +17,7 @@ import dayjs from 'dayjs'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
 import { validationSchema } from '../util/validationSchema'
 import overtimeApi from '../../../../services/overtimeApi'
@@ -33,12 +33,13 @@ const AttendenceFrom = ({ userId }) => {
   const [to, setTo] = useState(dayjs(new Date()))
   const [date, setDate] = useState(dayjs(new Date()))
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [isFrom, setIsFrom] = useState(true)
   const [isTo, setIsTo] = useState(true)
-  const currentDate = new Date()
+  const currentDate = new Date();
   const navigate = useNavigate()
   // const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
       const response = await requestApi.getReceiveIdAndDepartment(userId)
@@ -108,7 +109,7 @@ const AttendenceFrom = ({ userId }) => {
               <DatePicker
                 value={date}
                 onChange={(date) => {
-                  setDate(date)
+                  setDate(date);
                 }}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
                 minDate={firstDayOfMonth}
@@ -162,12 +163,33 @@ const AttendenceFrom = ({ userId }) => {
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
-          <Button
-            variant="contained"
-            onClick={() => navigate(-1)}
-            sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-            Back to Dashboard
-          </Button>
+          {currentUser?.role === 'employee' ? (
+            <Link to="/request-list-employee">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'manager' ? (
+            <Link to="/request-manager-list">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-admin">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'hr' ? (
+            <Link to="/request-hr-list">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : (
+            <></>
+          )}
           <Button type="submit" variant="contained">
             Save
           </Button>
@@ -188,6 +210,7 @@ const OtFrom = () => {
   const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const navigate = useNavigate()
   const handleChange = (event) => {
     settopicOvertime(event.target.value)
@@ -344,12 +367,33 @@ const OtFrom = () => {
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
-          <Button
-            variant="contained"
-            onClick={() => navigate(-1)}
-            sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-            Back to Dashboard
-          </Button>
+          {currentUser?.role === 'employee' ? (
+            <Link to="/request-list-employee">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'manager' ? (
+            <Link to="/request-manager-list">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-admin">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'hr' ? (
+            <Link to="/request-hr-list">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : (
+            <></>
+          )}
           <Button type="submit" variant="contained">
             Save
           </Button>
@@ -617,12 +661,33 @@ const OtherRequest = ({ userId }) => {
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
-          <Button
-            variant="contained"
-            onClick={() => navigate(-1)}
-            sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-            Back to Dashboard
-          </Button>
+          {currentUser?.role === 'employee' ? (
+            <Link to="/request-list-employee">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'manager' ? (
+            <Link to="/request-manager-list'">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-admin">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'hr' ? (
+            <Link to="/request-hr-list">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : (
+            <></>
+          )}
           <Button type="submit" variant="contained">
             Save
           </Button>
@@ -641,6 +706,7 @@ const LateRequest = () => {
   const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const navigate = useNavigate()
   const handleChange = (event) => {
     setLateType(event.target.value)
@@ -757,12 +823,33 @@ const LateRequest = () => {
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
-          <Button
-            variant="contained"
-            onClick={() => navigate(-1)}
-            sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-            Back to Dashboard
-          </Button>
+          {currentUser?.role === 'employee' ? (
+            <Link to="/request-list-employee">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'manager' ? (
+            <Link to="/request-manager-list">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-admin">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'hr' ? (
+            <Link to="/request-hr-list">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : (
+            <></>
+          )}
           <Button type="submit" variant="contained">
             Save
           </Button>
@@ -777,6 +864,7 @@ const LeaveRequest = ({ userId }) => {
   const [dateTo, setDateTo] = useState(dayjs(new Date()))
   const [checked, setChecked] = useState(false)
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const currentDate = new Date()
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
   const navigate = useNavigate()
@@ -929,12 +1017,33 @@ const LeaveRequest = ({ userId }) => {
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
-          <Button
-            variant="contained"
-            onClick={() => navigate(-1)}
-            sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-            Back to Dashboard
-          </Button>
+          {currentUser?.role === 'employee' ? (
+            <Link to="/request-list-employee">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'manager' ? (
+            <Link to="/request-manager-list'">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-admin">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'hr' ? (
+            <Link to="/request-hr-list">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : (
+            <></>
+          )}
           <Button type="submit" variant="contained">
             Save
           </Button>
@@ -950,12 +1059,13 @@ const WorkingOutSideRequest = () => {
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const [isChecked, setIsChecked] = useState(true)
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const navigate = useNavigate()
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked)
 
     if (!event.target.checked) {
-      setOutSideType('ALL_DAY')
+      setOutSideType('ALL_DAY');
     }
   }
 
@@ -1064,12 +1174,39 @@ const WorkingOutSideRequest = () => {
           </Grid>
         </Grid>
         <Box pt={2} display="flex" alignItems="flex-end" justifyContent="space-between">
+          {currentUser?.role === 'employee' ? (
+            <Link to="/request-list-employee">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'manager' ? (
+            <Link to="/request-manager-list">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'admin' ? (
+            <Link to="/request-list-admin">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : currentUser?.role === 'hr' ? (
+            <Link to="/request-hr-list">
+              <Button type="submit" variant="contained">
+                Back
+              </Button>
+            </Link>
+          ) : (
+            <></>
+          )}
           <Button
-            variant="contained"
-            onClick={() => navigate(-1)}
-            sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-            Back to Dashboard
-          </Button>
+              variant="contained"
+              onClick={() => navigate(-1)}
+              sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+              Back to Dashboard
+            </Button>
           <Button type="submit" variant="contained">
             Save
           </Button>

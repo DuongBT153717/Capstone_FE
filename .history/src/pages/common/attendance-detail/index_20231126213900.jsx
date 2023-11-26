@@ -101,7 +101,7 @@ const AttendanceDetail = () => {
           <Button
             variant="contained"
             onClick={() => navigate(-1)}
-            sx={{mt: 3, ml: '40px'}}
+            sx={{mt: 4, ml: '50px'}}
             >
             Back
           </Button>

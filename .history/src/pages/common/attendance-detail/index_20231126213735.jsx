@@ -98,14 +98,13 @@ const AttendanceDetail = () => {
                 </Box>
               </Paper>
             )}
+          </Box>
           <Button
             variant="contained"
             onClick={() => navigate(-1)}
-            sx={{mt: 3, ml: '40px'}}
-            >
+            style={{ marginLeft: '4px', marginTop: '-20px' }}>
             Back
           </Button>
-          </Box>
           <Box width="50%">
             <Box flex="1" marginRight="40px">
               {isLoading ? (

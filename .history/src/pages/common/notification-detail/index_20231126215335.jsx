@@ -166,17 +166,15 @@ const NotificationDetail = () => {
                 __html: notificationDetail?.content
               }}></Typography>
           </Box>
-          {(notificationFiles && notificationFiles.length > 0) ||
-            (notificationImages && notificationImages.length > 0 && <Divider />)}
+          {notificationFiles && notificationFiles.length > 0 || notificationImages &&
+            notificationImages.length > 0 && <Divider />}
           <Box mt={2}>
-            {(notificationFiles && notificationFiles.length > 0) ||
-            (notificationImages && notificationImages.length > 0) ? (
+            {(notificationFiles && notificationFiles.length > 0) || (notificationImages &&
+            notificationImages.length > 0) ? (
               <Typography mb={2} fontWeight="700">
                 Attachments:{' '}
               </Typography>
-            ) : (
-              ''
-            )}
+            ): ''}
             <Box mb={3} alignItems="center" gap="10px" display="flex" flexWrap="wrap">
               {notificationFiles &&
                 notificationFiles.length > 0 &&
@@ -214,7 +212,7 @@ const NotificationDetail = () => {
             ))}
           <Divider />
           <Box mt={2} display="flex" justifyContent="flex-start">
-            <Button
+          <Button
               variant="contained"
               onClick={() => navigate(-1)}
               sx={{ bgcolor: 'rgb(100, 149, 237)' }}>

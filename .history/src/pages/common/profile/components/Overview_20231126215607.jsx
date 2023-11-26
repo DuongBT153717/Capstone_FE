@@ -8,6 +8,7 @@ import {
   Typography,
   styled
 } from '@mui/material'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 const TypoOverView = styled(Typography)(() => ({
@@ -51,12 +52,12 @@ const Overview = (props) => {
       </CardContent>
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-start' }}>
-        <Button
-          variant="contained"
-          onClick={() => navigate(-1)}
-          sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-          Back to Dashboard
-        </Button>
+      <Button
+              variant="contained"
+              onClick={() => navigate(-1)}
+              sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+              Back to Dashboard
+            </Button>
       </CardActions>
     </>
   )

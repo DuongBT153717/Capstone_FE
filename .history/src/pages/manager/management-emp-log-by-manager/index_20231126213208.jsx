@@ -203,7 +203,7 @@ const EmpLogManagement = () => {
             headerName: 'Action',
             headerAlign: 'center',
             align: 'center',
-            width: 200,
+            flex: 1,
             sortable: false,
             filterable: false,
             renderCell: (params) => {

@@ -98,14 +98,8 @@ const AttendanceDetail = () => {
                 </Box>
               </Paper>
             )}
-          <Button
-            variant="contained"
-            onClick={() => navigate(-1)}
-            sx={{mt: 3, ml: '40px'}}
-            >
-            Back
-          </Button>
           </Box>
+
           <Box width="50%">
             <Box flex="1" marginRight="40px">
               {isLoading ? (
@@ -172,32 +166,24 @@ const AttendanceDetail = () => {
                       display="flex"
                       flexDirection="column"
                       gap="15px"
-                      borderRight="1px solid #999">
+                      borderRight="1px solid #999"
+                    >
                       <Typography>Authorized late </Typography>
                       <Typography>Authorized early </Typography>
                       <Typography>Leave without notice </Typography>
                     </Box>
                     <Box display="flex" flexDirection="column" gap="15px">
-                      <Checkbox
-                        sx={{ p: 0 }}
-                        disabled
-                        checked={userAttendanceDetail?.lateCheckin}
-                      />
-                      <Checkbox
-                        sx={{ p: 0 }}
-                        disabled
-                        checked={userAttendanceDetail?.earlyCheckout}
-                      />
-                      <Checkbox
-                        sx={{ p: 0 }}
-                        disabled
-                        checked={userAttendanceDetail?.nonPermittedLeave}
-                      />
+                      <Checkbox sx={{ p: 0 }} disabled checked={userAttendanceDetail?.lateCheckin} />
+                      <Checkbox sx={{ p: 0 }} disabled checked={userAttendanceDetail?.earlyCheckout} />
+                      <Checkbox sx={{ p: 0 }} disabled checked={userAttendanceDetail?.nonPermittedLeave} />
                     </Box>
                   </Box>
                 </Paper>
               ) : null}
             </Box>
+            <Button variant="contained" onClick={() => navigate(-1)} style={{ marginLeft: '4px', marginTop: '-20px' }}>
+                    Back
+                </Button>
           </Box>
         </Box>
       </Box>

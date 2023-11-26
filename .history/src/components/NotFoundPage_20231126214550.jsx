@@ -1,8 +1,10 @@
 import { Box, Button, Container, Typography } from '@mui/material'
 import Grid from '@mui/material/Grid'
-import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function NotFoundPage() {
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const navigate = useNavigate()
   return (
     <Box

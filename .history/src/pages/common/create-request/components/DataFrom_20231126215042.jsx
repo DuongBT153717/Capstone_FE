@@ -17,7 +17,7 @@ import dayjs from 'dayjs'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
 import { validationSchema } from '../util/validationSchema'
 import overtimeApi from '../../../../services/overtimeApi'
@@ -33,6 +33,7 @@ const AttendenceFrom = ({ userId }) => {
   const [to, setTo] = useState(dayjs(new Date()))
   const [date, setDate] = useState(dayjs(new Date()))
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const [isFrom, setIsFrom] = useState(true)
   const [isTo, setIsTo] = useState(true)
   const currentDate = new Date()
@@ -188,6 +189,7 @@ const OtFrom = () => {
   const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const navigate = useNavigate()
   const handleChange = (event) => {
     settopicOvertime(event.target.value)
@@ -641,6 +643,7 @@ const LateRequest = () => {
   const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const navigate = useNavigate()
   const handleChange = (event) => {
     setLateType(event.target.value)
@@ -777,6 +780,7 @@ const LeaveRequest = ({ userId }) => {
   const [dateTo, setDateTo] = useState(dayjs(new Date()))
   const [checked, setChecked] = useState(false)
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const currentDate = new Date()
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
   const navigate = useNavigate()
@@ -950,6 +954,7 @@ const WorkingOutSideRequest = () => {
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const [isChecked, setIsChecked] = useState(true)
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const navigate = useNavigate()
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked)

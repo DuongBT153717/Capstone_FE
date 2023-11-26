@@ -33,7 +33,7 @@ import dayjs from 'dayjs'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Header from '../../../components/Header'
 import { BASE_URL } from '../../../services/constraint'
@@ -68,7 +68,6 @@ const CreateNotification = () => {
     file: [],
     filepreview: []
   })
-  const navigate = useNavigate()
   const [progress, setProgress] = useState(0)
   useEffect(() => {
     const fetchAllUsers = async () => {
@@ -89,6 +88,7 @@ const CreateNotification = () => {
   const handleSaveDraft = (event) => {
     setIsSave(event.target.checked)
   }
+
 
   const handleChangeDepartment = (event) => {
     const { name, checked } = event.target
@@ -233,7 +233,7 @@ const CreateNotification = () => {
         } catch (error) {
           if (error.response.status === 400) {
             toast.error("You must setup schedule's time after 5 minutes from current !")
-          } else if (error.response.status === 500) {
+          }else if (error.response.status === 500) {
             toast.error("Your files mustn't over 62MB!")
           }
         }
@@ -269,7 +269,7 @@ const CreateNotification = () => {
         } catch (error) {
           if (error.response.status === 400) {
             toast.error("You must setup schedule's time after 5 minutes from current !")
-          } else if (error.response.status === 500) {
+          }else if (error.response.status === 500) {
             toast.error("Your files mustn't over 62MB!")
           }
         }
@@ -317,7 +317,7 @@ const CreateNotification = () => {
                             aria-labelledby="demo-radio-buttons-group-label"
                             onChange={(e) => {
                               formik.setFieldValue('isAllDepartment', e.target.value)
-                              if (formik.values.isAllDepartment === 'allDepartment') {
+                              if(formik.values.isAllDepartment === "allDepartment"){
                                 setDepartmentId([])
                                 setSelectedUsers([])
                                 setUpdateFilteredUsers([])
@@ -409,7 +409,7 @@ const CreateNotification = () => {
                       </Grid>
                       <Grid item xs={12}>
                         <Typography mb={2}>Attach file: </Typography>
-                        <Box mb={3} alignItems="center" gap="10px" display="flex" flexWrap="wrap">
+                        <Box mb={3} alignItems="center" gap="10px" display="flex" flexWrap='wrap'>
                           {file.length > 0 &&
                             file.map((item, index) => (
                               <>
@@ -525,12 +525,39 @@ const CreateNotification = () => {
                 </CardContent>
                 <Divider />
                 <CardActions sx={{ justifyContent: 'space-between', py: '8px' }}>
-                  <Button
-                    variant="contained"
-                    onClick={() => navigate(-1)}
-                    sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                    Back to Dashboard
-                  </Button>
+                  {currentUser?.role === 'hr' ? (
+                    <Link to="/manage-user">
+                      <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                        Back to Dashboard
+                      </Button>
+                    </Link>
+                  ) : currentUser?.role === 'employee' ? (
+                    <Link to="/request-list-employee">
+                      <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                        Back to Dashboard
+                      </Button>
+                    </Link>
+                  ) : currentUser?.role === 'manager' ? (
+                    <Link to="/request-list-manager">
+                      <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                        Back to Dashboard
+                      </Button>
+                    </Link>
+                  ) : currentUser?.role === 'admin' ? (
+                    <Link to="/request-list-admin">
+                      <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                        Back to Dashboard
+                      </Button>
+                    </Link>
+                  ) : currentUser?.role === 'security' ? (
+                    <Link to="/manage-user">
+                      <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                        Back to Dashboard
+                      </Button>
+                    </Link>
+                  ) : (
+                    <></>
+                  )}
                   {isSave ? (
                     <LoadingButton
                       type="submit"

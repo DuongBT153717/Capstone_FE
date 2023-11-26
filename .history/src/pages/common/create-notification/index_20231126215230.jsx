@@ -90,6 +90,7 @@ const CreateNotification = () => {
     setIsSave(event.target.checked)
   }
 
+
   const handleChangeDepartment = (event) => {
     const { name, checked } = event.target
     let updatedDepartmentId
@@ -233,7 +234,7 @@ const CreateNotification = () => {
         } catch (error) {
           if (error.response.status === 400) {
             toast.error("You must setup schedule's time after 5 minutes from current !")
-          } else if (error.response.status === 500) {
+          }else if (error.response.status === 500) {
             toast.error("Your files mustn't over 62MB!")
           }
         }
@@ -269,7 +270,7 @@ const CreateNotification = () => {
         } catch (error) {
           if (error.response.status === 400) {
             toast.error("You must setup schedule's time after 5 minutes from current !")
-          } else if (error.response.status === 500) {
+          }else if (error.response.status === 500) {
             toast.error("Your files mustn't over 62MB!")
           }
         }
@@ -317,7 +318,7 @@ const CreateNotification = () => {
                             aria-labelledby="demo-radio-buttons-group-label"
                             onChange={(e) => {
                               formik.setFieldValue('isAllDepartment', e.target.value)
-                              if (formik.values.isAllDepartment === 'allDepartment') {
+                              if(formik.values.isAllDepartment === "allDepartment"){
                                 setDepartmentId([])
                                 setSelectedUsers([])
                                 setUpdateFilteredUsers([])
@@ -409,7 +410,7 @@ const CreateNotification = () => {
                       </Grid>
                       <Grid item xs={12}>
                         <Typography mb={2}>Attach file: </Typography>
-                        <Box mb={3} alignItems="center" gap="10px" display="flex" flexWrap="wrap">
+                        <Box mb={3} alignItems="center" gap="10px" display="flex" flexWrap='wrap'>
                           {file.length > 0 &&
                             file.map((item, index) => (
                               <>
@@ -525,12 +526,12 @@ const CreateNotification = () => {
                 </CardContent>
                 <Divider />
                 <CardActions sx={{ justifyContent: 'space-between', py: '8px' }}>
-                  <Button
-                    variant="contained"
-                    onClick={() => navigate(-1)}
-                    sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                    Back to Dashboard
-                  </Button>
+                <Button
+              variant="contained"
+              onClick={() => navigate(-1)}
+              sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+              Back to Dashboard
+            </Button>
                   {isSave ? (
                     <LoadingButton
                       type="submit"

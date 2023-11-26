@@ -6,10 +6,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { BASE_URL } from '../../../../services/constraint';
 import requestApi from '../../../../services/requestApi';
 import axiosClient from '../../../../utils/axios-config';
-import { BASE_URL } from '../../../../services/constraint';
-import { toast } from 'react-toastify';
+import { formatDateTime } from '../../../../utils/formatDate';
 import { validationSchema } from './util/validationSchema';
 
 const style = {
@@ -24,7 +25,7 @@ const style = {
   p: 4,
 };
 
-const EditEmpLogAttendence = ({ openLateRequest, handleCloseLateRequest, dailyLogModal, userName }) => {
+const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, userName }) => {
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('');
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId);
 
@@ -54,7 +55,7 @@ const EditEmpLogAttendence = ({ openLateRequest, handleCloseLateRequest, dailyLo
         },
       });
       toast.success('Update successfully!');
-      handleCloseLateRequest();
+      handleCloseEditLog();
     } catch (error) {
       console.error('Error updating user information:', error);
       toast.error('Update failed. Please try again.');
@@ -63,19 +64,17 @@ const EditEmpLogAttendence = ({ openLateRequest, handleCloseLateRequest, dailyLo
 
   const formik = useFormik({
     initialValues: {
-      title: '',
       content: '',
       type: 'NONE ',
       manualCheckIn: new Date(),
       manualCheckOut: new Date(),
-      violate: false,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       const data = {
         managerId: receiveIdAndDepartment?.managerInfoResponse?.managerId,
-        manualCheckIn: values.manualCheckIn.toISOString(),
-        manualCheckOut: values.manualCheckOut.toISOString(),
+        manualCheckIn: formatDateTime(values.manualCheckIn),
+        manualCheckOut: formatDateTime(values.manualCheckOut),
         type: values.type,
         date: outputDateString,
         changeType: 'FROM_EDIT',
@@ -83,15 +82,14 @@ const EditEmpLogAttendence = ({ openLateRequest, handleCloseLateRequest, dailyLo
         employeeId: userId,
         reason: values.content,
       };
-
       editEmpLog(data);
-    },
-  });
 
+    },
+  })
   return (
     <Modal
-      open={openLateRequest}
-      onClose={handleCloseLateRequest}
+      open={openEditLog}
+      onClose={handleCloseEditLog}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -101,7 +99,7 @@ const EditEmpLogAttendence = ({ openLateRequest, handleCloseLateRequest, dailyLo
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography fontWeight="700" fontSize="18px">
-                  Late Request
+                  Edit Log
                 </Typography>
               </Grid>
               <Grid item xs={12}>
@@ -177,12 +175,11 @@ const EditEmpLogAttendence = ({ openLateRequest, handleCloseLateRequest, dailyLo
                   </Typography>
                 )}
               </Grid>
-              <Grid sx={{ display: 'flex', alignItems: 'center' }} item xs={12}>
+              <Grid item xs={12}>
                 <Typography fontWeight="500">Violate</Typography>
                 <Checkbox
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
                   checked={formik.values.violate}
+                  onChange={() => formik.setFieldValue('violate', !formik.values.violate)}
                   sx={{ padding: '0 0 0 5px' }}
                 />
               </Grid>
@@ -207,7 +204,7 @@ const EditEmpLogAttendence = ({ openLateRequest, handleCloseLateRequest, dailyLo
               <Button type="submit" variant="contained" sx={{ marginRight: '10px' }}>
                 Save
               </Button>
-              <Button variant="contained" onClick={handleCloseLateRequest}>
+              <Button variant="contained" onClick={handleCloseEditLog}>
                 Cancel
               </Button>
             </Box>
