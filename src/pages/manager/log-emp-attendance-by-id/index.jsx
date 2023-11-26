@@ -12,10 +12,17 @@ import { formatDateNotTime } from '../../../utils/formatDate';
 import ChatTopbar from '../../common/chat/components/ChatTopbar';
 import DataTableCheckAttendance from './components/DataTable';
 import EditEmpLogAttendance from './components/EditModal';
+import { useFormik } from 'formik';
 
 export default function LogEmpAttendanceById() {
     const currentUser = useSelector((state) => state.auth.login?.currentUser);
-
+    const formik = useFormik({
+        initialValues: {
+            content: '',
+            type: '',
+            manualCheckIn: new Date(),
+            manualCheckOut: new Date(),
+        }, });
     const [isLoading, setIsLoading] = useState(false);
     const [userAttendance, setUserAttendance] = useState('');
     const [dailyLog, setDailyLog] = useState([]);
@@ -353,6 +360,9 @@ export default function LogEmpAttendanceById() {
                     openEditLog={openLateRequest}
                     dailyLogModal={dailyLogModal}
                     userName={userName}
+                    manualCheckIn={formik.values.manualCheckIn}
+                    manualCheckOut={formik.values.manualCheckOut}
+            
                 />
                 <Button variant="contained" onClick={() => navigate(-1)} style={{ marginLeft: '4px', marginTop: '-20px' }}>
                     Back

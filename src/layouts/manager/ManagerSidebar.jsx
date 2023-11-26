@@ -178,7 +178,7 @@ const ManagerSidebar = () => {
             icon={<PermContactCalendarIcon />}
             component={<Link to="/emp-log-management" onClick={() => setActiveIndex(11)} />}>
             {' '}
-            Employee evaluate
+            Employee Log
           </MenuItem>
           </SubMenu>
           <MenuItem

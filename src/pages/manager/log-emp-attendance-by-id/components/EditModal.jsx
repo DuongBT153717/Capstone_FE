@@ -12,6 +12,7 @@ import requestApi from '../../../../services/requestApi';
 import axiosClient from '../../../../utils/axios-config';
 import { formatDateTime } from '../../../../utils/formatDate';
 import { validationSchema } from './util/validationSchema';
+import { format, set } from 'date-fns';
 
 const style = {
   position: 'absolute',
@@ -25,7 +26,7 @@ const style = {
   p: 4,
 };
 
-const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, userName }) => {
+const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, userName, manualCheckIn, manualCheckOut }) => {
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('');
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId);
 
@@ -66,8 +67,8 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
     initialValues: {
       content: '',
       type: '',
-      manualCheckIn: new Date(),
-      manualCheckOut: new Date(),
+      manualCheckIn: manualCheckIn,
+      manualCheckOut: manualCheckOut,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -116,28 +117,25 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
               </Grid>
               <Grid item xs={4} mb={2}>
                 <Typography fontWeight="500">System CheckIn</Typography>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <TimePicker
-                    disabled
-                    value={outputDateString}
-                    renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
-                  />
-                </LocalizationProvider>
+                <TextField
+                  disabled
+                  value={format(set(new Date(), { hours: 8, minutes: 30, seconds: 0 }), 'hh:mm a')}  // Fixed system check-in time with AM/PM format
+                  sx={{ width: '100%' }}
+                />
               </Grid>
               <Grid item xs={4} mb={2}>
                 <Typography fontWeight="500">System CheckOut</Typography>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <TimePicker
-                    disabled
-                    value={outputDateString}
-                    renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
-                  />
-                </LocalizationProvider>
+                <TextField
+                  disabled
+                  value={format(set(new Date(), { hours: 17, minutes: 30, seconds: 0 }), 'hh:mm a')}  // Fixed system check-out time with AM/PM format
+                  sx={{ width: '100%' }}
+                />
               </Grid>
               <Grid item xs={5} mb={2}>
                 <Typography fontWeight="500">Manual CheckIn</Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <TimePicker
+
                     value={formik.values.manualCheckIn}
                     onChange={(date) => formik.setFieldValue('manualCheckIn', date)}
                     renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
