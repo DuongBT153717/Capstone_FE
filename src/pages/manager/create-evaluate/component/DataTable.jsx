@@ -10,6 +10,10 @@ const StripedDataGrid = styled(DataGrid)(() => ({
   }
 }))
 const EvaluateTable = ({ rows, columns, isLoading }) => {
+  const getRowId = (row) => {
+    return row.dailyId ? row.dailyId : `${row.id}-${row.label}`;
+  };
+  
   return (
     <>
   
@@ -17,7 +21,7 @@ const EvaluateTable = ({ rows, columns, isLoading }) => {
         sx={{
           '& .MuiDataGrid-root': {
             border: 'none'
-          },
+          },  
           '& .MuiDataGrid-cell': {
             borderBottom: 'none'
           },
@@ -78,7 +82,7 @@ const EvaluateTable = ({ rows, columns, isLoading }) => {
           loading={isLoading}
           columns={columns}
           rows={rows}
-          getRowId={(row) => row.dailyId}
+          getRowId={getRowId}
         />
       </Box>
     </>

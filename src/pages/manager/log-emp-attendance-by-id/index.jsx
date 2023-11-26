@@ -36,6 +36,7 @@ export default function LogEmpAttendanceById() {
     const { employee_id } = useParams();
     const [selectedOption, setSelectedOption] = useState('option1');
     const [option2Data, setOption2Data] = useState([]);
+
     useEffect(() => {
         const fetchAllUserAttendance = async () => {
             setIsLoading(true);
@@ -109,7 +110,7 @@ export default function LogEmpAttendanceById() {
                         <GridToolbarExport />
                     </Box>
                     <Box display="flex" alignItems="center" gap={1} width="20%">
-                        <Button variant="contained" onClick={() => navigate('/create-evaluate')}>
+                        <Button variant="contained" onClick={() => navigate(`/create-evaluate/${employee_id}/${format(month,'yyyy-MM-dd')}`)}>
                             Evaluate
                         </Button>
                         <Select
