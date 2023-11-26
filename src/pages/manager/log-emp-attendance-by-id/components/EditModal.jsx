@@ -6,10 +6,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { BASE_URL } from '../../../../services/constraint';
 import requestApi from '../../../../services/requestApi';
 import axiosClient from '../../../../utils/axios-config';
-import { BASE_URL } from '../../../../services/constraint';
-import { toast } from 'react-toastify';
+import { formatDateTime } from '../../../../utils/formatDate';
 import { validationSchema } from './util/validationSchema';
 
 const style = {
@@ -63,31 +64,28 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
 
   const formik = useFormik({
     initialValues: {
-      title: '',
       content: '',
       type: '',
       manualCheckIn: new Date(),
       manualCheckOut: new Date(),
-      violate: false,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       const data = {
         managerId: receiveIdAndDepartment?.managerInfoResponse?.managerId,
-        manualCheckIn: values.manualCheckIn.toISOString(),
-        manualCheckOut: values.manualCheckOut.toISOString(),
+        manualCheckIn: formatDateTime(values.manualCheckIn),
+        manualCheckOut: formatDateTime(values.manualCheckOut),
         type: values.type,
         date: outputDateString,
         changeType: 'FROM_EDIT',
         violet: values.violate ? 1 : 0,
         employeeId: userId,
-        reason: values.content, 
+        reason: values.content,
       };
-
       editEmpLog(data);
-    },
-  });
 
+    },
+  })
   return (
     <Modal
       open={openEditLog}
@@ -177,12 +175,11 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
                   </Typography>
                 )}
               </Grid>
-              <Grid sx={{ display: 'flex', alignItems: 'center' }} item xs={12}>
+              <Grid item xs={12}>
                 <Typography fontWeight="500">Violate</Typography>
                 <Checkbox
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
                   checked={formik.values.violate}
+                  onChange={() => formik.setFieldValue('violate', !formik.values.violate)}
                   sx={{ padding: '0 0 0 5px' }}
                 />
               </Grid>
