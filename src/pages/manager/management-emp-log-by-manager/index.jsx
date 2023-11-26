@@ -153,12 +153,12 @@ const EmpLogManagement = () => {
                         displayText = 'GOOD';
                         break;
                     case 'NORMAL':
-                        textColor = 'black';
+                        textColor = '#00BFFF';
                         displayText = 'NORMAL';
                         break;
-                    default:
+                    case null:
                         textColor = 'black';
-                        displayText = 'N/A';
+                        displayText = 'unrate';
                 }
 
                 return (
@@ -176,11 +176,11 @@ const EmpLogManagement = () => {
                 if (params.row.approvedDate !== null || params.row.approvedDate === "1970-01-01 08:00:00") {
                     return <Box>{formatDate(params.row.approvedDate)}</Box>;
                 } else {
-                    return <Box></Box>; 
+                    return <Box></Box>;
                 }
             },
         },
-          
+
         {
             field: 'status',
             headerName: 'Status',
@@ -190,7 +190,7 @@ const EmpLogManagement = () => {
                     if (params.row.status === true) {
                         return <Typography style={{ color: 'green' }}>Accepted</Typography>;
                     } else if (params.row.status === false) {
-                        return <Typography>Rejected</Typography>;
+                        return <Typography style={{ color: 'red' }}>Rejected</Typography>;
                     }
                 } else {
                     return <Typography></Typography>;
@@ -207,39 +207,45 @@ const EmpLogManagement = () => {
             sortable: false,
             filterable: false,
             renderCell: (params) => {
-                if (params.row.rating !== null && params.row.approvedDate !== null && params.row.status === true) {
+                const buttonStyle = {
+                    width: '80px',  // Adjust the width as needed
+                    marginLeft: '10px',
+                    fontSize: '12px',  // Adjust the font size as needed
+                };
+
+                if (params.row.evaluateEnum !== null && params.row.approvedDate !== null && params.row.status === true) {
                     return null;
-                } else if (params.row.rating !== null && params.row.approvedDate !== null && params.row.status === false) {
+                } else if (params.row.evaluateEnum !== null && params.row.approvedDate !== null && params.row.status === false) {
                     return (
                         <>
-                            <Button variant="contained" onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}`)}>
+                            <Button variant="contained" onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}`)} style={buttonStyle}>
                                 Detail
                             </Button>
-                            <Button variant="contained" style={{ backgroundColor: 'red' }}>
+                            <Button variant="contained" style={{ backgroundColor: 'red', ...buttonStyle }}>
                                 Evaluate
                             </Button>
                         </>
                     );
-                } else if (params.row.rating !== null && params.row.approvedDate === null && params.row.status === false) {
+                } else if (params.row.evaluateEnum !== null && params.row.approvedDate === null && params.row.status === false) {
                     return (
                         <>
-                            <Button variant="contained" onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}`)}>
+                            <Button variant="contained" onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}`)} style={buttonStyle}>
                                 Detail
                             </Button>
-                            <Box sx={{ marginLeft: '20px' }}>
-                                <Button variant="contained">
+                            <Box sx={{ marginLeft: '0px' }}>
+                                <Button variant="contained" style={buttonStyle}>
                                     Edit
                                 </Button>
                             </Box>
                         </>
                     );
-                } else if (params.row.rating === null && params.row.approvedDate === null && params.row.status === false) {
+                } else if (params.row.evaluateEnum === null && params.row.approvedDate === null && params.row.status === false) {
                     return (
                         <>
-                            <Button variant="contained" onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}`)}>
+                            <Button variant="contained" onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}`)} style={buttonStyle}>
                                 Detail
                             </Button>
-                            <Button variant="contained" style={{ color: 'black' }}>
+                            <Button variant="contained" style={{ backgroundColor: 'gray', ...buttonStyle }}>
                                 Evaluate
                             </Button>
                         </>
@@ -249,6 +255,7 @@ const EmpLogManagement = () => {
                 }
             },
         }
+
 
     ];
     return (
@@ -269,14 +276,15 @@ const EmpLogManagement = () => {
                     </Button>
                 </Box>
             </Box>
-            <Box mt={3}>
-                <Typography variant="h6">Employee List</Typography>
-                {listEmployees.map((employee) => (
-                    <div key={employee.accountId}>
-                        <Typography>{employee.departmentName}</Typography>
-                    </div>
-                ))}
-            </Box>
+            {listLog.length > 0 && listLog[0].department && listLog[0].department.departmentName && (
+                <Box mt={3}>
+                    <Typography variant="h6">
+                        <span>Department: </span>
+                        <span style={{ color: 'red' }}>{listLog[0].department.departmentName}</span>
+                        <span style={{ color: 'red' }}>{listEmployees[0].departmentName}</span>
+                    </Typography>
+                </Box>
+            )}
             {listLog && listLog.length !== 0 ? (
                 <>
                     <Box mt={3}>
