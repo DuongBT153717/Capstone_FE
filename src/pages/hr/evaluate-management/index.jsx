@@ -232,7 +232,7 @@ const EvaluateManagement = () => {
                             <Button variant="contained" onClick={() => navigate(`/attendence-evaluate-report-emp/${params.row.employeeId}`)} style={buttonStyle}>
                                 Detail
                             </Button>
-                            <Button variant="contained" style={{ ...buttonStyle }}>
+                            <Button variant="contained" onClick={() => navigate(`/view-log-attendance/${params.row.employeeId}/${format(month, 'yyyy-MM-dd')}`)} style={{ ...buttonStyle }}>
                                 View Log
                             </Button>
                         </>

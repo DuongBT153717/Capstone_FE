@@ -79,6 +79,9 @@ export const HR_PATH = {
     NOTIFICATION_DRAFT_LIST_HR: 'notification-draftlist',
     NOTIFICATION_SCHEDULED_LIST_HR: 'notification-schedulelist',
     NOTIFICATION_SCHEDULED_DEPARTMENT_HR: '/notification-department-hr',
-    EVALUATE_MANAGEMENT:'/view-list-evaluate'
+    EVALUATE_MANAGEMENT:'/view-list-evaluate',
+    VIEW_LOG_ATTENDANCE:'/view-log-attendance/:employee_id/:date',
+    ATTENDANCE_LOG_DETAIL:'/attendance-log-detail-hr/:employee_id/:date',
+    CHANGE_LOG_DETAIL:'/change-log-detail-hr/:employee_id/:date',
 
 }
