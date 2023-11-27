@@ -17,6 +17,7 @@ import { Menu, MenuItem, Sidebar, SubMenu, useProSidebar } from 'react-pro-sideb
 import { Link } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
+
 const AdminSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => { 
@@ -35,6 +36,7 @@ const AdminSidebar = () => {
   });
   const [userProfileImage, setUserProfileImage] = useState('')
   const currentUser = useAuth()
+
   const imgurl = async () => {
     const storageRef = ref(storage, `/${currentUser.image}`)
     try {
@@ -47,6 +49,7 @@ const AdminSidebar = () => {
   if (currentUser && currentUser.image) {
     imgurl()
   }
+
   return (
     <>
       <Sidebar

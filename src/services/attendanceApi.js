@@ -53,6 +53,18 @@ const attendanceApi = {
       console.log(error);
     }
   },
+  getChangeLogsInDay: (employeeId, date) => {
+    let data ={
+      employeeId : employeeId,
+      date : date
+    }
+    try {
+      const response = axiosClient.post(`${BASE_URL}/getChangeLogsInDay`, data)
+      return response
+    } catch (error) {
+      console.log(error);
+    }
+  },
 
   getEvaluate: async (data) => {
     try {

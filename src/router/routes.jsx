@@ -66,6 +66,9 @@ import LogManagement from '../pages/manager/log-management'
 import EmpLogManagement from '../pages/manager/management-emp-log-by-manager'
 import LogEmpAttendanceById from '../pages/manager/log-emp-attendance-by-id'
 import EvaluateManagement from '../pages/hr/evaluate-management'
+import ViewLogAttendance from '../pages/hr/attendance-log'
+import AttendanceLogDetailHR from '../pages/hr/attendance-log-detail'
+import ChangeLogDetail from '../pages/hr/change-log-detail'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -243,6 +246,36 @@ export default function Router() {
       ]
     },
     {
+      path: '/',
+      element: <RequireAuth allowedRoles={ROLES.HR} />,
+      children: [
+        {
+          path: HR_PATH.VIEW_LOG_ATTENDANCE,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <ViewLogAttendance/>
+            </Suspense>
+          )
+        },
+        {
+          path: HR_PATH.ATTENDANCE_LOG_DETAIL,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <AttendanceLogDetailHR />
+            </Suspense>
+          )
+        },
+        {
+          path: HR_PATH.CHANGE_LOG_DETAIL,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <ChangeLogDetail />
+            </Suspense>
+          )
+        },
+      ]
+    },
+    {
       path: HR_PATH.LAYOUT,
       element: <HrLayout />,
       children: [
@@ -344,7 +377,8 @@ export default function Router() {
                   <BookRoomHr />
                 </Suspense>
               )
-            }
+            },
+        
           ]
         }
       ]
