@@ -18,12 +18,12 @@ import { useEffect, useState } from 'react'
 import { BASE_URL } from '../../../services/constraint'
 
 import axiosClient from '../../../utils/axios-config'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 
 const ViewEmpEvaluateReport = () => {
-  const { employeeId } = useParams();
+  const { employee_id } = useParams();
   const [month, setMonth] = useState(new Date())
   const [evaluate, setEvaluate] = useState([])
   const setMonthYear = (newDate) => {
@@ -32,6 +32,7 @@ const ViewEmpEvaluateReport = () => {
   const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const [minDate, setMinDate] = useState(new Date('1990'))
   const maxDate = new Date()
+  const navigate = useNavigate();
   const buttonStyle = {
     width: '80px',
     marginLeft: '10px',
@@ -43,24 +44,24 @@ const ViewEmpEvaluateReport = () => {
       toast.success('Send request successfully');
     } catch (error) {
       if (error.response.status === 400) {
-        toast.error('ERROR!');
+        toast.error('Can not accept or reject!');
       }
       if (error.response.status === 404) {
-        toast.error('User not found!');
+        toast.error('Something went wrong!');
       }
     }
   };
   useEffect(() => {
     const fetchAllEvaluateAttendance = async () => {
       let data = {
-        userId: employeeId,
+        userId: employee_id,
         month: format(month, 'MM'),
         year: format(month, 'yyyy')
       }
       try {
         const response = await axiosClient.post(`${BASE_URL}/getIndividualEvaluate`, data)
         console.log(data)
-        console.log(employeeId)
+        console.log(employee_id)
         if (response && response.hireDate) {
           setMinDate(new Date(response.hireDate))
         }
@@ -72,7 +73,7 @@ const ViewEmpEvaluateReport = () => {
     }
 
     fetchAllEvaluateAttendance()
-  }, [month])
+  }, [month, employee_id])
   const handleAccept = async () => {
     const data = {
       hrId: currentUser?.accountId,
@@ -85,7 +86,7 @@ const ViewEmpEvaluateReport = () => {
   }
   const handleReject = async () => {
     const data = {
-      hrId: currentUser?.userId,
+      hrId: currentUser?.accountId,
       hrNote: 'Rejected',
       evaluateId: evaluate.evaluateId,
       hrStatus: false,
@@ -226,23 +227,35 @@ const ViewEmpEvaluateReport = () => {
           value={`${evaluate.note}`}
         />
         <Grid container justifyContent="flex-end" marginTop="10px">
-          <Button
-            variant="contained"
-            color="primary"
-            style={buttonStyle}
-            onClick={handleAccept}
-          >
-            Accept
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            style={{ ...buttonStyle, marginLeft: '10px' }}
-            onClick={handleReject}
-          >
-            Reject
-          </Button>
+          {evaluate.status !== false && evaluate.status !== true && (
+            <>
+              <Button
+                variant="contained"
+                color="primary"
+                style={buttonStyle}
+                onClick={handleAccept}
+              >
+                Accept
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                style={{ ...buttonStyle, marginLeft: '10px' }}
+                onClick={handleReject}
+              >
+                Reject
+              </Button>
+            </>
+          )}
         </Grid>
+
+        <Button variant="contained" onClick={() => navigate(-1)} style={{
+          width: '80px',
+          marginLeft: '10px',
+          fontSize: '12px',
+        }}>
+          Back
+        </Button>
       </Paper>
     </>
   )

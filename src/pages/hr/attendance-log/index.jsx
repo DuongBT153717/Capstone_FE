@@ -1,14 +1,14 @@
+import { Box, Button, Grid, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import attendanceApi from "../../../services/attendanceApi";
-import AttendanceTable from "./component/DataTable";
-import { Box, Button, Grid, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from "@mui/material";
-import ChatTopbar from "../../common/chat/components/ChatTopbar";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { format } from "date-fns";
 import overtimeApi from "../../../services/overtimeApi";
+import ChatTopbar from "../../common/chat/components/ChatTopbar";
+import AttendanceTable from "./component/DataTable";
 
 
 
@@ -22,7 +22,6 @@ const ViewLogAttendance = () => {
     const [month, setMonth] = useState(date);
     const [userAttendance, setUserAttendance] = useState('')
     const [dailyLog, setDailyLog] = useState([])
-    const [status, setStatus] = useState(0)
     const [selectedOption, setSelectedOption] = useState('option1');
     const [overTimeData, setOverTimeDate] = useState([])
 

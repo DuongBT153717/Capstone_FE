@@ -43,7 +43,7 @@ export default function LogEmpAttendanceByIdList() {
             } catch (error) {
                 console.error('Error fetching employee list:', error);
             }
-            console.log(listEm)
+            //console.log(listEm)
         };
         const fetchAllUserAttendance = async () => {
             setIsLoading(true);

@@ -263,8 +263,10 @@ export default function Router() {
             </Suspense>
           )
         },
+        
       ]
     },
+
     {
       path: '/',
       element: <RequireAuth allowedRoles={ROLES.HR} />,
@@ -274,6 +276,14 @@ export default function Router() {
           element: (
             <Suspense fallback={<>Loading...</>}>
               <ViewLogAttendance/>
+            </Suspense>
+          )
+        },
+        {
+          path: HR_PATH.VIEW_ATTENDANCE_EVALUATE_REPORT,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <ViewEmpEvaluateReport />
             </Suspense>
           )
         },
@@ -382,14 +392,7 @@ export default function Router() {
                 </Suspense>
               )
             },
-            {
-              path: HR_PATH.VIEW_ATTENDANCE_EVALUATE_REPORT,
-              element: (
-                <Suspense fallback={<>Loading...</>}>
-                  <ViewEmpEvaluateReport />
-                </Suspense>
-              )
-            },
+         
             {
               path: HR_PATH.NOTIFICATION_SCHEDULED_DEPARTMENT_HR,
               element: (
