@@ -49,6 +49,8 @@ const ManagerSidebar = () => {
                         ? 10 
                         : window.location.pathname === '/emp-log-management'
                         ? 11
+                        : window.location.pathname === '/emp-attendance-log-list'
+                        ? 12
                         : 0
     return initialIndex
   })
@@ -178,7 +180,14 @@ const ManagerSidebar = () => {
             icon={<PermContactCalendarIcon />}
             component={<Link to="/emp-log-management" onClick={() => setActiveIndex(11)} />}>
             {' '}
-            Employee Log
+            Employee evaluate
+          </MenuItem>
+          <MenuItem
+            active={activeIndex === 12}
+            icon={<PermContactCalendarIcon />}
+            component={<Link to="/emp-attendance-log-list" onClick={() => setActiveIndex(12)} />}>
+            {' '}
+            Employee Attendance Log
           </MenuItem>
           </SubMenu>
           <MenuItem

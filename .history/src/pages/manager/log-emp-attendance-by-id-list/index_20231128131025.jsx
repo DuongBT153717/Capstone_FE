@@ -1,4 +1,4 @@
-import { Box, Button, MenuItem, Select, TextField } from '@mui/material';
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -9,42 +9,49 @@ import { useNavigate, useParams } from 'react-router-dom';
 import attendanceApi from '../../../services/attendanceApi';
 import overtimeApi from '../../../services/overtimeApi';
 import { formatDateNotTime } from '../../../utils/formatDate';
-import ChatTopbar from '../../common/chat/components/ChatTopbar';
 import DataTableCheckAttendance from './components/DataTable';
+import userApi from '../../../services/userApi';
+import useAuth from '../../../hooks/useAuth';
+import EditEmpLogAttendence from './components/EditModal';
 // import EditEmpLogAttendance from './components/EditModal';
 // import { useFormik } from 'formik';
 
-export default function LogEmpAttendanceById() {
+export default function LogEmpAttendanceByIdList() {
+
     const currentUser = useSelector((state) => state.auth.login?.currentUser);
-    // const formik = useFormik({
-    //     initialValues: {
-    //         content: '',
-    //         type: '',
-    //         manualCheckIn: new Date(),
-    //         manualCheckOut: new Date(),
-    //     }, });
     const [isLoading, setIsLoading] = useState(false);
     const [userAttendance, setUserAttendance] = useState('');
     const [dailyLog, setDailyLog] = useState([]);
     const [month, setMonth] = useState(new Date());
-    // const [openLateRequest, setOpenLateRequest] = useState(false);
-    // const [dailyLogModal, setDailyLogModal] = useState({});
     const [createdDate, setCreatedDate] = useState({});
     const navigate = useNavigate();
     const [userName, setUserName] = useState('');
     const [hireDate, setHireDate] = useState('');
-    const { employee_id } = useParams();
+    const {employee_id } = useParams();
     const [selectedOption, setSelectedOption] = useState('option1');
     const [option2Data, setOption2Data] = useState([]);
-
+    const [openLateRequest, setOpenLateRequest] = useState(false);
+    const [dailyLogModal, setDailyLogModal] = useState({});
+    const [listEm, setListEm] = useState([])
+    const [employee, setEmployee] = useState('none')
+    const userInfo = useAuth()
     useEffect(() => {
+        const getListEmpByDepartment = async () => {
+            try {
+                let res = await userApi.getAllEmployeeByDepartmentId(userInfo?.departmentId);
+                setListEm(res);
+            } catch (error) {
+                console.error('Error fetching employee list:', error);
+            }
+            //console.log(listEm)
+        };
         const fetchAllUserAttendance = async () => {
             setIsLoading(true);
             try {
                 let response;
                 if (selectedOption === 'option1') {
                     response = await attendanceApi.getAttendanceUser(
-                        employee_id,
+                        employee,
                         format(month, 'MM'),
                         format(month, 'yyyy')
                     );
@@ -55,7 +62,7 @@ export default function LogEmpAttendanceById() {
                     setHireDate(hireDate);
                 } else if (selectedOption === 'option2') {
                     response = await overtimeApi.getOvertimeUser(
-                        employee_id,
+                        employee,
                         format(month, 'MM'),
                         format(month, 'yyyy')
                     );
@@ -72,11 +79,24 @@ export default function LogEmpAttendanceById() {
                 setIsLoading(false);
             }
         };
+        Promise.all([getListEmpByDepartment(), fetchAllUserAttendance()])
+            .then(() => {
+                console.log('Both API calls completed');
+            })
+            .catch((error) => {
+                console.error('Error in one of the API calls:', error);
+            });
+    }, [userInfo?.departmentId, month, selectedOption, employee]);
 
-        fetchAllUserAttendance();
-    }, [month, selectedOption, employee_id]);
+    const handleChangeEmployee = (e) => {
+        setEmployee(e)
+    }
+    const handleOpenLateRequest = (params) => {
+        setOpenLateRequest(true);
+        setDailyLogModal(params);
+    };
 
-
+    const handleCloseEditLog = () => setOpenLateRequest(false);
     useEffect(() => {
         const fetchGetCreatedDate = async () => {
             try {
@@ -90,17 +110,11 @@ export default function LogEmpAttendanceById() {
         fetchGetCreatedDate();
     }, [currentUser]);
 
-    // const handleOpenLateRequest = (params) => {
-    //     setOpenLateRequest(true);
-    //     setDailyLogModal(params);
-    // };
+
 
     const handleOptionChange = (selectedValue) => {
         setSelectedOption(selectedValue);
     };
-
-    // const handleCloseEditLog = () => setOpenLateRequest(false);
-
     function CustomToolbar() {
         return (
             <GridToolbarContainer>
@@ -109,15 +123,24 @@ export default function LogEmpAttendanceById() {
                         <GridToolbarFilterButton />
                         <GridToolbarExport />
                     </Box>
-                    <Box display="flex" alignItems="center" gap={1} width="20%">
-                        <Select
-                            value={selectedOption}
-                            onChange={(e) => handleOptionChange(e.target.value)}
-                            style={{ flex: 1, marginRight: '5px' }}
-                        >
-                            <MenuItem value="option1">Daily Log</MenuItem>
-                            <MenuItem value="option2">Overtime</MenuItem>
-                        </Select>
+                    <Box>
+                        <Button>Evaluate</Button>
+                    </Box>
+                    <Box display="flex" alignItems="center" mr={1} width="20%">
+                        <FormControl sx={{ width: '280px' }}>
+                            <InputLabel id="demo-simple-select-label">Select Employee</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                label="Select Employee"
+                                value={employee}
+                                onChange={(e) => handleChangeEmployee(e.target.value)}>
+                                {listEm.map((item, index) => (
+                                    <MenuItem key={index} value={item.accountId}>
+                                        {item?.userName}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Box>
                     <Box>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -131,6 +154,16 @@ export default function LogEmpAttendanceById() {
                                 style={{ marginLeft: '10px' }}
                             />
                         </LocalizationProvider>
+                    </Box>
+                    <Box display="flex" alignItems="center" gap={1} width="20%">
+                        <Select
+                            value={selectedOption}
+                            onChange={(e) => handleOptionChange(e.target.value)}
+                            style={{ flex: 1, marginLeft: '10px' }}
+                        >
+                            <MenuItem value="option1">Daily Log</MenuItem>
+                            <MenuItem value="option2">Overtime</MenuItem>
+                        </Select>
                     </Box>
                 </Box>
             </GridToolbarContainer>
@@ -283,7 +316,7 @@ export default function LogEmpAttendanceById() {
                 return row.violate ? 1 : 0;
             }
         },
-        
+
         {
             field: 'action',
             headerName: 'Action',
@@ -331,6 +364,11 @@ export default function LogEmpAttendanceById() {
                                         Detail
                                     </Button>
                                 </>
+                            ) : null}
+                            {params.row.id !== 'TOTAL' ? (
+                                <Button variant="contained" onClick={() => handleOpenLateRequest(params.row)}>
+                                    Edit
+                                </Button>
                             ) : null}
                         </Box>
                     </Box>
@@ -387,7 +425,6 @@ export default function LogEmpAttendanceById() {
     return (
         <>
             <Box sx={{ marginLeft: '10px' }}>
-                <ChatTopbar />
                 <DataTableCheckAttendance
                     rows={rows}
                     columns={columns}
@@ -397,18 +434,15 @@ export default function LogEmpAttendanceById() {
                     hireDate={hireDate}
                     getRowId={(row) => row.id}
                 />
-                {/* <EditEmpLogAttendance
+                <EditEmpLogAttendence
+                    systemCheckIn={dailyLogModal?.systemCheckIn}
+                    systemCheckOut={dailyLogModal?.systemCheckOut}
                     handleCloseEditLog={handleCloseEditLog}
                     openEditLog={openLateRequest}
                     dailyLogModal={dailyLogModal}
                     userName={userName}
-                    manualCheckIn={formik.values.manualCheckIn}
-                    manualCheckOut={formik.values.manualCheckOut}
-            
-                /> */}
-                <Button variant="contained" onClick={() => navigate(-1)} style={{ marginLeft: '4px', marginTop: '-20px' }}>
-                    Back
-                </Button>
+                />
+
             </Box>
         </>
     );
