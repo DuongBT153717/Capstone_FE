@@ -1,7 +1,7 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { Box, Button, Checkbox, Grid, MenuItem, Modal, Select, TextField, Typography } from '@mui/material';
-import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
@@ -12,6 +12,7 @@ import requestApi from '../../../../services/requestApi';
 import axiosClient from '../../../../utils/axios-config';
 import { formatDateTime } from '../../../../utils/formatDate';
 import { validationSchema } from './util/validationSchema';
+import { isValid } from 'date-fns';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -25,7 +26,7 @@ const style = {
 };
 
 const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, userName, manualCheckIn, manualCheckOut, systemCheckIn,
-  systemCheckOut, }) => {
+  systemCheckOut, date }) => {
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('');
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId);
 
@@ -114,11 +115,22 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
                   disabled
                 />
               </Grid>
+              <Grid item xs={12} mb={2}>
+                <Typography fontWeight="500">Date</Typography>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    value={date}
+                    disabled
+                    renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
+
+                  />
+                </LocalizationProvider>
+              </Grid>
               <Grid item xs={6} mb={2}>
                 <Typography fontWeight="500">System CheckIn</Typography>
                 <TextField
                   disabled
-                  value={formatDateTime(new Date(`2000-01-01T${systemCheckIn}`), 'hh:mm:ss')}
+                  value={isValid(systemCheckIn) ? formatDateTime(new Date(`2000-01-01T${systemCheckIn}`), 'hh:mm:ss') : ''}
                   sx={{ width: '100%' }}
                 />
               </Grid>
@@ -126,7 +138,7 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
                 <Typography fontWeight="500">System CheckOut</Typography>
                 <TextField
                   disabled
-                  value={formatDateTime(new Date(`2000-01-01T${systemCheckOut}`), 'hh:mm:ss')}
+                  value={isValid(systemCheckOut) ? formatDateTime(new Date(`2000-01-01T${systemCheckOut}`), 'hh:mm:ss') : ''}
                   sx={{ width: '100%' }}
                 />
               </Grid>
