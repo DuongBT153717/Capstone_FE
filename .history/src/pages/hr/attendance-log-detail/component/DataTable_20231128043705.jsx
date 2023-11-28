@@ -61,7 +61,6 @@ const ChangeLogTable = ({ rows, columns, isLoading }) => {
           },
         }}>
         <StripedDataGrid
-          autoHeight
           disableRowSelectionOnClick
           slots={{  loadingOverlay: LinearProgress }}
           showCellVerticalBorder

@@ -111,7 +111,7 @@ export default function LogEmpAttendanceByIdList() {
     }, [currentUser]);
 
 
-    console.log(userAttendance);
+    console.log(employee);
     const handleOptionChange = (selectedValue) => {
         setSelectedOption(selectedValue);
     };
@@ -123,11 +123,9 @@ export default function LogEmpAttendanceByIdList() {
                         <GridToolbarFilterButton />
                         <GridToolbarExport />
                     </Box>
-                    {
-                        employee !== 'none' && <Box mr={1}>
-                        <Button variant='contained' onClick={() => navigate(`/create-evaluate/${employee}/${format(month, 'yyyy-MM')}`)}>Evaluate</Button>
+                    <Box mr={1}>
+                        <Button variant='contained'>Evaluate</Button>
                     </Box>
-                    }
                     <Box display="flex" alignItems="center" mr={1} width="20%">
                         <FormControl sx={{ width: '280px' }}>
                             <InputLabel id="demo-simple-select-label">Select Employee</InputLabel>
@@ -443,7 +441,6 @@ export default function LogEmpAttendanceByIdList() {
                     openEditLog={openLateRequest}
                     dailyLogModal={dailyLogModal}
                     userName={userName}
-                    date={dailyLogModal?.dateDaily}
                 />
 
             </Box>

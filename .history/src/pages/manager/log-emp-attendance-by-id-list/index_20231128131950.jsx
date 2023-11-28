@@ -443,7 +443,6 @@ export default function LogEmpAttendanceByIdList() {
                     openEditLog={openLateRequest}
                     dailyLogModal={dailyLogModal}
                     userName={userName}
-                    date={dailyLogModal?.dateDaily}
                 />
 
             </Box>

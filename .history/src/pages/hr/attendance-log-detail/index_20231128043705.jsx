@@ -1,14 +1,17 @@
 import {
     Box,
     Button,
+    Checkbox,
     CircularProgress,
     Divider,
     Paper,
+    TextField,
     Typography
 } from '@mui/material'
-import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import logApi from '../../../services/logApi'
 import attendanceApi from '../../../services/attendanceApi'
+import { useEffect, useState } from 'react'
 import ChatTopbar from '../../common/chat/components/ChatTopbar'
 import ChangeLogTable from './component/DataTable'
 
@@ -94,11 +97,12 @@ const AttendanceLogDetailHR = () => {
         {
             field: '',
             headerName: 'Action',
-            width: 170,
+            width: 120,
             renderCell: (params) => {
                 const buttonStyle = {
-                    width: '120px',
-                    fontSize: '15px',
+                    width: '80px',
+                    marginLeft: '10px',
+                    fontSize: '12px',
                 };
                 return (
                     <>

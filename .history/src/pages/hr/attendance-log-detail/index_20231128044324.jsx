@@ -94,11 +94,12 @@ const AttendanceLogDetailHR = () => {
         {
             field: '',
             headerName: 'Action',
-            width: 170,
+            flex: 1,
             renderCell: (params) => {
                 const buttonStyle = {
-                    width: '120px',
-                    fontSize: '15px',
+                    width: '80px',
+                    marginLeft: '10px',
+                    fontSize: '12px',
                 };
                 return (
                     <>

@@ -111,7 +111,7 @@ export default function LogEmpAttendanceByIdList() {
     }, [currentUser]);
 
 
-    console.log(userAttendance);
+    console.log(employee);
     const handleOptionChange = (selectedValue) => {
         setSelectedOption(selectedValue);
     };
@@ -443,7 +443,6 @@ export default function LogEmpAttendanceByIdList() {
                     openEditLog={openLateRequest}
                     dailyLogModal={dailyLogModal}
                     userName={userName}
-                    date={dailyLogModal?.dateDaily}
                 />
 
             </Box>
