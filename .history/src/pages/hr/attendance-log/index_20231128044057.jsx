@@ -22,6 +22,7 @@ const ViewLogAttendance = () => {
     const [month, setMonth] = useState(date);
     const [userAttendance, setUserAttendance] = useState('')
     const [dailyLog, setDailyLog] = useState([])
+    const [status, setStatus] = useState(0)
     const [selectedOption, setSelectedOption] = useState('option1');
     const [overTimeData, setOverTimeDate] = useState([])
 
@@ -100,43 +101,43 @@ const ViewLogAttendance = () => {
         {
             field: 'approveDate',
             headerName: 'Approve Date',
-            flex: 1
+            width: 280
         },
         {
             field: 'checkin',
             headerName: 'Check In',
-            flex: 1
+            width: 170
         },
         {
             field: 'checkout',
             headerName: 'Check Out',
-            flex: 1
+            width: 150
         },
         {
             field: 'dateType',
             headerName: 'Date Type',
-            flex: 1
+            width: 150
         },
         {
             field: 'systemCheckIn',
             headerName: 'System Check In',
-            flex: 1,
+            width: 150,
         },
         {
             field: 'systemCheckOut',
             headerName: 'System Check Out',
-            flex: 1,
+            width: 150,
         },
         {
             field: 'totalAttendance',
             headerName: 'Total Attendance',
-            flex: 1,
+            width: 150,
 
         },
         {
             field: 'totalPaid',
             headerName: 'Total Paid',
-            flex: 1,
+            width: 100,
         },
      
     ]
@@ -174,12 +175,12 @@ const ViewLogAttendance = () => {
         {
             field: 'systemCheckIn',
             headerName: 'System Check In',
-            width: 155
+            width: 100
         },
         {
             field: 'systemCheckOut',
             headerName: 'System Check Out',
-            width: 170
+            width: 100
         },
         {
             field: 'totalAttendance',

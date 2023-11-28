@@ -94,11 +94,12 @@ const AttendanceLogDetailHR = () => {
         {
             field: '',
             headerName: 'Action',
-            width: 170,
+            width: 150,
             renderCell: (params) => {
                 const buttonStyle = {
-                    width: '120px',
-                    fontSize: '15px',
+                    width: '80px',
+                    marginLeft: '10px',
+                    fontSize: '12px',
                 };
                 return (
                     <>
@@ -216,7 +217,7 @@ const AttendanceLogDetailHR = () => {
                                     <Typography fontWeight="700" fontSize="25px" color='red'>
                                         Change Log{' '}
                                     </Typography>
-                                    <Box>
+                                    <Box height='50px'>
                                         <ChangeLogTable
                                             rows={changLogList}
                                             columns={columns}

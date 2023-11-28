@@ -94,7 +94,7 @@ const AttendanceLogDetailHR = () => {
         {
             field: '',
             headerName: 'Action',
-            width: 170,
+            width: 150,
             renderCell: (params) => {
                 const buttonStyle = {
                     width: '120px',

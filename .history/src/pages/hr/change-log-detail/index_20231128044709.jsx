@@ -136,7 +136,7 @@ const ChangeLogDetail = () => {
                         <Typography mb={1}>Violate </Typography>
                       </Box>
                       <Box flex="1" ml={2}>
-                        <Typography mb={1} ml='5px'>{userAttendanceDetail?.outSideWork== -1? 0:1 } </Typography>
+                        <Typography mb={1} ml={1}>{userAttendanceDetail?.outSideWork== -1? 0:1 } </Typography>
                         <Checkbox
                           checked={userAttendanceDetail?.violate}
                           disabled

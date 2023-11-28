@@ -286,7 +286,7 @@ const Chat = () => {
             chatId: isActiveUser?.chatId,
             message: res.message,
             to: isActiveUser.user.map((item) => {return item.accountId}),
-            senderId: res.senderId,
+            user: isActiveUser.user,
             type: 'image'
           })
           setNewMessage('')
@@ -322,7 +322,7 @@ const Chat = () => {
             from: currentUserId,
             chatId: isActiveUser?.chatId,
             to: isActiveUser.user.map((item) => {return item.accountId}),
-            senderId: res.senderId,
+            user: isActiveUser.user,
             message: res.message,
             type: 'file'
           })
@@ -339,7 +339,7 @@ const Chat = () => {
       }
     } else {
       try {
-        const res = await axiosClient.post(`${BASE_URL}/createNewMessage`,data)
+        const res = await chatApi.createNewTextMessage(data)
         console.log(res);
          setMessages(messages.concat(message))
         socket.current.emit('send-msg', {
@@ -347,7 +347,6 @@ const Chat = () => {
           to: isActiveUser.user.map((item) => {return item.accountId}),
           user: isActiveUser.user,
           message: newMessage,
-          senderId: res.senderId,
           type: 'text'
         })
         setNewMessage('')
@@ -362,7 +361,7 @@ const Chat = () => {
   console.log(selectedUserGroup)
   useEffect(() => {
     if (isActiveUser === '') {
-      socket.current = io('https://capstone-nodejs.onrender.com')
+      socket.current = io('http://localhost:3001')
       socket.current.emit('addUser', currentUserId)
     }
   }, [currentUserId])
@@ -372,7 +371,7 @@ const Chat = () => {
   useEffect(() => {
     if (socket.current) {
       socket.current.on('msg-receive', (msg) => {
-        setArrivalMessage({ myself: false, message: msg.message, type: msg.type, senderId: msg.senderId })
+        setArrivalMessage({ myself: false, message: msg.message, type: msg.type, senderId: currentUserId })
       })
     }
   }, [arrivalMessage])
@@ -1133,6 +1132,9 @@ const Chat = () => {
                 value={userChangeAdmin}
                 label="Username"
                 onChange={(e) => setUserChangeAdmin(e.target.value)}>
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
                 {isActiveUser &&
                   isActiveUser?.user.map((item) => (
                     <MenuItem key={item.accountId} value={item.accountId}>

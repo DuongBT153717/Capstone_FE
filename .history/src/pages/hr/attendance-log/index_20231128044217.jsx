@@ -22,6 +22,7 @@ const ViewLogAttendance = () => {
     const [month, setMonth] = useState(date);
     const [userAttendance, setUserAttendance] = useState('')
     const [dailyLog, setDailyLog] = useState([])
+    const [status, setStatus] = useState(0)
     const [selectedOption, setSelectedOption] = useState('option1');
     const [overTimeData, setOverTimeDate] = useState([])
 
@@ -179,7 +180,7 @@ const ViewLogAttendance = () => {
         {
             field: 'systemCheckOut',
             headerName: 'System Check Out',
-            width: 170
+            width: 180
         },
         {
             field: 'totalAttendance',
