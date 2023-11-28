@@ -4,15 +4,15 @@ import { Box, Button, Checkbox, Grid, MenuItem, Modal, Select, TextField, Typogr
 import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useFormik } from 'formik';
-import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { BASE_URL } from '../../../../services/constraint';
-import requestApi from '../../../../services/requestApi';
 import axiosClient from '../../../../utils/axios-config';
 import { formatDateTime } from '../../../../utils/formatDate';
 import { validationSchema } from './util/validationSchema';
 import { isValid } from 'date-fns';
+import { useEffect, useState } from 'react';
+import requestApi from '../../../../services/requestApi';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -25,9 +25,9 @@ const style = {
   p: 4,
 };
 
-const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, userName, manualCheckIn, manualCheckOut, systemCheckIn,
-  systemCheckOut, date }) => {
-  const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('');
+const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, userName, systemCheckIn,
+  systemCheckOut, employeeId, date, manualCheckIn, manualCheckOut }) => {
+
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId);
 
   let inputDateString = dailyLogModal?.dateDaily;
@@ -39,7 +39,7 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
   let day = inputDate.getDate().toString().padStart(2, '0');
 
   let outputDateString = `${year}-${month}-${day}`;
-
+  const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('');
   useEffect(() => {
     const fetchReceiveIdAndDepartment = async () => {
       const response = await requestApi.getReceiveIdAndDepartment(userId);
@@ -69,6 +69,7 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
       type: 'NONE',
       manualCheckIn: manualCheckIn,
       manualCheckOut: manualCheckOut,
+
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -80,13 +81,14 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
         date: outputDateString,
         changeType: 'FROM_EDIT',
         violet: values.violate ? 1 : 0,
-        employeeId: userId,
         reason: values.content,
+        employeeId: employeeId,
       };
       editEmpLog(data);
-
+    
     },
   })
+  console.log(employeeId);
   return (
     <Modal
       open={openEditLog}

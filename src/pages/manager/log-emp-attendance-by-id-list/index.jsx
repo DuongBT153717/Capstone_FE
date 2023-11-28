@@ -93,6 +93,7 @@ export default function LogEmpAttendanceByIdList() {
     }
     const handleOpenLateRequest = (params) => {
         setOpenLateRequest(true);
+        console.log(params);
         setDailyLogModal(params);
     };
 
@@ -422,7 +423,7 @@ export default function LogEmpAttendanceByIdList() {
     const rows = selectedOption === 'option1'
         ? [...dailyLog, { id: 'TOTAL', label: 'Total', dailyId: '12345' }]
         : [...option2Data];
-
+console.log(employee_id);
 
     return (
         <>
@@ -444,6 +445,7 @@ export default function LogEmpAttendanceByIdList() {
                     dailyLogModal={dailyLogModal}
                     userName={userName}
                     date={dailyLogModal?.dateDaily}
+                    employeeId={employee}
                 />
 
             </Box>
