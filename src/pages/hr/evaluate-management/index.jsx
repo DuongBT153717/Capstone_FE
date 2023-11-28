@@ -17,13 +17,16 @@ import DataTableListChangeLog from './component/DataTable';
 import formatDate from '../../../utils/formatDate';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify'
+import requestApi from '../../../services/requestApi';
 
 const EvaluateManagement = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [month, setMonth] = useState(new Date());
     const [listLog, setListLog] = useState([]);
     const [listEmployees, setListEmployees] = useState([]);
+    const [listmanager, setListmanager] = useState([]);
     const [selectedDepartment, setSelectedDepartment] = useState('');
+    const [getAllManagerDepartment, setGetAllManagerDepartment] = useState([])
     const navigate = useNavigate()
     const userInfo = useAuth();
 
@@ -45,6 +48,39 @@ const EvaluateManagement = () => {
         getListEmpByDepartment();
     }, [userInfo?.departmentId]);
 
+
+
+    useEffect(() => {
+        const fetchAllMDepartment = async () => {
+            const response = await requestApi.getAllManagerDepartment()
+            setGetAllManagerDepartment(response)
+        }
+        fetchAllMDepartment()
+    }, [])
+
+
+
+    useEffect(() => {
+        const getManagerByDepartment = async () => {
+            try {
+                if (!userInfo || !userInfo.departmentId) {
+                    console.error('ERROR');
+                    return;
+
+                }
+                const data = {
+                    departmentId: selectedDepartment,
+                };
+                const response = await userApi.getManagerByDepartment(data);
+                setListmanager(response || []);
+                console.log(listmanager);
+            } catch (error) {
+                console.log(); ('Error fetching Manager:', error);
+            }
+
+        };
+        getManagerByDepartment();
+    }, [userInfo?.departmentId]);
     const handleSearchLog = async () => {
         setIsLoading(true);
         try {
@@ -59,8 +95,10 @@ const EvaluateManagement = () => {
                 year: format(month, 'yyyy'),
             };
             const response = await logApi.getEvaluateOfDepartment(data.departmentId, data.month, data.year);
-            if(response.length === 0){
-                toast.error("The department hasn't had log yet")
+            if (response.length === 0) {
+                toast.error(`No logs found for the department in ${format(month, 'MMMM yyyy')}`);
+
+
             }
             setListLog(response);
             console.log(response);
@@ -140,7 +178,7 @@ const EvaluateManagement = () => {
             width: 180,
             renderCell: (params) => {
                 if (params.row.approvedDate !== null || params.row.updateDate !== "1970-01-01 08:00:00") {
-                    return <Box>{formatDate(params.row.updateDate, )}</Box>;
+                    return <Box>{formatDate(params.row.updateDate,)}</Box>;
                 } else {
                     return <Box></Box>;
                 }
@@ -193,8 +231,8 @@ const EvaluateManagement = () => {
             },
         },
         {
-            field: 'createdBy',
-            headerName: 'Create By',
+            field: 'acceptedHrUserName',
+            headerName: 'Accepted By',
             width: 150,
         },
         {
@@ -227,20 +265,20 @@ const EvaluateManagement = () => {
                     marginLeft: '10px',
                     fontSize: '12px',
                 };
-                    return (
-                        <>
-                            <Button variant="contained" onClick={() => navigate(`/attendence-evaluate-report-emp/${params.row.employeeId}`)} style={buttonStyle}>
-                                Detail
-                            </Button>
-                            <Button variant="contained" style={{ ...buttonStyle }}>
-                                View Log
-                            </Button>
-                        </>
-                    )
-           
-            
+                return (
+                    <>
+                        <Button variant="contained" onClick={() => navigate(`/attendence-evaluate-report-emp/${params.row.employeeId}/${params.row.month}/${params.row.year}`)} style={buttonStyle}>
+                            Detail
+                        </Button>
+                        <Button variant="contained" style={{ ...buttonStyle }}>
+                            View Log
+                        </Button>
+                    </>
+                )
+
+
+            }
         }
-    }
 
 
     ];
@@ -261,14 +299,12 @@ const EvaluateManagement = () => {
                     onChange={(e) => setSelectedDepartment(e.target.value)}
                     displayEmpty
                     sx={{ width: '20%', marginRight: '16px' }}
-
                 >
-                    <MenuItem value="1">
-                        Tech D1
-                    </MenuItem>
-                    <MenuItem value="8">
-                        Tech D2
-                    </MenuItem>
+                    {getAllManagerDepartment.map((department) => (
+                        <MenuItem key={department.departmentId} value={department.departmentId}>
+                            {department.departmentName}
+                        </MenuItem>
+                    ))}
                 </Select>
                 <Box>
                     <Button variant="outlined" onClick={handleSearchLog}>
@@ -281,10 +317,18 @@ const EvaluateManagement = () => {
                     <Typography variant="h6">
                         <span>Department: </span>
                         <span style={{ color: 'red' }}>{listLog[0].department.departmentName}</span>
-
                     </Typography>
+                    <Typography variant="h6">
+                        <span>Manager Account: </span>
+                        <span style={{ color: '#32CD32' }}>{listLog[0].usernameCreatedBy}</span>
+                    </Typography>
+
                 </Box>
             )}
+            <Typography variant="h6">
+                {listmanager.map(manager => manager.firstName).join(', ')}
+            </Typography>
+
             {listLog && listLog.length !== 0 ? (
                 <>
                     <Box mt={3}>

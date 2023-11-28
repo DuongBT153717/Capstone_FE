@@ -46,9 +46,10 @@ export const MANAGER_PATH = {
     UPDATE_EVALUATE: '/update-evaluate/:employee_id/:date',
     ATTENDANCE_LOG_DETAIL: '/attendance-log-detail/:employee_id/:date',
     LOG_MANAGEMENT: '/log-management',
-    EMP_LOG_MANAGEMENT: '/emp-log-management',
+    EMPLOYEE_ATTENDANCE_LOG_LIST: '/emp-attendance-log-list',
     LOG_ATTENDACE_OF_EMP: '/log-attendance-emp/:employee_id',
-    EMPLOYEE_ATTENDANCE_DETAIL: 'emp-attendance-detail/:employee_id/:date'
+    EMPLOYEE_ATTENDANCE_DETAIL: 'emp-attendance-detail/:employee_id/:date',
+    EMP_LOG_MANAGEMENT:'/emp-log-management'
 }
 
 export const EMPLOYEE_PATH = {
@@ -79,6 +80,7 @@ export const HR_PATH = {
     NOTIFICATION_DRAFT_LIST_HR: 'notification-draftlist',
     NOTIFICATION_SCHEDULED_LIST_HR: 'notification-schedulelist',
     NOTIFICATION_SCHEDULED_DEPARTMENT_HR: '/notification-department-hr',
-    EVALUATE_MANAGEMENT:'/view-list-evaluate'
+    EVALUATE_MANAGEMENT:'/view-list-evaluate',
+    VIEW_ATTENDANCE_EVALUATE_REPORT: 'attendence-evaluate-report-emp/:employee_id/:month/:year',
 
 }
