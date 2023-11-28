@@ -68,8 +68,11 @@ import LogEmpAttendanceById from '../pages/manager/log-emp-attendance-by-id'
 import EvaluateManagement from '../pages/hr/evaluate-management'
 import EmployeeAttendanceDetail from '../pages/manager/emp-attendance-detail'
 import UpdateEvaluate from '../pages/manager/update-evaluate'
-import ViewEmpEvaluateReport from '../pages/hr/view-evaluate-of-emp'
+import ViewLogAttendance from '../pages/hr/attendance-log'
+import AttendanceLogDetailHR from '../pages/hr/attendance-log-detail'
+import ChangeLogDetail from '../pages/hr/change-log-detail'
 import LogEmpAttendanceByIdList from '../pages/manager/log-emp-attendance-by-id-list'
+import ViewEmpEvaluateReport from '../pages/hr/view-evaluate-of-emp'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -263,6 +266,36 @@ export default function Router() {
       ]
     },
     {
+      path: '/',
+      element: <RequireAuth allowedRoles={ROLES.HR} />,
+      children: [
+        {
+          path: HR_PATH.VIEW_LOG_ATTENDANCE,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <ViewLogAttendance/>
+            </Suspense>
+          )
+        },
+        {
+          path: HR_PATH.ATTENDANCE_LOG_DETAIL,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <AttendanceLogDetailHR />
+            </Suspense>
+          )
+        },
+        {
+          path: HR_PATH.CHANGE_LOG_DETAIL,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <ChangeLogDetail />
+            </Suspense>
+          )
+        },
+      ]
+    },
+    {
       path: HR_PATH.LAYOUT,
       element: <HrLayout />,
       children: [
@@ -350,6 +383,14 @@ export default function Router() {
               )
             },
             {
+              path: HR_PATH.VIEW_ATTENDANCE_EVALUATE_REPORT,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ViewEmpEvaluateReport />
+                </Suspense>
+              )
+            },
+            {
               path: HR_PATH.NOTIFICATION_SCHEDULED_DEPARTMENT_HR,
               element: (
                 <Suspense fallback={<>Loading...</>}>
@@ -362,14 +403,6 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <BookRoomHr />
-                </Suspense>
-              )
-            },
-            {
-              path: HR_PATH.VIEW_ATTENDANCE_EVALUATE_REPORT,
-              element: (
-                <Suspense fallback={<>Loading...</>}>
-                  <ViewEmpEvaluateReport />
                 </Suspense>
               )
             }

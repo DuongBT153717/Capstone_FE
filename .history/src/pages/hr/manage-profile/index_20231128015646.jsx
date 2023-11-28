@@ -1,5 +1,5 @@
 import CheckIcon from '@mui/icons-material/Check'
-import DeleteIcon from '@mui/icons-material/Delete'
+import ClearIcon from '@mui/icons-material/Clear'
 import { Avatar, Box, IconButton } from '@mui/material'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useEffect, useState } from 'react'
@@ -11,7 +11,6 @@ import { BASE_URL } from '../../../services/constraint'
 import profileApi from '../../../services/profileApi'
 import axiosClient from '../../../utils/axios-config'
 import DataTableManageProfile from './components/DataTable'
-import ClearIcon from '@mui/icons-material/Clear';
 const ManageProfile = () => {
   const dispatch = useDispatch()
 
@@ -27,7 +26,6 @@ const ManageProfile = () => {
     }
     fetchData()
   }, [])
-  console.log(usersProfile);
   const handleAcceptRequest = (userId) => {
     let choice = window.confirm('Do you want to accept this account profile?')
     if (choice == true) {
@@ -49,13 +47,17 @@ const ManageProfile = () => {
     }
   }
   const imgurl = async () => {
-    if(usersProfile.length > 0){
+    if (usersProfile.length > 0) {
       try {
         const downloadURLPromises = usersProfile.map((item) => {
-          const storageRef = ref(storage, `/${item.image}`)
-          return getDownloadURL(storageRef)
-        })
-  
+          if (item.image === 'unknown') {
+            return Promise.resolve(null);
+          } else {
+            const storageRef = ref(storage, `/${item.image}`);
+            return getDownloadURL(storageRef);
+          }
+        });
+
         const downloadURLs = await Promise.all(downloadURLPromises)
         const updatedUsersProfile = usersProfile.map((item, index) => ({
           ...item,
@@ -72,6 +74,8 @@ const ManageProfile = () => {
     imgurl()
   }, [usersProfile])
 
+
+  console.log(usersProfile);
   const columns = [
     {
       field: 'image',
@@ -146,7 +150,10 @@ const ManageProfile = () => {
               <CheckIcon sx={{ color: '#00FF00' }} />
             </IconButton>
             <IconButton>
-              <ClearIcon onClick={() => handleRejectRequest(params.row.accountId)} sx={{ color: 'red' }} />
+              <ClearIcon
+                onClick={() => handleRejectRequest(params.row.accountId)}
+                sx={{ color: 'red' }}
+              />
             </IconButton>
           </Box>
         )

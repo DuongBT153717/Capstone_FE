@@ -265,21 +265,20 @@ const EvaluateManagement = () => {
                     marginLeft: '10px',
                     fontSize: '12px',
                 };
-                return (
-                    <>
-                        <Button variant="contained" onClick={() => navigate(`/attendence-evaluate-report-emp/${params.row.employeeId}/${params.row.month}/${params.row.year}`)} style={buttonStyle}>
-                            Detail
-                        </Button>
-                        <Button variant="contained" style={{ ...buttonStyle }}>
-                            View Log
-                        </Button>
-                    </>
-                )
-
-
-            }
+                    return (
+                        <>
+                            <Button variant="contained" onClick={() => navigate(`/view-attendence-evaluate-report-emp/${params.row.employeeId}/${format(month, 'yyyy-MM-dd')}`)} style={buttonStyle}>
+                                Detail
+                            </Button>
+                            <Button variant="contained" onClick={() => navigate(`/view-log-attendance/${params.row.employeeId}/${format(month, 'yyyy-MM-dd')}`)} style={{ ...buttonStyle }}>
+                                View Log
+                            </Button>
+                        </>
+                    )
+           
+            
         }
-
+    }
 
     ];
     return (

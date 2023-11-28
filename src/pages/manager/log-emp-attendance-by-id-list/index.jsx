@@ -27,7 +27,7 @@ export default function LogEmpAttendanceByIdList() {
     const navigate = useNavigate();
     const [userName, setUserName] = useState('');
     const [hireDate, setHireDate] = useState('');
-    const { employee_id } = useParams();
+    const {employee_id } = useParams();
     const [selectedOption, setSelectedOption] = useState('option1');
     const [option2Data, setOption2Data] = useState([]);
     const [openLateRequest, setOpenLateRequest] = useState(false);
