@@ -1,5 +1,9 @@
 import {
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Grid,
   Paper,
   Table,
@@ -32,7 +36,6 @@ const ViewEmpEvaluateReport = () => {
   const location = useLocation();
   const { state } = location;
 
-  // Check if state contains selectedDepartment and month
   const selectedDepartmentFromState = state?.selectedDepartment;
   const monthFromState = state?.month;
   const currentUser = useSelector((state) => state.auth.login?.currentUser);
@@ -57,6 +60,9 @@ const ViewEmpEvaluateReport = () => {
       }
     }
   };
+
+
+
   useEffect(() => {
     const fetchAllEvaluateAttendance = async () => {
       let data = {
@@ -80,24 +86,54 @@ const ViewEmpEvaluateReport = () => {
 
     fetchAllEvaluateAttendance()
   }, [month, employee_id])
-  const handleAccept = async () => {
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpenReject, setDialogOpenReject] = useState(false);
+  const [hrNote, setHrNote] = useState('');
+
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleDialogRejectOpen =() => {
+    setDialogOpenReject(true);
+  }
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+  const handleDialogRejectClose =() => {
+    setDialogOpenReject(false);
+  }
+  const handleSendAccept = async () => {
     const data = {
       hrId: currentUser?.accountId,
-      hrNote: 'Accepted',
+      hrNote: hrNote,
       evaluateId: evaluate.evaluateId,
       hrStatus: true,
     };
-    console.log('Accept Data:', data);
     await updateAcceptOrRejectEvaluateByHr(data);
-  }
+    handleDialogClose();
+  };
+
+  // const handleAccept = async () => {
+  //   const data = {
+  //     hrId: currentUser?.accountId,
+  //     hrNote: 'Accepted',
+  //     evaluateId: evaluate.evaluateId,
+  //     hrStatus: true,
+  //   };
+  //   console.log('Accept Data:', data);
+  //   await updateAcceptOrRejectEvaluateByHr(data);
+  // }
   const handleReject = async () => {
     const data = {
       hrId: currentUser?.accountId,
-      hrNote: 'Rejected',
+      hrNote: hrNote,
       evaluateId: evaluate.evaluateId,
       hrStatus: false,
     };
     await updateAcceptOrRejectEvaluateByHr(data);
+    handleDialogRejectClose();
   }
   return (
     <>
@@ -239,7 +275,7 @@ const ViewEmpEvaluateReport = () => {
                 variant="contained"
                 color="primary"
                 style={buttonStyle}
-                onClick={handleAccept}
+                onClick={handleDialogOpen}
               >
                 Accept
               </Button>
@@ -247,10 +283,57 @@ const ViewEmpEvaluateReport = () => {
                 variant="contained"
                 color="secondary"
                 style={{ ...buttonStyle, marginLeft: '10px' }}
-                onClick={handleReject}
+                onClick={handleDialogRejectOpen}
               >
                 Reject
               </Button>
+
+              <Dialog open={dialogOpenReject} onClose={handleDialogRejectClose}>
+                <DialogTitle>Enter HR Note</DialogTitle>
+                <DialogContent>
+                  <TextField
+                    label="HR Note"
+                    multiline
+                    rows={4}
+                    fullWidth
+                    variant="outlined"
+                    value={hrNote}
+                    onChange={(e) => setHrNote(e.target.value)}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleReject} color="primary">
+                    Send
+                  </Button>
+                  <Button onClick={handleDialogRejectClose} color="primary">
+                    Cancel
+                  </Button>
+                </DialogActions>
+              </Dialog>
+
+
+              <Dialog open={dialogOpen} onClose={handleDialogClose}>
+                <DialogTitle>Enter HR Note</DialogTitle>
+                <DialogContent>
+                  <TextField
+                    label="HR Note"
+                    multiline
+                    rows={4}
+                    fullWidth
+                    variant="outlined"
+                    value={hrNote}
+                    onChange={(e) => setHrNote(e.target.value)}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleSendAccept} color="primary">
+                    Send
+                  </Button>
+                  <Button onClick={handleDialogClose} color="primary">
+                    Cancel
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </>
           )}
         </Grid>
