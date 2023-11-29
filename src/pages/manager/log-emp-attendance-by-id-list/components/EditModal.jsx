@@ -1,6 +1,6 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import { Box, Button, Checkbox, Grid, MenuItem, Modal, Select, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Modal, Select, TextField, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useFormik } from 'formik';
@@ -10,9 +10,9 @@ import { BASE_URL } from '../../../../services/constraint';
 import axiosClient from '../../../../utils/axios-config';
 import { formatDateTime } from '../../../../utils/formatDate';
 import { validationSchema } from './util/validationSchema';
-import { isValid } from 'date-fns';
 import { useEffect, useState } from 'react';
 import requestApi from '../../../../services/requestApi';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -23,6 +23,7 @@ const style = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  zIndex: 1000
 };
 
 const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, userName, systemCheckIn,
@@ -47,7 +48,7 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
     };
     fetchReceiveIdAndDepartment();
   }, []);
-
+  const [isTimePickerEnabled, setIsTimePickerEnabled] = useState(true);
   const editEmpLog = async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/saveChangeLog`, data, {
@@ -56,12 +57,46 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
         },
       });
       toast.success('Update successfully!');
-      handleCloseEditLog();
     } catch (error) {
       console.error('Error updating user information:', error);
-      toast.error('Update failed. Please try again.');
+      toast.error('Update failed. If both Manual CheckOut and Manual CheckIn are entered, Manual CheckOut must be later than Manual CheckIn.', {
+        position: 'top-center',
+        style: {
+          width: '1000px',
+        },
+      });
+      
     }
   };
+  const [isTimePickerEnabledOut, setIsTimePickerEnabledOut] = useState(true);
+
+  // const handleSave = () => {
+  //   event.preventDefault();
+  //   console.log('handleSave called');
+  //   confirmAlert({
+  //     title: 'Confirmation',
+  //     message: 'Are you sure you want to save?',
+  //     buttons: [
+  //       {
+  //         label: 'Yes',
+  //         onClick: () => {
+  //           console.log('Yes clicked');
+  //           formik.handleSubmit();
+  //             handleCloseEditLog();
+  //         },
+  //       },
+  //       {
+  //         label: 'No',
+  //         onClick: () => {
+  //           console.log('No clicked');
+  //         },
+  //       },
+  //     ],
+  //   });
+  // };
+  const [open, setOpen] = useState(false);
+  const [isContentEmpty, setIsContentEmpty] = useState(true);
+
 
   const formik = useFormik({
     initialValues: {
@@ -85,9 +120,36 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
         employeeId: employeeId,
       };
       editEmpLog(data);
-    
+
     },
   })
+  useEffect(() => {
+    setIsContentEmpty(!formik.values.content.trim());
+  }, [formik.values.content]);
+
+  const handleSave = () => {
+    event.preventDefault();
+    if (!isContentEmpty) {
+      setOpen(true);
+    } else {
+      toast.warning("Content cannot be left blank")
+    }
+  };
+  const handleCloseDialog = () => {
+    setOpen(false);
+  };
+  const handleConfirmSave = () => {
+    console.log('Yes clicked');
+    formik.handleSubmit();
+    handleCloseEditLog();
+    handleCloseDialog();
+  };
+
+  const handleCancelSave = () => {
+    console.log('No clicked');
+    handleCloseDialog();
+  };
+
   console.log(employeeId);
   return (
     <Modal
@@ -98,7 +160,7 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
     >
       <Box sx={style}>
         <Box p={3} pl={0}>
-          <form onSubmit={formik.handleSubmit}>
+          <form>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography fontWeight="700" fontSize="18px">
@@ -132,7 +194,7 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
                 <Typography fontWeight="500">System CheckIn</Typography>
                 <TextField
                   disabled
-                  value={isValid(systemCheckIn) ? formatDateTime(new Date(`2000-01-01T${systemCheckIn}`), 'hh:mm:ss') : ''}
+                  value={systemCheckIn !== null ? formatDateTime(new Date(`2000-01-01T${systemCheckIn}`), 'hh:mm:ss') : 'null'}
                   sx={{ width: '100%' }}
                 />
               </Grid>
@@ -140,31 +202,85 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
                 <Typography fontWeight="500">System CheckOut</Typography>
                 <TextField
                   disabled
-                  value={isValid(systemCheckOut) ? formatDateTime(new Date(`2000-01-01T${systemCheckOut}`), 'hh:mm:ss') : ''}
+                  value={systemCheckOut !== null ? formatDateTime(new Date(`2000-01-01T${systemCheckOut}`), 'hh:mm:ss') : 'null'}
                   sx={{ width: '100%' }}
                 />
               </Grid>
-
               <Grid item xs={6} mb={2}>
-                <Typography fontWeight="600">Manual CheckIn</Typography>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <TimePicker
-
-                    value={formik.values.manualCheckIn}
-                    onChange={(date) => formik.setFieldValue('manualCheckIn', date)}
-                    renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
+                <Box display="flex" alignItems="center">
+                  <Checkbox
+                    checked={!isTimePickerEnabled}
+                    onChange={() => {
+                      setIsTimePickerEnabled(!isTimePickerEnabled);
+                      formik.setFieldValue(
+                        'manualCheckIn',
+                        isTimePickerEnabled ? new Date('2000-01-01T12:00:00') : null
+                      );
+                    }}
+                    sx={{ padding: '0 0 0 5px' }}
                   />
-                </LocalizationProvider>
+                  <Typography fontWeight="600" ml={1}>Manual CheckIn</Typography>
+                </Box>
+                <Box>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    {isTimePickerEnabled ? (
+                      <TextField
+                        sx={{ width: '100%' }}
+                        disabled
+                        value={null}
+                      />
+                    ) : (
+                      <TimePicker
+                        value={formik.values.manualCheckIn}
+                        onChange={(date) => formik.setFieldValue('manualCheckIn', date)}
+                        renderInput={(props) => (
+                          <TextField
+                            sx={{ width: '100%' }}
+                            {...props}
+                          />
+                        )}
+                      />
+                    )}
+                  </LocalizationProvider>
+                </Box>
               </Grid>
               <Grid item xs={6} mb={2}>
-                <Typography fontWeight="500">Manual CheckOut</Typography>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <TimePicker
-                    value={formik.values.manualCheckOut}
-                    onChange={(date) => formik.setFieldValue('manualCheckOut', date)}
-                    renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
+                <Box display="flex" alignItems="center">
+                  <Checkbox
+                    checked={!isTimePickerEnabledOut}
+                    onChange={() => {
+                      setIsTimePickerEnabledOut(!isTimePickerEnabledOut);
+                      formik.setFieldValue(
+                        'manualCheckOut',
+                        isTimePickerEnabledOut ? new Date('2000-01-01T12:00:00') : null
+                      );
+                    }}
+                    sx={{ padding: '0 0 0 5px' }}
                   />
-                </LocalizationProvider>
+                  <Typography fontWeight="500" ml={1}>Manual CheckOut</Typography>
+                </Box>
+                <Box>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    {isTimePickerEnabledOut ? (
+                      <TextField
+                        sx={{ width: '100%' }}
+                        disabled
+                        value={null}
+                      />
+                    ) : (
+                      <TimePicker
+                        value={formik.values.manualCheckOut}
+                        onChange={(date) => formik.setFieldValue('manualCheckOut', date)}
+                        renderInput={(props) => (
+                          <TextField
+                            sx={{ width: '100%' }}
+                            {...props}
+                          />
+                        )}
+                      />
+                    )}
+                  </LocalizationProvider>
+                </Box>
               </Grid>
               <Grid item xs={6}>
                 Type
@@ -196,7 +312,7 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography fontWeight="500">Reason</Typography>
+                <Typography fontWeight="500">Content</Typography>
                 <CKEditor
                   editor={ClassicEditor}
                   data={formik.values.content}
@@ -213,13 +329,27 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
               </Grid>
             </Grid>
             <Box pt={2} display="flex" alignItems="flex-end">
-              <Button type="submit" variant="contained" sx={{ marginRight: '10px' }}>
+              <Button type="submit" variant="contained" sx={{ marginRight: '10px' }} onClick={handleSave}>
                 Save
               </Button>
               <Button variant="contained" onClick={handleCloseEditLog}>
                 Cancel
               </Button>
             </Box>
+            <Dialog open={open} onClose={handleCloseDialog}>
+              <DialogTitle>Confirmation</DialogTitle>
+              <DialogContent>
+                <p>Are you sure ? All your actions that affect others will be your responsibility</p>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleConfirmSave} color="primary">
+                  Yes
+                </Button>
+                <Button onClick={handleCancelSave} color="primary">
+                  No
+                </Button>
+              </DialogActions>
+            </Dialog>
           </form>
         </Box>
       </Box>

@@ -21,7 +21,7 @@ import axiosClient from '../../../utils/axios-config'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
-
+import { useLocation } from 'react-router-dom';
 const ViewEmpEvaluateReport = () => {
   const { employee_id } = useParams();
   const [month, setMonth] = useState(new Date())
@@ -29,6 +29,12 @@ const ViewEmpEvaluateReport = () => {
   const setMonthYear = (newDate) => {
     setMonth(newDate)
   }
+  const location = useLocation();
+  const { state } = location;
+
+  // Check if state contains selectedDepartment and month
+  const selectedDepartmentFromState = state?.selectedDepartment;
+  const monthFromState = state?.month;
   const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const [minDate, setMinDate] = useState(new Date('1990'))
   const maxDate = new Date()
@@ -249,13 +255,18 @@ const ViewEmpEvaluateReport = () => {
           )}
         </Grid>
 
-        <Button variant="contained" onClick={() => navigate(-1)} style={{
-          width: '80px',
-          marginLeft: '10px',
-          fontSize: '12px',
-        }}>
+        <Button
+          variant="contained"
+          onClick={() => navigate(-1, { state: { selectedDepartmentFromState, monthFromState } })}
+          style={{
+            width: '80px',
+            marginLeft: '10px',
+            fontSize: '12px',
+          }}
+        >
           Back
         </Button>
+
       </Paper>
     </>
   )
