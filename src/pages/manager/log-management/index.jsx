@@ -91,7 +91,7 @@ const LogManagement = () => {
       headerName: 'Attendance Log',
       width: 150,
       renderCell: (params) => {
-        return <Box>{params.row?.checkin || params.row?.checkout === '' ? 0 : 1}</Box>
+        return <Box>{params.row?.checkin || params.row?.checkout === null ? 0 : 1}</Box>
       }
     },
     {

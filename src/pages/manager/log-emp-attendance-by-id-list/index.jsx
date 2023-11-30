@@ -98,6 +98,8 @@ export default function LogEmpAttendanceByIdList() {
     };
 
     const handleCloseEditLog = () => setOpenLateRequest(false);
+
+    
     useEffect(() => {
         const fetchGetCreatedDate = async () => {
             try {
@@ -364,7 +366,7 @@ export default function LogEmpAttendanceByIdList() {
                                             navigate(`/emp-attendance-detail/${employee_id}/${outputDateString}`)
                                         }
                                     >
-                                        Detail
+                                        View Log
                                     </Button>
                                 </>
                             ) : null}

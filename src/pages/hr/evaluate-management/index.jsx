@@ -117,7 +117,9 @@ const EvaluateManagement = () => {
     }, [isLoading, listLog]);
 
     const handleDetailClick = (employeeId) => {
-        navigate(`/view-attendence-evaluate-report-emp/${employeeId}`);
+        navigate(`/view-attendence-evaluate-report-emp/${employeeId}`, {
+            state: { selectedDepartment, month },
+        });
     };
 
 

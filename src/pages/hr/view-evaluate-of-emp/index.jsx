@@ -1,5 +1,9 @@
 import {
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Grid,
   Paper,
   Table,
@@ -21,7 +25,7 @@ import axiosClient from '../../../utils/axios-config'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
-
+import { useLocation } from 'react-router-dom';
 const ViewEmpEvaluateReport = () => {
   const { employee_id } = useParams();
   const [month, setMonth] = useState(new Date())
@@ -29,6 +33,11 @@ const ViewEmpEvaluateReport = () => {
   const setMonthYear = (newDate) => {
     setMonth(newDate)
   }
+  const location = useLocation();
+  const { state } = location;
+
+  const selectedDepartmentFromState = state?.selectedDepartment;
+  const monthFromState = state?.month;
   const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const [minDate, setMinDate] = useState(new Date('1990'))
   const maxDate = new Date()
@@ -51,6 +60,9 @@ const ViewEmpEvaluateReport = () => {
       }
     }
   };
+
+
+
   useEffect(() => {
     const fetchAllEvaluateAttendance = async () => {
       let data = {
@@ -74,24 +86,54 @@ const ViewEmpEvaluateReport = () => {
 
     fetchAllEvaluateAttendance()
   }, [month, employee_id])
-  const handleAccept = async () => {
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpenReject, setDialogOpenReject] = useState(false);
+  const [hrNote, setHrNote] = useState('');
+
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleDialogRejectOpen =() => {
+    setDialogOpenReject(true);
+  }
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+  const handleDialogRejectClose =() => {
+    setDialogOpenReject(false);
+  }
+  const handleSendAccept = async () => {
     const data = {
       hrId: currentUser?.accountId,
-      hrNote: 'Accepted',
+      hrNote: hrNote,
       evaluateId: evaluate.evaluateId,
       hrStatus: true,
     };
-    console.log('Accept Data:', data);
     await updateAcceptOrRejectEvaluateByHr(data);
-  }
+    handleDialogClose();
+  };
+
+  // const handleAccept = async () => {
+  //   const data = {
+  //     hrId: currentUser?.accountId,
+  //     hrNote: 'Accepted',
+  //     evaluateId: evaluate.evaluateId,
+  //     hrStatus: true,
+  //   };
+  //   console.log('Accept Data:', data);
+  //   await updateAcceptOrRejectEvaluateByHr(data);
+  // }
   const handleReject = async () => {
     const data = {
       hrId: currentUser?.accountId,
-      hrNote: 'Rejected',
+      hrNote: hrNote,
       evaluateId: evaluate.evaluateId,
       hrStatus: false,
     };
     await updateAcceptOrRejectEvaluateByHr(data);
+    handleDialogRejectClose();
   }
   return (
     <>
@@ -233,7 +275,7 @@ const ViewEmpEvaluateReport = () => {
                 variant="contained"
                 color="primary"
                 style={buttonStyle}
-                onClick={handleAccept}
+                onClick={handleDialogOpen}
               >
                 Accept
               </Button>
@@ -241,21 +283,73 @@ const ViewEmpEvaluateReport = () => {
                 variant="contained"
                 color="secondary"
                 style={{ ...buttonStyle, marginLeft: '10px' }}
-                onClick={handleReject}
+                onClick={handleDialogRejectOpen}
               >
                 Reject
               </Button>
+
+              <Dialog open={dialogOpenReject} onClose={handleDialogRejectClose}>
+                <DialogTitle>Enter HR Note</DialogTitle>
+                <DialogContent>
+                  <TextField
+                    label="HR Note"
+                    multiline
+                    rows={4}
+                    fullWidth
+                    variant="outlined"
+                    value={hrNote}
+                    onChange={(e) => setHrNote(e.target.value)}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleReject} color="primary">
+                    Send
+                  </Button>
+                  <Button onClick={handleDialogRejectClose} color="primary">
+                    Cancel
+                  </Button>
+                </DialogActions>
+              </Dialog>
+
+
+              <Dialog open={dialogOpen} onClose={handleDialogClose}>
+                <DialogTitle>Enter HR Note</DialogTitle>
+                <DialogContent>
+                  <TextField
+                    label="HR Note"
+                    multiline
+                    rows={4}
+                    fullWidth
+                    variant="outlined"
+                    value={hrNote}
+                    onChange={(e) => setHrNote(e.target.value)}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleSendAccept} color="primary">
+                    Send
+                  </Button>
+                  <Button onClick={handleDialogClose} color="primary">
+                    Cancel
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </>
           )}
         </Grid>
 
-        <Button variant="contained" onClick={() => navigate(-1)} style={{
-          width: '80px',
-          marginLeft: '10px',
-          fontSize: '12px',
-        }}>
+        <Button
+          variant="contained"
+          onClick={() => navigate(-1, { state: { selectedDepartmentFromState, monthFromState } })}
+          style={{
+            width: '80px',
+            marginLeft: '10px',
+            fontSize: '12px',
+          }}
+        >
           Back
         </Button>
+
       </Paper>
     </>
   )
