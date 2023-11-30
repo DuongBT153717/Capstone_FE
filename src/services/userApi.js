@@ -175,12 +175,12 @@ const userApi = {
     try {
       let res =  axiosClient.get(`${BASE_URL}/getManagerByDepartment`,{
         params: {
-          department_id: data,
+          department: data,
         }
       })
       return res;
     } catch (error) {
-      toast.error('Can not delete!')
+      toast.error('Error!')
     }
   },
 }

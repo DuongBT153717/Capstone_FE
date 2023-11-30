@@ -63,24 +63,21 @@ const EvaluateManagement = () => {
     useEffect(() => {
         const getManagerByDepartment = async () => {
             try {
-                if (!userInfo || !userInfo.departmentId) {
-                    console.error('ERROR');
+                if (!selectedDepartment) {
+                    console.error('Selected department is missing.');
                     return;
-
                 }
-                const data = {
-                    departmentId: selectedDepartment,
-                };
-                const response = await userApi.getManagerByDepartment(data);
+                const response = await userApi.getManagerByDepartment(selectedDepartment);
                 setListmanager(response || []);
                 console.log(listmanager);
             } catch (error) {
-                console.log(); ('Error fetching Manager:', error);
+                console.error('Error fetching Manager:', error);
             }
-
         };
+
         getManagerByDepartment();
-    }, [userInfo?.departmentId]);
+    }, [selectedDepartment]);
+    const [showManagerInfo, setShowManagerInfo] = useState(false);
     const handleSearchLog = async () => {
         setIsLoading(true);
         try {
@@ -88,7 +85,6 @@ const EvaluateManagement = () => {
                 console.error('User information or departmentId is missing.');
                 return;
             }
-
             const data = {
                 departmentId: selectedDepartment,
                 month: format(month, 'MM'),
@@ -105,6 +101,7 @@ const EvaluateManagement = () => {
             console.log(data.departmentId);
             console.log(data.month);
             console.log(data.year);
+            setShowManagerInfo(true);
         } catch (error) {
             console.error('Error fetching department evaluation:', error);
         } finally {
@@ -316,22 +313,28 @@ const EvaluateManagement = () => {
                     </Button>
                 </Box>
             </Box>
-            {listLog.length > 0 && listLog[0].department && listLog[0].department.departmentName && (
-                <Box mt={3}>
+
+            <Box mt={3} style={{ marginTop: '20px' }}>
+                {listLog.length > 0 && listLog[0].department && listLog[0].department.departmentName && (
                     <Typography variant="h6">
                         <span>Department: </span>
                         <span style={{ color: 'red' }}>{listLog[0].department.departmentName}</span>
                     </Typography>
-                    <Typography variant="h6">
-                        <span>Manager Account: </span>
-                        <span style={{ color: '#32CD32' }}>{listLog[0].usernameCreatedBy}</span>
-                    </Typography>
+                )}
+                {showManagerInfo && (
+                    <div style={{ display: 'flex', gap: '50px' }}>
+                        <Typography variant="h6" style={{ marginTop: '20px' }}>
+                            <span>Manager Name: </span>
+                            <span style={{ color: '#32CD32' }}>{listmanager.map(manager => `${manager.firstName} ${manager.lastName}`).join(', ')}</span>
+                        </Typography>
+                        <Typography variant="h6" style={{ marginTop: '20px' }}>
+                            <span>Manager Account: </span>
+                            <span style={{ color: '#32CD32' }}>{listmanager.map(manager => `${manager.username} `)}</span>
+                        </Typography>
+                    </div>
+                )}
+            </Box>
 
-                </Box>
-            )}
-            <Typography variant="h6">
-                {listmanager.map(manager => manager.firstName).join(', ')}
-            </Typography>
 
             {listLog && listLog.length !== 0 ? (
                 <>
