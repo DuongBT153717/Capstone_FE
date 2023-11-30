@@ -89,7 +89,9 @@ const BookListDetailManager = () => {
                           ) : bookRoomDetail[0]?.object?.status === false ? (
                             <span style={{ color: 'red' }}>Rejected</span>
                           ) : (
-                            <></>
+                            bookRoomDetail[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' && (
+                              <span style={{ color: 'brown' }}>Closed</span>
+                            )
                           )}
                         </Typography>
                       </Grid>

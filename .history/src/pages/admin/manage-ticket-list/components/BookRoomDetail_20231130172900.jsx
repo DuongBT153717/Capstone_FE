@@ -39,6 +39,8 @@ const BookListDetail = () => {
   const navigate = useNavigate()
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
+
+  console.log(isLoading);
   useEffect(() => {
     setIsLoading(true)
     const fetchGetRequestDetailByAdmin = async () => {
@@ -49,7 +51,7 @@ const BookListDetail = () => {
     fetchGetRequestDetailByAdmin()
   }, [])
 
-  console.log(bookRoomDetail[0]?.object?.roomBookingRequestId)
+  console.log(bookRoomDetail)
 
   const handleAcceptBookRoom = async () => {
     if (bookRoomDetail) {
@@ -125,9 +127,28 @@ const BookListDetail = () => {
                           End Time: {bookRoomDetail[0]?.object?.endDate}
                         </Typography>
                       </Grid>
-                      <Grid item xs={12} md={6}>
+                      <Grid item xs={12} md={12}>
                         <Typography>Room: {bookRoomDetail[0]?.object?.roomName}</Typography>
                       </Grid>
+                      <Grid item xs={12} md={6}>
+                        <Typography>
+                          Status: {
+                            bookRoomDetail[0]?.requestMessageResponse?.requestTicketStatus !== 'CLOSED' ?
+                            <span style={{ color: 'brown' }}>Waiting</span> :
+                          bookRoomDetail[0]?.object?.status === true ? (
+                            <span style={{ color: 'green' }}>Accepted</span>
+                          ) : bookRoomDetail[0]?.object?.status === false ? (
+                            <span style={{ color: 'red' }}>Rejected</span>
+                          ) : (
+                            bookRoomDetail[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' && (
+                              <span style={{ color: 'brown' }}>Closed</span>
+                            )
+                          )
+                          }
+                        </Typography>
+                      </Grid>
+
+
                       <Grid item xs={12} md={12}>
                         <Typography>Content: {bookRoomDetail[0]?.object?.content}</Typography>
                       </Grid>
@@ -142,16 +163,22 @@ const BookListDetail = () => {
                     </Button>
                   </Link>
                   <Box display="flex" gap="10px">
-                    <Button onClick={handleOpen} variant="contained" sx={{ bgcolor: 'red' }}>
-                      Reject
-                    </Button>
-                    <LoadingButton
-                      loading={isLoadingAccept}
-                      onClick={handleAcceptBookRoom}
-                      variant="contained"
-                      sx={{ bgcolor: 'green' }}>
-                      Accept
-                    </LoadingButton>
+                    {bookRoomDetail[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' ? (
+                      <Box display="flex" gap="10px" justifyContent="flex-end">
+                        <Button onClick={handleOpen} variant="contained" sx={{ bgcolor: 'red' }}>
+                          Reject
+                        </Button>
+                        <LoadingButton
+                          loading={isLoadingAccept}
+                          onClick={handleAcceptBookRoom}
+                          variant="contained"
+                          sx={{ bgcolor: 'green' }}>
+                          Accept
+                        </LoadingButton>
+                      </Box>
+                    ) : (
+                      <></>
+                    )}
                   </Box>
                 </CardActions>
               </Card>
