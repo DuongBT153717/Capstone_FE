@@ -13,6 +13,7 @@ import {
   Paper,
   Typography
 } from '@mui/material'
+import io from 'socket.io-client'
 import { styled } from '@mui/system'
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -23,6 +24,12 @@ import ChatTopbar from '../chat/components/ChatTopbar'
 import './components/style.css'
 import { storage } from '../../../firebase/config'
 import { getDownloadURL, ref } from 'firebase/storage'
+ClassicEditor.defaultConfig = {
+  toolbar: {
+    items: ['heading', '|', 'bold', 'italic', '|', 'bulletedList', 'numberedList']
+  },
+  language: 'en'
+}
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   margin: theme.spacing(2),
@@ -46,7 +53,7 @@ const style = {
   boxShadow: 24,
   p: 2
 }
-
+const SOCKET_URL = 'http://localhost:3001'
 const TicketDetail = () => {
   const scrollbarsRef = useRef()
   const [request, setRequest] = useState([])
@@ -61,6 +68,7 @@ const TicketDetail = () => {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const userRole = useSelector((state) => state.auth.login?.currentUser.role)
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
+  const socket = useRef()
   const handleSendMessage = (e) => {
     e.preventDefault()
     let data = {
@@ -76,6 +84,11 @@ const TicketDetail = () => {
     }, 500)
   }
 
+  useEffect(() => {
+    socket.current = io(SOCKET_URL)
+    socket.current.emit('addUser', userId)
+  }, [userId])
+
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   useEffect(() => {
@@ -83,13 +96,21 @@ const TicketDetail = () => {
       if (requestId.startsWith('AT')) {
         const res = await requestApi.getDetailAttendanceMessageById(requestId)
         setRequest(res)
-        console.log(res)
       } else if (requestId.startsWith('LV')) {
         const res = await requestApi.getDetailLeaveMessageById(requestId)
         setRequest(res)
       } else if (requestId.startsWith('OR')) {
         const res = await requestApi.getDetailOtherMessageById(requestId)
-        console.log(res)
+        setRequest(res)
+      } else if (requestId.startsWith('OT')) {
+        const res = await requestApi.getDetailOverTimeMessageById(requestId)
+        setRequest(res)
+      } else if (requestId.startsWith('LT')) {
+        const res = await requestApi.getDetailLateMessageById(requestId)
+        setRequest(res)
+      } else if (requestId.startsWith('OW')) {
+        const res = await requestApi.getDetailOutSideWorkMessageById(requestId)
+        console.log(requestId)
         setRequest(res)
       }
     }
@@ -107,15 +128,24 @@ const TicketDetail = () => {
     }
   }, [request[0]?.requestMessageResponse?.senderId])
 
-  console.log('>>>' + request[0]?.object?.attendanceRequestId)
-
-  const handleAccept = () => {
+  const handleAccept = async () => {
     if (request[0]?.object?.topic === 'ATTENDANCE_REQUEST') {
-      requestApi.acceptAttendanceRequest(request[0]?.object?.attendanceRequestId)
+      const res = await requestApi.acceptAttendanceRequest(request[0]?.object?.attendanceRequestId)
+      console.log(res)
+      socket.current.emit('send-notification', res)
     } else if (request[0]?.object?.topic === 'LEAVE_REQUEST') {
       requestApi.acceptLeaveRequest(request[0]?.object?.leaveRequestId)
+    } else if (request[0]?.object?.topic === 'OVERTIME_REQUEST') {
+      requestApi.acceptOtRequest(request[0]?.object?.overtimeRequestId)
+    } else if (request[0]?.object?.topic === 'LATE_REQUEST') {
+      requestApi.acceptLateRequest(request[0]?.object?.lateRequestId)
+    } else if (request[0]?.object?.topic === 'OUTSIDE_REQUEST') {
+      requestApi.acceptOutSideRequest(request[0]?.object?.workingOutsideId)
+      // console.log(request[0]?.object?.workingOutsideId);
     }
   }
+
+  console.log(request[0])
 
   useEffect(() => {
     scrollbarsRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -146,9 +176,40 @@ const TicketDetail = () => {
       } else if (currentUser?.role === 'hr') {
         navigate('/request-list-hr')
       }
+    } else if (request[0]?.object?.topic === 'OVERTIME_REQUEST') {
+      let data = {
+        overTimeRequestId: request[0]?.object.overtimeRequestId,
+        content: contentReason
+      }
+      console.log(data)
+      requestApi.rejectOvertimeRequest(data)
+      if (currentUser?.role === 'manager') {
+        navigate('/request-list-manager')
+      }
+    } else if (request[0]?.object?.topic === 'LATE_REQUEST') {
+      let data = {
+        lateRequestId: request[0]?.object.lateRequestId,
+        content: contentReason
+      }
+      console.log(data)
+      requestApi.rejectLateRequest(data)
+      if (currentUser?.role === 'manager') {
+        navigate('/request-list-manager')
+      }
+    } else if (request[0]?.object?.topic === 'OUTSIDE_REQUEST') {
+      let data = {
+        workOutsideRequestId: request[0]?.object.workOutsideRequestId,
+        content: contentReason
+      }
+      console.log(data)
+      requestApi.rejectOutSideRequest(data)
+      if (currentUser?.role === 'manager') {
+        navigate('/request-list-manager')
+      }
     }
   }
 
+  console.log(request[0]?.object.overtimeRequestId)
   const imgurlReceiver = async () => {
     const storageRef = ref(storage, `/${request[0]?.requestMessageResponse?.imageReceiver}`)
     try {
@@ -245,7 +306,7 @@ const TicketDetail = () => {
                       component="span"
                       variant="body2"
                       color="text.primary">
-                      Time Start : {request[0]?.object?.manualDate}
+                      Time Start : {request[0]?.object?.manualFirstEntry}
                     </Typography>
                   </React.Fragment>
                 }
@@ -262,7 +323,31 @@ const TicketDetail = () => {
                       component="span"
                       variant="body2"
                       color="text.primary">
-                      Time Exit : {request[0]?.object?.manualDate}
+                      Time Exit : {request[0]?.object?.manualLastExit}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Status :
+                      {request[0]?.object?.status === false &&
+                      request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
+                        <span style={{ color: 'red' }}>Reject</span>
+                      ) : request[0]?.object?.status === true &&
+                        request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
+                        <span style={{ color: 'green' }}>Accept</span>
+                      ) : (
+                        <span style={{ color: '#F3B664' }}>Pending</span>
+                      )}
                     </Typography>
                   </React.Fragment>
                 }
@@ -343,6 +428,74 @@ const TicketDetail = () => {
               />
             </ListItem>
             <Divider component="li" />
+            {request[0]?.object?.toDate === request[0]?.object?.fromDate &&
+            request[0]?.object?.halfDay == false ? (
+              <>
+                <ListItem alignItems="flex-start">
+                  <ListItemText
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          sx={{ display: 'inline' }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary">
+                          Duration : {request[0]?.object?.durationEvaluation} hours
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+
+                <Divider component="li" />
+              </>
+            ) : request[0]?.object?.toDate === request[0]?.object?.fromDate &&
+              request[0]?.object?.halfDay == true ? (
+              <>
+                <ListItem alignItems="flex-start">
+                  <ListItemText
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          sx={{ display: 'inline' }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary">
+                          Duration : 4 hours
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+                <ListItem alignItems="flex-start">
+                  <ListItemText
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          sx={{ display: 'inline' }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary">
+                          Status :
+                          {request[0]?.object?.status === false &&
+                          request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
+                            <span style={{ color: 'red' }}>Reject</span>
+                          ) : request[0]?.object?.status === true &&
+                            request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
+                            <span style={{ color: 'green' }}>Accept</span>
+                          ) : (
+                            <span style={{ color: '#F3B664' }}>Pending</span>
+                          )}
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+                <Divider component="li" />
+              </>
+            ) : (
+              <></>
+            )}
           </List>
         </>
       )
@@ -382,14 +535,359 @@ const TicketDetail = () => {
                 }
               />
             </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Status :
+                      {request[0]?.object?.status === false &&
+                      request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
+                        <span style={{ color: 'red' }}>Reject</span>
+                      ) : request[0]?.object?.status === true &&
+                        request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
+                        <span style={{ color: 'green' }}>Accept</span>
+                      ) : (
+                        <span style={{ color: '#F3B664' }}>Pending</span>
+                      )}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
             <Divider component="li" />
+          </List>
+        </>
+      )
+    } else if (request[0]?.object?.topic === 'OVERTIME_REQUEST') {
+      return (
+        <>
+          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Title : {request[0]?.requestMessageResponse?.title}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      {request[0]?.object?.topicOvertime === 'WEEKEND_AND_NORMAL_DAY'
+                        ? 'WEEKEND AND NORMAL DAY'
+                        : 'HOLIDAY'}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Department :{' '}
+                      {request[0]?.requestMessageResponse?.receiverDepartment?.departmentName}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Date Over Time : {request[0]?.object?.overtimeDate}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      From : {request[0]?.object?.fromTime + ' '}
+                    </Typography>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      - To : {request[0]?.object?.toTime}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Status :
+                      {request[0]?.object?.status === false &&
+                      request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE' ? (
+                        <span style={{ color: 'red' }}>Reject</span>
+                      ) : request[0]?.object?.status === true &&
+                        request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE' ? (
+                        <span style={{ color: 'green' }}>Accept</span>
+                      ) : (
+                        <span style={{ color: '#F3B664' }}>Pending</span>
+                      )}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <Divider component="li" />
+          </List>
+        </>
+      )
+    } else if (request[0]?.object?.topic === 'LATE_REQUEST') {
+      return (
+        <>
+          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Title : {request[0]?.requestMessageResponse?.title}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Department :{' '}
+                      {request[0]?.requestMessageResponse?.receiverDepartment?.departmentName}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+
+            <Divider component="li" />
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Type:{' '}
+                      {request[0]?.object?.lateType === 'EARLY_AFTERNOON'
+                        ? 'LEAVE EARLY AFTERNOON'
+                        : 'LATE MORNING'}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Duration : {request[0]?.object?.lateDuration} minutes
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Status :
+                      {request[0]?.object?.status === false &&
+                      request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
+                        <span style={{ color: 'red' }}>Reject</span>
+                      ) : request[0]?.object?.status === true &&
+                        request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
+                        <span style={{ color: 'green' }}>Accept</span>
+                      ) : (
+                        <span style={{ color: '#F3B664' }}>Pending</span>
+                      )}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+          </List>
+        </>
+      )
+    } else if (request[0]?.object?.topic === 'OUTSIDE_REQUEST') {
+      return (
+        <>
+          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Title : {request[0]?.requestMessageResponse?.title}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Department :{' '}
+                      {request[0]?.requestMessageResponse?.receiverDepartment?.departmentName}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+
+            <Divider component="li" />
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Type:{' '}
+                      {request[0]?.object?.type === 'HALF_MORNING'
+                        ? 'HALF MORNING'
+                        : request[0]?.object?.type === 'HALF_AFTERNOON'
+                        ? 'HALF AFTERNOON'
+                        : request[0]?.object?.type === 'ALL_DAY'
+                        ? 'ALL DAY'
+                        : ''}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Day outside work: {request[0]?.object?.date}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary">
+                      Status :
+                      {request[0]?.object?.status === false &&
+                      request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
+                        <span style={{ color: 'red' }}>Reject</span>
+                      ) : request[0]?.object?.status === true &&
+                        request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
+                        <span style={{ color: 'green' }}>Accept</span>
+                      ) : (
+                        <span style={{ color: '#F3B664' }}>Pending</span>
+                      )}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
           </List>
         </>
       )
     }
   }
 
-  console.log(request[0]?.requestMessageResponse?.requestTicketStatus)
+  console.log(request[0]?.object?.type)
   return (
     <>
       {request.length === 0 ? (
@@ -583,39 +1081,12 @@ const TicketDetail = () => {
                   )}
 
                   <Box mt={2} justifyContent="space-between" display="flex">
-                    {currentUser?.role === 'hr' ? (
-                      <Link to="/request-list-hr">
-                        <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                          Back
-                        </Button>
-                      </Link>
-                    ) : currentUser?.role === 'employee' ? (
-                      <Link to="/request-list-employee">
-                        <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                          Back
-                        </Button>
-                      </Link>
-                    ) : currentUser?.role === 'manager' ? (
-                      <Link to="/request-list-manager">
-                        <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                          Back
-                        </Button>
-                      </Link>
-                    ) : currentUser?.role === 'admin' ? (
-                      <Link to="/request-list-admin">
-                        <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                          Back
-                        </Button>
-                      </Link>
-                    ) : currentUser?.role === 'security' ? (
-                      <Link to="/manage-user">
-                        <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                          Back
-                        </Button>
-                      </Link>
-                    ) : (
-                      <></>
-                    )}
+                    <Button
+                      variant="contained"
+                      onClick={() => navigate(-1)}
+                      sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                      Back to Dashboard
+                    </Button>
                     {currentUser?.role === 'hr' ||
                     currentUser?.role === 'admin' ||
                     currentUser?.role === 'security' ? (

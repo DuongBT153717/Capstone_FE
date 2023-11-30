@@ -13,17 +13,17 @@ import {
   Paper,
   Typography
 } from '@mui/material'
+import io from 'socket.io-client'
 import { styled } from '@mui/system'
-import { getDownloadURL, ref } from 'firebase/storage'
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
-import io from 'socket.io-client'
-import { storage } from '../../../firebase/config'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
 import userApi from '../../../services/userApi'
 import ChatTopbar from '../chat/components/ChatTopbar'
 import './components/style.css'
+import { storage } from '../../../firebase/config'
+import { getDownloadURL, ref } from 'firebase/storage'
 ClassicEditor.defaultConfig = {
   toolbar: {
     items: ['heading', '|', 'bold', 'italic', '|', 'bulletedList', 'numberedList']
@@ -85,8 +85,8 @@ const TicketDetail = () => {
   }
 
   useEffect(() => {
-    socket.current = io(SOCKET_URL)
-    socket.current.emit('addUser', userId)
+      socket.current = io(SOCKET_URL)
+      socket.current.emit('addUser', userId)
   }, [userId])
 
   const handleOpen = () => setOpen(true)
@@ -131,7 +131,7 @@ const TicketDetail = () => {
   const handleAccept = async () => {
     if (request[0]?.object?.topic === 'ATTENDANCE_REQUEST') {
       const res = await requestApi.acceptAttendanceRequest(request[0]?.object?.attendanceRequestId)
-      console.log(res)
+      console.log(res);
       socket.current.emit('send-notification', res)
     } else if (request[0]?.object?.topic === 'LEAVE_REQUEST') {
       requestApi.acceptLeaveRequest(request[0]?.object?.leaveRequestId)
@@ -196,7 +196,7 @@ const TicketDetail = () => {
       if (currentUser?.role === 'manager') {
         navigate('/request-list-manager')
       }
-    } else if (request[0]?.object?.topic === 'OUTSIDE_REQUEST') {
+    }else if (request[0]?.object?.topic === 'OUTSIDE_REQUEST') {
       let data = {
         workOutsideRequestId: request[0]?.object.workOutsideRequestId,
         content: contentReason
@@ -209,7 +209,7 @@ const TicketDetail = () => {
     }
   }
 
-  console.log(request[0]?.object.overtimeRequestId)
+  console.log(request[0]?.object.overtimeRequestId);
   const imgurlReceiver = async () => {
     const storageRef = ref(storage, `/${request[0]?.requestMessageResponse?.imageReceiver}`)
     try {
@@ -339,15 +339,12 @@ const TicketDetail = () => {
                       variant="body2"
                       color="text.primary">
                       Status :
-                      {request[0]?.object?.status === false &&
-                      request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
-                        <span style={{ color: 'red' }}>Reject</span>
-                      ) : request[0]?.object?.status === true &&
-                        request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
-                        <span style={{ color: 'green' }}>Accept</span>
-                      ) : (
-                        <span style={{ color: '#F3B664' }}>Pending</span>
-                      )}
+                      {request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                        ? <span style={{ color: 'red' }}>Reject</span>
+                        : request[0]?.object?.status === true && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                          ? <span style={{ color: 'green' }}>Accept</span>
+                          : <span style={{ color: '#F3B664' }}>Pending</span>
+                      }
                     </Typography>
                   </React.Fragment>
                 }
@@ -428,8 +425,7 @@ const TicketDetail = () => {
               />
             </ListItem>
             <Divider component="li" />
-            {request[0]?.object?.toDate === request[0]?.object?.fromDate &&
-            request[0]?.object?.halfDay == false ? (
+            {request[0]?.object?.toDate === request[0]?.object?.fromDate && request[0]?.object?.halfDay == false ? (
               <>
                 <ListItem alignItems="flex-start">
                   <ListItemText
@@ -449,8 +445,7 @@ const TicketDetail = () => {
 
                 <Divider component="li" />
               </>
-            ) : request[0]?.object?.toDate === request[0]?.object?.fromDate &&
-              request[0]?.object?.halfDay == true ? (
+            ) : request[0]?.object?.toDate === request[0]?.object?.fromDate && request[0]?.object?.halfDay == true ? (
               <>
                 <ListItem alignItems="flex-start">
                   <ListItemText
@@ -477,15 +472,12 @@ const TicketDetail = () => {
                           variant="body2"
                           color="text.primary">
                           Status :
-                          {request[0]?.object?.status === false &&
-                          request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
-                            <span style={{ color: 'red' }}>Reject</span>
-                          ) : request[0]?.object?.status === true &&
-                            request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
-                            <span style={{ color: 'green' }}>Accept</span>
-                          ) : (
-                            <span style={{ color: '#F3B664' }}>Pending</span>
-                          )}
+                          {request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                            ? <span style={{ color: 'red' }}>Reject</span>
+                            : request[0]?.object?.status === true && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                              ? <span style={{ color: 'green' }}>Accept</span>
+                              : <span style={{ color: '#F3B664' }}>Pending</span>
+                          }
                         </Typography>
                       </React.Fragment>
                     }
@@ -493,9 +485,7 @@ const TicketDetail = () => {
                 </ListItem>
                 <Divider component="li" />
               </>
-            ) : (
-              <></>
-            )}
+            ) : <></>}
           </List>
         </>
       )
@@ -545,15 +535,12 @@ const TicketDetail = () => {
                       variant="body2"
                       color="text.primary">
                       Status :
-                      {request[0]?.object?.status === false &&
-                      request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
-                        <span style={{ color: 'red' }}>Reject</span>
-                      ) : request[0]?.object?.status === true &&
-                        request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
-                        <span style={{ color: 'green' }}>Accept</span>
-                      ) : (
-                        <span style={{ color: '#F3B664' }}>Pending</span>
-                      )}
+                      {request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                        ? <span style={{ color: 'red' }}>Reject</span>
+                        : request[0]?.object?.status === true && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                          ? <span style={{ color: 'green' }}>Accept</span>
+                          : <span style={{ color: '#F3B664' }}>Pending</span>
+                      }
                     </Typography>
                   </React.Fragment>
                 }
@@ -666,15 +653,12 @@ const TicketDetail = () => {
                       variant="body2"
                       color="text.primary">
                       Status :
-                      {request[0]?.object?.status === false &&
-                      request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE' ? (
-                        <span style={{ color: 'red' }}>Reject</span>
-                      ) : request[0]?.object?.status === true &&
-                        request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE' ? (
-                        <span style={{ color: 'green' }}>Accept</span>
-                      ) : (
-                        <span style={{ color: '#F3B664' }}>Pending</span>
-                      )}
+                      {request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE'
+                        ? <span style={{ color: 'red' }}>Reject</span>
+                        : request[0]?.object?.status === true && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE'
+                          ? <span style={{ color: 'green' }}>Accept</span>
+                          : <span style={{ color: '#F3B664' }}>Pending</span>
+                      }
                     </Typography>
                   </React.Fragment>
                 }
@@ -730,7 +714,8 @@ const TicketDetail = () => {
                       sx={{ display: 'inline' }}
                       component="span"
                       variant="body2"
-                      color="text.primary">
+                      color="text.primary"
+                    >
                       Type:{' '}
                       {request[0]?.object?.lateType === 'EARLY_AFTERNOON'
                         ? 'LEAVE EARLY AFTERNOON'
@@ -749,7 +734,8 @@ const TicketDetail = () => {
                       component="span"
                       variant="body2"
                       color="text.primary">
-                      Duration : {request[0]?.object?.lateDuration} minutes
+                      Duration :{' '}
+                      {request[0]?.object?.lateDuration} minutes
                     </Typography>
                   </React.Fragment>
                 }
@@ -765,15 +751,12 @@ const TicketDetail = () => {
                       variant="body2"
                       color="text.primary">
                       Status :
-                      {request[0]?.object?.status === false &&
-                      request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
-                        <span style={{ color: 'red' }}>Reject</span>
-                      ) : request[0]?.object?.status === true &&
-                        request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
-                        <span style={{ color: 'green' }}>Accept</span>
-                      ) : (
-                        <span style={{ color: '#F3B664' }}>Pending</span>
-                      )}
+                      {request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                        ? <span style={{ color: 'red' }}>Reject</span>
+                        : request[0]?.object?.status === true && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                          ? <span style={{ color: 'green' }}>Accept</span>
+                          : <span style={{ color: '#F3B664' }}>Pending</span>
+                      }
                     </Typography>
                   </React.Fragment>
                 }
@@ -782,7 +765,8 @@ const TicketDetail = () => {
           </List>
         </>
       )
-    } else if (request[0]?.object?.topic === 'OUTSIDE_REQUEST') {
+    }
+    else if (request[0]?.object?.topic === 'OUTSIDE_REQUEST') {
       return (
         <>
           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -828,15 +812,16 @@ const TicketDetail = () => {
                       sx={{ display: 'inline' }}
                       component="span"
                       variant="body2"
-                      color="text.primary">
+                      color="text.primary"
+                    >
                       Type:{' '}
                       {request[0]?.object?.type === 'HALF_MORNING'
                         ? 'HALF MORNING'
                         : request[0]?.object?.type === 'HALF_AFTERNOON'
-                        ? 'HALF AFTERNOON'
-                        : request[0]?.object?.type === 'ALL_DAY'
-                        ? 'ALL DAY'
-                        : ''}
+                          ? 'HALF AFTERNOON'
+                          : request[0]?.object?.type === 'ALL_DAY'
+                            ? 'ALL DAY'
+                            : ''}
                     </Typography>
                   </React.Fragment>
                 }
@@ -851,7 +836,8 @@ const TicketDetail = () => {
                       component="span"
                       variant="body2"
                       color="text.primary">
-                      Day outside work: {request[0]?.object?.date}
+                      Day outside work:{' '}
+                      {request[0]?.object?.date}
                     </Typography>
                   </React.Fragment>
                 }
@@ -867,15 +853,12 @@ const TicketDetail = () => {
                       variant="body2"
                       color="text.primary">
                       Status :
-                      {request[0]?.object?.status === false &&
-                      request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
-                        <span style={{ color: 'red' }}>Reject</span>
-                      ) : request[0]?.object?.status === true &&
-                        request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
-                        <span style={{ color: 'green' }}>Accept</span>
-                      ) : (
-                        <span style={{ color: '#F3B664' }}>Pending</span>
-                      )}
+                      {request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                        ? <span style={{ color: 'red' }}>Reject</span>
+                        : request[0]?.object?.status === true && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
+                          ? <span style={{ color: 'green' }}>Accept</span>
+                          : <span style={{ color: '#F3B664' }}>Pending</span>
+                      }
                     </Typography>
                   </React.Fragment>
                 }
@@ -923,7 +906,7 @@ const TicketDetail = () => {
                                   <Box display="flex" flexDirection="column">
                                     <Typography fontSize="16px" variant="body1">
                                       {req?.requestMessageResponse?.senderFirstName === null ||
-                                      req?.requestMessageResponse?.senderLastName === null ? (
+                                        req?.requestMessageResponse?.senderLastName === null ? (
                                         <>unknown</>
                                       ) : (
                                         <>
@@ -948,7 +931,7 @@ const TicketDetail = () => {
                                   __html: req?.object?.content
                                 }}></Typography>
                               {request[0]?.object?.topic !== 'OTHER_REQUEST' &&
-                              request[0]?.requestMessageResponse?.requestTicketStatus !=
+                                request[0]?.requestMessageResponse?.requestTicketStatus !=
                                 'CLOSED' ? (
                                 <Box display="flex" gap="10px" justifyContent="flex-end">
                                   <Button
@@ -981,7 +964,7 @@ const TicketDetail = () => {
                                   <Box display="flex" flexDirection="column">
                                     <Typography fontSize="16px" variant="body1">
                                       {req?.requestMessageResponse?.senderFirstName === null ||
-                                      req?.requestMessageResponse?.senderLastName === null ? (
+                                        req?.requestMessageResponse?.senderLastName === null ? (
                                         <>unknown</>
                                       ) : (
                                         <>
@@ -1022,7 +1005,7 @@ const TicketDetail = () => {
                                 <Box display="flex" flexDirection="column">
                                   <Typography fontSize="16px" variant="body1">
                                     {req?.requestMessageResponse?.senderFirstName === null ||
-                                    req?.requestMessageResponse?.senderLastName === null ? (
+                                      req?.requestMessageResponse?.senderLastName === null ? (
                                       <>unknown</>
                                     ) : (
                                       <>
@@ -1054,10 +1037,10 @@ const TicketDetail = () => {
                 </div>
                 <Box style={{ display: 'flex', flexDirection: 'column' }}>
                   {currentUser?.role === 'hr' ||
-                  currentUser?.role === 'admin' ||
-                  currentUser?.role === 'security' ? (
+                    currentUser?.role === 'admin' ||
+                    currentUser?.role === 'security' ? (
                     request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' &&
-                    request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
+                      request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
                       <CKEditor
                         editor={ClassicEditor}
                         onChange={(event, editor) => {
@@ -1081,17 +1064,44 @@ const TicketDetail = () => {
                   )}
 
                   <Box mt={2} justifyContent="space-between" display="flex">
-                    <Button
-                      variant="contained"
-                      onClick={() => navigate(-1)}
-                      sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                      Back to Dashboard
-                    </Button>
+                    {currentUser?.role === 'hr' ? (
+                      <Link to="/request-list-hr">
+                        <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                          Back
+                        </Button>
+                      </Link>
+                    ) : currentUser?.role === 'employee' ? (
+                      <Link to="/request-list-employee">
+                        <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                          Back
+                        </Button>
+                      </Link>
+                    ) : currentUser?.role === 'manager' ? (
+                      <Link to="/request-list-manager">
+                        <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                          Back
+                        </Button>
+                      </Link>
+                    ) : currentUser?.role === 'admin' ? (
+                      <Link to="/request-list-admin">
+                        <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                          Back
+                        </Button>
+                      </Link>
+                    ) : currentUser?.role === 'security' ? (
+                      <Link to="/manage-user">
+                        <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                          Back
+                        </Button>
+                      </Link>
+                    ) : (
+                      <></>
+                    )}
                     {currentUser?.role === 'hr' ||
-                    currentUser?.role === 'admin' ||
-                    currentUser?.role === 'security' ? (
+                      currentUser?.role === 'admin' ||
+                      currentUser?.role === 'security' ? (
                       request[0]?.requestMessageResponse?.requestTicketStatus != 'CLOSED' &&
-                      request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
+                        request[0]?.requestMessageResponse?.receiverId === currentUser?.accountId ? (
                         <Button sx={{ mr: 2 }} type="submit" variant="contained" color="primary">
                           Send
                         </Button>

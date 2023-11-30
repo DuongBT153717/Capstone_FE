@@ -9,17 +9,16 @@ import {
   Typography
 } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Header from '../../../../components/Header'
 import requestApi from '../../../../services/requestApi'
-
 
 const BookListDetailManager = () => {
   const { ticketId } = useParams()
   const [bookRoomDetail, setBookRoomDetail] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const currentUser = useSelector((state) => state.auth.login?.currentUser)
+
+  const navigate = useNavigate()
   useEffect(() => {
     setIsLoading(true)
     const fetchGetRequestDetailByAdmin = async () => {
@@ -29,12 +28,7 @@ const BookListDetailManager = () => {
     }
     fetchGetRequestDetailByAdmin()
   }, [])
-
-  console.log(bookRoomDetail)
-
- 
- 
-
+  console.log(isLoading)
   return (
     <Box height="100vh" bgcolor="seashell">
       <Box
@@ -86,18 +80,19 @@ const BookListDetailManager = () => {
                       </Grid>
                       <Grid item xs={12} md={6}>
                         <Typography>
-                          Status: {
-                            bookRoomDetail[0]?.requestMessageResponse?.requestTicketStatus !== 'CLOSED' ?
-                            <span style={{ color: 'brown' }}>Waiting</span> :
-                          bookRoomDetail[0]?.object?.status === true ? (
+                          Status:{' '}
+                          {bookRoomDetail[0]?.requestMessageResponse?.requestTicketStatus !==
+                          'CLOSED' ? (
+                            <span style={{ color: 'brown' }}>Waiting</span>
+                          ) : bookRoomDetail[0]?.object?.status === true ? (
                             <span style={{ color: 'green' }}>Accepted</span>
                           ) : bookRoomDetail[0]?.object?.status === false ? (
                             <span style={{ color: 'red' }}>Rejected</span>
-                          ) : <></>
-                          }
+                          ) : (
+                            <></>
+                          )}
                         </Typography>
                       </Grid>
-
 
                       <Grid item xs={12} md={12}>
                         <Typography>Content: {bookRoomDetail[0]?.object?.content}</Typography>
@@ -107,39 +102,12 @@ const BookListDetailManager = () => {
                 </CardContent>
                 <Divider />
                 <CardActions sx={{ justifyContent: 'space-between', py: '8px' }}>
-                {currentUser?.role === 'hr' ? (
-              <Link to="/manage-user">
-                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                  Back to Dashboard
-                </Button>
-              </Link>
-            ) : currentUser?.role === 'employee' ? (
-              <Link to="/request-list-employee">
-                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                  Back to Dashboard
-                </Button>
-              </Link>
-            ) : currentUser?.role === 'manager' ? (
-              <Link to="/request-list-manager">
-                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                  Back to Dashboard
-                </Button>
-              </Link>
-            ) : currentUser?.role === 'admin' ? (
-              <Link to="/request-list-admin">
-                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                  Back to Dashboard
-                </Button>
-              </Link>
-            ) : currentUser?.role === 'security' ? (
-              <Link to="/manage-user">
-                <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                  Back to Dashboard
-                </Button>
-              </Link>
-            ) : (
-              <></>
-            )}
+                  <Button
+                    variant="contained"
+                    onClick={() => navigate(-1)}
+                    sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                    Back to Dashboard
+                  </Button>
                 </CardActions>
               </Card>
             </form>
