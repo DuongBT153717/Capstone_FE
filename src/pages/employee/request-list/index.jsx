@@ -25,6 +25,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
+import { toast } from 'react-toastify'
 function formatDate(date) {
   const createDate = new Date(date);
   const year = createDate.getFullYear().toString().slice(-2);
@@ -38,13 +39,25 @@ function formatDate(date) {
 function Row(props) {
   const { row } = props
   const [open, setOpen] = useState(false)
-  const handelAcceptOtherRequest = (ticketId) => {
-    let data = {
-      ticketId: ticketId,
-    }
-    requestApi.acceptStatutOtherRequest(data)
+  const handelAcceptOtherRequest = async (ticketId) => {
+    try {
+      let data = {
+        ticketId: ticketId,
+      };
+      await requestApi.acceptStatutOtherRequest(data);
 
-  }
+      toast.success('Request Finish successfully!', {
+        autoClose: 800, 
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      toast.error('Failed to Finish request. Please try again.', {
+        autoClose: 3000, 
+      });
+    }
+  };
   const navigate = useNavigate()
   return (
     <>

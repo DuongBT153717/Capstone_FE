@@ -62,7 +62,9 @@ const ViewEmpEvaluateReport = () => {
   };
 
 
-
+  const navigateBack = () => {
+    navigate(-1, { state: { selectedDepartmentFromState, monthFromState } });
+  };
   useEffect(() => {
     const fetchAllEvaluateAttendance = async () => {
       let data = {
@@ -95,13 +97,13 @@ const ViewEmpEvaluateReport = () => {
     setDialogOpen(true);
   };
 
-  const handleDialogRejectOpen =() => {
+  const handleDialogRejectOpen = () => {
     setDialogOpenReject(true);
   }
   const handleDialogClose = () => {
     setDialogOpen(false);
   };
-  const handleDialogRejectClose =() => {
+  const handleDialogRejectClose = () => {
     setDialogOpenReject(false);
   }
   const handleSendAccept = async () => {
@@ -111,8 +113,12 @@ const ViewEmpEvaluateReport = () => {
       evaluateId: evaluate.evaluateId,
       hrStatus: true,
     };
-    await updateAcceptOrRejectEvaluateByHr(data);
-    handleDialogClose();
+    try {
+      await updateAcceptOrRejectEvaluateByHr(data);
+      setTimeout(navigateBack, 500);
+    } catch (error) {
+      toast.warning('Send request fail');
+    }
   };
 
   // const handleAccept = async () => {
@@ -132,8 +138,12 @@ const ViewEmpEvaluateReport = () => {
       evaluateId: evaluate.evaluateId,
       hrStatus: false,
     };
-    await updateAcceptOrRejectEvaluateByHr(data);
-    handleDialogRejectClose();
+    try {
+      await updateAcceptOrRejectEvaluateByHr(data);
+      setTimeout(navigateBack, 500);
+    } catch (error) {
+      toast.warning('Send request fail');
+    }
   }
   return (
     <>
@@ -269,7 +279,7 @@ const ViewEmpEvaluateReport = () => {
           value={`${evaluate.note}`}
         />
         <Grid container justifyContent="flex-end" marginTop="10px">
-          {evaluate.approvedDate === null && (
+          {evaluate.approvedDate !== null && (
             <>
               <Button
                 variant="contained"

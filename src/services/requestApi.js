@@ -142,7 +142,6 @@ const requestApi = {
   acceptStatutOtherRequest: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/closeOtherRequest`, data)
-      toast.success('Accept Request success')
     } catch (error) {
       console.log(error)
     }

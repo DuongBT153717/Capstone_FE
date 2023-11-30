@@ -60,23 +60,20 @@ const EvaluateManagement = () => {
 
 
 
-    useEffect(() => {
-        const getManagerByDepartment = async () => {
-            try {
-                if (!selectedDepartment) {
-                    console.error('Selected department is missing.');
-                    return;
-                }
-                const response = await userApi.getManagerByDepartment(selectedDepartment);
-                setListmanager(response || []);
-                console.log(listmanager);
-            } catch (error) {
-                console.error('Error fetching Manager:', error);
+    const getManagerByDepartment = async () => {
+        try {
+            if (!selectedDepartment) {
+                console.error('Selected department is missing.');
+                return;
             }
-        };
+            const response = await userApi.getManagerByDepartment(selectedDepartment);
+            setListmanager(response || []);
+            console.log(response);
+        } catch (error) {
+            console.error('Error fetching Manager:', error);
+        }
+    };
 
-        getManagerByDepartment();
-    }, [selectedDepartment]);
     const [showManagerInfo, setShowManagerInfo] = useState(false);
     const handleSearchLog = async () => {
         setIsLoading(true);
@@ -91,17 +88,20 @@ const EvaluateManagement = () => {
                 year: format(month, 'yyyy'),
             };
             const response = await logApi.getEvaluateOfDepartment(data.departmentId, data.month, data.year);
+
             if (response.length === 0) {
                 toast.error(`No logs found for the department in ${format(month, 'MMMM yyyy')}`);
 
 
             }
+            getManagerByDepartment();
+            setShowManagerInfo(true);
             setListLog(response);
             console.log(response);
             console.log(data.departmentId);
             console.log(data.month);
             console.log(data.year);
-            setShowManagerInfo(true);
+
         } catch (error) {
             console.error('Error fetching department evaluation:', error);
         } finally {
@@ -313,28 +313,28 @@ const EvaluateManagement = () => {
                     </Button>
                 </Box>
             </Box>
+            {listLog.length > 0 && listLog[0].department && listLog[0].department.departmentName && (
+                <Box mt={3} style={{ marginTop: '20px' }}>
 
-            <Box mt={3} style={{ marginTop: '20px' }}>
-                {listLog.length > 0 && listLog[0].department && listLog[0].department.departmentName && (
                     <Typography variant="h6">
                         <span>Department: </span>
                         <span style={{ color: 'red' }}>{listLog[0].department.departmentName}</span>
                     </Typography>
-                )}
-                {showManagerInfo && (
-                    <div style={{ display: 'flex', gap: '50px' }}>
-                        <Typography variant="h6" style={{ marginTop: '20px' }}>
-                            <span>Manager Name: </span>
-                            <span style={{ color: '#32CD32' }}>{listmanager.map(manager => `${manager.firstName} ${manager.lastName}`).join(', ')}</span>
-                        </Typography>
-                        <Typography variant="h6" style={{ marginTop: '20px' }}>
-                            <span>Manager Account: </span>
-                            <span style={{ color: '#32CD32' }}>{listmanager.map(manager => `${manager.username} `)}</span>
-                        </Typography>
-                    </div>
-                )}
-            </Box>
 
+                    {showManagerInfo && listmanager.length > 0 && (
+                        <div style={{ display: 'flex', gap: '50px' }}>
+                            <Typography variant="h6" style={{ marginTop: '20px' }}>
+                                <span>Manager Name: </span>
+                                <span style={{ color: '#32CD32' }}>{listmanager.map(manager => `${manager.firstName} ${manager.lastName}`).join(', ')}</span>
+                            </Typography>
+                            <Typography variant="h6" style={{ marginTop: '20px' }}>
+                                <span>Manager Account: </span>
+                                <span style={{ color: '#32CD32' }}>{listmanager.map(manager => `${manager.username} `)}</span>
+                            </Typography>
+                        </div>
+                    )}
+                </Box>
+            )}
 
             {listLog && listLog.length !== 0 ? (
                 <>

@@ -21,6 +21,7 @@ import { useNavigate } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
 import { validationSchema } from '../util/validationSchema'
 import overtimeApi from '../../../../services/overtimeApi'
+import { toast } from 'react-toastify'
 
 ClassicEditor.defaultConfig = {
   toolbar: {
@@ -61,21 +62,31 @@ const AttendenceFrom = ({ userId }) => {
       content: ''
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      let data = {
-        userId: userId,
-        title: values.title,
-        content: values.content,
-        manualDate: date.format('YYYY-MM-DD'),
-        manualFirstEntry: isFrom ? from.format('HH:mm:ss') : null,
-        manualLastExit: isTo ? to.format('HH:mm:ss') : null,
-        departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-        receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+    onSubmit: async (values) => {
+      try {
+        let data = {
+          userId: userId,
+          title: values.title,
+          content: values.content,
+          manualDate: date.format('YYYY-MM-DD'),
+          manualFirstEntry: isFrom ? from.format('HH:mm:ss') : null,
+          manualLastExit: isTo ? to.format('HH:mm:ss') : null,
+          departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+          receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+        }
+        console.log(data);
+        await requestApi.requestAttendanceForm(data);
+
+
+        setTimeout(() => {
+          navigate(-1);
+        }, 800);
+      } catch (error) {
+        toast.warning("Error!")
       }
-      console.log(data)
-      requestApi.requestAttendanceForm(data)
     }
-  })
+  });
+
   return (
     <Box p={3} pl={0}>
       <form onSubmit={formik.handleSubmit}>
@@ -185,7 +196,6 @@ const OtFrom = () => {
   const [overtimeSystem, setOvertimeSystem] = useState({})
   const [receiveIdAndDepartment, setReceiveIdAndDepartment] = useState('')
   const currentDate = new Date()
-  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
   const navigate = useNavigate()
@@ -217,22 +227,30 @@ const OtFrom = () => {
       topicOvertime: ''
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      let data = {
-        userId: userId,
-        title: values.title,
-        content: values.content,
-        topicOvertime: topicOvertime,
-        overtimeDate: date.format('YYYY-MM-DD'),
-        fromTime: from.format('HH:mm:ss'),
-        toTime: to.format('HH:mm:ss'),
-        departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-        receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+    onSubmit: async (values) => {
+      try {
+        let data = {
+          userId: userId,
+          title: values.title,
+          content: values.content,
+          topicOvertime: topicOvertime,
+          overtimeDate: date.format('YYYY-MM-DD'),
+          fromTime: from.format('HH:mm:ss'),
+          toTime: to.format('HH:mm:ss'),
+          departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+          receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+        };
+
+        console.log(data);
+        await requestApi.requestOverTimeForm(data);
+        setTimeout(() => {
+          navigate(-1);
+        }, 800);
+      } catch (error) {
+        toast.warning("Error!!")
       }
-      console.log(data)
-      requestApi.requestOverTimeForm(data)
     }
-  })
+  });
 
   return (
     <Box p={3} pl={0}>
@@ -302,7 +320,6 @@ const OtFrom = () => {
                 onChange={(e) => setDate(e)}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
                 minDate={firstDayOfMonth}
-                maxDate={lastDayOfMonth}
               />
             </LocalizationProvider>
           </Grid>
@@ -392,54 +409,6 @@ const OtherRequest = ({ userId }) => {
     }
     fetchAllManagerDepartment()
   }, [])
-
-  console.log(department)
-  const handleCreateRequest = (e) => {
-    if (currentUser?.role === 'employee' && role === 'manager') {
-      callApiEmployee(e, receiveIdAndDepartment?.managerInfoResponse?.managerId)
-    } else if (currentUser?.role === 'employee' && role === 'hr') {
-      callApiOther(e, 3)
-    } else if (currentUser?.role === 'employee' && role === 'security') {
-      callApiOther(e, 10)
-    } else if (currentUser?.role === 'employee' && role === 'admin') {
-      callApiOther(e, 9)
-    } else if (currentUser?.role === 'manager' && role === 'admin') {
-      callApiOther(e, 9)
-    } else if (currentUser?.role === 'manager' && role === 'security') {
-      callApiOther(e, 10)
-    } else if (currentUser?.role === 'manager' && role === 'hr') {
-      callApiOther(e, 3)
-    } else if (currentUser?.role === 'hr' && role === 'admin') {
-      callApiOther(e, 9)
-    } else if (currentUser?.role === 'hr' && role === 'security') {
-      callApiOther(e, 10)
-    } else if (currentUser?.role === 'hr' && role === 'manager') {
-      callApiToManager(e, department)
-    } else if (currentUser?.role === 'security' && role === 'admin') {
-      callApiOther(e, 9)
-    } else if (currentUser?.role === 'security' && role === 'hr') {
-      callApiOther(e, 3)
-    } else if (currentUser?.role === 'security' && role === 'manager') {
-      callApiToManager(e, department)
-    } else if (currentUser?.role === 'admin' && role === 'security') {
-      callApiOther(e, 10)
-    } else if (currentUser?.role === 'admin' && role === 'hr') {
-      callApiOther(e, 3)
-    } else if (currentUser?.role === 'admin' && role === 'manager') {
-      callApiToManager(e, department)
-    }
-  }
-
-  useEffect(() => {
-    if (getAllManagerDepartment.length !== 0) {
-      const getManagerByDepartment = async () => {
-        let res = await requestApi.getManagerByDepartment(department)
-        setManager(res)
-      }
-      getManagerByDepartment()
-    }
-  }, [department])
-
   const callApiOther = (e, departmentId) => {
     e.preventDefault()
     let data = {
@@ -484,6 +453,63 @@ const OtherRequest = ({ userId }) => {
     setContent('')
     requestApi.requestOtherForm(data)
   }
+  console.log(department)
+  const handleCreateRequest = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (currentUser?.role === 'employee' && role === 'manager') {
+        await callApiEmployee(e, receiveIdAndDepartment?.managerInfoResponse?.managerId);
+      } else if (currentUser?.role === 'employee' && role === 'hr') {
+        await callApiOther(e, 3);
+      } else if (currentUser?.role === 'employee' && role === 'security') {
+        await callApiOther(e, 10);
+      } else if (currentUser?.role === 'employee' && role === 'admin') {
+        await callApiOther(e, 9);
+      } else if (currentUser?.role === 'manager' && role === 'admin') {
+        await callApiOther(e, 9);
+      } else if (currentUser?.role === 'manager' && role === 'security') {
+        await callApiOther(e, 10);
+      } else if (currentUser?.role === 'manager' && role === 'hr') {
+        await callApiOther(e, 3);
+      } else if (currentUser?.role === 'hr' && role === 'admin') {
+        await callApiOther(e, 9);
+      } else if (currentUser?.role === 'hr' && role === 'security') {
+        await callApiOther(e, 10);
+      } else if (currentUser?.role === 'hr' && role === 'manager') {
+        await callApiToManager(e, department);
+      } else if (currentUser?.role === 'security' && role === 'admin') {
+        await callApiOther(e, 9);
+      } else if (currentUser?.role === 'security' && role === 'hr') {
+        await callApiOther(e, 3);
+      } else if (currentUser?.role === 'security' && role === 'manager') {
+        await callApiToManager(e, department);
+      } else if (currentUser?.role === 'admin' && role === 'security') {
+        await callApiOther(e, 10);
+      } else if (currentUser?.role === 'admin' && role === 'hr') {
+        await callApiOther(e, 3);
+      } else if (currentUser?.role === 'admin' && role === 'manager') {
+        await callApiToManager(e, department);
+      }
+      setTimeout(() => {
+        navigate(-1);
+      }, 800);
+    } catch (error) {
+      // Handle errors if needed
+    }
+  };
+
+  useEffect(() => {
+    if (getAllManagerDepartment.length !== 0) {
+      const getManagerByDepartment = async () => {
+        let res = await requestApi.getManagerByDepartment(department)
+        setManager(res)
+      }
+      getManagerByDepartment()
+    }
+  }, [department])
+
+
 
   const handleDepartment = () => {
     if (currentUser?.role === 'admin' && role === 'manager') {
@@ -661,20 +687,29 @@ const LateRequest = () => {
       lateDuration: ''
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      let data = {
-        userId: userId,
-        title: values.title,
-        content: values.content,
-        lateType: lateType,
-        lateDuration: lateDuration,
-        requestDate: date.format('YYYY-MM-DD'),
-        departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-        receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+    onSubmit: async (values) => {
+      try {
+        let data = {
+          userId: userId,
+          title: values.title,
+          content: values.content,
+          lateType: lateType,
+          lateDuration: lateDuration,
+          requestDate: date.format('YYYY-MM-DD'),
+          departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+          receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+        };
+
+        console.log(data);
+        await requestApi.requestLateForm(data);
+        setTimeout(() => {
+          navigate(-1);
+        }, 800);
+      } catch (error) {
+        toast.warning("Error!!")
       }
-      requestApi.requestLateForm(data)
     }
-  })
+  });
 
   return (
     <Box p={3} pl={0}>
@@ -798,38 +833,46 @@ const LeaveRequest = ({ userId }) => {
       durationEvaluation: 0
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      if (dateFrom.format('YYYY-MM-DD') === dateTo.format('YYYY-MM-DD')) {
-        let data = {
-          userId: userId,
-          title: values.title,
-          content: values.content,
-          fromDate: dateFrom.format('YYYY-MM-DD'),
-          toDate: dateTo.format('YYYY-MM-DD'),
-          halfDay: checked,
-          durationEvaluation: values.durationEvaluation,
-          departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-          receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+    onSubmit: async (values) => {
+      try {
+        let data;
+        if (dateFrom.format('YYYY-MM-DD') === dateTo.format('YYYY-MM-DD')) {
+          data = {
+            userId: userId,
+            title: values.title,
+            content: values.content,
+            fromDate: dateFrom.format('YYYY-MM-DD'),
+            toDate: dateTo.format('YYYY-MM-DD'),
+            halfDay: checked,
+            durationEvaluation: values.durationEvaluation,
+            departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+            receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+          };
+        } else {
+          data = {
+            userId: userId,
+            title: values.title,
+            content: values.content,
+            fromDate: dateFrom.format('YYYY-MM-DD'),
+            toDate: dateTo.format('YYYY-MM-DD'),
+            halfDay: false,
+            durationEvaluation: 0,
+            departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+            receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+          };
         }
-        console.log(data)
-        requestApi.requestLeaveForm(data)
-      } else {
-        let data = {
-          userId: userId,
-          title: values.title,
-          content: values.content,
-          fromDate: dateFrom.format('YYYY-MM-DD'),
-          toDate: dateTo.format('YYYY-MM-DD'),
-          halfDay: false,
-          durationEvaluation: 0,
-          departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-          receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
-        }
-        console.log(data)
-        requestApi.requestLeaveForm(data)
+
+        console.log(data);
+        await requestApi.requestLeaveForm(data);
+
+        setTimeout(() => {
+          navigate(-1);
+        }, 800);
+      } catch (error) {
+        toast.warning("Error!!")
       }
     }
-  })
+  });
 
   console.log(dateFrom.format('YYYY-MM-DD'))
   console.log(dateTo.format('YYYY-MM-DD'))
@@ -978,20 +1021,28 @@ const WorkingOutSideRequest = () => {
       type: ''
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      let data = {
-        userId: userId,
-        title: values.title,
-        content: values.content,
-        type: outSideType,
-        date: date.format('YYYY-MM-DD'),
-        departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
-        receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+    onSubmit: async (values) => {
+      try {
+        let data = {
+          userId: userId,
+          title: values.title,
+          content: values.content,
+          type: outSideType,
+          date: date.format('YYYY-MM-DD'),
+          departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
+          receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
+        };
+
+        console.log(data);
+        await requestApi.requestOutSideWorkForm(data);
+        setTimeout(() => {
+          navigate(-1);
+        }, 800);
+      } catch (error) {
+        toast.warning("Error!!")
       }
-      console.log(data)
-      requestApi.requestOutSideWorkForm(data)
     }
-  })
+  });
 
   return (
     <Box p={3} pl={0}>
