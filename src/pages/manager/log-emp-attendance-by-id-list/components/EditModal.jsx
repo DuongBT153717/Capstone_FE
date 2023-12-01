@@ -65,7 +65,7 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
           width: '1000px',
         },
       });
-      
+
     }
   };
   const [isTimePickerEnabledOut, setIsTimePickerEnabledOut] = useState(true);
@@ -112,12 +112,13 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
         managerId: receiveIdAndDepartment?.managerInfoResponse?.managerId,
         manualCheckIn: formatDateTime(values.manualCheckIn),
         manualCheckOut: formatDateTime(values.manualCheckOut),
-        type: values.type,
+        type: values.type === "NONE" || values.type === "NOT_WORKING_OUTSIDE" ? null : values.type,
         date: outputDateString,
         changeType: 'FROM_EDIT',
         violet: values.violate ? 1 : 0,
         reason: values.content,
         employeeId: employeeId,
+        workOutSide: values.workOutSide
       };
       editEmpLog(data);
 
@@ -285,7 +286,25 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
               <Grid item xs={6}>
                 Type
                 <Select
-                  onChange={(e) => formik.handleChange(e)}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                    if (e.target.value === "NONE") {
+                      formik.setFieldValue('value', null);
+                      formik.setFieldValue('workOutSide', -1);
+                    } else if (e.target.value === "MORNING") {
+                      formik.setFieldValue('value', "MORNING");
+                      formik.setFieldValue('workOutSide', 0.5);
+                    } else if (e.target.value === "AFTERNOON") {
+                      formik.setFieldValue('value', "AFTERNOON");
+                      formik.setFieldValue('workOutSide', 0.5);
+                    } else if (e.target.value === "ALL_DAY") {
+                      formik.setFieldValue('value', "ALL_DAY");
+                      formik.setFieldValue('workOutSide', 1);
+                    } else if (e.target.value === "NOT_WORKING_OUTSIDE") {
+                      formik.setFieldValue('value', null);
+                      formik.setFieldValue('workOutSide', 0);
+                    }
+                  }}
                   onBlur={formik.handleBlur}
                   value={formik.values.type}
                   sx={{ width: '100%' }}
@@ -295,13 +314,11 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
                   <MenuItem value="NONE">NONE</MenuItem>
                   <MenuItem value="MORNING">MORNING</MenuItem>
                   <MenuItem value="AFTERNOON">AFTERNOON</MenuItem>
-                  <MenuItem value="ALL_DAY">All DAY</MenuItem>
+                  <MenuItem value="ALL_DAY">ALL DAY</MenuItem>
+                  <MenuItem value="NOT_WORKING_OUTSIDE">NOT WORKING OUTSIDE</MenuItem>
                 </Select>
-                {formik.touched.type && formik.errors.type && (
-                  <Typography sx={{ color: 'red' }} className="error-message">
-                    {formik.errors.type}
-                  </Typography>
-                )}
+              
+                
               </Grid>
               <Grid item xs={12}>
                 <Typography fontWeight="500">Violate</Typography>
