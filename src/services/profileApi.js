@@ -11,15 +11,12 @@ const profileApi = {
         console.log(error);   
     }
   },
-  acceptUserInfo: async (data, dispatch) => {
-    dispatch(acceptAllUserInfoStart())
+  acceptUserInfo: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/acceptChangeUserInfo`, data)
-      dispatch(acceptAllUserInfoSuccess())
       toast.success('Accept User Info Successfully!!')
     } catch (error) {
         console.log(error);
-        dispatch(acceptAllUserInfoFailed())    
     }
   },
   rejectUserInfo: async (data) => {

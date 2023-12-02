@@ -87,5 +87,6 @@ export const HR_PATH = {
     ATTENDANCE_LOG_DETAIL: '/attendance-log-detail-hr/:employee_id/:date',
     CHANGE_LOG_DETAIL: '/change-log-detail-hr/:employee_id/:date',
     CHECK_EMP_INFO: '/check-employee-info/:user_id',
+    CHANGE_LOG_EDIT_PROFILE_DETAIL:'/change-log-edit-profile-detail/:userId',
 
 }

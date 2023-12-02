@@ -18,7 +18,6 @@ import { useSelector } from 'react-redux'
 import { BASE_URL } from '../../../services/constraint'
 import axiosClient from '../../../utils/axios-config'
 import useAuth from '../../../hooks/useAuth'
-import { formatDateNotTime } from '../../../utils/formatDate'
 
 const EvaluateReport = () => {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
@@ -48,7 +47,7 @@ const EvaluateReport = () => {
         setEvaluate(response)
         return response
       } catch (error) {
-        setEvaluate('')
+        console.log(error)
       }
     }
 
@@ -64,7 +63,7 @@ const EvaluateReport = () => {
             <TextField
               sx={{ width: '100%', backgroundColor: '#f0f0f0' }}
               InputProps={{ readOnly: true }}
-              value={`${userInfo.firstName} ${userInfo.lastName}`}
+              value={`${evaluate.firstNameEmp} ${evaluate.lastNameEmp}`}
             />
           </Grid>
           <Grid item xs={6}>
@@ -73,7 +72,7 @@ const EvaluateReport = () => {
               sx={{ width: '100%', backgroundColor: '#f0f0f0' }}
               InputProps={{ readOnly: true }}
               value={
-                formatDateNotTime(userInfo.hireDate)
+                evaluate.hireDate ? format(new Date(evaluate.hireDate), 'yy-MM-dd HH:mm:ss') : ''
               }
             />
           </Grid>
@@ -83,7 +82,7 @@ const EvaluateReport = () => {
             <TextField
               sx={{ width: '100%', backgroundColor: '#f0f0f0' }}
               InputProps={{ readOnly: true }}
-              value={userInfo.departmentName}
+              value={`${evaluate.department?.departmentName || 'N/A'}`}
             />
           </Grid>
         </Grid>

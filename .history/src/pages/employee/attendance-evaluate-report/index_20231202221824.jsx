@@ -48,7 +48,7 @@ const EvaluateReport = () => {
         setEvaluate(response)
         return response
       } catch (error) {
-        setEvaluate('')
+        console.log(error)
       }
     }
 

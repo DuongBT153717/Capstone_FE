@@ -251,7 +251,7 @@ const Profile = () => {
                               </>
                             )}
                           </Box>
-                          <Box flex='1' display="flex" marginTop="10px" height='80px'>
+                          <Box flex='1' display="flex" marginTop="40px" height='80px'>
                             <Box flex="1"  textAlign='left' borderRight="1px solid #999">
                               <Typography >Account </Typography>
                               <Typography mt={4}>Role </Typography>
@@ -261,7 +261,7 @@ const Profile = () => {
                               <Typography mt={4} sx={{textTransform: 'capitalize'}}>{info.roleName} </Typography>
                             </Box>
                           </Box>
-                          <Box flex='1' display="flex" marginTop="10px" height='80px'>
+                          <Box flex='1' display="flex" marginTop="40px" height='80px'>
                             <Box flex="1" textAlign='left' borderRight="1px solid #999">
                               <Typography >Department </Typography>
                               <Typography mt={4}>Hire DateDate </Typography>

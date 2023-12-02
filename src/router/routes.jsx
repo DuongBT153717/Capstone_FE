@@ -73,6 +73,7 @@ import AttendanceLogDetailHR from '../pages/hr/attendance-log-detail'
 import ChangeLogDetail from '../pages/hr/change-log-detail'
 import LogEmpAttendanceByIdList from '../pages/manager/log-emp-attendance-by-id-list'
 import ViewEmpEvaluateReport from '../pages/hr/view-evaluate-of-emp'
+import ChangeLogEditProfileDetail from '../pages/hr/change-log-edit-profile-detail'
 import CheckEmpProfile from '../pages/hr/check-employee-info-by-id'
 import CheckEmpEvaluateReport from '../pages/hr/check-evaluate-report'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
@@ -311,6 +312,14 @@ export default function Router() {
           element: (
             <Suspense fallback={<>Loading...</>}>
               <ChangeLogDetail />
+            </Suspense>
+          )
+        },
+        {
+          path: HR_PATH.CHANGE_LOG_EDIT_PROFILE_DETAIL,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <ChangeLogEditProfileDetail />
             </Suspense>
           )
         },

@@ -45,6 +45,14 @@ const userApi = {
       console.log(error)
     }
   },
+  getChangeInfoDetail: (data) => {
+    try {
+    const res =  axiosClient.post(`${BASE_URL}/getChangeInfoDetail`,data)
+    return res;
+    } catch (error) {
+      console.log(error)
+    }
+  },
 
   updateProfile: async (data, dispatch) => {
     dispatch(updateProfileStart())
