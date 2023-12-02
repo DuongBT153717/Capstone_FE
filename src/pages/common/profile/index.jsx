@@ -24,7 +24,8 @@ import Overview from './components/Overview'
 import { useFormik } from 'formik'
 import { validationSchema } from './components/util/validationSchema'
 const Profile = () => {
-  
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
+  console.log(currentUser);
   const [isHovered, setIsHovered] = useState(false)
   const [birth, setBirth] = useState(dayjs('2022-04-17'))
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -38,13 +39,14 @@ const Profile = () => {
   const [phoneUpdate, setPhoneUpdate] = useState('')
   const [info, setInfo] = useState('')
   const userInfo = useAuth()
+  console.log(userInfo);
   useEffect(() => {
     setBirthUpdate(userInfo?.dateOfBirth)
     setInfo(userInfo)
   }, [userInfo])
 
   console.log(birthUpdate);
-  console.log(info?.firstName);
+  console.log(info);
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -54,6 +56,7 @@ const Profile = () => {
       email: info?.email,
       city: info?.city,
       country: info?.country,
+      address: '',
       phone: info?.telephoneNumber
     },
     validationSchema: validationSchema,
@@ -67,6 +70,7 @@ const Profile = () => {
         dateOfBirth: birth.format('YYYY-MM-DD'),
         telephoneNumber: values.phone,
         country: values.country,
+        address: values.address,
         city: values.city,
         email: values.email
       }
@@ -130,124 +134,158 @@ const Profile = () => {
   return (
     <Box textAlign="center" bgcolor="seashell" height="100vh">
       <Box pt={5}>
-        <Header title="PROFILE USER" subtitle="Overview and Update New User Profile" />
         <Box px={5} mt={8}>
           <form onSubmit={formik.handleSubmit} noValidate>
-            <Grid container spacing={3}>
+            <Grid spacing={3}>
               <Grid item xs={12} md={6} lg={4}>
-                {value === '2' ? (
-                  <>
+                {value === '2' ?
+                  (<>
                     <Card>
                       <CardContent>
-                        <Box
-                          sx={{
-                            alignItems: 'center',
-                            display: 'flex',
-                            flexDirection: 'column'
-                          }}>
-                          {userImage.filepreview !== null ? (
-                            <Avatar
-                              src={userImage.filepreview}
-                              sx={{
-                                height: 80,
-                                mb: 2,
-                                width: 80
-                              }}
-                            />
-                          ) : userProfileImage !== null ? (
-                            <Avatar
-                              src={userProfileImage}
-                              sx={{
-                                height: 80,
-                                mb: 2,
-                                width: 80
-                              }}
-                            />
-                          ) : (
-                            <Avatar
-                              src={`${USER}`}
-                              sx={{
-                                height: 80,
-                                mb: 2,
-                                width: 80
-                              }}
-                            />
-                          )}
+                        <Box display='flex'>
+                          <Box flex='1' display='flex' alignItems='center' flexDirection='column'>
+                            {userImage.filepreview !== null ? (
+                              <Avatar
+                                src={userImage.filepreview}
+                                sx={{
+                                  height: 100,
 
-                          <Typography gutterBottom fontSize="20px" fontWeight="700">
-                            {userInfo.firstName} {userInfo.lastName}
-                          </Typography>
-                          <Typography sx={{ textTransform: 'capitalize' }} variant="body2">
-                            {role}
-                          </Typography>
+                                  width: 100
+                                }}
+                              />
+                            ) : userProfileImage !== null ? (
+                              <Avatar
+                                src={userProfileImage}
+                                sx={{
+                                  height: 100,
+                                  mb: 2,
+                                  width: 100
+                                }}
+                              />
+                            ) : (
+                              <>
+                                <Avatar
+                                  src={`${USER}`}
+                                  sx={{
+                                    height: 100,
+                                    mb: 2,
+                                    width: 100
+                                  }}
+                                />
+
+                              </>
+                            )}
+                            <CardActions>
+                              <label
+                                htmlFor="test"
+                                style={{
+                                  background:  'rgb(94, 53, 177)' ,
+                                  borderRadius: '10px',
+                                  color: '#fff' ,
+                                  textAlign: 'center',
+                                  cursor: 'pointer',
+                                  padding: '8px 10px'
+                                }}
+                                >
+                                Upload picture
+                              </label>
+                              <input
+                                id="test"
+                                type="file"
+                                hidden
+                                onChange={(e) => handleInputChange(e)}
+                              />
+                            </CardActions>
+                          </Box>
+                          <Box flex='1' display="flex" marginTop="40px" height='80px'>
+                            <Box flex="1"  textAlign='left' borderRight="1px solid #999">
+                              <Typography >Account </Typography>
+                              <Typography mt={4}>Role </Typography>
+                            </Box>
+                            <Box flex="2" textAlign='left' marginLeft="20px">
+                              <Typography >userAttendanceDet </Typography>
+                              <Typography  mt={4}>userAttendanceDe</Typography>
+                            </Box>
+                          </Box>
+                          <Box flex='1' display="flex" marginTop="40px" height='80px'>
+                            <Box flex="1" textAlign='left' borderRight="1px solid #999">
+                              <Typography >Department </Typography>
+                              <Typography mt={4}>Hire DateDate </Typography>
+                            </Box>
+                            <Box flex="2" textAlign='left' marginLeft="20px">
+                              <Typography >userAttendanceDet </Typography>
+                              <Typography  mt={4}>userAttendanceDe </Typography>
+                            </Box>
+                          </Box>
                         </Box>
                       </CardContent>
-
-                      <Divider />
-                      <CardActions>
-                        <label
-                          htmlFor="test"
-                          style={{
-                            width: '100%',
-                            background: isHovered ? 'rgb(94, 53, 177)' : '#fff',
-                            borderRadius: '10px',
-                            color: isHovered ? '#fff' : '#000',
-                            textAlign: 'center',
-                            cursor: 'pointer',
-                            padding: '8px 0px'
-                          }}
-                          onMouseEnter={handleMouseEnter}
-                          onMouseLeave={handleMouseLeave}>
-                          Upload picture
-                        </label>
-                        <input
-                          id="test"
-                          type="file"
-                          hidden
-                          onChange={(e) => handleInputChange(e)}
-                        />
-                      </CardActions>
+                      <Divider/>
                     </Card>
-                  </>
-                ) : (
-                  <Card>
-                    <CardContent>
-                      <Box
-                        sx={{
-                          alignItems: 'center',
-                          display: 'flex',
-                          flexDirection: 'column'
-                        }}>
-                        {userProfileImage !== null ? (
-                          <Avatar
-                            src={userProfileImage}
-                            sx={{
-                              height: 80,
-                              mb: 2,
-                              width: 80
-                            }}
-                          />
-                        ) : (
-                          <Avatar
-                            src={`${USER}`}
-                            sx={{
-                              height: 80,
-                              mb: 2,
-                              width: 80
-                            }}
-                          />
-                        )}
+                  </>) : (<>
+                    <Card>
+                      <CardContent>
+                        <Box display='flex'>
+                          <Box flex='1' display='flex' alignItems='center' flexDirection='column'>
+                            {userImage.filepreview !== null ? (
+                              <Avatar
+                                src={userImage.filepreview}
+                                sx={{
+                                  height: 100,
 
-                        <Typography gutterBottom fontSize="20px" fontWeight="700">
-                          {userInfo.firstName} {userInfo.lastName}
-                        </Typography>
-                        <Typography sx={{ textTransform: 'capitalize' }} variant="body2">
-                          {role}
-                        </Typography>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                )}
+                                  width: 100
+                                }}
+                              />
+                            ) : userProfileImage !== null ? (
+                              <Avatar
+                                src={userProfileImage}
+                                sx={{
+                                  height: 100,
+                                  mb: 2,
+                                  width: 100
+                                }}
+                              />
+                            ) : (
+                              <>
+                                <Avatar
+                                  src={`${USER}`}
+                                  sx={{
+                                    height: 100,
+                                    mb: 2,
+                                    width: 100
+                                  }}
+                                />
+
+                              </>
+                            )}
+                          </Box>
+                          <Box flex='1' display="flex" marginTop="15px" height='80px'>
+                            <Box flex="1"  textAlign='left' borderRight="1px solid #999">
+                              <Typography >Account </Typography>
+                              <Typography mt={4}>Role </Typography>
+                            </Box>
+                            <Box flex="2" textAlign='left' marginLeft="20px">
+                              <Typography >userAttendanceDet </Typography>
+                              <Typography  mt={4}>userAttendanceDe</Typography>
+                            </Box>
+                          </Box>
+                          <Box flex='1' display="flex" marginTop="15px" height='80px'>
+                            <Box flex="1" textAlign='left' borderRight="1px solid #999">
+                              <Typography >Department </Typography>
+                              <Typography mt={4}>Hire DateDate </Typography>
+                            </Box>
+                            <Box flex="2" textAlign='left' marginLeft="20px">
+                              <Typography >userAttendanceDet </Typography>
+                              <Typography  mt={4}>userAttendanceDe </Typography>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </CardContent>
+                      <Divider/>
+                    </Card>
+                  </>)
+
+                }
+
               </Grid>
               <Grid item xs={12} md={6} lg={8}>
                 <Card>
@@ -283,6 +321,7 @@ const Profile = () => {
                         firstName={formik.values.firstName}
                         lastName={formik.values.lastName}
                         city={formik.values.city}
+                        address={formik.values.address}
                         birth={birth}
                         setBirth={setBirth}
                         phone={formik.values.phone}

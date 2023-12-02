@@ -1,6 +1,6 @@
 import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
-import { Avatar, Box, IconButton } from '@mui/material'
+import { Avatar, Box, Button, IconButton, Typography } from '@mui/material'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -26,26 +26,9 @@ const ManageProfile = () => {
     }
     fetchData()
   }, [])
-  const handleAcceptRequest = (userId) => {
-    let choice = window.confirm('Do you want to accept this account profile?')
-    if (choice == true) {
-      profileApi.acceptUserInfo(userId, dispatch)
-      const updatedUserList = usersProfile.filter((user) => user.accountId !== userId)
-      setUsersProfile(updatedUserList)
-    } else {
-      navigate('/manage-profile')
-    }
-  }
-  const handleRejectRequest = (userId) => {
-    let choice = window.confirm('Do you want to reject this account profile?')
-    if (choice == true) {
-      profileApi.rejectUserInfo(userId)
-      const updatedUserList = usersProfile.filter((user) => user.accountId !== userId)
-      setUsersProfile(updatedUserList)
-    } else {
-      navigate('/manage-profile')
-    }
-  }
+
+
+
   const imgurl = async () => {
     if (usersProfile.length > 0) {
       try {
@@ -78,65 +61,51 @@ const ManageProfile = () => {
   console.log(usersProfile);
   const columns = [
     {
-      field: 'image',
-      headerName: 'Avatar',
-      headerAlign: 'center',
-      align: 'center',
-      width: 100,
-      renderCell: (params) => {
-        return <Avatar src={`${params.row.image}`} />
-      }
+      field: 'username',
+      headerName: 'Account',
+      cellClassName: 'name-column--cell',
+      flex :1
     },
     {
       field: 'firstName',
-      headerName: 'First Name',
-      cellClassName: 'name-column--cell',
-      width: 150
-    },
-    {
-      field: 'lastName',
-      headerName: 'Last Name',
+      headerName: 'Name',
       headerAlign: 'left',
       align: 'left',
-      width: 120
+      flex :1,
+      renderCell: (params) => {
+        return (
+          <Box>
+            <Typography>{params.row.firstName} {params.row.lastName} </Typography>
+          </Box>
+        )
+      }
     },
     {
-      field: 'telephoneNumber',
-      headerName: 'Phone Number',
-      width: 160
+      field: 'roleName',
+      headerName: 'Access level',
+      flex :1
     },
     {
-      field: 'email',
-      headerName: 'Email',
-      width: 270
+      field: 'departmentName',
+      headerName: 'Department',
+      flex :1
     },
     {
-      field: 'country',
-      headerName: 'Country',
-      width: 100
+      field: 'acceptedBy',
+      headerName: 'Accepted By',
+      flex :1
     },
     {
-      field: 'city',
-      headerName: 'City',
-      width: 100
+      field: 'approvedDate',
+      headerName: 'Approved Date',
+      flex :1
     },
-    {
-      field: 'dateOfBirth',
-      headerName: 'Date of Birth',
-      width: 130
-    },
-    {
-      field: 'gender',
-      headerName: 'Gender',
-      width: 100
-    },
-
     {
       field: 'action',
       headerName: 'Action',
       headerAlign: 'center',
       align: 'center',
-      width: 100,
+      flex :1,
       renderCell: (params) => {
         return (
           <Box
@@ -146,15 +115,11 @@ const ManageProfile = () => {
             justifyContent="center"
             alignItems="center"
             borderRadius="4px">
-            <IconButton onClick={() => handleAcceptRequest(params.row.accountId)}>
-              <CheckIcon sx={{ color: '#00FF00' }} />
-            </IconButton>
-            <IconButton>
-              <ClearIcon
-                onClick={() => handleRejectRequest(params.row.accountId)}
-                sx={{ color: 'red' }}
-              />
-            </IconButton>
+            <Button
+              variant="contained"
+              onClick={() => navigate(`/change-log-edit-profile-detail/${params.row.accountId}`)}>
+              Detail
+            </Button>
           </Box>
         )
       }

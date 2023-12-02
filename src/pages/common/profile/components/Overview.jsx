@@ -38,6 +38,9 @@ const Overview = (props) => {
               <TypoOverView fullWidth>Country: {props.userInfo.country}</TypoOverView>
             </Grid>
             <Grid item xs={12} md={6}>
+              <TypoOverView fullWidth>Address: chuwa cos </TypoOverView>
+            </Grid>
+            <Grid item xs={12} md={6}>
               <TypoOverView fullWidth>City: {props.userInfo.city}</TypoOverView>
             </Grid>
             <Grid item xs={12} md={6}>
