@@ -103,7 +103,7 @@ export default function CheckOvertime() {
     {
       field: 'checkin',
       headerName: 'Check In',
-      width: 120
+      width: 122
     },
     {
       field: 'checkout',
