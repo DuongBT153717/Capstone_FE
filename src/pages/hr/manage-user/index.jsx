@@ -6,7 +6,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import ManIcon from '@mui/icons-material/Man'
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
 import SecurityIcon from '@mui/icons-material/Security'
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box, Button, IconButton, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -35,6 +35,7 @@ const ManageUser = () => {
     setOpen(true)
     setUser(data)
   }
+
   const handleClose = () => setOpen(false)
   const handleOpenCreateAccount = () => {
     setOpenCreateAccount(true)
@@ -95,32 +96,32 @@ const ManageUser = () => {
       confirmButtonColor: 'green'
     }).then((result) => {
       if (result.isConfirmed) {
-      let data = {
-        username: user.username,
-        hrId: currentUser?.accountId
+        let data = {
+          username: user.username,
+          hrId: currentUser?.accountId
+        }
+        axiosClient
+          .post(`${BASE_URL}/deleteAccount`, data)
+          .then(() => {
+            toast.success('Account deleted successfully!')
+            setAllUser((prevUser) =>
+              prevUser.filter((userInfo) => userInfo.accountId !== user.accountId)
+            )
+          })
+          .catch((error) => {
+            if (error.response.status === 400) {
+              toast.error('Username is null!')
+            } else if (error.response.status === 404) {
+              toast.error('Username does not exist!')
+            } else if (error.response.status === 500) {
+              toast.error('Only HR who created this account can delete this account!')
+            } else {
+              toast.error('An error occurred while deleting the account.')
+            }
+          })
       }
-      axiosClient
-        .post(`${BASE_URL}/deleteAccount`, data)
-        .then(() => {
-          toast.success('Account deleted successfully!')
-          setAllUser((prevUser) =>
-            prevUser.filter((userInfo) => userInfo.accountId !== user.accountId)
-          )
-        })
-        .catch((error) => {
-          if (error.response.status === 400) {
-            toast.error('Username is null!')
-          } else if (error.response.status === 404) {
-            toast.error('Username does not exist!')
-          } else if (error.response.status === 500) {
-            toast.error('Only HR who created this account can delete this account!')
-          } else {
-            toast.error('An error occurred while deleting the account.')
-          }
-        })
-    }
-  })
-}
+    })
+  }
 
   const columns = [
     {
@@ -194,7 +195,7 @@ const ManageUser = () => {
       headerAlign: 'center',
       align: 'center',
       flex: 1,
-     
+
     },
     {
       field: 'createdDate',
@@ -205,9 +206,9 @@ const ManageUser = () => {
       flex: 1,
       renderCell: (params) => {
         return (
-            <Typography color='#000'>
-              {formatDate(params.row.createdDate)}
-            </Typography>
+          <Typography color='#000'>
+            {formatDate(params.row.createdDate)}
+          </Typography>
         )
       }
     },
@@ -255,7 +256,33 @@ const ManageUser = () => {
       }
     }
     ,
-   
+    {
+      field: 'detail',
+      headerName: 'View',
+      cellClassName: 'name-column--cell',
+      headerAlign: 'center',
+      align: 'center',
+      flex: 1, 
+      renderCell: (params) => {
+        return (
+          <Box
+            margin="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            borderRadius="4px">
+            <Button
+              variant='contained'
+              onClick={() => navigate(`/check-employee-info/${params.row.accountId}`)}
+              //onClick={() => navigate(`/check-employee-info`)}
+            >
+              Detail
+            </Button>
+          </Box>
+        )
+      }
+    },
   ]
   return (
     <>

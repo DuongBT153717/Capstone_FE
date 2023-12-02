@@ -279,7 +279,7 @@ const ViewEmpEvaluateReport = () => {
           value={`${evaluate.note}`}
         />
         <Grid container justifyContent="flex-end" marginTop="10px">
-          {evaluate.approvedDate !== null && (
+          {evaluate.approvedDate === null && (
             <>
               <Button
                 variant="contained"

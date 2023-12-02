@@ -73,6 +73,8 @@ import AttendanceLogDetailHR from '../pages/hr/attendance-log-detail'
 import ChangeLogDetail from '../pages/hr/change-log-detail'
 import LogEmpAttendanceByIdList from '../pages/manager/log-emp-attendance-by-id-list'
 import ViewEmpEvaluateReport from '../pages/hr/view-evaluate-of-emp'
+import CheckEmpProfile from '../pages/hr/check-employee-info-by-id'
+import CheckEmpEvaluateReport from '../pages/hr/check-evaluate-report'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -280,10 +282,26 @@ export default function Router() {
           )
         },
         {
+          path: HR_PATH.CHECK_EMP_INFO,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <CheckEmpProfile/>
+            </Suspense>
+          )
+        },
+        {
           path: HR_PATH.VIEW_ATTENDANCE_EVALUATE_REPORT,
           element: (
             <Suspense fallback={<>Loading...</>}>
               <ViewEmpEvaluateReport />
+            </Suspense>
+          )
+        },
+        {
+          path: HR_PATH.CHECK_EVALUATE_REPORT_FROM_EMP,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <CheckEmpEvaluateReport />
             </Suspense>
           )
         },
