@@ -192,13 +192,14 @@ const requestApi = {
       console.log(error)
     }
   },
-  acceptAttendanceRequest: async (data) => {
+  acceptAttendanceRequest: (data) => {
     let data1 = {
       attendanceRequestId: data
     }
     try {
-      await axiosClient.post(`${BASE_URL}/acceptAttendanceRequest`, data1)
+      const res = axiosClient.post(`${BASE_URL}/acceptAttendanceRequest`, data1)
       toast.success('Accept request success')
+      return res
     } catch (error) {
       console.log(error)
     }

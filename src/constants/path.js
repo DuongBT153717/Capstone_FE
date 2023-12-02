@@ -34,7 +34,7 @@ export const MANAGER_PATH = {
     MANAGE_LIST_TICKET_MANAGER: '/request-list-manager',
     REQUEST_LIST_MANAGER: '/request-manager-list',
     BOOK_ROOM_MANAGER: '/book-room-manager',
-    BOOK_ROOM_DETAIL_MANAGER: '/book-room-detail-manager/:ticketId',
+    BOOK_ROOM_DETAIL: '/book-room-detail/:ticketId',
     NOTIFICATION_LIST_MANAGER: '/notification-list-manager',
     NOTIFICATION_DRAFT_MANAGER: '/notification-draft-manager',
     NOTIFICATION_SEND_MANAGER: '/notification-send-manager',

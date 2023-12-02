@@ -241,14 +241,7 @@ export default function Router() {
       path: '/',
       element: <RequireAuth allowedRoles={ROLES.MANAGER} />,
       children: [
-        {
-          path: MANAGER_PATH.BOOK_ROOM_DETAIL_MANAGER,
-          element: (
-            <Suspense fallback={<>Loading...</>}>
-              <BookListDetailManager />
-            </Suspense>
-          )
-        },
+        
         {
           path: MANAGER_PATH.EMPLOYEE_ATTENDANCE_DETAIL,
           element: (
@@ -724,6 +717,7 @@ export default function Router() {
             },
           ]
         },
+        
       ]
     },
     {
@@ -742,7 +736,14 @@ export default function Router() {
                 </Suspense>
               )
             },
-            
+            {
+              path: MANAGER_PATH.BOOK_ROOM_DETAIL,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <BookListDetailManager />
+                </Suspense>
+              )
+            },
           ]
         },
       ]

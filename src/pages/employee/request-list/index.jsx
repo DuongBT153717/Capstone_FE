@@ -26,6 +26,7 @@ import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
 import { toast } from 'react-toastify'
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
 function formatDate(date) {
   const createDate = new Date(date);
   const year = createDate.getFullYear().toString().slice(-2);
@@ -206,13 +207,19 @@ function Row(props) {
                       <TableCell style={{ width: '150px' }}>{formatDate(request_row.requestCreateDate)}</TableCell>
                       <TableCell style={{ width: '150px' }}>{formatDate(request_row.requestUpdateDate)}</TableCell>
                       <TableCell>
-                        <IconButton
-                          sx={{ color: '#1565c0' }}
-                          onClick={() =>
-                            navigate(`/request-detail/${request_row.requestId}`)
-                          }>
-                          <RemoveRedEyeIcon />
-                        </IconButton>
+                      {row.topic !== 'ROOM_REQUEST' ? (
+                          <IconButton
+                            sx={{ color: '#1565c0' }}
+                            onClick={() => navigate(`/request-detail/${request_row.requestId}`)}>
+                            <RemoveRedEyeIcon />
+                          </IconButton>
+                        ) : (
+                          <IconButton
+                            sx={{ color: '#1565c0' }}
+                            onClick={() => navigate(`/book-room-detail/${request_row.requestId}`)}>
+                            <AssignmentTurnedInIcon />
+                          </IconButton>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}

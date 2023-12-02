@@ -107,7 +107,7 @@ const LogManagement = () => {
       headerName: 'Outside Work',
       width: 150,
       renderCell: (params) => {
-        return <Box>{params.row?.outsideWork === -1 ? '' : params.row?.outsideWork}</Box>
+        return <Box>{params.row?.outsideWork === -1 ? 0 : 1}</Box>
       }
     },
     {
