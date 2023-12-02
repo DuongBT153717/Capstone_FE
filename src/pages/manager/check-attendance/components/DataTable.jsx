@@ -58,6 +58,7 @@ const DataTableCheckAttendance = ({ rows, columns, isLoading, CustomToolbar }) =
           }
         }}>
         <StripedDataGrid
+          autoHeight
           disableRowSelectionOnClick
           slots={{ toolbar: CustomToolbar, loadingOverlay: LinearProgress }}
           showCellVerticalBorder

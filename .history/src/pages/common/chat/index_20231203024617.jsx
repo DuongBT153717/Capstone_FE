@@ -110,7 +110,7 @@ const Chat = () => {
     fetchAllUser()
   }, [])
 
-  console.log(isActiveUser)
+  console.log(isActiveUser);
   useEffect(() => {
     const fetchAllUserSingleChat = async () => {
       const data = {
@@ -171,22 +171,20 @@ const Chat = () => {
   console.log(allUser)
 
   useEffect(() => {
-    if (isActiveUser !== '') {
-      setIsLoadingChat(true)
-      const getMessage = async () => {
-        const response = await axiosClient.get(`${BASE_URL}/message`, {
-          params: {
-            userId: currentUserId,
-            chatId: isActiveUser?.chatId
-          }
-        })
-        setMessages(response.messageResponseList)
-        setUserAvatar(response.users)
-        socket.current.emit('join-chat', isActiveUser?.chatId)
-        setIsLoadingChat(false)
-      }
-      getMessage()
+    setIsLoadingChat(true)
+    const getMessage = async () => {
+      const response = await axiosClient.get(`${BASE_URL}/message`, {
+        params: {
+          userId: currentUserId,
+          chatId: isActiveUser?.chatId
+        }
+      })
+      setMessages(response.messageResponseList)
+      setUserAvatar(response.users)
+      socket.current.emit('join-chat', isActiveUser?.chatId)
+      setIsLoadingChat(false)
     }
+    getMessage()
   }, [isActiveUser?.chatId])
   console.log(isLoadingChat)
   const imgurlAvatar = async () => {
@@ -268,7 +266,7 @@ const Chat = () => {
     }
 
     if (file !== undefined) {
-      if (file.type === 'image/png' || file.type === 'image/jpeg') {
+      if (file.type === 'image/png' || file.type === "image/jpeg") {
         try {
           let formData = new FormData()
           formData.append('data', JSON.stringify(dataFile))
@@ -289,9 +287,7 @@ const Chat = () => {
             from: currentUserId,
             chatId: isActiveUser?.chatId,
             message: res.message,
-            to: isActiveUser.user.map((item) => {
-              return item.accountId
-            }),
+            to: isActiveUser.user.map((item) => {return item.accountId}),
             senderId: res.senderId,
             messageId: res.messageId,
             type: 'image'
@@ -317,6 +313,7 @@ const Chat = () => {
             }
           })
           console.log(res)
+          toast.success('success')
           let message2 = {
             myself: true,
             message: res.message,
@@ -327,9 +324,7 @@ const Chat = () => {
           socket.current.emit('send-msg', {
             from: currentUserId,
             chatId: isActiveUser?.chatId,
-            to: isActiveUser.user.map((item) => {
-              return item.accountId
-            }),
+            to: isActiveUser.user.map((item) => {return item.accountId}),
             senderId: res.senderId,
             message: res.message,
             messageId: res.messageId,
@@ -348,14 +343,12 @@ const Chat = () => {
       }
     } else {
       try {
-        const res = await axiosClient.post(`${BASE_URL}/createNewMessage`, data)
-        console.log(res)
-        setMessages(messages.concat(message))
+        const res = await axiosClient.post(`${BASE_URL}/createNewMessage`,data)
+        console.log(res);
+         setMessages(messages.concat(message))
         socket.current.emit('send-msg', {
           from: currentUserId,
-          to: isActiveUser.user.map((item) => {
-            return item.accountId
-          }),
+          to: isActiveUser.user.map((item) => {return item.accountId}),
           user: isActiveUser.user,
           message: newMessage,
           senderId: res.senderId,
@@ -384,24 +377,18 @@ const Chat = () => {
   useEffect(() => {
     if (socket.current) {
       socket.current.on('msg-receive', (msg) => {
-        setArrivalMessage({
-          myself: false,
-          message: msg.message,
-          type: msg.type,
-          senderId: msg.senderId,
-          messageId: msg.messageId
-        })
+        setArrivalMessage({ myself: false, message: msg.message, type: msg.type, senderId: msg.senderId, messageId: msg.messageId })
       })
     }
   }, [arrivalMessage])
 
-  console.log(arrivalMessage)
+  console.log(arrivalMessage);
 
   useEffect(() => {
     arrivalMessage && setMessages((pre) => [...pre, arrivalMessage])
-  }, [arrivalMessage])
+  }, [arrivalMessage])  
 
-  console.log(messages)
+  console.log(messages);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0])
@@ -434,7 +421,7 @@ const Chat = () => {
 
   console.log(isActiveUser)
   const handleDownloadFile = async (item) => {
-    console.log(item)
+    console.log(item);
     let data = {
       messageId: item.messageId,
       fileName: item.message
@@ -545,19 +532,16 @@ const Chat = () => {
         setAllChatList((prev) => {
           return prev.filter((chat) => chat.chatId !== isActiveUser?.chatId)
         })
-        setIsActiveUser('')
       } else {
         navigate('/chat')
       }
     })
   }
 
-  const allUserUpdate =
-    isActiveUser && isActiveUser.user
-      ? allUser.filter(
-          (item) => !isActiveUser.user.some((user) => user.accountId === item.accountId)
-        )
-      : []
+  const allUserUpdate = isActiveUser && isActiveUser.user
+  ? allUser.filter((item) => !isActiveUser.user.some((user) => user.accountId === item.accountId))
+  : [];
+
 
   return (
     <Box height="100vh">
@@ -794,7 +778,8 @@ const Chat = () => {
                                           cursor: 'pointer',
                                           color: '#fff'
                                         }}
-                                        onClick={() => handleDownloadFile(item)}>
+                                        onClick={() => handleDownloadFile(item)}
+                                        >
                                         <TextSnippetIcon />
                                         <Typography>{item.message}</Typography>
                                       </div>
@@ -841,7 +826,8 @@ const Chat = () => {
                                     item?.type === 'file' && (
                                       <div
                                         style={{ display: 'flex', gap: '5px', cursor: 'pointer' }}
-                                        onClick={() => handleDownloadFile(item)}>
+                                        onClick={() => handleDownloadFile(item)}
+                                        >
                                         <TextSnippetIcon />
                                         <Typography>{item.message}</Typography>
                                       </div>
@@ -1134,6 +1120,9 @@ const Chat = () => {
           <Box display="flex" justifyContent="flex-end" gap="5px" mt={3}>
             <Button variant="contained" sx={{ bgcolor: 'green' }} onClick={handleUpdateChat}>
               Update
+            </Button>
+            <Button variant="contained" sx={{ bgcolor: 'red' }} onClick={handleLeaveGroup}>
+              Leave Group
             </Button>
           </Box>
         </Box>

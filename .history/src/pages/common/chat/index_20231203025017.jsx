@@ -317,6 +317,7 @@ const Chat = () => {
             }
           })
           console.log(res)
+          toast.success('success')
           let message2 = {
             myself: true,
             message: res.message,
@@ -545,7 +546,6 @@ const Chat = () => {
         setAllChatList((prev) => {
           return prev.filter((chat) => chat.chatId !== isActiveUser?.chatId)
         })
-        setIsActiveUser('')
       } else {
         navigate('/chat')
       }
@@ -1134,6 +1134,9 @@ const Chat = () => {
           <Box display="flex" justifyContent="flex-end" gap="5px" mt={3}>
             <Button variant="contained" sx={{ bgcolor: 'green' }} onClick={handleUpdateChat}>
               Update
+            </Button>
+            <Button variant="contained" sx={{ bgcolor: 'red' }} onClick={handleLeaveGroup}>
+              Leave Group
             </Button>
           </Box>
         </Box>

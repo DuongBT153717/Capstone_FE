@@ -51,23 +51,15 @@ const ChangeLogEditProfileDetail = () => {
     })
   }
   const handleRejectRequest = (userId) => {
-    Swal.fire({
-      title: 'Are you sure to reject this request?',
-      icon: 'error',
-      cancelButtonText: 'Cancel!',
-      showCancelButton: true,
-      cancelButtonColor: 'red',
-      confirmButtonColor: 'green'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        let data = {
-          userId: userId,
-          hrId: currentUser.accountId
-        }
-        profileApi.rejectUserInfo(data)
-        navigate('/manage-profile')
+    let choice = window.confirm('Do you want to reject this account profile?')
+    if (choice == true) {
+      let data = {
+        userId: userId,
+        hrId: currentUser.accountId
       }
-    })
+      profileApi.rejectUserInfo(data)
+      navigate('/manage-profile')
+    }
   }
 
   const imgurlBefore = async () => {

@@ -12,8 +12,7 @@ import {
   TableContainer,
   TableRow,
   TextField,
-  Typography,
-  Box
+  Typography
 } from '@mui/material'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -26,39 +25,40 @@ import axiosClient from '../../../utils/axios-config'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom';
 const ViewEmpEvaluateReport = () => {
-  const { employee_id, date } = useParams()
+  const { employee_id, date } = useParams();
   const [evaluate, setEvaluate] = useState([])
-  const location = useLocation()
-  const { state } = location
+  const location = useLocation();
+  const { state } = location;
 
-  const selectedDepartmentFromState = state?.selectedDepartment
-  const monthFromState = state?.month
-  const currentUser = useSelector((state) => state.auth.login?.currentUser)
-  const navigate = useNavigate()
+  const selectedDepartmentFromState = state?.selectedDepartment;
+  const monthFromState = state?.month;
+  const currentUser = useSelector((state) => state.auth.login?.currentUser);
+  const navigate = useNavigate();
   const buttonStyle = {
     width: '80px',
     marginLeft: '10px',
-    fontSize: '12px'
-  }
+    fontSize: '12px',
+  };
   const updateAcceptOrRejectEvaluateByHr = async (data) => {
     try {
-      await axiosClient.post(`/updateAcceptOrRejectEvaluateByHr`, data)
-      toast.success('Send request successfully')
+      await axiosClient.post(`/updateAcceptOrRejectEvaluateByHr`, data);
+      toast.success('Send request successfully');
     } catch (error) {
       if (error.response.status === 400) {
-        toast.error('Can not accept or reject!')
+        toast.error('Can not accept or reject!');
       }
       if (error.response.status === 404) {
-        toast.error('Something went wrong!')
+        toast.error('Something went wrong!');
       }
     }
-  }
+  };
+
 
   const navigateBack = () => {
-    navigate(-1, { state: { selectedDepartmentFromState, monthFromState } })
-  }
+    navigate(-1, { state: { selectedDepartmentFromState, monthFromState } });
+  };
   useEffect(() => {
     const fetchAllEvaluateAttendance = async () => {
       let data = {
@@ -82,37 +82,37 @@ const ViewEmpEvaluateReport = () => {
     fetchAllEvaluateAttendance()
   }, [date])
 
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [dialogOpenReject, setDialogOpenReject] = useState(false)
-  const [hrNote, setHrNote] = useState('')
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpenReject, setDialogOpenReject] = useState(false);
+  const [hrNote, setHrNote] = useState('');
 
   const handleDialogOpen = () => {
-    setDialogOpen(true)
-  }
+    setDialogOpen(true);
+  };
 
   const handleDialogRejectOpen = () => {
-    setDialogOpenReject(true)
+    setDialogOpenReject(true);
   }
   const handleDialogClose = () => {
-    setDialogOpen(false)
-  }
+    setDialogOpen(false);
+  };
   const handleDialogRejectClose = () => {
-    setDialogOpenReject(false)
+    setDialogOpenReject(false);
   }
   const handleSendAccept = async () => {
     const data = {
       hrId: currentUser?.accountId,
       hrNote: hrNote,
       evaluateId: evaluate.evaluateId,
-      hrStatus: true
-    }
+      hrStatus: true,
+    };
     try {
-      await updateAcceptOrRejectEvaluateByHr(data)
-      setTimeout(navigateBack, 500)
+      await updateAcceptOrRejectEvaluateByHr(data);
+      setTimeout(navigateBack, 500);
     } catch (error) {
-      toast.warning('Send request fail')
+      toast.warning('Send request fail');
     }
-  }
+  };
 
   // const handleAccept = async () => {
   //   const data = {
@@ -129,13 +129,13 @@ const ViewEmpEvaluateReport = () => {
       hrId: currentUser?.accountId,
       hrNote: hrNote,
       evaluateId: evaluate.evaluateId,
-      hrStatus: false
-    }
+      hrStatus: false,
+    };
     try {
-      await updateAcceptOrRejectEvaluateByHr(data)
-      setTimeout(navigateBack, 500)
+      await updateAcceptOrRejectEvaluateByHr(data);
+      setTimeout(navigateBack, 500);
     } catch (error) {
-      toast.warning('Send request fail')
+      toast.warning('Send request fail');
     }
   }
   return (
@@ -171,14 +171,17 @@ const ViewEmpEvaluateReport = () => {
           </Grid>
         </Grid>
 
-        <Grid item xs={6} width="48%" mt={2}>
+        <Grid item xs={6} width='48%' mt={2}>
           <Typography fontWeight="500">Report By Month-Year</Typography>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               views={['year', 'month']}
               openTo="year"
               value={date}
-              renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} disabled />}
+              renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} 
+              disabled
+              />             
+            }
             />
           </LocalizationProvider>
         </Grid>
@@ -207,10 +210,10 @@ const ViewEmpEvaluateReport = () => {
                       evaluate.lateCheckin > 2
                         ? 'red'
                         : evaluate.lateCheckin > 0
-                        ? '#EC8F5E'
-                        : evaluate.lateCheckin === 0
-                        ? 'green'
-                        : 'black'
+                          ? '#EC8F5E'
+                          : evaluate.lateCheckin === 0
+                            ? 'green'
+                            : 'black'
                   }}>
                   {evaluate.lateCheckin}
                 </TableCell>
@@ -254,8 +257,8 @@ const ViewEmpEvaluateReport = () => {
                 evaluate.evaluateEnum === 'GOOD'
                   ? 'green'
                   : evaluate.evaluateEnum === 'BAD'
-                  ? 'red'
-                  : 'black'
+                    ? 'red'
+                    : 'black'
             }}>
             {`${evaluate.evaluateEnum}`}
           </span>
@@ -268,32 +271,23 @@ const ViewEmpEvaluateReport = () => {
           rows={8}
           value={`${evaluate.note}`}
         />
-        <Grid container justifyContent="space-between" marginTop="10px">
-          <Button
-            variant="contained"
-            onClick={() => navigate(-1, { state: { selectedDepartmentFromState, monthFromState } })}
-            style={{
-              width: '80px',
-              marginLeft: '10px',
-              fontSize: '12px'
-            }}>
-            Back
-          </Button>
-          <Box>  
+        <Grid container justifyContent="flex-end" marginTop="10px">
           {evaluate.approvedDate !== null && (
             <>
               <Button
                 variant="contained"
-                sx={{bgcolor: 'green'}}
+                color="primary"
                 style={buttonStyle}
-                onClick={handleDialogOpen}>
+                onClick={handleDialogOpen}
+              >
                 Accept
               </Button>
               <Button
                 variant="contained"
-                sx={{bgcolor: 'red'}}
+                color="secondary"
                 style={{ ...buttonStyle, marginLeft: '10px' }}
-                onClick={handleDialogRejectOpen}>
+                onClick={handleDialogRejectOpen}
+              >
                 Reject
               </Button>
 
@@ -320,6 +314,7 @@ const ViewEmpEvaluateReport = () => {
                 </DialogActions>
               </Dialog>
 
+
               <Dialog open={dialogOpen} onClose={handleDialogClose}>
                 <DialogTitle>Enter HR Note</DialogTitle>
                 <DialogContent>
@@ -344,8 +339,20 @@ const ViewEmpEvaluateReport = () => {
               </Dialog>
             </>
           )}
-          </Box>
+        <Button
+          variant="contained"
+          onClick={() => navigate(-1, { state: { selectedDepartmentFromState, monthFromState } })}
+          style={{
+            width: '80px',
+            marginLeft: '10px',
+            fontSize: '12px',
+          }}
+        >
+          Back
+        </Button>
         </Grid>
+
+
       </Paper>
     </>
   )

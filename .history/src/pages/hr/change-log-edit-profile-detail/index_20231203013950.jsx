@@ -52,8 +52,8 @@ const ChangeLogEditProfileDetail = () => {
   }
   const handleRejectRequest = (userId) => {
     Swal.fire({
-      title: 'Are you sure to reject this request?',
-      icon: 'error',
+      title: 'Are you sure to accept this request?',
+      icon: 'question',
       cancelButtonText: 'Cancel!',
       showCancelButton: true,
       cancelButtonColor: 'red',

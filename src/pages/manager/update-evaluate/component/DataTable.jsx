@@ -61,6 +61,7 @@ const EvaluateTable = ({ rows, columns, isLoading }) => {
           },
         }}>
         <StripedDataGrid
+          autoHeight
           disableRowSelectionOnClick
           slots={{  loadingOverlay: LinearProgress }}
           showCellVerticalBorder

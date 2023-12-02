@@ -12,8 +12,7 @@ import {
   TableContainer,
   TableRow,
   TextField,
-  Typography,
-  Box
+  Typography
 } from '@mui/material'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -284,14 +283,14 @@ const ViewEmpEvaluateReport = () => {
             <>
               <Button
                 variant="contained"
-                sx={{bgcolor: 'green'}}
+                color="primary"
                 style={buttonStyle}
                 onClick={handleDialogOpen}>
                 Accept
               </Button>
               <Button
                 variant="contained"
-                sx={{bgcolor: 'red'}}
+                color="secondary"
                 style={{ ...buttonStyle, marginLeft: '10px' }}
                 onClick={handleDialogRejectOpen}>
                 Reject

@@ -12,8 +12,7 @@ import {
   TableContainer,
   TableRow,
   TextField,
-  Typography,
-  Box
+  Typography
 } from '@mui/material'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -268,7 +267,7 @@ const ViewEmpEvaluateReport = () => {
           rows={8}
           value={`${evaluate.note}`}
         />
-        <Grid container justifyContent="space-between" marginTop="10px">
+        <Grid container justifyContent="flex-end" marginTop="10px">
           <Button
             variant="contained"
             onClick={() => navigate(-1, { state: { selectedDepartmentFromState, monthFromState } })}
@@ -279,19 +278,19 @@ const ViewEmpEvaluateReport = () => {
             }}>
             Back
           </Button>
-          <Box>  
+
           {evaluate.approvedDate !== null && (
             <>
               <Button
                 variant="contained"
-                sx={{bgcolor: 'green'}}
+                color="primary"
                 style={buttonStyle}
                 onClick={handleDialogOpen}>
                 Accept
               </Button>
               <Button
                 variant="contained"
-                sx={{bgcolor: 'red'}}
+                color="secondary"
                 style={{ ...buttonStyle, marginLeft: '10px' }}
                 onClick={handleDialogRejectOpen}>
                 Reject
@@ -344,7 +343,6 @@ const ViewEmpEvaluateReport = () => {
               </Dialog>
             </>
           )}
-          </Box>
         </Grid>
       </Paper>
     </>

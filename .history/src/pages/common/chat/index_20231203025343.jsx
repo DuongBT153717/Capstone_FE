@@ -1135,6 +1135,9 @@ const Chat = () => {
             <Button variant="contained" sx={{ bgcolor: 'green' }} onClick={handleUpdateChat}>
               Update
             </Button>
+            <Button variant="contained" sx={{ bgcolor: 'red' }} onClick={handleLeaveGroup}>
+              Leave Group
+            </Button>
           </Box>
         </Box>
       </Modal>

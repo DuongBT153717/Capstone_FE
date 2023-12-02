@@ -53,6 +53,7 @@ const DataTableListChangeLog = ({ rows, columns, isLoading }) => {
       }}
     >
       <DataGrid 
+        autoHeight
         disableRowSelectionOnClick
         showCellVerticalBorder
         showColumnVerticalBorder

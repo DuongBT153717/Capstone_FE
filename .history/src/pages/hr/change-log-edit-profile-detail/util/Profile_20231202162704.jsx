@@ -1,11 +1,14 @@
 import {
-  Box,
-  CardContent,
-  Divider,
-  Grid,
-  Typography,
-  styled
-} from '@mui/material'
+    Box,
+    Button,
+    CardActions,
+    CardContent,
+    Divider,
+    Grid,
+    Typography,
+    styled
+  } from '@mui/material'
+  import { useNavigate } from 'react-router-dom'
   
   const TypoOverView = styled(Typography)(() => ({
     fontSize: '18px',
@@ -13,6 +16,7 @@ import {
   }))
   
   const Profile = (props) => {
+    const navigate = useNavigate()
     return (
       <>
         <CardContent>
@@ -40,10 +44,10 @@ import {
                 <TypoOverView fullWidth>City:  {props.city}</TypoOverView>
               </Grid>
               <Grid item xs={12} md={6}>
-                <TypoOverView fullWidth>Gender: {props.gender}</TypoOverView>
+                <TypoOverView fullWidth>Gender: chuwa cos   {props.gender}</TypoOverView>
               </Grid>
               <Grid item xs={12} md={6}>
-                <TypoOverView fullWidth>Date of birth: {props.dob}</TypoOverView>
+                <TypoOverView fullWidth>Date of birth:  {props.dob}</TypoOverView>
               </Grid>
             </Grid>
           </Box>

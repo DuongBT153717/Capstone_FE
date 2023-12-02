@@ -53,7 +53,6 @@ const DataTableListChangeLog = ({ rows, columns, isLoading }) => {
       }}
     >
       <DataGrid 
-        autoHeight
         disableRowSelectionOnClick
         showCellVerticalBorder
         showColumnVerticalBorder
@@ -65,7 +64,7 @@ const DataTableListChangeLog = ({ rows, columns, isLoading }) => {
         }}
         pageSizeOptions={[5, 10, 20, 50]}
         loading={isLoading}
-        getRowId={(row) => row.changeLogId}
+        getRowId={(row) => row.evaluateId}
       />
     </Box>
   );

@@ -242,9 +242,7 @@ const OtFrom = () => {
 
         console.log(data);
         await requestApi.requestOverTimeForm(data);
-        setTimeout(() => {
-          navigate(-1);
-        }, 800);
+
       } catch (error) {
         toast.warning("Error!!")
       }
