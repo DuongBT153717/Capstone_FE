@@ -27,20 +27,14 @@ import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom';
 const ViewEmpEvaluateReport = () => {
-  const { employee_id } = useParams();
-  const [month, setMonth] = useState(new Date())
+  const { employee_id, date } = useParams();
   const [evaluate, setEvaluate] = useState([])
-  const setMonthYear = (newDate) => {
-    setMonth(newDate)
-  }
   const location = useLocation();
   const { state } = location;
 
   const selectedDepartmentFromState = state?.selectedDepartment;
   const monthFromState = state?.month;
   const currentUser = useSelector((state) => state.auth.login?.currentUser);
-  const [minDate, setMinDate] = useState(new Date('1990'))
-  const maxDate = new Date()
   const navigate = useNavigate();
   const buttonStyle = {
     width: '80px',
@@ -69,25 +63,24 @@ const ViewEmpEvaluateReport = () => {
     const fetchAllEvaluateAttendance = async () => {
       let data = {
         userId: employee_id,
-        month: format(month, 'MM'),
-        year: format(month, 'yyyy')
+        month: date.split('-')[1],
+        year: date.split('-')[0]
       }
       try {
         const response = await axiosClient.post(`${BASE_URL}/getIndividualEvaluate`, data)
         console.log(data)
         console.log(employee_id)
-        if (response && response.hireDate) {
-          setMinDate(new Date(response.hireDate))
-        }
         setEvaluate(response)
         return response
       } catch (error) {
-        console.log(error)
+        if (error.response.status === 400) {
+          toast.error('This month havent had evaluate yet')
+        }
       }
     }
 
     fetchAllEvaluateAttendance()
-  }, [month, employee_id])
+  }, [date])
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogOpenReject, setDialogOpenReject] = useState(false);
@@ -184,11 +177,11 @@ const ViewEmpEvaluateReport = () => {
             <DatePicker
               views={['year', 'month']}
               openTo="year"
-              value={month}
-              onChange={(newDate) => setMonthYear(newDate)}
-              renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
-              maxDate={maxDate}
-              minDate={minDate}
+              value={date}
+              renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} 
+              disabled
+              />             
+            }
             />
           </LocalizationProvider>
         </Grid>

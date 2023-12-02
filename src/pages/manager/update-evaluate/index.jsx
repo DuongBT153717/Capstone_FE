@@ -15,7 +15,8 @@ import {
   TableRow,
   TextField,
   Typography,
-  Divider
+  Divider,
+  TableHead
 } from '@mui/material'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
@@ -270,6 +271,20 @@ const UpdateEvaluate = () => {
           <Box mt={1}>
             <TableContainer>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell align="center">Total Attendance</TableCell>
+                    <TableCell align="center">Total Morning</TableCell>
+                    <TableCell align="center">Total Afternoon</TableCell>
+                    <TableCell align="center">Late Check In</TableCell>
+                    <TableCell align="center">Early Check Out</TableCell>
+                    <TableCell align="center">Permitted Leave</TableCell>
+                    <TableCell align="center">Non Permitted Leave</TableCell>
+                    <TableCell align="center">Violate</TableCell>
+                    <TableCell align="center">Paid day</TableCell>
+                  </TableRow>
+                </TableHead>
                 <TableBody>
                   <TableRow
                     sx={{ '&:last-child td, &:last-child th': { border: 1, padding: '8px' } }}>

@@ -17,15 +17,13 @@ import {
 import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { BASE_URL } from '../../../services/constraint'
-
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import axiosClient from '../../../utils/axios-config'
 const CheckEmpEvaluateReport = () => {
-    const { employeeId, month, year } = useParams();
-    console.log('Month from URL:', month);
-    console.log('Year from URL:', year);
+    const { employee_id, date} = useParams();
+    console.log('Month from URL:', date);
     const [evaluate, setEvaluate] = useState([])
     const currentUser = useSelector((state) => state.auth.login?.currentUser);
     const navigate = useNavigate();
@@ -55,9 +53,10 @@ const CheckEmpEvaluateReport = () => {
     useEffect(() => {
         const fetchAllEvaluateAttendance = async () => {
             let data = {
-                userId: employeeId,
-                month: format(month, 'MM'),
-                year: format(year, 'yyyy'),
+                userId: employee_id,
+                month: date.split('-')[0],
+                year: date.split('-')[1]
+          
             };
             try {
                 const response = await axiosClient.post(
@@ -65,7 +64,7 @@ const CheckEmpEvaluateReport = () => {
                     data
                 );
                 console.log('Data:', data);
-                console.log('Employee ID:', employeeId);
+                console.log('Employee ID:', employee_id);
                 console.log('Response:', response);
                 setEvaluate(response);
             } catch (error) {
@@ -74,7 +73,7 @@ const CheckEmpEvaluateReport = () => {
         };
 
         fetchAllEvaluateAttendance();
-    }, [employeeId, month, year]);
+    }, [employee_id, date]);
 
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogOpenReject, setDialogOpenReject] = useState(false);

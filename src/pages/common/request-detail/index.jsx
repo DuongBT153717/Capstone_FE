@@ -53,7 +53,7 @@ const style = {
   boxShadow: 24,
   p: 2
 }
-const SOCKET_URL = 'http://localhost:3001'
+const SOCKET_URL = 'https://capstone-nodejs.onrender.com'
 const TicketDetail = () => {
   const scrollbarsRef = useRef()
   const [request, setRequest] = useState([])
