@@ -121,6 +121,22 @@ const EditProfile = (props) => {
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
+                label="Address"
+                value={props.address}
+                name="address"
+                onChange={props.formik.handleChange}
+                onBlur={props.formik.handleBlur}
+                InputLabelProps={{ shrink: true }}
+              />
+              {props.formik.touched.address && props.formik.errors.address ? (
+                <Typography sx={{ color: 'red', textAlign: 'left', fontSize: '15px' }}>
+                  {props.formik.errors.address}
+                </Typography>
+              ) : null}
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
                 label="City"
                 value={props.city}
                 name="city"
