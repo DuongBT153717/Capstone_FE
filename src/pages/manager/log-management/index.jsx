@@ -72,7 +72,7 @@ const LogManagement = () => {
     {
       field: 'Name',
       headerName: 'Name',
-      width: 150,
+      width: 300,
       renderCell: (params) => {
         return (
           <Typography>
@@ -96,7 +96,7 @@ const LogManagement = () => {
     },
     {
       field: 'violate',
-      headerName: 'Violate',
+      headerName: 'Violate (s)',
       width: 150,
       renderCell: (params) => {
         return <Box>{params.row?.violate ? 1 : 0}</Box>
@@ -155,7 +155,7 @@ const LogManagement = () => {
                 onClick={() =>
                   navigate(`/attendance-log-detail/${employee.accountId}/${params.row.date}`)
                 }>
-                Detail
+                View Log
               </Button>
             </Box>
           </Box>

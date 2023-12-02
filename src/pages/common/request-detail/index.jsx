@@ -130,20 +130,9 @@ const TicketDetail = () => {
 
   const handleAccept = async () => {
     if (request[0]?.object?.topic === 'ATTENDANCE_REQUEST') {
-<<<<<<< HEAD
-      try {
-        await requestApi.acceptAttendanceRequest(request[0]?.object?.attendanceRequestId);
-        setTimeout(() => {
-          window.location.reload();
-        }, 800);
-      } catch (error) {
-        console.error("Error accepting attendance request:", error);
-      }
-=======
       const res = await requestApi.acceptAttendanceRequest(request[0]?.object?.attendanceRequestId)
       console.log(res)
       socket.current.emit('send-notification', res)
->>>>>>> 7ec7aefdd853110b0bbff74ed61b90536929e0bb
     } else if (request[0]?.object?.topic === 'LEAVE_REQUEST') {
       try {
         await requestApi.acceptLeaveRequest(request[0]?.object?.leaveRequestId);
@@ -706,26 +695,15 @@ const TicketDetail = () => {
                       variant="body2"
                       color="text.primary">
                       Status :
-<<<<<<< HEAD
-                      {request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
-                        ? <span style={{ color: 'red' }}>Reject</span>
-                        : request[0]?.object?.status === true && request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED'
-                          ? <span style={{ color: 'green' }}>Accept</span>
-                          : request[0]?.object?.status === true || request[0]?.object?.status === false && request[0]?.requestMessageResponse?.requestTicketStatus === 'PENDING'
-                          ? <span style={{ color: '#F3B664' }}>Pending</span>
-                          : <span>none</span>
-                      }
-=======
                       {request[0]?.object?.status === false &&
-                      request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE' ? (
+                      request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
                         <span style={{ color: 'red' }}>Reject</span>
                       ) : request[0]?.object?.status === true &&
-                        request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE' ? (
+                        request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
                         <span style={{ color: 'green' }}>Accept</span>
                       ) : (
                         <span style={{ color: '#F3B664' }}>Pending</span>
                       )}
->>>>>>> 7ec7aefdd853110b0bbff74ed61b90536929e0bb
                     </Typography>
                   </React.Fragment>
                 }

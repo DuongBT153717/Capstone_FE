@@ -112,8 +112,8 @@ const LateRequestModal = ({ openLateRequest, handleCloseLateRequest, dailyLogMod
                   sx={{ width: '100%' }}
                   name="lateType"
                   displayEmpty>
-                  <MenuItem value="LATE_MORNING">MORNING</MenuItem>
-                  <MenuItem value="LATE_AFTERNOON">AFTERNOON</MenuItem>
+                  <MenuItem value="LATE_MORNING">LATE CHECK IN</MenuItem>
+                  <MenuItem value="LATE_AFTERNOON">EARLY CHECK OUT</MenuItem>
                 </Select>
                 {formik.touched.lateType && formik.errors.lateType && (
                   <Typography sx={{ color: 'red' }} className="error-message">

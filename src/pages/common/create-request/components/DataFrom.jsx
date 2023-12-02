@@ -130,25 +130,26 @@ const AttendenceFrom = ({ userId }) => {
           <Grid item xs={4} mb={2}>
             <Box display="flex" gap="5px">
               <Typography fontWeight="500">From</Typography>
-              <Checkbox sx={{ p: 0 }} checked={isFrom} onChange={handleChangeFrom} />
+              <Checkbox sx={{ p: 0 }} checked={isFrom} onChange={handleChangeFrom} disabled={isTo} />
             </Box>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <TimePicker
-                disabled={isFrom ? false : true}
+                disabled={!isFrom ? false : true}
                 value={from}
                 onChange={(e) => setFrom(e)}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
               />
             </LocalizationProvider>
           </Grid>
+
           <Grid item xs={4} mb={2}>
             <Box display="flex" gap="5px">
               <Typography fontWeight="500">To</Typography>
-              <Checkbox sx={{ p: 0 }} checked={isTo} onChange={handleChangeTo} />
+              <Checkbox sx={{ p: 0 }} checked={isTo} onChange={handleChangeTo} disabled={isFrom} />
             </Box>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <TimePicker
-                disabled={isTo ? false : true}
+                disabled={!isTo ? false : true}
                 value={to}
                 onChange={(e) => setTo(e)}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
@@ -919,8 +920,7 @@ const LeaveRequest = ({ userId }) => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 value={dateTo}
-                minDate={dateFrom}
-                disablePast
+                minDate={firstDayOfMonth}
                 onChange={(e) => setDateTo(e)}
                 renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
               />

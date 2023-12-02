@@ -103,12 +103,12 @@ export default function CheckOvertime() {
     {
       field: 'checkin',
       headerName: 'Check In',
-      width: 100
+      width: 120
     },
     {
       field: 'checkout',
       headerName: 'Check out',
-      width: 100
+      width: 120
       // valueGetter: ({ row, value }) => {
       //   if (row.id === 'TOTAL') {
       //     const totalQuantity = items.reduce((total, item) => total + item.price, 0)
@@ -119,7 +119,7 @@ export default function CheckOvertime() {
     },
     {
       field: 'totalAttendance',
-      headerName: 'Total Attendance',
+      headerName: 'Total Attendance (h)',
       flex: 1
     },
     {
@@ -134,7 +134,7 @@ export default function CheckOvertime() {
     },
     {
       field: 'totalPaid',
-      headerName: 'Total Paid',
+      headerName: 'Total Paid (h)',
       flex: 1
     },
   ]

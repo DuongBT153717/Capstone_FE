@@ -1,4 +1,4 @@
-import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt'
+
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import EventIcon from '@mui/icons-material/Event'
 import EventAvailableIcon from '@mui/icons-material/EventAvailable'
@@ -12,6 +12,7 @@ import { Menu, MenuItem, Sidebar, SubMenu, useProSidebar } from 'react-pro-sideb
 import { Link } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 const EmployeeSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => {
@@ -154,10 +155,10 @@ const EmployeeSidebar = () => {
 
           <MenuItem
             active={activeIndex === 1}
-            icon={<AppSettingsAltIcon />}
+            icon={<FactCheckIcon />}
             component={<Link to="/request-list-employee" onClick={() => setActiveIndex(1)} />}>
             {' '}
-            Check Your Ticket
+           Ticket
           </MenuItem>
           {/* <SubMenu
             label="Notification"

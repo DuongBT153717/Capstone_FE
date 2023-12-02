@@ -1,12 +1,13 @@
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled'
 import AddIcon from '@mui/icons-material/Add'
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors'
-import { InputAdornment, InputLabel, Skeleton } from '@mui/material'
+import { Skeleton } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Collapse from '@mui/material/Collapse'
@@ -24,9 +25,8 @@ import Typography from '@mui/material/Typography'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import requestApi from '../../../services/requestApi'
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
 import { toast } from 'react-toastify'
+import requestApi from '../../../services/requestApi'
 function formatDate(date) {
   const createDate = new Date(date);
   const year = createDate.getFullYear().toString().slice(-2);
@@ -48,14 +48,14 @@ function Row(props) {
       await requestApi.acceptStatutOtherRequest(data);
 
       toast.success('Request Finish successfully!', {
-        autoClose: 800, 
+        autoClose: 800,
       });
       setTimeout(() => {
         window.location.reload();
       }, 1000);
     } catch (error) {
       toast.error('Failed to Finish request. Please try again.', {
-        autoClose: 3000, 
+        autoClose: 3000,
       });
     }
   };
@@ -207,7 +207,7 @@ function Row(props) {
                       <TableCell style={{ width: '150px' }}>{formatDate(request_row.requestCreateDate)}</TableCell>
                       <TableCell style={{ width: '150px' }}>{formatDate(request_row.requestUpdateDate)}</TableCell>
                       <TableCell>
-                      {row.topic !== 'ROOM_REQUEST' ? (
+                        {row.topic !== 'ROOM_REQUEST' ? (
                           <IconButton
                             sx={{ color: '#1565c0' }}
                             onClick={() => navigate(`/request-detail/${request_row.requestId}`)}>
@@ -294,18 +294,9 @@ export default function RequestListEmployee() {
             value={searchTerm}
             fullWidth
             onChange={(e) => setSearchTerm(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <InputLabel >
-                    Title, Topic, Date, ID
-                  </InputLabel>
-                </InputAdornment>
-              ),
-            }}
+            placeholder="Title, Topic, Date, ID"
+
+
           />
         </Paper>
         <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
@@ -354,15 +345,14 @@ export default function RequestListEmployee() {
                 {listRequestAndTicket
                   .filter((row) => {
                     const searchString = searchTerm.toLowerCase();
-                    const statusLowerCase = typeof row.status === 'string' ? row.status.toLowerCase() : '';
-
+                    const statusString = row.status === false ? 'CLOSE' : 'AVALIABLE';
                     return (
                       row.ticketId.toLowerCase().includes(searchString) ||
                       row.topic.toLowerCase().includes(searchString) ||
                       row.requestTickets[row.requestTickets.length - 1].title.toLowerCase().includes(searchString) ||
                       formatDate(row.createDate).toLowerCase().includes(searchString) ||
                       formatDate(row.updateDate).toLowerCase().includes(searchString) ||
-                      (statusLowerCase === "avaliable" || statusLowerCase === "close")
+                      statusString.toLowerCase().includes(searchTerm.toLowerCase())
                     );
                   })
                   .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
