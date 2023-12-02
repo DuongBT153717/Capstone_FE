@@ -131,8 +131,15 @@ const TicketDetail = () => {
   const handleAccept = async () => {
     if (request[0]?.object?.topic === 'ATTENDANCE_REQUEST') {
       const res = await requestApi.acceptAttendanceRequest(request[0]?.object?.attendanceRequestId)
+      try {
+        socket.current.emit('send-notification', res)
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
+      } catch (error) {
+        console.error("Error accepting leave request:", error);
+      }
       console.log(res)
-      socket.current.emit('send-notification', res)
     } else if (request[0]?.object?.topic === 'LEAVE_REQUEST') {
       try {
         await requestApi.acceptLeaveRequest(request[0]?.object?.leaveRequestId);
