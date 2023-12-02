@@ -73,7 +73,7 @@ console.log(currentUser);
                         </Box>
                         <Box flex="2" textAlign='left' marginLeft="20px">
                             <Typography >{profile?.department} </Typography>
-                            <Typography mt={4}>{profile?.hireDate.split(' ')[0]} </Typography>
+                            <Typography mt={4}>{profile?.hireDate} </Typography>
                         </Box>
                     </Box>
                 </Box>

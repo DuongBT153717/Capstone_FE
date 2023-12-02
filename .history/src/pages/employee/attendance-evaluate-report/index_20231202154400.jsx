@@ -17,20 +17,18 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { BASE_URL } from '../../../services/constraint'
 import axiosClient from '../../../utils/axios-config'
-import useAuth from '../../../hooks/useAuth'
-import { formatDateNotTime } from '../../../utils/formatDate'
 
 const EvaluateReport = () => {
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
 
   const [month, setMonth] = useState(new Date())
-  const [evaluate, setEvaluate] = useState('')
+  const [evaluate, setEvaluate] = useState([])
   const setMonthYear = (newDate) => {
     setMonth(newDate)
   }
   const [minDate, setMinDate] = useState(new Date('1990'))
   const maxDate = new Date()
-  const userInfo = useAuth()
+
   useEffect(() => {
     const fetchAllEvaluateAttendance = async () => {
       let data = {
@@ -48,7 +46,7 @@ const EvaluateReport = () => {
         setEvaluate(response)
         return response
       } catch (error) {
-        setEvaluate('')
+        console.log(error)
       }
     }
 
@@ -64,7 +62,7 @@ const EvaluateReport = () => {
             <TextField
               sx={{ width: '100%', backgroundColor: '#f0f0f0' }}
               InputProps={{ readOnly: true }}
-              value={`${userInfo.firstName} ${userInfo.lastName}`}
+              value={`${evaluate.firstNameEmp} ${evaluate.lastNameEmp}`}
             />
           </Grid>
           <Grid item xs={6}>
@@ -73,7 +71,7 @@ const EvaluateReport = () => {
               sx={{ width: '100%', backgroundColor: '#f0f0f0' }}
               InputProps={{ readOnly: true }}
               value={
-                formatDateNotTime(userInfo.hireDate)
+                evaluate.hireDate ? format(new Date(evaluate.hireDate), 'yy-MM-dd HH:mm:ss') : ''
               }
             />
           </Grid>
@@ -83,7 +81,7 @@ const EvaluateReport = () => {
             <TextField
               sx={{ width: '100%', backgroundColor: '#f0f0f0' }}
               InputProps={{ readOnly: true }}
-              value={userInfo.departmentName}
+              value={`${evaluate.department?.departmentName || 'N/A'}`}
             />
           </Grid>
         </Grid>
@@ -103,7 +101,7 @@ const EvaluateReport = () => {
           </LocalizationProvider>
         </Grid>
         {
-          evaluate !== '' ? <>
+          evaluate.length > 0 ? <>
           <TableContainer
           component={Paper}
           elevation={3}
@@ -190,7 +188,7 @@ const EvaluateReport = () => {
           rows={8}
           value={`${evaluate.note}`}
         />
-          </>: <Typography mt={3} fontSize='18px'>No data found</Typography>
+          </>: <Typography mt={3} fontSize='20'>No data found</Typography>
         }
       </Paper>
     </>

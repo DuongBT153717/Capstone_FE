@@ -251,24 +251,24 @@ const Profile = () => {
                               </>
                             )}
                           </Box>
-                          <Box flex='1' display="flex" marginTop="10px" height='80px'>
+                          <Box flex='1' display="flex" marginTop="15px" height='80px'>
                             <Box flex="1"  textAlign='left' borderRight="1px solid #999">
                               <Typography >Account </Typography>
                               <Typography mt={4}>Role </Typography>
                             </Box>
                             <Box flex="2" textAlign='left' marginLeft="20px">
-                              <Typography>{info.userName}</Typography>
-                              <Typography mt={4} sx={{textTransform: 'capitalize'}}>{info.roleName} </Typography>
+                              <Typography >userAttendanceDet </Typography>
+                              <Typography  mt={4}>userAttendanceDe</Typography>
                             </Box>
                           </Box>
-                          <Box flex='1' display="flex" marginTop="10px" height='80px'>
+                          <Box flex='1' display="flex" marginTop="15px" height='80px'>
                             <Box flex="1" textAlign='left' borderRight="1px solid #999">
                               <Typography >Department </Typography>
                               <Typography mt={4}>Hire DateDate </Typography>
                             </Box>
                             <Box flex="2" textAlign='left' marginLeft="20px">
-                              <Typography sx={{textTransform: 'capitalize'}}>{info.departmentName} </Typography>
-                              <Typography  mt={4}>{formatDateNotTime(info.hireDate)} </Typography>
+                              <Typography >userAttendanceDet </Typography>
+                              <Typography  mt={4}>userAttendanceDe </Typography>
                             </Box>
                           </Box>
                         </Box>

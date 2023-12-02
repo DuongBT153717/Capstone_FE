@@ -1,11 +1,12 @@
-import { Avatar, Box, Button, Divider, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import profileApi from '../../../services/profileApi';
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import userApi from '../../../services/userApi';
+import { Avatar, Box, Button, Divider, Grid, Typography } from '@mui/material';
 import ChatTopbar from '../../common/chat/components/ChatTopbar';
 import Profile from './util/Profile';
+import profileApi from '../../../services/profileApi';
+import { useDispatch, useSelector } from 'react-redux';
+import useAuth from '../../../hooks/useAuth';
 
 const ChangeLogEditProfileDetail = () => {
     const currentUser = useSelector((state) => state.auth.login?.currentUser)
@@ -13,6 +14,7 @@ const ChangeLogEditProfileDetail = () => {
     const { userId } = useParams();
     console.log('userId >>>' + userId);
     const [profile, setProfile] = useState();
+    const dispatch = useDispatch()
      
 console.log(currentUser);
     useEffect(() => {
@@ -37,6 +39,7 @@ console.log(currentUser);
             }
             profileApi.acceptUserInfo(data)
             navigate('/manage-profile')
+        } else {
         }
     }
     const handleRejectRequest = (userId) => {
@@ -48,7 +51,8 @@ console.log(currentUser);
             }
             profileApi.rejectUserInfo(data)
             navigate('/manage-profile')
-        } 
+        } else {
+        }
     }
 
     return (
@@ -73,7 +77,7 @@ console.log(currentUser);
                         </Box>
                         <Box flex="2" textAlign='left' marginLeft="20px">
                             <Typography >{profile?.department} </Typography>
-                            <Typography mt={4}>{profile?.hireDate.split(' ')[0]} </Typography>
+                            <Typography mt={4}>{profile?.hireDate} </Typography>
                         </Box>
                     </Box>
                 </Box>
@@ -136,7 +140,7 @@ console.log(currentUser);
                     <Box flex='1'>
                         <Button sx={{ marginRight: '20px', marginLeft: '15px' }}
                             variant="contained"
-                            onClick={() => navigate(-1)}
+                            onClick={(e) => navigate(-1)}
                         >
                             Back
                         </Button>
@@ -144,13 +148,13 @@ console.log(currentUser);
                     <Box flex='1' display='flex' mr={3} justifyContent='flex-end' gap={3}>
                         <Button sx={{ marginRight: '20px' }}
                             variant="contained"
-                            onClick={() => handleAcceptRequest(userId)}
+                            onClick={(e) => handleAcceptRequest(userId)}
                         >
                             Accept
                         </Button>
                         <Button
                             variant="contained"
-                            onClick={() => handleRejectRequest(userId)}
+                            onClick={(e) => handleRejectRequest(userId)}
                         >
                             Reject
                         </Button>
