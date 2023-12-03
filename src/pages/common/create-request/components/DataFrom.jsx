@@ -227,7 +227,6 @@ const OtFrom = () => {
     initialValues: {
       title: '',
       content: '',
-      topicOvertime: ''
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
