@@ -70,7 +70,7 @@ const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount, isLoading
       }}
     >
       <DataGrid 
-        
+        autoHeight
         disableRowSelectionOnClick
         showCellVerticalBorder
         showColumnVerticalBorder

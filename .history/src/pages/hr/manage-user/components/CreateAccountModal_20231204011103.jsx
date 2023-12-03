@@ -76,8 +76,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
           createdBy: decoded.sub,
           createdDate: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
           departmentName: values.department,
-          firstName: 'unknown',
-          lastName: 'unknown'
+          
         }
         console.log(dataAdd);
         setAllUser((prevUser) => [dataAdd, ...prevUser])

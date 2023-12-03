@@ -75,9 +75,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
           roleName: values.role,
           createdBy: decoded.sub,
           createdDate: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-          departmentName: values.department,
-          firstName: 'unknown',
-          lastName: 'unknown'
+          departmentName: values.department
         }
         console.log(dataAdd);
         setAllUser((prevUser) => [dataAdd, ...prevUser])
@@ -117,7 +115,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
             </Select>
           </FormControl>
           {formik.touched.role && formik.errors.role && (
-            <Typography sx={{color: 'red'}} className="error-message">{formik.errors.role}</Typography>
+            <div className="error-message">{formik.errors.role}</div>
           )}
         </>
       )
@@ -139,7 +137,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
             </Select>
           </FormControl>
           {formik.touched.role && formik.errors.role && (
-            <Typography sx={{color: 'red'}} className="error-message">{formik.errors.role}</Typography>
+            <Typography className="error-message">{formik.errors.role}</Typography>
           )}
         </>
       )
@@ -161,7 +159,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
             </Select>
           </FormControl>
           {formik.touched.role && formik.errors.role && (
-            <Typography sx={{color: 'red'}} className="error-message">{formik.errors.role}</Typography>
+            <Typography className="error-message">{formik.errors.role}</Typography>
           )}
         </>
       )
@@ -190,7 +188,7 @@ const CreateAccountModal = ({ handleCloseCreateAccount, openCreateAccount, setAl
             </Select>
           </FormControl>
           {formik.touched.role && formik.errors.role && (
-            <Typography sx={{color: 'red'}} className="error-message">{formik.errors.role}</Typography>
+            <Typography className="error-message">{formik.errors.role}</Typography>
           )}
         </>
       )
