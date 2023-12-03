@@ -79,7 +79,6 @@ const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount, isLoading
         initialState={{
           pagination: { paginationModel: { pageSize: 10 } },
         }}
-        pageSizeOptions={[5,10]}
         loading={isLoading}
         getRowId={(row) => row.accountId}
       />

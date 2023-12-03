@@ -288,7 +288,6 @@ const ManageUser = () => {
             <Button
               variant='contained'
               onClick={() => navigate(`/check-employee-info/${params.row.accountId}`)}
-            //onClick={() => navigate(`/check-employee-info`)}
             >
               Detail
             </Button>
