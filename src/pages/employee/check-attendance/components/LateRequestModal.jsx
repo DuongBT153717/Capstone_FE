@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import requestApi from '../../../../services/requestApi'
 import { validationSchema } from './util/validationSchema'
+import { toast } from 'react-toastify'
 
 const style = {
   position: 'absolute',
@@ -64,9 +65,16 @@ const LateRequestModal = ({ openLateRequest, handleCloseLateRequest, dailyLogMod
         departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
         receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
       }
+      if (!lateDuration) {
+        toast.error('Please enter the duration.');
+        return; 
+      }
+      
+      else{
       console.log(data)
       requestApi.requestLateForm(data)
       handleCloseLateRequest()
+      }
     }
   })
   return (
@@ -127,6 +135,7 @@ const LateRequestModal = ({ openLateRequest, handleCloseLateRequest, dailyLogMod
                   <DatePicker
                     disabled
                     value={outputDateString}
+                    onChange={() => {}}
                     renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
                   />
                 </LocalizationProvider>

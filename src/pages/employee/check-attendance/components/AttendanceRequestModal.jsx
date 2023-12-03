@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
 import { validationAttendanceSchema } from './util/validationAttendanceSchema'
+import { toast } from 'react-toastify'
 
 const style = {
   position: 'absolute',
@@ -67,6 +68,10 @@ const AttendanceRequestModal = ({ openAttendanceRequest, handleCloseAttendanceRe
         departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
         receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
       }
+      if (!isFrom && !isTo) {
+        toast.warning("The 'From' and 'To' cannot be null at the same time.");
+        return;
+      }
       console.log(data)
       requestApi.requestAttendanceForm(data)
       handleCloseAttendanceRequest()
@@ -122,11 +127,11 @@ const AttendanceRequestModal = ({ openAttendanceRequest, handleCloseAttendanceRe
               <Grid item xs={4} mb={2}>
                 <Box display="flex" gap="5px">
                   <Typography fontWeight="500">From</Typography>
-                  <Checkbox sx={{ p: 0 }} checked={isFrom} onChange={handleChangeFrom} disabled={isTo} />
+                  <Checkbox sx={{ p: 0 }} checked={isFrom} onChange={handleChangeFrom}/>
                 </Box>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <TimePicker
-                    disabled={!isFrom ? false : true}
+                    disabled={isFrom ? false : true}
                     value={from}
                     onChange={(e) => setFrom(e)}
                     renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
@@ -137,11 +142,11 @@ const AttendanceRequestModal = ({ openAttendanceRequest, handleCloseAttendanceRe
               <Grid item xs={4} mb={2}>
                 <Box display="flex" gap="5px">
                   <Typography fontWeight="500">To</Typography>
-                  <Checkbox sx={{ p: 0 }} checked={isTo} onChange={handleChangeTo} disabled={isFrom} />
+                  <Checkbox sx={{ p: 0 }} checked={isTo} onChange={handleChangeTo} />
                 </Box>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <TimePicker
-                    disabled={!isTo ? false : true}
+                    disabled={isTo ? false : true}
                     value={to}
                     onChange={(e) => setTo(e)}
                     renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
