@@ -23,17 +23,26 @@ const AttendanceLogDetailHR = () => {
     const [changLogList, setChangLogList] = useState([])
     const [userAttendanceDetail, setUserAttendanceDetail] = useState({})
 
-    useEffect(() => {
-        const getChangeLogByEmployeeAndMonth = async () => {
-            setIsLoading(true)
-            let res = await attendanceApi.getAttendanceUserDetail(employee_id, date)
-            setUserAttendanceDetail(res)
-            setControlLog(res.controlLogResponse)
-            setIsLoading(false)
+ useEffect(() => {
+    const getChangeLogByEmployeeAndMonth = async () => {
+        setIsLoading(true);
+        try {
+            let res = await attendanceApi.getAttendanceUserDetail(employee_id, date);
+            if (res && res.controlLogResponse) {
+                setUserAttendanceDetail(res);
+                setControlLog(res.controlLogResponse);
+            } else {
+                console.error('Invalid response structure:', res);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        } finally {
+            setIsLoading(false);
         }
-     
-        getChangeLogByEmployeeAndMonth()
-    }, [])
+    }
+
+    getChangeLogByEmployeeAndMonth();
+}, []);
 
     useEffect(() => {
         const getChangeLogsInDays = async () => {

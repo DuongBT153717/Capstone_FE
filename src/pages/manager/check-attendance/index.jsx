@@ -112,17 +112,17 @@ export default function CheckAttendanceManager() {
     {
       field: 'checkin',
       headerName: 'Check In',
-      width: 100
+      width: 150
     },
     {
       field: 'checkout',
       headerName: 'Check out',
-      width: 100
+      width: 150
     },
     {
       field: 'totalAttendance',
-      headerName: 'Total Attendance',
-      width: 150,
+      headerName: 'Total Attendance (h)',
+      width: 180,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
           const totalAttendance = dailyLog.reduce((total, item) => total + item.totalAttendance, 0)
@@ -133,8 +133,8 @@ export default function CheckAttendanceManager() {
     },
     {
       field: 'morningTotal',
-      headerName: 'Total Morning',
-      width: 150,
+      headerName: 'Total Morning (h)',
+      width: 160,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
           const morningTotal = dailyLog.reduce((total, item) => total + item.morningTotal, 0)
@@ -145,8 +145,8 @@ export default function CheckAttendanceManager() {
     },
     {
       field: 'afternoonTotal',
-      headerName: 'Total Afternoon',
-      width: 150,
+      headerName: 'Total Afternoon (h)',
+      width: 180,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
           const afternoonTotal = dailyLog.reduce((total, item) => total + item.afternoonTotal, 0)
@@ -157,7 +157,7 @@ export default function CheckAttendanceManager() {
     },
     {
       field: 'lateCheckin',
-      headerName: 'Late Check In',
+      headerName: 'Late Check In (s)',
       width: 150,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL' && userAttendance && userAttendance.totalAttendanceUser) {
@@ -168,8 +168,8 @@ export default function CheckAttendanceManager() {
     },
     {
       field: 'earlyCheckout',
-      headerName: 'Early Checkout',
-      width: 150,
+      headerName: 'Early Checkout (s)',
+      width: 170,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL' && userAttendance && userAttendance.totalAttendanceUser) {
           return `${userAttendance.totalAttendanceUser.earlyCheckoutTotal}`
@@ -179,7 +179,7 @@ export default function CheckAttendanceManager() {
     },
     {
       field: 'permittedLeave',
-      headerName: 'Leave',
+      headerName: 'Leave (s)',
       width: 150,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
@@ -194,7 +194,7 @@ export default function CheckAttendanceManager() {
       headerName: 'Action',
       headerAlign: 'center',
       align: 'center',
-      width: 150,
+      width: 300,
       sortable: false,
       filterable: false,
       renderCell: (params) => {
@@ -224,14 +224,17 @@ export default function CheckAttendanceManager() {
               alignItems="center"
               borderRadius="4px"
               width="100%">
+                  {params.row.id !== 'TOTAL' ? (
               <Button
                 variant="contained"
+                sx={{ fontSize: '14px' }}
                 onClick={() => navigate(`/attendance-detail/${params.row.dailyId}/${outputDateString}`)}>
-                Detail
+                View Log
               </Button>
-              {params.row.lateCheckin === true && (
-                <Button variant="contained" onClick={() => handleOpenLateRequest(params.row)}>
-                  Late Request
+                 ) : null}
+              {(params.row.id !== 'TOTAL') && (params.row.lateCheckin !== false || params.row.earlyCheckout !== false  ) && (
+                <Button variant="contained" sx={{ fontSize: '14px' }} onClick={() => handleOpenLateRequest(params.row)}>
+                  Late/Early Request
                 </Button>
               )}
             </Box>

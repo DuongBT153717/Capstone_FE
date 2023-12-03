@@ -17,22 +17,22 @@ import { Menu, MenuItem, Sidebar, SubMenu, useProSidebar } from 'react-pro-sideb
 import { Link } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
-
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 const AdminSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
-  const [activeIndex, setActiveIndex] = useState(() => { 
-    const initialIndex = 
-      window.location.pathname === '/request-list-admin' ? 0 
-      : window.location.pathname === '/manage-list-admin' ? 1 : 
-      window.location.pathname === '/check-book-room' ? 2 : 
-      window.location.pathname === '/notification-list-admin' ? 6  :
-      window.location.pathname === '/notification-draft-admin' ? 7  :
-      window.location.pathname === '/notification-send-admin' ? 8  :
-      window.location.pathname === '/notification-receive-admin' ? 10  :
-      window.location.pathname === '/notification-schedule-admin' ? 12 :  
-      window.location.pathname === '/notification-department-admin' ? 11 
-          : 0; 
-    return initialIndex; 
+  const [activeIndex, setActiveIndex] = useState(() => {
+    const initialIndex =
+      window.location.pathname === '/request-list-admin' ? 0
+        : window.location.pathname === '/manage-list-admin' ? 1 :
+          window.location.pathname === '/check-book-room' ? 2 :
+            window.location.pathname === '/notification-list-admin' ? 6 :
+              window.location.pathname === '/notification-draft-admin' ? 7 :
+                window.location.pathname === '/notification-send-admin' ? 8 :
+                  window.location.pathname === '/notification-receive-admin' ? 10 :
+                    window.location.pathname === '/notification-schedule-admin' ? 12 :
+                      window.location.pathname === '/notification-department-admin' ? 11
+                        : 0;
+    return initialIndex;
   });
   const [userProfileImage, setUserProfileImage] = useState('')
   const currentUser = useAuth()
@@ -67,9 +67,9 @@ const AdminSidebar = () => {
           ml="15px"
           height="65px">
           {!collapsed ? (
-              <Typography fontWeight="800" color="#000" fontSize="22px" sx={{ cursor: 'pointer' }}>
-                BMS
-              </Typography>
+            <Typography fontWeight="800" color="#000" fontSize="22px" sx={{ cursor: 'pointer' }}>
+              BMS
+            </Typography>
           ) : null}
           <IconButton
             onClick={() => {
@@ -81,7 +81,7 @@ const AdminSidebar = () => {
         </Box>
         <Divider />
         <Box height="60px" bgcolor="white" display='flex' alignItems='center' ml="20px" gap='20px'>
-        <Avatar
+          <Avatar
             sx={{
               cursor: 'pointer',
               height: 40,
@@ -90,7 +90,7 @@ const AdminSidebar = () => {
             src={`${userProfileImage}`}
           />
           <Typography fontSize="15px" fontWeight="600">
-          {currentUser.firstName} {currentUser.lastName}
+            {currentUser.firstName} {currentUser.lastName}
           </Typography>
         </Box>
         <Divider />
@@ -125,35 +125,33 @@ const AdminSidebar = () => {
             ) : null}
           </Box>
         </Box> */}
-          <Menu
-            menuItemStyles={{
-              button: ({ active }) => {
-                return {
-                  backgroundColor: active ? 'rgb(237, 231, 246)' : undefined,
-                  color: '#000',
-                  '&:hover': {
-                    backgroundColor: 'rgb(237, 231, 246)',
-                    color: 'rgb(94, 53, 177)',
-                    borderRadius: '10px'
-                  }
+        <Menu
+          menuItemStyles={{
+            button: ({ active }) => {
+              return {
+                backgroundColor: active ? 'rgb(237, 231, 246)' : undefined,
+                color: '#000',
+                '&:hover': {
+                  backgroundColor: 'rgb(237, 231, 246)',
+                  color: 'rgb(94, 53, 177)',
+                  borderRadius: '10px'
                 }
               }
-            }}>
+            }
+          }}>
+          <SubMenu label="Ticket" icon={<FactCheckIcon />}>
             <MenuItem
               active={activeIndex === 0}
               icon={<AssignmentTurnedInIcon />}
               component={<Link to="/request-list-admin" onClick={() => setActiveIndex(0)} />}>
               Check Your Ticket
             </MenuItem>
-            <MenuItem active={activeIndex === 1} icon={<AppSettingsAltIcon />} component={<Link to="/manage-list-admin"  onClick={() => setActiveIndex(1)} />}>
+            <MenuItem active={activeIndex === 1} icon={<AppSettingsAltIcon />} component={<Link to="/manage-list-admin" onClick={() => setActiveIndex(1)} />}>
               {' '}
               Manage Ticket
             </MenuItem>
-            <MenuItem active={activeIndex === 2} icon={<AppSettingsAltIcon />} component={<Link to="/check-book-room"  onClick={() => setActiveIndex(2)} />}>
-              {' '}
-              Check Book Room
-            </MenuItem>
-            <SubMenu
+          </SubMenu>
+          <SubMenu
             label="Notification"
             icon={<NotificationsIcon />}
           >
@@ -172,46 +170,52 @@ const AdminSidebar = () => {
               Draft
             </MenuItem>
             <SubMenu
-            label='Send&Receive'
-            icon={<UploadIcon />}>
-            <MenuItem
-              active={activeIndex === 8}
-              icon={<ForwardToInboxIcon />}
-              component={<Link to="/notification-send-admin" onClick={() => setActiveIndex(8)} />}>
-              {' '}
-              Send
-            </MenuItem>
-            <MenuItem
-              active={activeIndex === 10}
-              icon={<MarkunreadMailboxIcon />}
-              component={<Link to="/notification-receive-admin" onClick={() => setActiveIndex(10)} />}>
-              {' '}
-              Receive
-            </MenuItem>
+              label='Send&Receive'
+              icon={<UploadIcon />}>
+              <MenuItem
+                active={activeIndex === 8}
+                icon={<ForwardToInboxIcon />}
+                component={<Link to="/notification-send-admin" onClick={() => setActiveIndex(8)} />}>
+                {' '}
+                Send
+              </MenuItem>
+              <MenuItem
+                active={activeIndex === 10}
+                icon={<MarkunreadMailboxIcon />}
+                component={<Link to="/notification-receive-admin" onClick={() => setActiveIndex(10)} />}>
+                {' '}
+                Receive
+              </MenuItem>
             </SubMenu>
-          
+
             <SubMenu
-            label='Scheduled'
-            icon={<CalendarTodayIcon/>}
+              label='Scheduled'
+              icon={<CalendarTodayIcon />}
             >
-            <MenuItem
-              active={activeIndex === 11}
-              icon={<DensitySmallIcon />}
-              component={<Link to="/notification-department-admin" onClick={() => setActiveIndex(11)} />}>
-              {' '}
-              All
-            </MenuItem> 
-            <MenuItem
-              active={activeIndex === 12}
-              icon={<ContactMailIcon />}
-              component={<Link to="/notification-schedule-admin" onClick={() => setActiveIndex(12)} />}>
-              {' '}
-              Personal
-            </MenuItem> 
+              <MenuItem
+                active={activeIndex === 11}
+                icon={<DensitySmallIcon />}
+                component={<Link to="/notification-department-admin" onClick={() => setActiveIndex(11)} />}>
+                {' '}
+                All
+              </MenuItem>
+              <MenuItem
+                active={activeIndex === 12}
+                icon={<ContactMailIcon />}
+                component={<Link to="/notification-schedule-admin" onClick={() => setActiveIndex(12)} />}>
+                {' '}
+                Personal
+              </MenuItem>
             </SubMenu>
           </SubMenu>
-          </Menu>
-        
+          <MenuItem active={activeIndex === 2} icon={<AppSettingsAltIcon />} component={<Link to="/check-book-room" onClick={() => setActiveIndex(2)} />}>
+            {' '}
+            Check Book Room
+          </MenuItem>
+
+
+        </Menu>
+
       </Sidebar>
     </>
   )

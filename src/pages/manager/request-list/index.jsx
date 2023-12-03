@@ -1,7 +1,8 @@
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
-import { InputAdornment, InputLabel, Skeleton } from '@mui/material'
+import { Skeleton } from '@mui/material'
 import Box from '@mui/material/Box'
 import Collapse from '@mui/material/Collapse'
 import IconButton from '@mui/material/IconButton'
@@ -20,7 +21,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../../../hooks/useAuth'
 import requestApi from '../../../services/requestApi'
-import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 function formatDate(date) {
   const createDate = new Date(date);
   const year = createDate.getFullYear().toString().slice(-2);
@@ -255,18 +255,7 @@ export default function RequestListManager() {
             value={searchTerm}
             fullWidth
             onChange={(e) => setSearchTerm(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <InputLabel >
-                    Title, Topic, Date, ID
-                  </InputLabel>
-                </InputAdornment>
-              ),
-            }}
+            placeholder='ID, Topic, Title, Date, Status'
           />
         </Paper>
 
@@ -303,18 +292,16 @@ export default function RequestListManager() {
                 {listRequestAndTicket
                   .filter((row) => {
                     const searchString = searchTerm.toLowerCase();
-                    const statusLowerCase = typeof row.status === 'string' ? row.status.toLowerCase() : '';
-
+                    const statusString = row.status === false ? 'CLOSE' : 'AVALIABLE';
                     return (
                       row.ticketId.toLowerCase().includes(searchString) ||
                       row.topic.toLowerCase().includes(searchString) ||
                       row.requestTickets[row.requestTickets.length - 1].title.toLowerCase().includes(searchString) ||
                       formatDate(row.createDate).toLowerCase().includes(searchString) ||
                       formatDate(row.updateDate).toLowerCase().includes(searchString) ||
-                      (statusLowerCase === "avaliable" || statusLowerCase === "close")
+                      statusString.toLowerCase().includes(searchTerm.toLowerCase())
                     );
                   })
-                  .filter((row) => row.topic !== 'ROOM_REQUEST')
                   .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                   .map((row) => (
                     <Row key={row.ticketId} row={row} />

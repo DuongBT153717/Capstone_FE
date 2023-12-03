@@ -26,6 +26,20 @@ const logApi = {
       throw error; 
     }
   },
+  getAllEvaluateAcceptedOfEmp: async (user_id) => {
+    try {
+      const response = await axiosClient.get('/getAllEvaluateOfEmployee', {
+        params: {
+          user_id: user_id,
+        },
+    });
+      return response;
+    } catch (error) {
+      console.error('Error fetching department evaluation:', error);
+      throw error; 
+    }
+  },
+
 
   getChangeLogDetail: async (data) => {
     try {

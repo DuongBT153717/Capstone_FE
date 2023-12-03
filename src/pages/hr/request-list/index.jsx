@@ -6,7 +6,7 @@ import HeadsetMicIcon from '@mui/icons-material/HeadsetMic'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer'
-import { InputAdornment, InputLabel, Skeleton } from '@mui/material'
+import { Skeleton } from '@mui/material'
 import Box from '@mui/material/Box'
 import Collapse from '@mui/material/Collapse'
 import IconButton from '@mui/material/IconButton'
@@ -290,24 +290,13 @@ export default function ManageTicketListHr() {
   return (
     <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">
       <Box flex={1} sx={{ overflowX: 'hidden' }}>
-      <Paper elevation={3} sx={{ padding: '16px' }}>
+        <Paper elevation={3} sx={{ padding: '16px' }}>
           <TextField
             label="Search"
             value={searchTerm}
             fullWidth
             onChange={(e) => setSearchTerm(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <InputLabel>
-                    Title, Topic, Date, ID
-                  </InputLabel>
-                </InputAdornment>
-              ),
-            }}
+            placeholder='ID, Topic, Title, Date, Status'
           />
         </Paper>
         <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
@@ -352,15 +341,14 @@ export default function ManageTicketListHr() {
                 {listRequestAndTicket
                   .filter((row) => {
                     const searchString = searchTerm.toLowerCase();
-                    const statusLowerCase = typeof row.status === 'string' ? row.status.toLowerCase() : '';
-
+                    const statusString = row.status === false ? 'CLOSE' : 'AVALIABLE';
                     return (
                       row.ticketId.toLowerCase().includes(searchString) ||
                       row.topic.toLowerCase().includes(searchString) ||
                       row.requestTickets[row.requestTickets.length - 1].title.toLowerCase().includes(searchString) ||
                       formatDate(row.createDate).toLowerCase().includes(searchString) ||
                       formatDate(row.updateDate).toLowerCase().includes(searchString) ||
-                      (statusLowerCase === "avaliable" || statusLowerCase === "close")
+                      statusString.toLowerCase().includes(searchTerm.toLowerCase())
                     );
                   })
                   .slice(page * rowsPerPage, (page + 1) * rowsPerPage)

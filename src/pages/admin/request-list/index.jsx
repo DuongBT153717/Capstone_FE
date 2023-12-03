@@ -26,6 +26,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
+import formatDate from '../../../utils/formatDate'
 function Row(props) {
   const { row } = props
   const [open, setOpen] = React.useState(false)
@@ -278,6 +279,7 @@ export default function RequestListAdmin() {
             label="Search"
             value={searchTerm}
             fullWidth
+            placeholder='ID, Topic, Title, Date, Status'
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Paper>
@@ -327,11 +329,16 @@ export default function RequestListAdmin() {
               <TableBody>
                 {listRequestAndTicket
                   .filter((row) => {
-                    return Object.values(row)
-                      .map((value) => (value || '').toString())
-                      .join(' ')
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
+                    const searchString = searchTerm.toLowerCase();
+                    const statusString = row.status === false ? 'CLOSE' : 'AVALIABLE';
+                    return (
+                      row.ticketId.toLowerCase().includes(searchString) ||
+                      row.topic.toLowerCase().includes(searchString) ||
+                      row.requestTickets[row.requestTickets.length - 1].title.toLowerCase().includes(searchString) ||
+                      formatDate(row.createDate).toLowerCase().includes(searchString) ||
+                      formatDate(row.updateDate).toLowerCase().includes(searchString) ||
+                      statusString.toLowerCase().includes(searchTerm.toLowerCase())
+                    );
                   })
                   .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                   .map((row) => (

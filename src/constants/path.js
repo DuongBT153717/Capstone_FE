@@ -49,7 +49,7 @@ export const MANAGER_PATH = {
     EMPLOYEE_ATTENDANCE_LOG_LIST: '/emp-attendance-log-list',
     LOG_ATTENDACE_OF_EMP: '/log-attendance-emp/:employee_id',
     EMPLOYEE_ATTENDANCE_DETAIL: 'emp-attendance-detail/:employee_id/:date',
-    EMP_LOG_MANAGEMENT:'/emp-log-management'
+    EMP_LOG_MANAGEMENT: '/emp-log-management'
 }
 
 export const EMPLOYEE_PATH = {
@@ -80,11 +80,13 @@ export const HR_PATH = {
     NOTIFICATION_DRAFT_LIST_HR: 'notification-draftlist',
     NOTIFICATION_SCHEDULED_LIST_HR: 'notification-schedulelist',
     NOTIFICATION_SCHEDULED_DEPARTMENT_HR: '/notification-department-hr',
-    EVALUATE_MANAGEMENT:'/view-list-evaluate',
+    EVALUATE_MANAGEMENT: '/view-list-evaluate',
     VIEW_ATTENDANCE_EVALUATE_REPORT: 'view-attendence-evaluate-report-emp/:employee_id/:date',
-    VIEW_LOG_ATTENDANCE:'/view-log-attendance/:employee_id/:date',
-    ATTENDANCE_LOG_DETAIL:'/attendance-log-detail-hr/:employee_id/:date',
-    CHANGE_LOG_DETAIL:'/change-log-detail-hr/:employee_id/:date',
+    CHECK_EVALUATE_REPORT_FROM_EMP: 'check-attendence-evaluate-report-emp/:employee_id/:date',
+    VIEW_LOG_ATTENDANCE: '/view-log-attendance/:employee_id/:date',
+    ATTENDANCE_LOG_DETAIL: '/attendance-log-detail-hr/:employee_id/:date',
+    CHANGE_LOG_DETAIL: '/change-log-detail-hr/:employee_id/:date',
+    CHECK_EMP_INFO: '/check-employee-info/:user_id',
     CHANGE_LOG_EDIT_PROFILE_DETAIL:'/change-log-edit-profile-detail/:userId',
 
 }

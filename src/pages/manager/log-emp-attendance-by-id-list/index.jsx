@@ -218,12 +218,12 @@ export default function LogEmpAttendanceByIdList() {
     {
       field: 'checkin',
       headerName: 'Check In',
-      width: 100
+      width: 120
     },
     {
       field: 'checkout',
       headerName: 'Check out',
-      width: 100
+      width: 120
     },
     {
       field: 'systemCheckIn',
@@ -237,8 +237,8 @@ export default function LogEmpAttendanceByIdList() {
     },
     {
       field: 'totalAttendance',
-      headerName: 'Total Attendance',
-      width: 150,
+      headerName: 'Total Attendance (h)',
+      width: 180,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
           const totalAttendance = dailyLog.reduce((total, item) => total + item.totalAttendance, 0)
@@ -249,8 +249,8 @@ export default function LogEmpAttendanceByIdList() {
     },
     {
       field: 'morningTotal',
-      headerName: 'Total Morning',
-      width: 150,
+      headerName: 'Total Morning (h)',
+      width: 170,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
           const morningTotal = dailyLog.reduce((total, item) => total + item.morningTotal, 0)
@@ -261,8 +261,8 @@ export default function LogEmpAttendanceByIdList() {
     },
     {
       field: 'afternoonTotal',
-      headerName: 'Total Afternoon',
-      width: 150,
+      headerName: 'Total Afternoon (h)',
+      width: 170,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
           const afternoonTotal = dailyLog.reduce((total, item) => total + item.afternoonTotal, 0)
@@ -273,8 +273,8 @@ export default function LogEmpAttendanceByIdList() {
     },
     {
       field: 'lateCheckin',
-      headerName: 'Late Check In',
-      width: 150,
+      headerName: 'Late Check In (s)',
+      width: 170,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL' && userAttendance && userAttendance.totalAttendanceUser) {
           return `${userAttendance.totalAttendanceUser.lateCheckinTotal}`
@@ -284,8 +284,8 @@ export default function LogEmpAttendanceByIdList() {
     },
     {
       field: 'earlyCheckout',
-      headerName: 'Early Checkout',
-      width: 150,
+      headerName: 'Early Checkout (s)',
+      width: 170,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL' && userAttendance && userAttendance.totalAttendanceUser) {
           return `${userAttendance.totalAttendanceUser.earlyCheckoutTotal}`
@@ -295,8 +295,8 @@ export default function LogEmpAttendanceByIdList() {
     },
     {
       field: 'permittedLeave',
-      headerName: 'Permitted Leave',
-      width: 150,
+      headerName: 'Permitted Leave (s)',
+      width: 180,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
           const permittedLeave = dailyLog.reduce((total, item) => total + item.permittedLeave, 0)
@@ -307,8 +307,8 @@ export default function LogEmpAttendanceByIdList() {
     },
     {
       field: 'nonPermittedLeave',
-      headerName: 'Non Permitted Leave',
-      width: 187,
+      headerName: 'N_Permitted Leave (s)',
+      width: 200,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
           const nonPermittedLeave = dailyLog.reduce(
@@ -322,7 +322,7 @@ export default function LogEmpAttendanceByIdList() {
     },
     {
       field: 'outsideWork',
-      headerName: 'Outside Work',
+      headerName: 'Outside Work (s)',
       width: 150,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
@@ -334,7 +334,7 @@ export default function LogEmpAttendanceByIdList() {
     },
     {
       field: 'violate',
-      headerName: 'Violate',
+      headerName: 'Violate (s)',
       width: 150,
       valueGetter: ({ row }) => {
         if (row.id === 'TOTAL') {

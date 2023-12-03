@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import requestApi from '../../../services/requestApi'
+import formatDate from '../../../utils/formatDate'
 function Row(props) {
   const { row } = props
   const [open, setOpen] = useState(false)
@@ -186,9 +187,9 @@ function Row(props) {
                       <TableCell>{formatDate(request_row.requestCreateDate)}</TableCell>
                       <TableCell>{formatDate(request_row.requestUpdateDate)}</TableCell>
                       <TableCell>
-                      {row.topic === 'ROOM_REQUEST' ? (
+                        {row.topic === 'ROOM_REQUEST' ? (
                           <IconButton
-                          disabled={request_row.requestStatus === 'PENDING' ? true : false}
+                            disabled={request_row.requestStatus === 'PENDING' ? true : false}
                             sx={{ color: '#1565c0' }}
                             onClick={() => navigate(`/room-detail/${request_row.requestId}`)}>
                             <AssignmentTurnedInIcon />
@@ -278,6 +279,7 @@ export default function ManageTicketListAdmin() {
             label="Search"
             value={searchTerm}
             fullWidth
+            placeholder='ID, Topic, Title, Date, Status'
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Paper>
@@ -323,11 +325,16 @@ export default function ManageTicketListAdmin() {
               <TableBody>
                 {listRequestAndTicket
                   .filter((row) => {
-                    return Object.values(row)
-                      .map((value) => (value || '').toString())
-                      .join(' ')
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
+                    const searchString = searchTerm.toLowerCase();
+                    const statusString = row.status === false ? 'CLOSE' : 'AVALIABLE';
+                    return (
+                      row.ticketId.toLowerCase().includes(searchString) ||
+                      row.topic.toLowerCase().includes(searchString) ||
+                      row.requestTickets[row.requestTickets.length - 1].title.toLowerCase().includes(searchString) ||
+                      formatDate(row.createDate).toLowerCase().includes(searchString) ||
+                      formatDate(row.updateDate).toLowerCase().includes(searchString) ||
+                      statusString.toLowerCase().includes(searchTerm.toLowerCase())
+                    );
                   })
                   .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                   .map((row) => (

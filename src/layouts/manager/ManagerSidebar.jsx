@@ -22,6 +22,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 const ManagerSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => {
@@ -32,26 +33,26 @@ const ManagerSidebar = () => {
           ? 1
           : window.location.pathname === '/request-manager-list'
             ? 2
-             : window.location.pathname === '/notification-list-manager'
-                ? 3
-                : window.location.pathname === '/notification-draft-manager'
-                  ? 4
-                  : window.location.pathname === '/notification-send-manager'
-                    ? 5
-                    : window.location.pathname === '/notification-receive-manager'
-                      ? 6
-                      : window.location.pathname === '/notification-scheduled-manager'
-                        ? 8
-                        : window.location.pathname === '/notification-department-manager'
+            : window.location.pathname === '/notification-list-manager'
+              ? 3
+              : window.location.pathname === '/notification-draft-manager'
+                ? 4
+                : window.location.pathname === '/notification-send-manager'
+                  ? 5
+                  : window.location.pathname === '/notification-receive-manager'
+                    ? 6
+                    : window.location.pathname === '/notification-scheduled-manager'
+                      ? 8
+                      : window.location.pathname === '/notification-department-manager'
                         ? 7 : window.location.pathname === '/check-attendance-manager'
-                        ? 9
-                        : window.location.pathname === '/log-management'
-                        ? 10 
-                        : window.location.pathname === '/emp-log-management'
-                        ? 11
-                        : window.location.pathname === '/emp-attendance-log-list'
-                        ? 12
-                        : 0
+                          ? 9
+                          : window.location.pathname === '/log-management'
+                            ? 10
+                            : window.location.pathname === '/emp-log-management'
+                              ? 11
+                              : window.location.pathname === '/emp-attendance-log-list'
+                                ? 12
+                                : 0
     return initialIndex
   })
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -157,61 +158,56 @@ const ManagerSidebar = () => {
               }
             }
           }}>
-             <SubMenu
+          <SubMenu
             label="Attendance"
-          icon={<CalendarMonthIcon />}
+            icon={<CalendarMonthIcon />}
           >
-             <MenuItem
-            active={activeIndex === 9}
-            icon={<EventAvailableIcon />}
-            component={<Link to="/check-attendance-manager" onClick={() => setActiveIndex(9)} />}>
-            {' '}
-            Check Your Attendance
-          </MenuItem>
-          <MenuItem
-            active={activeIndex === 10}
-            icon={<EventNoteIcon />}
-            component={<Link to="/log-management" onClick={() => setActiveIndex(10)} />}>
-            {' '}
-            Log Management
-          </MenuItem>
-          <MenuItem
-            active={activeIndex === 11}
-            icon={<PermContactCalendarIcon />}
-            component={<Link to="/emp-log-management" onClick={() => setActiveIndex(11)} />}>
-            {' '}
-            Employee evaluate
-          </MenuItem>
-          <MenuItem
-            active={activeIndex === 12}
-            icon={<PermContactCalendarIcon />}
-            component={<Link to="/emp-attendance-log-list" onClick={() => setActiveIndex(12)} />}>
-            {' '}
-            Employee Attendance Log
-          </MenuItem>
+            <MenuItem
+              active={activeIndex === 9}
+              icon={<EventAvailableIcon />}
+              component={<Link to="/check-attendance-manager" onClick={() => setActiveIndex(9)} />}>
+              {' '}
+              Check Your Attendance
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 10}
+              icon={<EventNoteIcon />}
+              component={<Link to="/log-management" onClick={() => setActiveIndex(10)} />}>
+              {' '}
+              Log Management
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 11}
+              icon={<PermContactCalendarIcon />}
+              component={<Link to="/emp-log-management" onClick={() => setActiveIndex(11)} />}>
+              {' '}
+              Employee evaluate
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 12}
+              icon={<PermContactCalendarIcon />}
+              component={<Link to="/emp-attendance-log-list" onClick={() => setActiveIndex(12)} />}>
+              {' '}
+              Employee Attendance Log
+            </MenuItem>
           </SubMenu>
-          <MenuItem
-            active={activeIndex === 0}
-            icon={<AssignmentTurnedInIcon />}
-            component={<Link to="/request-list-manager" onClick={() => setActiveIndex(0)} />}>
-            {' '}
-            Ticket Management
-          </MenuItem>
-          <MenuItem
-            active={activeIndex === 2}
-            icon={<ChecklistRtlIcon />}
-            component={<Link to="/request-manager-list" onClick={() => setActiveIndex(2)} />}>
-            {' '}
-            Check Your Ticket
-          </MenuItem>
-
-          <MenuItem
-            active={activeIndex === 1}
-            icon={<CalendarViewMonthIcon />}
-            component={<Link to="/book-room-manager" onClick={() => setActiveIndex(1)} />}>
-            {' '}
-            Book Room
-          </MenuItem>
+          <SubMenu label="Ticket"
+            icon={<FactCheckIcon />}>
+            <MenuItem
+              active={activeIndex === 0}
+              icon={<AssignmentTurnedInIcon />}
+              component={<Link to="/request-list-manager" onClick={() => setActiveIndex(0)} />}>
+              {' '}
+              Ticket Management
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 2}
+              icon={<ChecklistRtlIcon />}
+              component={<Link to="/request-manager-list" onClick={() => setActiveIndex(2)} />}>
+              {' '}
+              Check Your Ticket
+            </MenuItem>
+          </SubMenu>
           <SubMenu
             label="Notification"
             icon={<NotificationsIcon />}
@@ -269,6 +265,14 @@ const ManagerSidebar = () => {
               </MenuItem>
             </SubMenu>
           </SubMenu>
+          <MenuItem
+            active={activeIndex === 1}
+            icon={<CalendarViewMonthIcon />}
+            component={<Link to="/book-room-manager" onClick={() => setActiveIndex(1)} />}>
+            {' '}
+            Book Room
+          </MenuItem>
+
         </Menu>
       </Sidebar>
     </>

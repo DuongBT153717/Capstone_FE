@@ -22,6 +22,7 @@ import { Link } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 const HrSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => {
@@ -49,8 +50,8 @@ const HrSidebar = () => {
                           : window.location.pathname === '/notification-department-hr'
                             ? 9
                             : window.location.pathname === '/view-list-evaluate'
-                            ? 11
-                            : 0
+                              ? 11
+                              : 0
     return initialIndex
   })
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -170,14 +171,8 @@ const HrSidebar = () => {
             {' '}
             Manage Profile
           </MenuItem>
-          <MenuItem
-            active={activeIndex === 2}
-            icon={<AssignmentTurnedInIcon />}
-            component={<Link to="/request-list-hr" onClick={() => setActiveIndex(2)} />}>
-            {' '}
-            Ticket Management
-          </MenuItem>
-          <SubMenu label="Attendence Management"   icon={<CalendarMonthIcon />}>
+
+          <SubMenu label="Attendence Management" icon={<CalendarMonthIcon />}>
             <MenuItem
               active={activeIndex === 11}
               icon={<ListAltIcon />}
@@ -186,21 +181,23 @@ const HrSidebar = () => {
               View Evaluate
             </MenuItem>
           </SubMenu>
+          <SubMenu label="Ticket" icon={<FactCheckIcon />}>
+            <MenuItem
+              active={activeIndex === 2}
+              icon={<AssignmentTurnedInIcon />}
+              component={<Link to="/request-list-hr" onClick={() => setActiveIndex(2)} />}>
+              {' '}
+              Ticket Management
+            </MenuItem>
+            <MenuItem
+              active={activeIndex === 3}
+              icon={<ChecklistRtlIcon />}
+              component={<Link to="/request-hr-list" onClick={() => setActiveIndex(3)} />}>
+              {' '}
+              Check Your Ticket
+            </MenuItem>
+          </SubMenu>
 
-          <MenuItem
-            active={activeIndex === 3}
-            icon={<ChecklistRtlIcon />}
-            component={<Link to="/request-hr-list" onClick={() => setActiveIndex(3)} />}>
-            {' '}
-            Check Your Ticket
-          </MenuItem>
-          <MenuItem
-            active={activeIndex === 4}
-            icon={<CalendarViewMonthIcon />}
-            component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
-            {' '}
-            Book Room
-          </MenuItem>
           <SubMenu label="Notification" icon={<NotificationsIcon />}>
             <MenuItem
               active={activeIndex === 5}
@@ -257,7 +254,15 @@ const HrSidebar = () => {
                 Personal
               </MenuItem>
             </SubMenu>
+
           </SubMenu>
+          <MenuItem
+            active={activeIndex === 4}
+            icon={<CalendarViewMonthIcon />}
+            component={<Link to="/book-room-hr" onClick={() => setActiveIndex(4)} />}>
+            {' '}
+            Book Room
+          </MenuItem>
         </Menu>
       </Sidebar>
     </>

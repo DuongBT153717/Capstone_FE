@@ -81,21 +81,21 @@ export default function CheckAttendance() {
             <GridToolbarExport />
           </Box>
           <Box>
-          <Box display='flex' gap='15px'>
-            <Button sx={{flex: 1, fontSize: '16px'}} onClick={() => handleOpenAttendanceRequest()} variant='contained'>Attendance Request</Button>
-            <Box sx={{flex: 1}}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                maxDate={new Date()}
-                minDate={formatDateNotTime(createdDate?.createdDate)}
-                value={month}
-                views={['month', 'year']}
-                onChange={(newDate) => setMonth(newDate.toDate())}
-                renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
-              />
-            </LocalizationProvider>
+            <Box display='flex' gap='15px'>
+              <Button sx={{ flex: 1, fontSize: '16px' }} onClick={() => handleOpenAttendanceRequest()} variant='contained'>Attendance Request</Button>
+              <Box sx={{ flex: 1 }}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    maxDate={new Date()}
+                    minDate={formatDateNotTime(createdDate?.createdDate)}
+                    value={month}
+                    views={['month', 'year']}
+                    onChange={(newDate) => setMonth(newDate.toDate())}
+                    renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
+                  />
+                </LocalizationProvider>
+              </Box>
             </Box>
-          </Box>
           </Box>
         </Box>
       </GridToolbarContainer>
@@ -140,8 +140,8 @@ export default function CheckAttendance() {
     },
     {
       field: 'totalAttendance',
-      headerName: 'Total Attendance',
-      width: 150,
+      headerName: 'Total Attendance (h)',
+      width: 180,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
           const totalAttendance = dailyLog.reduce((total, item) => total + item.totalAttendance, 0)
@@ -152,7 +152,7 @@ export default function CheckAttendance() {
     },
     {
       field: 'morningTotal',
-      headerName: 'Total Morning',
+      headerName: 'Total Morning (h)',
       width: 150,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
@@ -164,8 +164,8 @@ export default function CheckAttendance() {
     },
     {
       field: 'afternoonTotal',
-      headerName: 'Total Afternoon',
-      width: 150,
+      headerName: 'Total Afternoon (h)',
+      width: 180,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
           const afternoonTotal = dailyLog.reduce((total, item) => total + item.afternoonTotal, 0)
@@ -176,8 +176,8 @@ export default function CheckAttendance() {
     },
     {
       field: 'lateCheckin',
-      headerName: 'Late Check In',
-      width: 150,
+      headerName: 'Late Check In (s)',
+      width: 156,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL' && userAttendance && userAttendance.totalAttendanceUser) {
           return `${userAttendance.totalAttendanceUser.lateCheckinTotal}`
@@ -187,8 +187,8 @@ export default function CheckAttendance() {
     },
     {
       field: 'earlyCheckout',
-      headerName: 'Early Checkout',
-      width: 150,
+      headerName: 'Early Checkout (s)',
+      width: 170,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL' && userAttendance && userAttendance.totalAttendanceUser) {
           return `${userAttendance.totalAttendanceUser.earlyCheckoutTotal}`
@@ -198,8 +198,8 @@ export default function CheckAttendance() {
     },
     {
       field: 'permittedLeave',
-      headerName: 'Permitted Leave',
-      width: 150,
+      headerName: 'Permitted Leave (s)',
+      width: 180,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
           const permittedLeave = dailyLog.reduce((total, item) => total + item.permittedLeave, 0)
@@ -210,7 +210,7 @@ export default function CheckAttendance() {
     },
     {
       field: 'nonPermittedLeave',
-      headerName: 'Non Permitted Leave',
+      headerName: 'N_Permitted Leave (s)',
       width: 200,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
@@ -225,7 +225,7 @@ export default function CheckAttendance() {
     },
     {
       field: 'violate',
-      headerName: 'Violate',
+      headerName: 'Violate (s)',
       width: 150,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL' && userAttendance && userAttendance.totalAttendanceUser) {
@@ -236,7 +236,7 @@ export default function CheckAttendance() {
     },
     {
       field: 'outsideWork',
-      headerName: 'Outside Work',
+      headerName: 'Outside Work (s)',
       width: 150,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
@@ -248,8 +248,8 @@ export default function CheckAttendance() {
     },
     {
       field: 'paidDay',
-      headerName: 'Paid Day',
-      width: 120,
+      headerName: 'Paid Day (h/8 hour)',
+      width: 180,
       valueGetter: ({ row, value }) => {
         if (row.id === 'TOTAL') {
           const paidDay = dailyLog.reduce((total, item) => total + item.paidDay, 0)
@@ -293,16 +293,20 @@ export default function CheckAttendance() {
               alignItems="center"
               borderRadius="4px"
               width="100%">
+                  {params.row.id !== 'TOTAL' ? (
               <Button
                 variant="contained"
+                sx={{ fontSize: '14px' }}
                 onClick={() => navigate(`/attendance-detail/${params.row.dailyId}/${outputDateString}`)}>
-                Detail
+                View Log
               </Button>
-              {params.row.lateCheckin === true && (
-                <Button variant="contained" onClick={() => handleOpenLateRequest(params.row)}>
-                  Late Request
+                 ) : null}
+              {(params.row.id !== 'TOTAL') && (params.row.lateCheckin !== false || params.row.earlyCheckout !== false  ) && (
+                <Button variant="contained" sx={{ fontSize: '14px' }} onClick={() => handleOpenLateRequest(params.row)}>
+                  Late/Early Request
                 </Button>
               )}
+            
             </Box>
           </Box>
         )
@@ -322,7 +326,7 @@ export default function CheckAttendance() {
         openLateRequest={openLateRequest}
         dailyLogModal={dailyLogModal}
       />
-      <AttendanceRequestModal 
+      <AttendanceRequestModal
         openAttendanceRequest={openAttendanceRequest}
         handleCloseAttendanceRequest={handleCloseAttendanceRequest}
       />

@@ -16,8 +16,13 @@ const AttendanceDetail = () => {
       setIsLoading(true)
       try {
         const response = await attendanceApi.getAttendanceUserDetail(currentUser?.accountId, date)
-        setUserAttendanceDetail(response)
-        setControlLog(response?.controlLogResponse)
+        if (response && response.controlLogResponse) {
+          setUserAttendanceDetail(response)
+          setControlLog(response?.controlLogResponse)
+        }
+        else {
+          console.error('Invalid response structure:', response);
+        }
       } catch (error) {
         console.error('Error fetching user attendance:', error)
       } finally {
@@ -82,6 +87,9 @@ const AttendanceDetail = () => {
                             <Box>
                               <Typography marginLeft="15px">{item?.username}</Typography>
                             </Box>
+                            <Box>
+                              <Typography marginLeft="15px">{userAttendanceDetail?.name}</Typography>
+                            </Box>
                             <Box height="30px">
                               <Typography marginLeft="15px">{item?.log}</Typography>
                             </Box>
@@ -98,13 +106,13 @@ const AttendanceDetail = () => {
                 </Box>
               </Paper>
             )}
-          <Button
-            variant="contained"
-            onClick={() => navigate(-1)}
-            sx={{mt: 3, ml: '40px'}}
+            <Button
+              variant="contained"
+              onClick={() => navigate(-1)}
+              sx={{ mt: 3, ml: '40px' }}
             >
-            Back
-          </Button>
+              Back
+            </Button>
           </Box>
           <Box width="50%">
             <Box flex="1" marginRight="40px">

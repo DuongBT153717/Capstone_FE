@@ -131,19 +131,55 @@ const TicketDetail = () => {
   const handleAccept = async () => {
     if (request[0]?.object?.topic === 'ATTENDANCE_REQUEST') {
       const res = await requestApi.acceptAttendanceRequest(request[0]?.object?.attendanceRequestId)
+      try {
+        socket.current.emit('send-notification', res)
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
+      } catch (error) {
+        console.error("Error accepting leave request:", error);
+      }
       console.log(res)
-      socket.current.emit('send-notification', res)
     } else if (request[0]?.object?.topic === 'LEAVE_REQUEST') {
-      requestApi.acceptLeaveRequest(request[0]?.object?.leaveRequestId)
+      try {
+        await requestApi.acceptLeaveRequest(request[0]?.object?.leaveRequestId);
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
+      } catch (error) {
+        console.error("Error accepting leave request:", error);
+      }
     } else if (request[0]?.object?.topic === 'OVERTIME_REQUEST') {
-      requestApi.acceptOtRequest(request[0]?.object?.overtimeRequestId)
+      try {
+        await requestApi.acceptOtRequest(request[0]?.object?.overtimeRequestId);
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
+      } catch (error) {
+        console.error("Error accepting overtime request:", error);
+      }
     } else if (request[0]?.object?.topic === 'LATE_REQUEST') {
-      requestApi.acceptLateRequest(request[0]?.object?.lateRequestId)
+      try {
+        await requestApi.acceptLateRequest(request[0]?.object?.lateRequestId);
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
+      } catch (error) {
+        console.error("Error accepting late request:", error);
+      }
     } else if (request[0]?.object?.topic === 'OUTSIDE_REQUEST') {
-      requestApi.acceptOutSideRequest(request[0]?.object?.workingOutsideId)
-      // console.log(request[0]?.object?.workingOutsideId);
+      try {
+        await requestApi.acceptOutSideRequest(request[0]?.object?.workingOutsideId);
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
+      } catch (error) {
+        console.error("Error accepting outside request:", error);
+      }
+    } else {
+      console.error("Invalid request type");
     }
-  }
+  };
 
   console.log(request[0])
 
@@ -667,10 +703,10 @@ const TicketDetail = () => {
                       color="text.primary">
                       Status :
                       {request[0]?.object?.status === false &&
-                      request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE' ? (
+                      request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
                         <span style={{ color: 'red' }}>Reject</span>
                       ) : request[0]?.object?.status === true &&
-                        request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSE' ? (
+                        request[0]?.requestMessageResponse?.requestTicketStatus === 'CLOSED' ? (
                         <span style={{ color: 'green' }}>Accept</span>
                       ) : (
                         <span style={{ color: '#F3B664' }}>Pending</span>
