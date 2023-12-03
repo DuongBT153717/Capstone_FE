@@ -49,7 +49,10 @@ export const MANAGER_PATH = {
     EMPLOYEE_ATTENDANCE_LOG_LIST: '/emp-attendance-log-list',
     LOG_ATTENDACE_OF_EMP: '/log-attendance-emp/:employee_id',
     EMPLOYEE_ATTENDANCE_DETAIL: 'emp-attendance-detail/:employee_id/:date',
-    EMP_LOG_MANAGEMENT: '/emp-log-management'
+    EMP_LOG_MANAGEMENT: '/emp-log-management',
+    MANAGE_USER_BY_MANAGER: '/manage-user-by-manager',
+    CHECK_EMP_INFO_BY_MANAGER: '/check-emp-info-by-manager/:user_id'
+
 }
 
 export const EMPLOYEE_PATH = {

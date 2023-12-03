@@ -1,35 +1,28 @@
-import { Box, Button, LinearProgress, Typography } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
 import {
-  DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton
+  DataGrid, GridToolbarContainer
 } from "@mui/x-data-grid";
 
 
-const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount, isLoading }) => {
+const DataTableManageUser = ({ rows, columns, isLoading }) => {
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
         <Box display="flex" justifyContent="space-between" width="100%">
           <Box display="flex" gap={1}>
-            <GridToolbarFilterButton />
-            <GridToolbarExport />
+
           </Box>
-          <Button variant="contained" onClick={handleOpenCreateAccount}>
-            <Typography>Add Account</Typography>
-          </Button>
         </Box>
       </GridToolbarContainer>
     )
   }
-  return (   
-    <Box 
+  return (
+    <Box
       sx={{
-        height: '700px', 
-
         "& .MuiDataGrid-root": {
           border: "none",
         },
         "& .MuiDataGrid-cell": {
-           padding: '8px',
           borderBottom: "none",
         },
         "& .name-column--cell": {
@@ -41,7 +34,7 @@ const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount, isLoading
         },
         "& .MuiDataGrid-virtualScroller": {
           backgroundColor: "#fff",
-           height: '590px'
+          // height: '420px'
         },
         "& .MuiDataGrid-footerContainer": {
           borderTop: "1px solid rgba(224, 224, 224, 1)",
@@ -69,7 +62,7 @@ const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount, isLoading
         },
       }}
     >
-      <DataGrid 
+      <DataGrid
         autoHeight
         disableRowSelectionOnClick
         showCellVerticalBorder
@@ -78,12 +71,11 @@ const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount, isLoading
         columns={columns}
         slots={{ toolbar: CustomToolbar, loadingOverlay: LinearProgress }}
         initialState={{
-          pagination: { paginationModel: { pageSize: 10 } },
+          pagination: { paginationModel: { pageSize: 5 } },
         }}
-        pageSizeOptions={[5, 10, 25]}
+        pageSizeOptions={[5, 10, 20, 50]}
         loading={isLoading}
-        getRowId={(row) => row.username}
-      />
+        getRowId={(row) => row.evaluateId}    />
     </Box>
   );
 };

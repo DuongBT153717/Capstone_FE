@@ -4,7 +4,11 @@ import {
 } from "@mui/x-data-grid";
 
 
-const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount, isLoading }) => {
+const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount, isLoading,departmentName }) => {
+  const filteredRows = rows.filter(row => row.departmentName === departmentName && row.roleName === 'employee');
+
+  console.log(filteredRows);
+  console.log(rows);
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -74,16 +78,19 @@ const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount, isLoading
         disableRowSelectionOnClick
         showCellVerticalBorder
         showColumnVerticalBorder
-        rows={rows}
+        rows={filteredRows}
+        
         columns={columns}
         slots={{ toolbar: CustomToolbar, loadingOverlay: LinearProgress }}
         initialState={{
           pagination: { paginationModel: { pageSize: 10 } },
+          
         }}
-        pageSizeOptions={[5, 10, 25]}
+        pageSizeOptions={[5, 10, 15]}
         loading={isLoading}
-        getRowId={(row) => row.username}
+        getRowId={(row) => row.accountId}
       />
+      
     </Box>
   );
 };

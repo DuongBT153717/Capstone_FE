@@ -24,6 +24,7 @@ import EventNoteIcon from '@mui/icons-material/EventNote';
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import ViewSidebarIcon from '@mui/icons-material/ViewSidebar';
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
 const ManagerSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => {
@@ -53,6 +54,8 @@ const ManagerSidebar = () => {
                               ? 11
                               : window.location.pathname === '/emp-attendance-log-list'
                                 ? 12
+                                : window.location.pathname === '/manage-user-by-manager'
+                                ? 13
                                 : 0
     return initialIndex
   })
@@ -267,13 +270,19 @@ const ManagerSidebar = () => {
             </SubMenu>
           </SubMenu>
           <MenuItem
+            active={activeIndex === 8}
+            icon={<PersonAddIcon />}
+            component={<Link to="/manage-user-by-manager" onClick={() => setActiveIndex(13)} />}>
+            {' '}
+            Manage User
+          </MenuItem>
+          <MenuItem
             active={activeIndex === 1}
             icon={<CalendarViewMonthIcon />}
             component={<Link to="/book-room-manager" onClick={() => setActiveIndex(1)} />}>
             {' '}
             Book Room
           </MenuItem>
-
         </Menu>
       </Sidebar>
     </>

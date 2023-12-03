@@ -76,6 +76,8 @@ import ViewEmpEvaluateReport from '../pages/hr/view-evaluate-of-emp'
 import ChangeLogEditProfileDetail from '../pages/hr/change-log-edit-profile-detail'
 import CheckEmpProfile from '../pages/hr/check-employee-info-by-id'
 import CheckEmpEvaluateReport from '../pages/hr/check-evaluate-report'
+import ManageUserByManager from '../pages/manager/manage-user-by-manager'
+import CheckEmpProfileByManager from '../pages/manager/manager-check-emp-info'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -256,6 +258,14 @@ export default function Router() {
           element: (
             <Suspense fallback={<>Loading...</>}>
               <UpdateEvaluate />
+            </Suspense>
+          )
+        },
+        {
+          path: MANAGER_PATH.CHECK_EMP_INFO_BY_MANAGER,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <CheckEmpProfileByManager />
             </Suspense>
           )
         },
@@ -578,6 +588,14 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <CheckAttendanceManager />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.MANAGE_USER_BY_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ManageUserByManager />
                 </Suspense>
               )
             },

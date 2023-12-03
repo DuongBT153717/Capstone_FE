@@ -1,41 +1,29 @@
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew'
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
-import BlockIcon from '@mui/icons-material/Block'
-import CheckIcon from '@mui/icons-material/Check'
-import EditIcon from '@mui/icons-material/Edit'
 import ManIcon from '@mui/icons-material/Man'
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
 import SecurityIcon from '@mui/icons-material/Security'
-import { Box, Button, IconButton, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
 import Header from '../../../components/Header'
 import { BASE_URL } from '../../../services/constraint'
-import userApi from '../../../services/userApi'
 import axiosClient from '../../../utils/axios-config'
+import formatDate from '../../../utils/formatDate'
 import CreateAccountModal from './components/CreateAccountModal'
 import DataTableManageUser from './components/DataTable'
 import RoleModal from './components/RoleModal'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { toast } from 'react-toastify'
-import formatDate, { formatDateNotTime } from '../../../utils/formatDate'
-const ManageUser = () => {
+import userApi from '../../../services/userApi'
+const ManageUserByManager = () => {
   const userId = useSelector((state) => state.auth.login.currentUser.accountId)
-  const dispatch = useDispatch()
   const [allUser, setAllUser] = useState([])
-  const currentDate = new Date()
-  const [user, setUser] = useState('')
   const [open, setOpen] = useState(false)
   const [openCreateAccount, setOpenCreateAccount] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const currentUser = useSelector((state) => state.auth.login?.currentUser)
+  const [info, setInfo] = useState('')
   const navigate = useNavigate()
-  const handleOpen = (data) => {
-    setOpen(true)
-    setUser(data)
-  }
+
 
   const handleClose = () => setOpen(false)
   const handleOpenCreateAccount = () => {
@@ -43,6 +31,24 @@ const ManageUser = () => {
   }
   const handleCloseCreateAccount = () => setOpenCreateAccount(false)
 
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await userApi.getUserInfo2(userId);
+            setInfo(response)
+            console.log(response);
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                console.error('User not found!');
+            } else {
+                console.error('Error fetching user info:', error.message);
+            }
+        }
+    };
+
+    fetchData();
+}, [userId]);
+const departmentName = info?.departmentName
   useEffect(() => {
     setIsLoading(true)
     const fetchAllUser = async () => {
@@ -53,77 +59,10 @@ const ManageUser = () => {
     fetchAllUser()
   }, [])
 
-  const handleChangeStatus = (user) => {
-    Swal.fire({
-      title: 'Are you sure to change this status?',
-      icon: 'info',
-      cancelButtonText: 'Cancel!',
-      showCancelButton: true,
-      cancelButtonColor: 'red',
-      confirmButtonColor: 'green'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        let data = {
-          accountId: user.accountId,
-          statusName: user.statusName === 'active' ? 'inactive' : 'active'
-        }
-        userApi.changeUserStatus(data, dispatch)
-        setAllUser((prevUser) =>
-          prevUser.map((userInfo) => {
-            if (userInfo.accountId === user.accountId) {
-              return {
-                ...userInfo,
-                statusName: user.statusName === 'active' ? 'inactive' : 'active'
-              }
-            } else {
-              return userInfo
-            }
-          })
-        )
-      } else {
-        navigate('/manage-user')
-      }
-    })
-  }
 
-  console.log(allUser)
-  const handleDelete = (user) => {
-    Swal.fire({
-      title: 'Are you sure to delete this account?',
-      icon: 'warning',
-      cancelButtonText: 'Cancel!',
-      showCancelButton: true,
-      cancelButtonColor: 'red',
-      confirmButtonColor: 'green'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        let data = {
-          username: user.username,
-          hrId: currentUser?.accountId
-        }
-        axiosClient
-          .post(`${BASE_URL}/deleteAccount`, data)
-          .then(() => {
-            toast.success('Account deleted successfully!')
-            setAllUser((prevUser) =>
-              prevUser.filter((userInfo) => userInfo.accountId !== user.accountId)
-            )
-          })
-          .catch((error) => {
-            if (error.response.status === 400) {
-              toast.error('Username is null!')
-            } else if (error.response.status === 404) {
-              toast.error('Username does not exist!')
-            } else if (error.response.status === 500) {
-              toast.error('Only HR who created this account can delete this account!')
-            } else {
-              toast.error('An error occurred while deleting the account.')
-            }
-          })
-      }
-    })
-  }
 
+  console.log(info.departmentId)
+  
   const columns = [
     {
       field: 'username',
@@ -227,56 +166,6 @@ const ManageUser = () => {
       }
     },
     {
-      field: 'departmentName',
-      headerName: 'Department Name',
-      cellClassName: 'name-column--cell',
-      headerAlign: 'center',
-      align: 'center',
-      width: 250,
-    },
-    {
-      field: 'action',
-      headerName: 'Action',
-      headerAlign: 'center',
-      align: 'center',
-      width: 150,
-      renderCell: (params) => {
-        const isDeleteButtonVisible = formatDateNotTime(params.row.createdDate) >= formatDateNotTime(currentDate);
-        console.log(params.row.createdDate);
-        console.log(currentDate);
-        return (
-          <Box
-            margin="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            borderRadius="4px"
-          >
-            <IconButton onClick={() => handleOpen(params.row)}>
-              <EditIcon sx={{ color: '#00FF00' }} />
-            </IconButton>
-            {params.row.statusName === 'active' ? (
-              <IconButton onClick={() => handleChangeStatus(params.row)}>
-                <BlockIcon sx={{ color: '#ff6666' }} />
-              </IconButton>
-            ) : (
-              <IconButton onClick={() => handleChangeStatus(params.row)}>
-                <CheckIcon sx={{ color: '#009900' }} />
-              </IconButton>
-            )}
-    
-            {isDeleteButtonVisible && (
-              <IconButton onClick={() => handleDelete(params.row)}>
-                <DeleteIcon sx={{ color: '#2596be' }} />
-              </IconButton>
-            )}
-          </Box>
-        );
-      },
-    },
-    
-    {
       field: 'detail',
       headerName: 'View',
       cellClassName: 'name-column--cell',
@@ -294,7 +183,7 @@ const ManageUser = () => {
             borderRadius="4px">
             <Button
               variant='contained'
-              onClick={() => navigate(`/check-employee-info/${params.row.accountId}`)}
+              onClick={() => navigate(`/check-emp-info-by-manager/${params.row.accountId}`)}
             >
               Detail
             </Button>
@@ -305,14 +194,16 @@ const ManageUser = () => {
   ]
   return (
     <>
-      <Header title="TEAM" subtitle="Managing the team Members" />
+     <Header title={`TEAM - ${departmentName}`} subtitle="Managing the team Members" />
+
       <DataTableManageUser
         rows={allUser}
         columns={columns}
         handleOpenCreateAccount={handleOpenCreateAccount}
         isLoading={isLoading}
+        departmentName={departmentName}
       />
-      <RoleModal setAllUser={setAllUser} user={user} open={open} handleClose={handleClose} />
+      <RoleModal setAllUser={setAllUser}  open={open} handleClose={handleClose} />
       <CreateAccountModal
         setAllUser={setAllUser}
         allUser={allUser}
@@ -323,4 +214,4 @@ const ManageUser = () => {
   )
 }
 
-export default ManageUser
+export default ManageUserByManager
