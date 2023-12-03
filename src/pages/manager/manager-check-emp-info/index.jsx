@@ -24,11 +24,6 @@ const CheckEmpProfileByManager = () => {
     const navigate = useNavigate()
     const { user_id } = useParams();
     const [empInfo, setempInfo] = useState([])
-
-    // console.log(birthUpdate);
-    // console.log(info?.firstName);
-
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -36,7 +31,6 @@ const CheckEmpProfileByManager = () => {
                 setInfo(response)
                 console.log(response);
             } catch (error) {
-                // Xử lý lỗi ở đây nếu cần
                 if (error.response && error.response.status === 404) {
                     console.error('User not found!');
                 } else {
@@ -176,27 +170,33 @@ const CheckEmpProfileByManager = () => {
             cellClassName: 'name-column--cell',
             headerAlign: 'center',
             align: 'center',
-            flex: 1,
+            width: 450,
             renderCell: (params) => {
                 return (
                     <Box
                         margin="0 auto"
                         p="5px"
                         display="flex"
-                        justifyContent="center"
                         alignItems="center"
-                        borderRadius="4px">
+                        borderRadius="4px"
+                        justifyContent="space-between"
+                    >
                         <Button
                             variant='contained'
                             onClick={() => {
-                                console.log('employeeId from "code ":', params.row.employeeId);
-                                console.log('Month from "code ":', params.row.month);
-                                console.log('Year from "code ":', params.row.year);
-                                navigate(`/check-attendence-evaluate-report-emp/${params.row.employeeId}/${(params.row.month)}-${(params.row.year)}`)
-                            }
-                            }
+                                navigate(`/manager-check-evaluate-report-emp/${params.row.employeeId}/${(params.row.month)}-${(params.row.year)}`)
+                            }}
                         >
                             Detail
+                        </Button>
+                        <div style={{ width: '10px' }}></div>
+                        <Button
+                            variant='contained'
+                            onClick={() => {
+                                navigate(`/log-attendance-emp/${params.row.employeeId}/${(params.row.month)}-${(params.row.year)}`)
+                            }}
+                        >
+                            Check Attendance
                         </Button>
                     </Box>
                 )

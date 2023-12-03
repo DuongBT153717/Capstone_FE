@@ -78,6 +78,7 @@ import CheckEmpProfile from '../pages/hr/check-employee-info-by-id'
 import CheckEmpEvaluateReport from '../pages/hr/check-evaluate-report'
 import ManageUserByManager from '../pages/manager/manage-user-by-manager'
 import CheckEmpProfileByManager from '../pages/manager/manager-check-emp-info'
+import ViewEmpEvaluateReportByManager from '../pages/manager/view-emp-evaluate'
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -245,6 +246,14 @@ export default function Router() {
       element: <RequireAuth allowedRoles={ROLES.MANAGER} />,
       children: [
         
+        {
+          path: MANAGER_PATH.VIEW_EMP_EVALUATE_MANAGER,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <ViewEmpEvaluateReportByManager />
+            </Suspense>
+          )
+        },
         {
           path: MANAGER_PATH.EMPLOYEE_ATTENDANCE_DETAIL,
           element: (

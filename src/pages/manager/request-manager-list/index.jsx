@@ -130,7 +130,7 @@ function Row(props) {
                     <TableCell style={{ width: '200px' }} align="center">
                       Status
                     </TableCell>
-                    <TableCell style={{ width: '50px' }}>Receiver</TableCell>
+                    <TableCell style={{ width: '200px' }}>Receiver</TableCell>
                     <TableCell style={{ width: '100px' }}>Create Date</TableCell>
                     <TableCell style={{ width: '100px' }}>Update Date</TableCell>
                     <TableCell style={{ width: '100px' }}>Action</TableCell>
@@ -198,7 +198,7 @@ function Row(props) {
                         ) : null}
                       </TableCell>
                       <TableCell key={request_row.userId}>
-                        {request_row.receiverFirstName}
+                        {request_row.receiverFirstName} {request_row.receiverLastName}
                       </TableCell>
                       <TableCell>{formatDate(request_row.requestCreateDate)}</TableCell>
                       <TableCell>{formatDate(request_row.requestUpdateDate)}</TableCell>

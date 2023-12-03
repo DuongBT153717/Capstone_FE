@@ -1,19 +1,12 @@
-import { Box, Button, MenuItem, Select, TextField } from '@mui/material';
+import { Box, Button, MenuItem, Select } from '@mui/material';
 import { GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import attendanceApi from '../../../services/attendanceApi';
 import overtimeApi from '../../../services/overtimeApi';
-import { formatDateNotTime } from '../../../utils/formatDate';
 import ChatTopbar from '../../common/chat/components/ChatTopbar';
 import DataTableCheckAttendance from './components/DataTable';
-// import EditEmpLogAttendance from './components/EditModal';
-// import { useFormik } from 'formik';
-
 export default function LogEmpAttendanceById() {
     const currentUser = useSelector((state) => state.auth.login?.currentUser);
     // const formik = useFormik({
@@ -26,14 +19,11 @@ export default function LogEmpAttendanceById() {
     const [isLoading, setIsLoading] = useState(false);
     const [userAttendance, setUserAttendance] = useState('');
     const [dailyLog, setDailyLog] = useState([]);
-    const [month, setMonth] = useState(new Date());
-    // const [openLateRequest, setOpenLateRequest] = useState(false);
-    // const [dailyLogModal, setDailyLogModal] = useState({});
     const [createdDate, setCreatedDate] = useState({});
     const navigate = useNavigate();
     const [userName, setUserName] = useState('');
     const [hireDate, setHireDate] = useState('');
-    const { employee_id } = useParams();
+    const { employee_id, date } = useParams()
     const [selectedOption, setSelectedOption] = useState('option1');
     const [option2Data, setOption2Data] = useState([]);
 
@@ -45,8 +35,8 @@ export default function LogEmpAttendanceById() {
                 if (selectedOption === 'option1') {
                     response = await attendanceApi.getAttendanceUser(
                         employee_id,
-                        format(month, 'MM'),
-                        format(month, 'yyyy')
+                        date.split('-')[0],
+                        date.split('-')[1],
                     );
                     const { username, hireDate } = response;
                     setUserAttendance(response);
@@ -56,8 +46,8 @@ export default function LogEmpAttendanceById() {
                 } else if (selectedOption === 'option2') {
                     response = await overtimeApi.getOvertimeUser(
                         employee_id,
-                        format(month, 'MM'),
-                        format(month, 'yyyy')
+                        date.split('-')[0],
+                        date.split('-')[1],
                     );
                     const option2DataWithId = response?.overTimeLogResponses.map((item, index) => ({
                         ...item,
@@ -74,7 +64,7 @@ export default function LogEmpAttendanceById() {
         };
 
         fetchAllUserAttendance();
-    }, [month, selectedOption, employee_id]);
+    }, [date, selectedOption, employee_id]);
 
 
     useEffect(() => {
@@ -89,18 +79,11 @@ export default function LogEmpAttendanceById() {
 
         fetchGetCreatedDate();
     }, [currentUser]);
-
-    // const handleOpenLateRequest = (params) => {
-    //     setOpenLateRequest(true);
-    //     setDailyLogModal(params);
-    // };
+console.log(createdDate);
 
     const handleOptionChange = (selectedValue) => {
         setSelectedOption(selectedValue);
     };
-
-    // const handleCloseEditLog = () => setOpenLateRequest(false);
-
     function CustomToolbar() {
         return (
             <GridToolbarContainer>
@@ -120,17 +103,6 @@ export default function LogEmpAttendanceById() {
                         </Select>
                     </Box>
                     <Box>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
-                                maxDate={new Date()}
-                                minDate={formatDateNotTime(createdDate?.createdDate)}
-                                value={month}
-                                views={['month', 'year']}
-                                onChange={(newDate) => setMonth(newDate.toDate())}
-                                renderInput={(props) => <TextField sx={{ width: '100%' }} {...props} />}
-                                style={{ marginLeft: '10px' }}
-                            />
-                        </LocalizationProvider>
                     </Box>
                 </Box>
             </GridToolbarContainer>
@@ -283,7 +255,7 @@ export default function LogEmpAttendanceById() {
                 return row.violate ? 1 : 0;
             }
         },
-        
+
         {
             field: 'action',
             headerName: 'Action',
@@ -396,16 +368,8 @@ export default function LogEmpAttendanceById() {
                     userName={userName}
                     hireDate={hireDate}
                     getRowId={(row) => row.id}
+                    date={date} 
                 />
-                {/* <EditEmpLogAttendance
-                    handleCloseEditLog={handleCloseEditLog}
-                    openEditLog={openLateRequest}
-                    dailyLogModal={dailyLogModal}
-                    userName={userName}
-                    manualCheckIn={formik.values.manualCheckIn}
-                    manualCheckOut={formik.values.manualCheckOut}
-            
-                /> */}
                 <Button variant="contained" onClick={() => navigate(-1)} style={{ marginLeft: '4px', marginTop: '-20px' }}>
                     Back
                 </Button>
