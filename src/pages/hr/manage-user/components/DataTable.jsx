@@ -21,12 +21,15 @@ const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount, isLoading
     )
   }
   return (   
-    <Box
+    <Box 
       sx={{
+        height: '730px', 
+
         "& .MuiDataGrid-root": {
           border: "none",
         },
         "& .MuiDataGrid-cell": {
+           padding: '8px',
           borderBottom: "none",
         },
         "& .name-column--cell": {
@@ -38,7 +41,7 @@ const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount, isLoading
         },
         "& .MuiDataGrid-virtualScroller": {
           backgroundColor: "#fff",
-          // height: '420px'
+           height: '730px'
         },
         "& .MuiDataGrid-footerContainer": {
           borderTop: "1px solid rgba(224, 224, 224, 1)",
@@ -75,11 +78,11 @@ const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount, isLoading
         columns={columns}
         slots={{ toolbar: CustomToolbar, loadingOverlay: LinearProgress }}
         initialState={{
-          pagination: { paginationModel: { pageSize: 5 } },
+          pagination: { paginationModel: { pageSize: 10 } },
         }}
-        pageSizeOptions={[5, 10, 20, 50]}
+        pageSizeOptions={[5,10]}
         loading={isLoading}
-        getRowId={(row) => row.username}
+        getRowId={(row) => row.accountId}
       />
     </Box>
   );

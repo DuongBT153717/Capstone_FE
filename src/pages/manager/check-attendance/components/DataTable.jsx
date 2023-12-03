@@ -8,6 +8,9 @@ const StripedDataGrid = styled(DataGrid)(() => ({
   },
   '.weekend-cell .MuiDataGrid-cellContent': {
     color: 'gray'
+  },
+  '.early-checkout-cell .MuiDataGrid-cellContent': {
+    color: '#DAA520	'
   }
 }))
 const DataTableCheckAttendance = ({ rows, columns, isLoading, CustomToolbar }) => {
@@ -66,12 +69,13 @@ const DataTableCheckAttendance = ({ rows, columns, isLoading, CustomToolbar }) =
           rowsPerPageOptions={[50]}
           getRowClassName={(params) => {
             const isLateCheckin = params.row.lateCheckin === true;
+            const isEarlyCheckout = params.row.earlyCheckout === true;
             const isWeekend =
               params.row.dateDaily &&
               (params.row.dateDaily.startsWith('Sunday') ||
                 params.row.dateDaily.startsWith('Saturday'));
           
-            return (isLateCheckin ? 'late-checkin-cell ' : '') + (isWeekend ? 'weekend-cell' : '');
+            return (isLateCheckin ? 'late-checkin-cell ' : '') + (isWeekend ? 'weekend-cell' : '') +  (isEarlyCheckout ? 'early-checkout-cell' : '');
           }}
           
           loading={isLoading}

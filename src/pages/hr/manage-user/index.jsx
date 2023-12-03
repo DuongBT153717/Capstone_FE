@@ -130,14 +130,27 @@ const ManageUser = () => {
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      flex: 1
+      width:250,
+    },
+    {
+      field: 'name',
+      headerName: 'Name',
+      cellClassName: 'name-column--cell',
+      headerAlign: 'center',
+      align: 'center',
+      width:250,
+      renderCell: (params) => (
+        <div style={{ color: 'black' }}>
+          {params.row.firstName} {params.row.lastName}
+        </div>
+      ),
     },
     {
       field: 'roleName',
       headerName: 'Access Level',
       headerAlign: 'center',
       align: 'center',
-      flex: 1,
+      width:250,
       renderCell: (params) => {
         return (
           <Box
@@ -167,7 +180,7 @@ const ManageUser = () => {
       headerName: 'Status',
       headerAlign: 'center',
       align: 'center',
-      flex: 1,
+      width:250,
       renderCell: (params) => {
         return (
           <Box
@@ -194,7 +207,7 @@ const ManageUser = () => {
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      flex: 1,
+      width:150,
 
     },
     {
@@ -203,7 +216,7 @@ const ManageUser = () => {
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      flex: 1,
+      width:200,
       renderCell: (params) => {
         return (
           <Typography color='#000'>
@@ -218,14 +231,14 @@ const ManageUser = () => {
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      flex: 1
+      width: 250,
     },
     {
       field: 'action',
       headerName: 'Action',
       headerAlign: 'center',
       align: 'center',
-      flex: 1,
+      width:150,
       renderCell: (params) => {
         return (
           <Box
@@ -262,7 +275,7 @@ const ManageUser = () => {
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      flex: 1, 
+      width:150,
       renderCell: (params) => {
         return (
           <Box
@@ -275,7 +288,7 @@ const ManageUser = () => {
             <Button
               variant='contained'
               onClick={() => navigate(`/check-employee-info/${params.row.accountId}`)}
-              //onClick={() => navigate(`/check-employee-info`)}
+            //onClick={() => navigate(`/check-employee-info`)}
             >
               Detail
             </Button>

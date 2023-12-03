@@ -9,31 +9,47 @@ import {
 } from '@mui/material'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import USER from '../../../assets/images/user.jpg'
 import { storage } from '../../../firebase/config'
-import useAuth from '../../../hooks/useAuth'
 import logApi from '../../../services/logApi'
 import { formatDateNotTime } from '../../../utils/formatDate'
 import DataTableManageUser from './components/DataTable'
 import Overview from './components/Overview'
+import userApi from '../../../services/userApi'
 
 const CheckEmpProfile = () => {
     const [userProfileImage, setUserProfileImage] = useState('')
-    const [birthUpdate, setBirthUpdate] = useState('')
     const [info, setInfo] = useState('')
-    const userInfo = useAuth()
     const navigate = useNavigate()
-    useEffect(() => {
-        setBirthUpdate(userInfo?.dateOfBirth)
-        setInfo(userInfo)
-    }, [userInfo])
     const { user_id } = useParams();
-    console.log(birthUpdate);
-    console.log(info?.firstName);
+    const [empInfo, setempInfo] = useState([])
+
+    // console.log(birthUpdate);
+    // console.log(info?.firstName);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await userApi.getUserInfo2(user_id);
+                setInfo(response)
+                console.log(response);
+            } catch (error) {
+                // Xử lý lỗi ở đây nếu cần
+                if (error.response && error.response.status === 404) {
+                    console.error('User not found!');
+                } else {
+                    console.error('Error fetching user info:', error.message);
+                }
+            }
+        };
+
+        fetchData();
+    }, [user_id]);
+
     const imgurl = async () => {
-        const storageRef = ref(storage, `/${userInfo.image}`)
+        const storageRef = ref(storage, `/${info.image}`)
         try {
             const url = await getDownloadURL(storageRef)
             setUserProfileImage(url)
@@ -41,10 +57,10 @@ const CheckEmpProfile = () => {
             console.error('Error getting download URL:', error)
         }
     }
-    if (userInfo && userInfo.image) {
+    if (info && info.image) {
         imgurl()
     }
-    const [empInfo, setempInfo] = useState([])
+
     useEffect(() => {
         const fetchAllUserAttendance = async () => {
             setIsLoading(true);
@@ -63,9 +79,11 @@ const CheckEmpProfile = () => {
         };
         fetchAllUserAttendance()
     }, [user_id])
+
+
+
     const [isLoading, setIsLoading] = useState(false)
-    console.log(userProfileImage)
-    const role = useSelector((state) => state.auth.login?.currentUser?.role)
+
 
     const columns = [
         {
@@ -124,7 +142,20 @@ const CheckEmpProfile = () => {
             cellClassName: 'name-column--cell',
             headerAlign: 'center',
             align: 'center',
-            flex: 1
+            flex: 1,
+            renderCell: (params) => {
+                let color;
+
+                if (params.row.rate === 'GOOD') {
+                    color = 'green';
+                } else if (params.row.rate === 'BAD') {
+                    color = 'red';
+                } else {
+                    color = 'black';
+                }
+
+                return <div style={{ color }}>{params.row.rate}</div>;
+            },
         },
         {
             field: 'approvedDate',
@@ -161,7 +192,8 @@ const CheckEmpProfile = () => {
                                 console.log('employeeId from "code ":', params.row.employeeId);
                                 console.log('Month from "code ":', params.row.month);
                                 console.log('Year from "code ":', params.row.year);
-                                navigate(`/check-attendence-evaluate-report-emp/${params.row.employeeId}/${(params.row.month)}-${(params.row.year)}`)}
+                                navigate(`/check-attendence-evaluate-report-emp/${params.row.employeeId}/${(params.row.month)}-${(params.row.year)}`)
+                            }
                             }
                         >
                             Detail
@@ -172,7 +204,7 @@ const CheckEmpProfile = () => {
         },
 
     ];
-    
+
     return (
         <>
             <Box textAlign="center" bgcolor="#EEF2F6" height="100vh">
@@ -181,7 +213,7 @@ const CheckEmpProfile = () => {
                         <Grid container spacing={3}>
                             <Grid item xs={12} md={6} lg={4}>
                                 <Card>
-                                    <CardContent sx={{ width: '100%', height: '100%' }} >
+                                    <CardContent sx={{ width: '100%', height: '266px' }} >
                                         <Box
                                             sx={{
                                                 alignItems: 'center',
@@ -210,10 +242,13 @@ const CheckEmpProfile = () => {
                                                 />
                                             )}
                                             <Typography gutterBottom fontSize="20px" fontWeight="700">
-                                                {userInfo.firstName} {userInfo.lastName}
+                                                {info?.firstName} {info?.lastName}
                                             </Typography>
-                                            <Typography sx={{ textTransform: 'capitalize' }} variant="body2">
-                                                {role}
+                                            <Typography gutterBottom fontSize="15px" fontWeight="600">
+                                                Account: <span style={{ color: 'red' }} >  {info?.userName}  </span>
+                                            </Typography>
+                                            <Typography sx={{ textTransform: 'capitalize' }} fontSize="15px" variant="body2" >
+                                                Role: <span style={{ color: 'red' }} >{info.roleName}</span>
                                             </Typography>
                                         </Box>
                                     </CardContent>
@@ -221,7 +256,7 @@ const CheckEmpProfile = () => {
                             </Grid>
                             <Grid item xs={12} md={6} lg={8}>
                                 <Card>
-                                    <Overview userInfo={userInfo} />
+                                    <Overview userInfo={info} />
                                 </Card>
                             </Grid>
                         </Grid>

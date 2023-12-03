@@ -23,6 +23,7 @@ import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
+import ViewSidebarIcon from '@mui/icons-material/ViewSidebar';
 const ManagerSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => {
@@ -185,9 +186,9 @@ const ManagerSidebar = () => {
             </MenuItem>
             <MenuItem
               active={activeIndex === 12}
-              icon={<PermContactCalendarIcon />}
+              icon={<ViewSidebarIcon />}
               component={<Link to="/emp-attendance-log-list" onClick={() => setActiveIndex(12)} />}>
-              {' '}
+              {''}
               Employee Attendance Log
             </MenuItem>
           </SubMenu>

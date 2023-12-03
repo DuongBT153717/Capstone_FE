@@ -7,6 +7,7 @@ import {
   Typography,
   styled
 } from '@mui/material'
+import { formatDateNotTime } from '../../../../utils/formatDate'
 
 const TypoOverView = styled(Typography)(() => ({
   fontSize: '15px',
@@ -45,6 +46,12 @@ const Overview = (props) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <TypoOverView >Date of birth: {props.userInfo.dateOfBirth}</TypoOverView>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TypoOverView >Department: {props.userInfo.departmentName}</TypoOverView>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TypoOverView >Hire Date: {formatDateNotTime(props.userInfo.hireDate)}</TypoOverView>
             </Grid>
           </Grid>
         </Box>
