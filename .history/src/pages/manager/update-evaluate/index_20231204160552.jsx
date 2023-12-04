@@ -184,12 +184,12 @@ const UpdateEvaluate = () => {
     {
       field: 'morningTotal',
       headerName: 'Total Morning',
-      flex: 1
+      width: 150
     },
     {
       field: 'afternoonTotal',
       headerName: 'Total Afternoon',
-      flex: 1
+      width: 150
     },
     {
       field: 'lateCheckin',
@@ -210,7 +210,7 @@ const UpdateEvaluate = () => {
     {
       field: 'permittedLeave',
       headerName: 'Permitted Leave',
-      flex: 1
+      width: 150
     },
     {
       field: 'nonPermittedLeave',
@@ -223,12 +223,12 @@ const UpdateEvaluate = () => {
       valueGetter: ({ value }) => {
         return value === true ? 1 : 0
       },
-      flex: 1
+      width: 150
     },
     {
       field: 'paidDay',
       headerName: 'Paid Day',
-      flex: 1
+      width: 120
     }
   ]
 

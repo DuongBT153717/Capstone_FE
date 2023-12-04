@@ -86,7 +86,12 @@ const EmpLogManagement = () => {
       width: 200,
       renderCell: (params) => {
         return (
-          <Box>
+          <Box
+            margin="0 auto"
+            p="5px"
+            display="flex"
+            alignItems="center"
+            borderRadius="4px">
             <Typography>
               {params.row.firstNameEmp} {params.row.lastNameEmp}
             </Typography>
@@ -207,7 +212,7 @@ const EmpLogManagement = () => {
             <>
               <Button
                 variant="contained"
-                onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}/${format(month, 'yyyy-MM')}`)}
+                onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}`)}
                 style={buttonStyle}>
                 Detail
               </Button>
@@ -232,7 +237,7 @@ const EmpLogManagement = () => {
             <>
               <Button
                 variant="contained"
-                onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}/${format(month, 'yyyy-MM')}`)}
+                onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}`)}
                 style={buttonStyle}>
                 Detail
               </Button>
@@ -256,7 +261,7 @@ const EmpLogManagement = () => {
             <>
               <Button
                 variant="contained"
-                onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}/${format(month, 'yyyy-MM')}`)}
+                onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}`)}
                 style={buttonStyle}>
                 Detail
               </Button>

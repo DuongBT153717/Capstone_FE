@@ -184,12 +184,12 @@ const UpdateEvaluate = () => {
     {
       field: 'morningTotal',
       headerName: 'Total Morning',
-      flex: 1
+      width: 150
     },
     {
       field: 'afternoonTotal',
       headerName: 'Total Afternoon',
-      flex: 1
+      width: 150
     },
     {
       field: 'lateCheckin',

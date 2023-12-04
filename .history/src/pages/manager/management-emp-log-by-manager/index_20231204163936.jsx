@@ -207,7 +207,7 @@ const EmpLogManagement = () => {
             <>
               <Button
                 variant="contained"
-                onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}/${format(month, 'yyyy-MM')}`)}
+                onClick={() => navigate(`/log-attendance-emp/${params.row.employeeId}`)}
                 style={buttonStyle}>
                 Detail
               </Button>

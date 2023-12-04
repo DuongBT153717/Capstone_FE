@@ -35,8 +35,8 @@ export default function LogEmpAttendanceById() {
                 if (selectedOption === 'option1') {
                     response = await attendanceApi.getAttendanceUser(
                         employee_id,
-                        date.split('-')[1],
                         date.split('-')[0],
+                        date.split('-')[1],
                     );
                     const { username, hireDate } = response;
                     setUserAttendance(response);
