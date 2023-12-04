@@ -25,8 +25,7 @@ const CheckEmpProfile = () => {
     const { user_id } = useParams();
     const [empInfo, setempInfo] = useState([])
 
-    // console.log(birthUpdate);
-    // console.log(info?.firstName);
+
 
 
     useEffect(() => {
@@ -36,7 +35,6 @@ const CheckEmpProfile = () => {
                 setInfo(response)
                 console.log(response);
             } catch (error) {
-                // Xử lý lỗi ở đây nếu cần
                 if (error.response && error.response.status === 404) {
                     console.error('User not found!');
                 } else {

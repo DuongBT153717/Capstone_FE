@@ -10,13 +10,13 @@ const StripedDataGrid = styled(DataGrid)(() => ({
     color: 'gray'
   }
 }))
-const DataTableCheckAttendance = ({ rows, columns, isLoading, CustomToolbar, userName, hireDate }) => {
+const DataTableCheckAttendance = ({ rows, columns, isLoading, CustomToolbar, userName, date }) => {
   const getRowId = (row) => {
     return row.dailyId ? row.dailyId : `${row.id}-${row.label}`;
   };
 return (
   <>
-    <Header title={`Check attendance - ${userName}`} subtitle={`Hire Date: ${hireDate}`} />
+    <Header title={`Check attendance - ${userName}  `} subtitle={`Month-Year: ${date}`} />
     <Box
       sx={{
         '& .MuiDataGrid-root': {

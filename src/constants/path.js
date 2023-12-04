@@ -47,11 +47,12 @@ export const MANAGER_PATH = {
     ATTENDANCE_LOG_DETAIL: '/attendance-log-detail/:employee_id/:date/:logId',
     LOG_MANAGEMENT: '/log-management',
     EMPLOYEE_ATTENDANCE_LOG_LIST: '/emp-attendance-log-list',
-    LOG_ATTENDACE_OF_EMP: '/log-attendance-emp/:employee_id',
+    LOG_ATTENDACE_OF_EMP: '/log-attendance-emp/:employee_id/:date',
     EMPLOYEE_ATTENDANCE_DETAIL: 'emp-attendance-detail/:employee_id/:date',
     EMP_LOG_MANAGEMENT: '/emp-log-management',
     MANAGE_USER_BY_MANAGER: '/manage-user-by-manager',
-    CHECK_EMP_INFO_BY_MANAGER: '/check-emp-info-by-manager/:user_id'
+    CHECK_EMP_INFO_BY_MANAGER: '/check-emp-info-by-manager/:user_id',
+    VIEW_EMP_EVALUATE_MANAGER: 'manager-check-evaluate-report-emp/:employee_id/:date'
 
 }
 
