@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import attendanceApi from '../../../services/attendanceApi'
 import DataTableCheckAttendance from './components/DataTable'
-import LateRequestModal from './components/LateRequestModal'
 import { formatDateNotTime } from '../../../utils/formatDate'
 import { useNavigate } from 'react-router-dom'
 
@@ -18,8 +17,7 @@ export default function CheckAttendanceManager() {
   const [userAttendance, setUserAttendance] = useState('')
   const [dailyLog, setDailyLog] = useState([])
   const [month, setMonth] = useState(new Date())
-  const [openLateRequest, setOpenLateRequest] = useState(false)
-  const [dailyLogModal, setDailyLogModal] = useState({})
+
   const [createdDate, setCreatedDate] = useState({})
   const navigate = useNavigate()
   useEffect(() => {
@@ -58,12 +56,6 @@ export default function CheckAttendanceManager() {
 
   console.log(formatDateNotTime(createdDate?.createdDate))
 
-  const handleOpenLateRequest = (params) => {
-    setOpenLateRequest(true)
-    setDailyLogModal(params)
-  }
-
-  const handleCloseLateRequest = () => setOpenLateRequest(false)
   console.log(dailyLog)
   function CustomToolbar() {
     return (
@@ -232,11 +224,6 @@ export default function CheckAttendanceManager() {
                 View Log
               </Button>
                  ) : null}
-              {(params.row.id !== 'TOTAL') && (params.row.lateCheckin !== false || params.row.earlyCheckout !== false  ) && (
-                <Button variant="contained" sx={{ fontSize: '14px' }} onClick={() => handleOpenLateRequest(params.row)}>
-                  Late/Early Request
-                </Button>
-              )}
             </Box>
           </Box>
         )
@@ -251,11 +238,7 @@ export default function CheckAttendanceManager() {
         CustomToolbar={CustomToolbar}
         isLoading={isLoading}
       />
-      <LateRequestModal
-        handleCloseLateRequest={handleCloseLateRequest}
-        openLateRequest={openLateRequest}
-        dailyLogModal={dailyLogModal}
-      />
+
     </>
   )
 }

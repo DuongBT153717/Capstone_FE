@@ -20,11 +20,12 @@ import DataTableManageUser from './components/DataTable'
 import RoleModal from './components/RoleModal'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { toast } from 'react-toastify'
-import formatDate from '../../../utils/formatDate'
+import formatDate, { formatDateNotTime } from '../../../utils/formatDate'
 const ManageUser = () => {
   const userId = useSelector((state) => state.auth.login.currentUser.accountId)
   const dispatch = useDispatch()
   const [allUser, setAllUser] = useState([])
+  const currentDate = new Date()
   const [user, setUser] = useState('')
   const [open, setOpen] = useState(false)
   const [openCreateAccount, setOpenCreateAccount] = useState(false)
@@ -238,8 +239,11 @@ const ManageUser = () => {
       headerName: 'Action',
       headerAlign: 'center',
       align: 'center',
-      width:150,
+      width: 150,
       renderCell: (params) => {
+        const isDeleteButtonVisible = formatDateNotTime(params.row.createdDate) >= formatDateNotTime(currentDate);
+        console.log(params.row.createdDate);
+        console.log(currentDate);
         return (
           <Box
             margin="0 auto"
@@ -247,7 +251,8 @@ const ManageUser = () => {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            borderRadius="4px">
+            borderRadius="4px"
+          >
             <IconButton onClick={() => handleOpen(params.row)}>
               <EditIcon sx={{ color: '#00FF00' }} />
             </IconButton>
@@ -260,15 +265,17 @@ const ManageUser = () => {
                 <CheckIcon sx={{ color: '#009900' }} />
               </IconButton>
             )}
-
-            <IconButton onClick={() => handleDelete(params.row)}>
-              <DeleteIcon sx={{ color: '#2596be' }} />
-            </IconButton>
+    
+            {isDeleteButtonVisible && (
+              <IconButton onClick={() => handleDelete(params.row)}>
+                <DeleteIcon sx={{ color: '#2596be' }} />
+              </IconButton>
+            )}
           </Box>
-        )
-      }
-    }
-    ,
+        );
+      },
+    },
+    
     {
       field: 'detail',
       headerName: 'View',
@@ -288,7 +295,6 @@ const ManageUser = () => {
             <Button
               variant='contained'
               onClick={() => navigate(`/check-employee-info/${params.row.accountId}`)}
-            //onClick={() => navigate(`/check-employee-info`)}
             >
               Detail
             </Button>
