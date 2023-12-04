@@ -462,7 +462,14 @@ const requestApi = {
       console.log(error)
     }
   },
-
+  getAllRequestAndTicketBySecurity: () => {
+    try {
+      const response = axiosClient.get(`${BASE_URL}/getTicketSecurity`)
+      return response
+    } catch (error) {
+      console.log(error)
+    }
+  },
   getAllTicketHr: () => {
     try {
       const response = axiosClient.get(`${BASE_URL}/getTicketHr`)

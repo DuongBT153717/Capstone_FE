@@ -147,7 +147,7 @@ export default function Login() {
             lg={6}
             sx={{
               alignItems: 'center',
-              background: 'radial-gradient(circle, rgba(9,50,121,1) 16%, rgba(0,212,255,1) 100%)',
+              background: 'radial-gradient(circle, rgba(9,50,121,1) 19%, rgba(0,212,255,1) 100%)',
               color: 'white',
               display: 'flex',
               justifyContent: 'center',

@@ -94,3 +94,16 @@ export const HR_PATH = {
     CHANGE_LOG_EDIT_PROFILE_DETAIL:'/change-log-edit-profile-detail/:userId',    
     CHANGE_LOG_VIEW:'/change-log-view',
 }
+
+export const SECURITY = {
+    LAYOUT: "/",
+    TICKET_SECURITY_LIST:'/ticket-list-security',
+    TICKET_SECURITY_LIST_MANAGE:'/security-ticket',
+    NOTIFICATION_LIST_SECURITY: '/notification-list-security',
+    NOTIFICATION_UPLOAD_SENT_SECURITY: 'notification-send-security',
+    NOTIFICATION_UPLOAD_RECEIVE_SECURITY: 'notification-receive-security',
+    NOTIFICATION_DRAFT_LIST_SECURITY: 'notification-draft-security',
+    NOTIFICATION_SCHEDULED_LIST_SECURITY: 'notification-schedule-security',
+    NOTIFICATION_SCHEDULED_DEPARTMENT_SECURITY: '/notification-department-security',
+    
+}

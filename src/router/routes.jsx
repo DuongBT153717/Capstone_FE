@@ -4,7 +4,7 @@ import BookRoom from '../components/BookRoom'
 import NotFoundPage from '../components/NotFoundPage'
 import RequireAuth from '../components/RequireAuth'
 import UnAuthorized from '../components/UnAuthorized'
-import { ADMIN_PATH, EMPLOYEE_PATH, HR_PATH, MANAGER_PATH, PUBLIC_PATH } from '../constants/path'
+import { ADMIN_PATH, EMPLOYEE_PATH, HR_PATH, MANAGER_PATH, PUBLIC_PATH, SECURITY } from '../constants/path'
 import { ROLES } from '../constants/role'
 import AdminLayout from '../layouts/admin'
 import EmployeeLayout from '../layouts/employee'
@@ -80,6 +80,16 @@ import ChangeLogView from '../pages/hr/change-log-view'
 import ManageUserByManager from '../pages/manager/manage-user-by-manager'
 import CheckEmpProfileByManager from '../pages/manager/manager-check-emp-info'
 import ViewEmpEvaluateReportByManager from '../pages/manager/view-emp-evaluate'
+import SecurityTicket from '../pages/security/security-ticket'
+import SecurityLayout from '../layouts/security'
+import TicketManageSecurity from '../pages/security/security-ticket-manage'
+import ListAllNotificationSecurity from '../pages/security/security-notification-list-all'
+import ListNotificationDraftSecurity from '../pages/security/security-notification-draft'
+import ListNotificationSendSecurity from '../pages/security/security-notification-send'
+import ListNotificationReceiveSecurity from '../pages/security/security-notification-receive'
+import ListNotficationDepartmentSecurity from '../pages/security/security-notification-department'
+import ListNotificationScheduleSecurity from '../pages/security/security-notification-scheduled'
+
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -813,6 +823,83 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <AttendanceLogDetail />
+                </Suspense>
+              )
+            },
+          ]
+        },
+      ]
+    },
+    {
+      path: SECURITY.LAYOUT,
+      element: <SecurityLayout />,
+      children: [
+        {
+          element: (
+            <RequireAuth allowedRoles={[ROLES.SECURITY]} />
+          ),
+          children: [
+            {
+              path: SECURITY.TICKET_SECURITY_LIST,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <SecurityTicket />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.TICKET_SECURITY_LIST_MANAGE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <TicketManageSecurity />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.NOTIFICATION_LIST_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationSecurity />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.NOTIFICATION_DRAFT_LIST_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationDraftSecurity />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.NOTIFICATION_UPLOAD_SENT_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationSendSecurity />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.NOTIFICATION_UPLOAD_RECEIVE_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationReceiveSecurity />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.NOTIFICATION_SCHEDULED_DEPARTMENT_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotficationDepartmentSecurity />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.NOTIFICATION_SCHEDULED_LIST_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationScheduleSecurity />
                 </Suspense>
               )
             },
