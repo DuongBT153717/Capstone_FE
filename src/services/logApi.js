@@ -62,7 +62,7 @@ const logApi = {
           'Content-Type': 'multipart/form-data'
         }
       })
-      toast.success('Update sucessfully!')
+      toast.success('Update user info sucessfully!')
     } catch (error) {
       console.log(error)
     }

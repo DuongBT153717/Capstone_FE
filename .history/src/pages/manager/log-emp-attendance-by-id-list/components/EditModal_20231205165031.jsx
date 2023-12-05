@@ -57,12 +57,12 @@ const EditEmpLogAttendence = ({ openEditLog, handleCloseEditLog, dailyLogModal, 
         },
       });
       toast.success('Update successfully!');
-    } catch (error) {    
+    } catch (error) {
+      console.error('Error updating user information:', error);
+      toast.error('Update failed. If both Manual CheckOut and Manual CheckIn are entered, Manual CheckOut must be later than Manual CheckIn.');
       if (error.response.status === 409) {
         toast.error('Manual CheckIn or Manual CheckOut is invalid!')
-      }else{
-        toast.error('Update failed. If both Manual CheckOut and Manual CheckIn are entered, Manual CheckOut must be later than Manual CheckIn.');
-      }
+      }  
     }
   };
   const [isTimePickerEnabledOut, setIsTimePickerEnabledOut] = useState(true);

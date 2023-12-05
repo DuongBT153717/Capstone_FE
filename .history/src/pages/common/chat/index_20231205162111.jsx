@@ -105,13 +105,12 @@ const Chat = () => {
   useEffect(() => {
     const fetchAllUser = async () => {
       const response = await axios.get(`${BASE_URL}/getAllUserInfo`)
-      const updateAllUser = response.data.filter((item) => item.accountId !== currentUserId)
-      console.log(updateAllUser);
-      setAllUser(updateAllUser)
+      setAllUser(response.data)
     }
     fetchAllUser()
   }, [])
 
+  console.log(isActiveUser)
   useEffect(() => {
     const fetchAllUserSingleChat = async () => {
       const data = {
@@ -185,6 +184,7 @@ const Chat = () => {
     fetchAllChatList()
   }, [])
 
+  console.log(allUser)
 
   useEffect(() => {
     if (isActiveUser !== '') {
@@ -204,6 +204,7 @@ const Chat = () => {
       getMessage()
     }
   }, [isActiveUser?.chatId])
+  console.log(isLoadingChat)
   const imgurlAvatar = async () => {
     try {
       if (allChatList.length > 0) {
@@ -263,6 +264,7 @@ const Chat = () => {
     setAllChatList(updatedChatList)
   }
 
+  console.log(file)
   const handleSendMessage = async () => {
     let data = {
       from: currentUserId,
@@ -292,6 +294,7 @@ const Chat = () => {
               'Content-Type': 'multipart/form-data'
             }
           })
+          console.log(res)
           let message2 = {
             myself: true,
             message: res.message,
@@ -329,6 +332,7 @@ const Chat = () => {
               'Content-Type': 'multipart/form-data'
             }
           })
+          console.log(res)
           let message2 = {
             myself: true,
             message: res.message,
@@ -387,6 +391,7 @@ const Chat = () => {
     }
   }
 
+  console.log(selectedUserGroup)
   useEffect(() => {
     if (isActiveUser === '') {
       socket.current = io(SOCKET_URL)
@@ -410,6 +415,7 @@ const Chat = () => {
     }
   }, [arrivalMessage])
 
+  console.log(arrivalMessage)
 
   useEffect(() => {
     arrivalMessage && setMessages((pre) => [...pre, arrivalMessage])
@@ -446,6 +452,7 @@ const Chat = () => {
     imgurlMessage()
   }, [messages])
 
+  console.log(isActiveUser)
   const handleDownloadFile = async (item) => {
     console.log(item)
     let data = {
@@ -519,6 +526,7 @@ const Chat = () => {
       }
   
       const res = await chatApi.updateChat(data)
+      console.log(res)
   
       setAllChatList((prev) => {
         return prev.map((chat) => (chat.chatId === res.chatId ? res : chat))

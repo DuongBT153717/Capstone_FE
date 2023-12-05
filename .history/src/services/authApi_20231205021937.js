@@ -40,9 +40,7 @@ const authApi = {
       await axios.post(`${BASE_URL}/resetPassword`, data)
       toast.success('Your new password will be sent to your gmail!')
     } catch (error) {
-      if (error.response.status === 404) {
-        toast.error('Username not found!')
-      }
+      console.log(error);
     }
   },
 }
