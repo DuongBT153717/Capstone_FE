@@ -7,7 +7,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors'
-import { Skeleton } from '@mui/material'
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Skeleton } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Collapse from '@mui/material/Collapse'
@@ -27,6 +27,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
+import { toast } from 'react-toastify'
 function formatDate(date) {
   const createDate = new Date(date);
   const year = createDate.getFullYear().toString().slice(-2);
@@ -40,15 +41,32 @@ function formatDate(date) {
 function Row(props) {
   const { row } = props
   const [open, setOpen] = React.useState(false)
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
+  const handleOpenConfirmDialog = () => {
+    setConfirmOpen(true);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmOpen(false);
+  };
   const handelAcceptOtherRequest = (ticketId) => {
-    let data = {
-      ticketId: ticketId,
+    try {
+      let data = {
+        ticketId: ticketId,
+      }
+      requestApi.acceptStatutOtherRequest(data)
+      toast.success('Request Finish successfully!', {
+        autoClose: 800,
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    } catch {
+      toast.error('Failed to Finish request. Please try again.', {
+        autoClose: 3000,
+      });
     }
-    requestApi.acceptStatutOtherRequest(data)
-    setTimeout(() => {
-      window.location.reload();
-    }, 500); 
   }
   const navigate = useNavigate()
   return (
@@ -107,13 +125,34 @@ function Row(props) {
         </TableCell>
         <TableCell>
           {row.topic === 'OTHER_REQUEST' && row.status === true ? (
-            <Button  onClick={() =>handelAcceptOtherRequest(row.ticketId)}>
+            <Button onClick={handleOpenConfirmDialog}>
               <CloseIcon />
               <Typography fontSize={'13px'} color="#000">
                 Finish
               </Typography>
             </Button>
           ) : null}
+          <Dialog
+            open={confirmOpen}
+            onClose={handleCloseConfirmDialog}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                This action will finish the request. Do you want to proceed?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => handelAcceptOtherRequest(row.ticketId)} color="primary" autoFocus>
+                Yes
+              </Button>
+              <Button onClick={handleCloseConfirmDialog} color="primary">
+                No
+              </Button>
+            </DialogActions>
+          </Dialog>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -284,7 +323,7 @@ export default function RequestManagerList() {
   return (
     <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">
       <Box flex={1} sx={{ overflowX: 'hidden' }}>
-      <Paper elevation={3} sx={{ padding: '16px' }}>
+        <Paper elevation={3} sx={{ padding: '16px' }}>
           <TextField
             label="Search"
             value={searchTerm}

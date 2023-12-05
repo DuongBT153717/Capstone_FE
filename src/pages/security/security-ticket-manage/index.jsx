@@ -1,6 +1,5 @@
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled'
 import AddIcon from '@mui/icons-material/Add'
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
@@ -22,24 +21,18 @@ import TablePagination from '@mui/material/TablePagination'
 import TableRow from '@mui/material/TableRow'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
+import formatDate from '../../../utils/formatDate'
 import { toast } from 'react-toastify'
-function formatDate(date) {
-  const createDate = new Date(date);
-  const year = createDate.getFullYear().toString().slice(-2);
-  const month = String(createDate.getMonth() + 1).padStart(2, '0');
-  const day = String(createDate.getDate()).padStart(2, '0');
-  const hours = String(createDate.getHours()).padStart(2, '0');
-  const minutes = String(createDate.getMinutes()).padStart(2, '0');
-  const seconds = String(createDate.getSeconds()).padStart(2, '0');
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
 function Row(props) {
   const { row } = props
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = React.useState(false)
+  const navigate = useNavigate()
+
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const handleOpenConfirmDialog = () => {
@@ -68,7 +61,16 @@ function Row(props) {
       });
     }
   };
-  const navigate = useNavigate()
+  function formatDate(date) {
+    const createDate = new Date(date);
+    const year = createDate.getFullYear().toString().slice(-2);
+    const month = String(createDate.getMonth() + 1).padStart(2, '0');
+    const day = String(createDate.getDate()).padStart(2, '0');
+    const hours = String(createDate.getHours()).padStart(2, '0');
+    const minutes = String(createDate.getMinutes()).padStart(2, '0');
+    const seconds = String(createDate.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
   return (
     <>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -85,7 +87,7 @@ function Row(props) {
         </TableCell>
         <TableCell>{row.requestTickets[row.requestTickets.length - 1].title}</TableCell>
         <TableCell>{formatDate(row.createDate)}</TableCell>
-        <TableCell>{formatDate(row.createDate)}</TableCell>
+        <TableCell>{formatDate(row.updateDate)}</TableCell>
         <TableCell> {row.status === false ? (
           <Box
             width="80%"
@@ -147,7 +149,6 @@ function Row(props) {
             </DialogActions>
           </Dialog>
         </TableCell>
-
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -161,7 +162,7 @@ function Row(props) {
                   <TableRow>
                     <TableCell style={{ width: '120px' }}>Request ID</TableCell>
                     <TableCell style={{ width: '200px' }} align="center">Status</TableCell>
-                    <TableCell style={{ width: '200px' }}>Receiver</TableCell>
+                    <TableCell style={{ width: '50px' }}>Receiver</TableCell>
                     <TableCell style={{ width: '100px' }} >Create Date</TableCell>
                     <TableCell style={{ width: '100px' }} >Update Date</TableCell>
                     <TableCell style={{ width: '100px' }}>Action</TableCell>
@@ -237,19 +238,14 @@ function Row(props) {
                       <TableCell>{formatDate(request_row.requestCreateDate)}</TableCell>
                       <TableCell>{formatDate(request_row.requestUpdateDate)}</TableCell>
                       <TableCell>
-                        {row.topic !== 'ROOM_REQUEST' ? (
-                          <IconButton
-                            sx={{ color: '#1565c0' }}
-                            onClick={() => navigate(`/request-detail/${request_row.requestId}`)}>
-                            <RemoveRedEyeIcon />
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            sx={{ color: '#1565c0' }}
-                            onClick={() => navigate(`/book-room-detail/${request_row.requestId}`)}>
-                            <AssignmentTurnedInIcon />
-                          </IconButton>
-                        )}
+                        <IconButton
+                          sx={{ color: '#1565c0' }}
+                          onClick={() =>
+                            navigate(`/request-detail/${request_row.requestId}`)
+                          }>
+                          <RemoveRedEyeIcon />
+                        </IconButton>
+
                       </TableCell>
                     </TableRow>
                   ))}
@@ -262,7 +258,6 @@ function Row(props) {
     </>
   )
 }
-
 const TableRowsLoader = ({ rowsNum }) => {
   return [...Array(rowsNum)].map((row, index) => (
     <TableRow key={index}>
@@ -290,7 +285,7 @@ const TableRowsLoader = ({ rowsNum }) => {
     </TableRow>
   ))
 }
-export default function CheckHrList() {
+export default function TicketManageSecurity() {
   const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const [listRequestAndTicket, setListRequestAndTicket] = useState([])
   const [page, setPage] = useState(0)
@@ -324,8 +319,8 @@ export default function CheckHrList() {
             label="Search"
             value={searchTerm}
             fullWidth
-            onChange={(e) => setSearchTerm(e.target.value)}
             placeholder='ID, Topic, Title, Date, Status'
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Paper>
         <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
@@ -362,7 +357,9 @@ export default function CheckHrList() {
                 <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
                   Action
                 </TableCell>
+
                 <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+
                 </TableCell>
               </TableRow>
             </TableHead>

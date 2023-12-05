@@ -107,7 +107,12 @@ const CheckEmpProfileByManager = () => {
             cellClassName: 'name-column--cell',
             headerAlign: 'center',
             align: 'center',
-            flex: 1
+            flex: 1,
+            renderCell: (params) => (
+                <div style={{ color: 'black' }}>
+                    {params.row.department.departmentName} 
+                </div>
+            ),
         },
         {
             field: 'paidDay',

@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { format } from 'date-fns'
@@ -16,7 +16,7 @@ const EmpLogManagement = () => {
   const [month, setMonth] = useState(new Date())
   const [listLog, setListLog] = useState([])
   const [listEmployees, setListEmployees] = useState([])
-
+  const [employee, setEmployee] = useState('')
   const navigate = useNavigate()
   const userInfo = useAuth()
 
@@ -33,12 +33,31 @@ const EmpLogManagement = () => {
         console.error('Error fetching employee list:', error)
       }
     }
-
     getListEmpByDepartment()
   }, [userInfo?.departmentId])
+  const [isSearchClicked, setIsSearchClicked] = useState(false);
+  const [employeeNames, setEmployeeNames] = useState([]);
+  useEffect(() => {
+    const fetchEmployeeNames = async () => {
+      try {
+        const response = await userApi.getAllEmployeeNames(
+          userInfo.departmentId,
+          format(month, 'MM'),
+          format(month, 'yyyy')
+        );
+        console.log('API Response:', response);
+        setEmployeeNames(response || []);
+      } catch (error) {
+        console.error('Error fetching employee names:', error);
+      }
+    };
 
+    fetchEmployeeNames();
+  }, [userInfo?.departmentId, month]);
+  console.log('Employee Names:', employeeNames);
   const handleSearchLog = async () => {
     setIsLoading(true)
+    setIsSearchClicked(true);
     try {
       if (!userInfo || !userInfo.departmentId) {
         console.error('User information or departmentId is missing.')
@@ -55,9 +74,10 @@ const EmpLogManagement = () => {
         data.month,
         data.year
       )
-      if(response.length === 0){
+      if (response.length === 0) {
         toast.error("This month haven't had evaluate yet")
       }
+
       setListLog(response)
       console.log(response)
       console.log(data.departmentId)
@@ -284,26 +304,87 @@ const EmpLogManagement = () => {
           </Button>
         </Box>
       </Box>
-      {listLog.length > 0 && listLog[0].department && listLog[0].department.departmentName && (
-        <Box mt={3}>
-          <Typography variant="h6">
+
+      <Box display="flex" alignItems="center" mt={3} sx={{ marginLeft: 'auto' }}>
+     
+        {isSearchClicked && (
+          <FormControl sx={{ width: '280px' }}>
+            <InputLabel id="demo-simple-select-label">Employee Remaining</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              label="Employee Remaining"
+              value={employee}
+              onChange={(event) => {
+                const selectedEmployeeId = event.target.value;
+                setEmployee(selectedEmployeeId);
+                navigate(`/create-evaluate/${selectedEmployeeId}/${format(month, 'yyyy-MM')}`);
+              }}
+            >
+              {employeeNames.map((item, index) => (
+                <MenuItem key={index} value={item.employeeId}>
+                  {item.userName}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
+           {isSearchClicked && listLog.length > 0 && listLog[0].department && listLog[0].department.departmentName && (
+          <Typography variant="h6" sx={{ marginLeft: '30px' }}>
             <span>Department: </span>
             <span style={{ color: 'red' }}>{listLog[0].department.departmentName}</span>
             <span style={{ color: 'red' }}>{listEmployees[0].departmentName}</span>
           </Typography>
-        </Box>
-      )}
+        )}
+      </Box>
+
+
       {listLog && listLog.length !== 0 ? (
-        <>
-          <Box mt={3}>
-            <DataTableListChangeLog rows={listLog} columns={columns} isLoading={isLoading} />
-          </Box>
-        </>
+        <Box mt={3}>
+          <DataTableListChangeLog rows={listLog} columns={columns} isLoading={isLoading} />
+        </Box>
       ) : (
         <></>
       )}
     </>
-  )
+  );
+
 }
 
 export default EmpLogManagement
+// {isSearchClicked ? (
+//   <FormControl sx={{ width: '280px' }}>
+//     <InputLabel id="demo-simple-select-label">Employee Remaining</InputLabel>
+//     <Select
+//       labelId="demo-simple-select-label"
+//       label="Employee Remaining"
+//       value={employee}
+//       onChange={(event) => {
+//         const selectedEmployeeId = event.target.value;
+//         setEmployee(selectedEmployeeId);
+//         navigate(`/create-evaluate/${selectedEmployeeId}/${format(month, 'yyyy-MM')}`);
+//       }}
+//     >
+//       {employeeNames.map((item, index) => (
+//         <MenuItem key={index} value={item.employeeId}>
+//           {item.userName}
+//         </MenuItem>
+//       ))}
+//     </Select>
+//   </FormControl>
+// ) : (
+//   <FormControl sx={{ width: '280px' }}>
+//     <InputLabel id="demo-simple-select-label">Employee Remaining</InputLabel>
+
+//     <Select
+//       labelId="demo-simple-select-label"
+//       label="Employee Remaining"
+//       value=""
+//     >
+
+//       <MenuItem>
+//         null
+//       </MenuItem>
+
+//     </Select>
+//   </FormControl>
+// )}

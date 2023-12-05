@@ -23,7 +23,7 @@ export default function LogEmpAttendanceById() {
     const navigate = useNavigate();
     const [userName, setUserName] = useState('');
     const [hireDate, setHireDate] = useState('');
-    const { employee_id, date } = useParams()
+    const {employee_id, date } = useParams()
     const [selectedOption, setSelectedOption] = useState('option1');
     const [option2Data, setOption2Data] = useState([]);
 
@@ -35,8 +35,8 @@ export default function LogEmpAttendanceById() {
                 if (selectedOption === 'option1') {
                     response = await attendanceApi.getAttendanceUser(
                         employee_id,
-                        date.split('-')[1],
                         date.split('-')[0],
+                        date.split('-')[1],
                     );
                     const { username, hireDate } = response;
                     setUserAttendance(response);

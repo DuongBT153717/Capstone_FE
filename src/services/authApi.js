@@ -20,6 +20,9 @@ const authApi = {
       } else if (response.data.role === 'manager') {
         navigate('/request-list-manager')
       }
+      else if (response.data.role === 'security') {
+        navigate('/ticket-list-security')
+      }
     } catch (error) {
       if (error.response.status === 400) {
         toast.error('Password wrong, please try again!')

@@ -37,7 +37,9 @@ const EvaluateReport = () => {
         userId: currentUser?.accountId,
         month: format(month, 'MM'),
         year: format(month, 'yyyy')
+        
       }
+    
       try {
         const response = await axiosClient.post(`${BASE_URL}/getIndividualEvaluate`, data)
         console.log(data)

@@ -1,9 +1,9 @@
 import NotificationDraftList from '../../common/notification-draft-list'
 
-const ListNotificationDraftAdmin = () => {
+const ListNotificationDraftSecurity = () => {
   return (
    <NotificationDraftList/>
   )
 }
 
-export default ListNotificationDraftAdmin
+export default ListNotificationDraftSecurity

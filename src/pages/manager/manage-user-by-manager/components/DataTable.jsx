@@ -1,10 +1,10 @@
-import { Box, Button, LinearProgress, Typography } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
 import {
   DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton
 } from "@mui/x-data-grid";
 
 
-const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount, isLoading,departmentName }) => {
+const DataTableManageUser = ({ rows, columns, isLoading,departmentName }) => {
   const filteredRows = rows.filter(row => row.departmentName === departmentName && row.roleName === 'employee');
 
   console.log(filteredRows);
@@ -17,9 +17,6 @@ const DataTableManageUser = ({ rows, columns, handleOpenCreateAccount, isLoading
             <GridToolbarFilterButton />
             <GridToolbarExport />
           </Box>
-          <Button variant="contained" onClick={handleOpenCreateAccount}>
-            <Typography>Add Account</Typography>
-          </Button>
         </Box>
       </GridToolbarContainer>
     )

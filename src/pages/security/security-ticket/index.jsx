@@ -1,15 +1,10 @@
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled'
-import AddIcon from '@mui/icons-material/Add'
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
 import CheckIcon from '@mui/icons-material/Check'
-import CloseIcon from '@mui/icons-material/Close'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
-import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors'
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Skeleton } from '@mui/material'
+import { Skeleton } from '@mui/material'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import Collapse from '@mui/material/Collapse'
 import IconButton from '@mui/material/IconButton'
 import Paper from '@mui/material/Paper'
@@ -22,53 +17,37 @@ import TablePagination from '@mui/material/TablePagination'
 import TableRow from '@mui/material/TableRow'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors'
+import CloseIcon from '@mui/icons-material/Close'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import requestApi from '../../../services/requestApi'
-import { toast } from 'react-toastify'
-function formatDate(date) {
-  const createDate = new Date(date);
-  const year = createDate.getFullYear().toString().slice(-2);
-  const month = String(createDate.getMonth() + 1).padStart(2, '0');
-  const day = String(createDate.getDate()).padStart(2, '0');
-  const hours = String(createDate.getHours()).padStart(2, '0');
-  const minutes = String(createDate.getMinutes()).padStart(2, '0');
-  const seconds = String(createDate.getSeconds()).padStart(2, '0');
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
+import formatDate from '../../../utils/formatDate'
 function Row(props) {
   const { row } = props
   const [open, setOpen] = useState(false)
-  const [confirmOpen, setConfirmOpen] = useState(false);
-
-  const handleOpenConfirmDialog = () => {
-    setConfirmOpen(true);
-  };
-
-  const handleCloseConfirmDialog = () => {
-    setConfirmOpen(false);
-  };
-  const handelAcceptOtherRequest = async (ticketId) => {
-    try {
-      let data = {
-        ticketId: ticketId,
-      };
-      await requestApi.acceptStatutOtherRequest(data);
-
-      toast.success('Request Finish successfully!', {
-        autoClose: 800,
-      });
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    } catch (error) {
-      toast.error('Failed to Finish request. Please try again.', {
-        autoClose: 3000,
-      });
-    }
-  };
+  const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const navigate = useNavigate()
+  const handleAcceptRequest = (requestId) => {
+    let data = {
+      requestId: requestId,
+      receiverId: currentUser?.accountId
+    }
+    requestApi.acceptRequest(data)
+    navigate(0)
+  }
+  function formatDate(date) {
+    const createDate = new Date(date);
+    const year = createDate.getFullYear().toString().slice(-2);
+    const month = String(createDate.getMonth() + 1).padStart(2, '0');
+    const day = String(createDate.getDate()).padStart(2, '0');
+    const hours = String(createDate.getHours()).padStart(2, '0');
+    const minutes = String(createDate.getMinutes()).padStart(2, '0');
+    const seconds = String(createDate.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
   return (
     <>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -85,69 +64,38 @@ function Row(props) {
         </TableCell>
         <TableCell>{row.requestTickets[row.requestTickets.length - 1].title}</TableCell>
         <TableCell>{formatDate(row.createDate)}</TableCell>
-        <TableCell>{formatDate(row.createDate)}</TableCell>
-        <TableCell> {row.status === false ? (
-          <Box
-            width="80%"
-            margin="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            borderRadius="4px">
-            <Typography color="#a9a9a9">CLOSE</Typography>
-          </Box>
-        ) : row.status === true ? (
-          <Box
-            width="80%"
-            margin="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            borderRadius="4px">
-            <Typography color="#000">AVALIABLE</Typography>
-          </Box>
-        ) : null}</TableCell>
-        <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-          {row.topic !== 'ROOM_REQUEST' && row.status === true ? (
-            <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
-              <AddIcon />
-            </IconButton>
-          ) : null}
-        </TableCell>
+        <TableCell>{formatDate(row.updateDate)}</TableCell>
         <TableCell>
-          {row.topic === 'OTHER_REQUEST' && row.status === true ? (
-            <Button onClick={handleOpenConfirmDialog}>
-              <CloseIcon />
-              <Typography fontSize={'13px'} color="#000">
-                Finish
-              </Typography>
-            </Button>
+          {' '}
+          {row.status === false ? (
+            <Box
+              width="80%"
+              margin="0 auto"
+              p="5px"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              borderRadius="4px">
+              <Typography color="#a9a9a9">CLOSE</Typography>
+            </Box>
+          ) : row.status === true ? (
+            <Box
+              width="80%"
+              margin="0 auto"
+              p="5px"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              borderRadius="4px">
+              <Typography color="#000">AVALIABLE</Typography>
+            </Box>
           ) : null}
-          <Dialog
-            open={confirmOpen}
-            onClose={handleCloseConfirmDialog}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                This action will finish the request. Do you want to proceed?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => handelAcceptOtherRequest(row.ticketId)} color="primary" autoFocus>
-                Yes
-              </Button>
-              <Button onClick={handleCloseConfirmDialog} color="primary">
-                No
-              </Button>
-            </DialogActions>
-          </Dialog>
         </TableCell>
-
+        {/* <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+          <IconButton  >
+            <AddIcon />
+          </IconButton>
+        </TableCell> */}
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -160,11 +108,14 @@ function Row(props) {
                 <TableHead>
                   <TableRow>
                     <TableCell style={{ width: '120px' }}>Request ID</TableCell>
-                    <TableCell style={{ width: '200px' }} align="center">Status</TableCell>
+                    <TableCell style={{ width: '200px' }} align="center">
+                      Status
+                    </TableCell>
                     <TableCell style={{ width: '200px' }}>Receiver</TableCell>
-                    <TableCell style={{ width: '100px' }} >Create Date</TableCell>
-                    <TableCell style={{ width: '100px' }} >Update Date</TableCell>
-                    <TableCell style={{ width: '100px' }}>Action</TableCell>
+                    <TableCell style={{ width: '100px' }}>Create Date</TableCell>
+                    <TableCell style={{ width: '100px' }}>Update Date</TableCell>
+                    <TableCell style={{ width: '10px' }}></TableCell>
+                    <TableCell style={{ width: '10px' }}></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -183,8 +134,7 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#FAFAD2'}
-                            borderRadius="4px"
-                          >
+                            borderRadius="4px">
                             <AccessTimeFilledIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
@@ -197,8 +147,7 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#2e7c67'}
-                            borderRadius="4px"
-                          >
+                            borderRadius="4px">
                             <CheckIcon />
                             <Typography color="#fff">{request_row.requestStatus}</Typography>
                           </Box>
@@ -211,8 +160,7 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#6495ED'}
-                            borderRadius="4px"
-                          >
+                            borderRadius="4px">
                             <RunningWithErrorsIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
@@ -225,31 +173,38 @@ function Row(props) {
                             justifyContent="center"
                             alignItems="center"
                             bgcolor={'#C0C0C0'}
-                            borderRadius="4px"
-                          >
+                            borderRadius="4px">
                             <CloseIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
                         ) : null}
                       </TableCell>
-                      <TableCell key={request_row.userId}
-                      >{request_row.receiverFirstName} {request_row.receiverLastName}</TableCell>
+                      <TableCell key={request_row.userId}>
+                        {request_row.receiverFirstName}{request_row.receiverLastName}
+                      </TableCell>
                       <TableCell>{formatDate(request_row.requestCreateDate)}</TableCell>
                       <TableCell>{formatDate(request_row.requestUpdateDate)}</TableCell>
                       <TableCell>
-                        {row.topic !== 'ROOM_REQUEST' ? (
+                        {row.topic === 'ROOM_REQUEST' ? (
+                          <IconButton
+                            disabled={request_row.requestStatus === 'PENDING' ? true : false}
+                            sx={{ color: '#1565c0' }}
+                            onClick={() => navigate(`/room-detail/${request_row.requestId}`)}>
+                            <AssignmentTurnedInIcon />
+                          </IconButton>
+                        ) : (
                           <IconButton
                             sx={{ color: '#1565c0' }}
                             onClick={() => navigate(`/request-detail/${request_row.requestId}`)}>
                             <RemoveRedEyeIcon />
                           </IconButton>
-                        ) : (
-                          <IconButton
-                            sx={{ color: '#1565c0' }}
-                            onClick={() => navigate(`/book-room-detail/${request_row.requestId}`)}>
-                            <AssignmentTurnedInIcon />
-                          </IconButton>
                         )}
+                        <IconButton
+                          disabled={request_row.requestStatus === 'PENDING' ? false : true}
+                          onClick={() => handleAcceptRequest(request_row.requestId)}
+                          sx={{ color: 'green' }}>
+                          <CheckIcon />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -262,7 +217,6 @@ function Row(props) {
     </>
   )
 }
-
 const TableRowsLoader = ({ rowsNum }) => {
   return [...Array(rowsNum)].map((row, index) => (
     <TableRow key={index}>
@@ -290,8 +244,7 @@ const TableRowsLoader = ({ rowsNum }) => {
     </TableRow>
   ))
 }
-export default function CheckHrList() {
-  const currentUser = useSelector((state) => state.auth.login?.currentUser);
+export default function SecurityTicket() {
   const [listRequestAndTicket, setListRequestAndTicket] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
@@ -309,13 +262,13 @@ export default function CheckHrList() {
   useEffect(() => {
     setIsLoading(true)
     const fetchListRequestAndTicketByAdmin = async () => {
-      const response = await requestApi.getAllRequestAndTicket(currentUser?.accountId)
+      const response = await requestApi.getAllRequestAndTicketBySecurity()
       setListRequestAndTicket(response)
       setIsLoading(false)
     }
     fetchListRequestAndTicketByAdmin()
   }, [])
-  console.log(currentUser?.accountId);
+
   return (
     <Box display="flex" height="100vh" bgcolor="rgb(238, 242, 246)">
       <Box flex={1} sx={{ overflowX: 'hidden' }}>
@@ -324,16 +277,14 @@ export default function CheckHrList() {
             label="Search"
             value={searchTerm}
             fullWidth
-            onChange={(e) => setSearchTerm(e.target.value)}
             placeholder='ID, Topic, Title, Date, Status'
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Paper>
         <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
-          <Link to="/create-request">
-            <Button variant="contained">
-              <Typography>Create Ticket</Typography>
-            </Button>
-          </Link>
+          {/* <Button variant="contained">
+            <Typography>Create Ticket</Typography>
+          </Button> */}
         </Box>
 
         <TableContainer component={Paper} sx={{ marginTop: '16px' }}>
@@ -356,14 +307,14 @@ export default function CheckHrList() {
                 <TableCell style={{ width: '150px', fontWeight: 'bold', fontSize: '18px' }}>
                   Update Date
                 </TableCell>
-                <TableCell align='center' style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
+                <TableCell
+                  align="center"
+                  style={{ width: '100px', fontWeight: 'bold', fontSize: '18px' }}>
                   Status
                 </TableCell>
-                <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+                {/* <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
                   Action
-                </TableCell>
-                <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             </TableHead>
             {isLoading ? (
