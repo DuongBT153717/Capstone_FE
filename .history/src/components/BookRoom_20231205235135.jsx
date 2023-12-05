@@ -122,8 +122,11 @@ const BookRoom = () => {
       resourceName: 'roomId'
     }
   ])
-  const commitChanges = async ({ added }) => {
-    const dateStart = moment(added.startDate.toString())
+  const commitChanges = ({ added }) => {
+    setData((prevData) => {
+      let newData = [...prevData]
+      if (added) {
+        const dateStart = moment(added.startDate.toString())
         const timeStart = dateStart.format('HH:mm:ss')
         const dateEnd = moment(added.endDate.toString())
         const timeEnd = dateEnd.format('HH:mm:ss')
@@ -149,13 +152,22 @@ const BookRoom = () => {
           bookingStatus: 'PENDING'
         }
 
+        const createRoomBookingTicket = async (data) => {
+          try {
+            await axiosClient.post(`${BASE_URL}/roomBookingForm`, data)
+            toast.success('Send request successfully')
+            newData = [...newData, dataAdd]
+          } catch (error) {
+            if (error.response.status === 400) {
+              toast.error("You can't book room before current time")
+            }
+            if (error.response.status === 404) {
+              toast.error('User not found!')
+            }
+          }
+        }
 
-        const res = await requestApi.createRoomBookingTicket(data)
-        console.log(res);
-     setData((prevData) => {
-      let newData = [...prevData]
-      if (added && res === 1) {
-        newData = [...newData, dataAdd]
+        createRoomBookingTicket(data)
       }
       return newData
     })

@@ -24,9 +24,6 @@ import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import requestApi from '../services/requestApi'
-import { toast } from 'react-toastify'
-import axiosClient from '../utils/axios-config'
-import { BASE_URL } from '../services/constraint'
 
 const BoolEditor = () => {
   return null
@@ -37,11 +34,9 @@ const Content = ({ appointmentData, ...restProps }) => {
   return (
     <AppointmentTooltip.Content {...restProps} appointmentData={appointmentData}>
       <Grid mt={1} container alignItems="center">
-        <Grid display="flex" gap="8px" ml="25px" item xs={10}>
+        <Grid display="flex" gap='8px' ml="25px" item xs={10}>
           <Typography>Status: </Typography>
-          <Typography color={appointmentData.bookingStatus === 'ACCEPTED' ? 'green' : 'brown'}>
-            {appointmentData.bookingStatus}
-          </Typography>
+          <Typography color={appointmentData.bookingStatus === 'ACCEPTED' ? 'green': 'brown'}>{appointmentData.bookingStatus}</Typography>
         </Grid>
       </Grid>
     </AppointmentTooltip.Content>
@@ -60,6 +55,7 @@ const LabelComponent = (props) => {
     return null
   }
 }
+
 
 const BookRoom = () => {
   const [data, setData] = useState([])
@@ -107,7 +103,7 @@ const BookRoom = () => {
           endDate: item.bookingDate + ' ' + item.endDate,
           title: item.title,
           roomId: item.roomId,
-          bookingStatus: item.bookingStatus
+          bookingStatus: item.bookingStatus,
         }
       })
       setData(updatedData)
@@ -122,12 +118,14 @@ const BookRoom = () => {
       resourceName: 'roomId'
     }
   ])
-  const commitChanges = async ({ added }) => {
-    const dateStart = moment(added.startDate.toString())
+  const commitChanges = ({added}) => {
+    setData((prevData) => {
+      let newData = [...prevData]
+      if (added) {
+        const dateStart = moment(added.startDate.toString())
         const timeStart = dateStart.format('HH:mm:ss')
         const dateEnd = moment(added.endDate.toString())
         const timeEnd = dateEnd.format('HH:mm:ss')
-
         let data = {
           userId: currentUser?.accountId,
           departmentSenderId: added.departmentId.toString(),
@@ -139,7 +137,6 @@ const BookRoom = () => {
           endTime: timeEnd,
           departmentReceiverId: '9'
         }
-
         let dataAdd = {
           id: currentUser?.accountId,
           startDate: dateStart.format('YYYY-MM-DD HH:mm'),
@@ -148,19 +145,14 @@ const BookRoom = () => {
           roomId: added.roomId,
           bookingStatus: 'PENDING'
         }
-
-
-        const res = await requestApi.createRoomBookingTicket(data)
-        console.log(res);
-     setData((prevData) => {
-      let newData = [...prevData]
-      if (added && res === 1) {
-        newData = [...newData, dataAdd]
+        const res = requestApi.createRoomBookingTicket(data)
+        if(res){
+          newData = [...newData, dataAdd]
+        }
       }
       return newData
     })
   }
-
   const DateEditor = ({ ...restProps }) => {
     return <AppointmentForm.DateEditor {...restProps} readOnly></AppointmentForm.DateEditor>
   }
@@ -241,6 +233,7 @@ const BookRoom = () => {
             basicLayoutComponent={BasicLayout}
           />
           <GroupingPanel />
+
         </Scheduler>
       ) : currentUser?.role === 'admin' || currentUser?.role === 'security' ? (
         <Scheduler data={data}>

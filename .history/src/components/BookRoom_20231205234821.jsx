@@ -25,8 +25,6 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import requestApi from '../services/requestApi'
 import { toast } from 'react-toastify'
-import axiosClient from '../utils/axios-config'
-import { BASE_URL } from '../services/constraint'
 
 const BoolEditor = () => {
   return null
@@ -122,8 +120,11 @@ const BookRoom = () => {
       resourceName: 'roomId'
     }
   ])
-  const commitChanges = async ({ added }) => {
-    const dateStart = moment(added.startDate.toString())
+  const commitChanges = ({ added }) => {
+    setData((prevData) => {
+      let newData = [...prevData]
+      if (added) {
+        const dateStart = moment(added.startDate.toString())
         const timeStart = dateStart.format('HH:mm:ss')
         const dateEnd = moment(added.endDate.toString())
         const timeEnd = dateEnd.format('HH:mm:ss')
@@ -149,12 +150,7 @@ const BookRoom = () => {
           bookingStatus: 'PENDING'
         }
 
-
-        const res = await requestApi.createRoomBookingTicket(data)
-        console.log(res);
-     setData((prevData) => {
-      let newData = [...prevData]
-      if (added && res === 1) {
+        requestApi.createRoomBookingTicket(data)
         newData = [...newData, dataAdd]
       }
       return newData

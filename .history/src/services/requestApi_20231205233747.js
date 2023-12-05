@@ -440,7 +440,7 @@ const requestApi = {
       console.log(error)
     }
   },
-   createRoomBookingTicket : async (data) => {
+  createRoomBookingTicket: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/roomBookingForm`, data)
       toast.success('Send request successfully')

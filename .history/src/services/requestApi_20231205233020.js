@@ -440,11 +440,11 @@ const requestApi = {
       console.log(error)
     }
   },
-   createRoomBookingTicket : async (data) => {
+  createRoomBookingTicket: async (data) => {
     try {
-      await axiosClient.post(`${BASE_URL}/roomBookingForm`, data)
+      const res = await axiosClient.post(`${BASE_URL}/roomBookingForm`, data)
       toast.success('Send request successfully')
-      return 1
+      return res
     } catch (error) {
       if (error.response.status === 400) {
         toast.error("You can't book room before current time")
