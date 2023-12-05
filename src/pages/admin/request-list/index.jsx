@@ -6,7 +6,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors'
-import { Skeleton } from '@mui/material'
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Skeleton } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Collapse from '@mui/material/Collapse'
@@ -27,20 +27,39 @@ import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import requestApi from '../../../services/requestApi'
 import formatDate from '../../../utils/formatDate'
+import { toast } from 'react-toastify'
 function Row(props) {
   const { row } = props
   const [open, setOpen] = React.useState(false)
   const navigate = useNavigate()
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
-  const handelAcceptOtherRequest = (ticketId) => {
-    let data = {
-      ticketId: ticketId,
+  const handleOpenConfirmDialog = () => {
+    setConfirmOpen(true);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmOpen(false);
+  };
+  const handelAcceptOtherRequest = async (ticketId) => {
+    try {
+      let data = {
+        ticketId: ticketId,
+      };
+      await requestApi.acceptStatutOtherRequest(data);
+
+      toast.success('Request Finish successfully!', {
+        autoClose: 800,
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      toast.error('Failed to Finish request. Please try again.', {
+        autoClose: 3000,
+      });
     }
-    requestApi.acceptStatutOtherRequest(data)
-    setTimeout(() => {
-      window.location.reload();
-    }, 500); 
-  }
+  };
   function formatDate(date) {
     const createDate = new Date(date);
     const year = createDate.getFullYear().toString().slice(-2);
@@ -91,23 +110,43 @@ function Row(props) {
             <Typography color="#000">AVALIABLE</Typography>
           </Box>
         ) : null}</TableCell>
-         <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
-        {row.topic !== 'ROOM_REQUEST' &&  row.status === true  ? (
-          <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
-            <AddIcon />
-          </IconButton>
-        ): null }
+        <TableCell style={{ width: '20px', fontWeight: 'bold', fontSize: '18px' }}>
+          {row.topic !== 'ROOM_REQUEST' && row.status === true ? (
+            <IconButton onClick={() => navigate(`/create-request-existed/${row.ticketId}`)}>
+              <AddIcon />
+            </IconButton>
+          ) : null}
         </TableCell>
         <TableCell>
-          { row.topic ==='OTHER_REQUEST' && row.status===true ? (
-            <Button  onClick={() =>handelAcceptOtherRequest(row.ticketId)}>
+          {row.topic === 'OTHER_REQUEST' && row.status === true ? (
+            <Button onClick={handleOpenConfirmDialog}>
               <CloseIcon />
               <Typography fontSize={'13px'} color="#000">
                 Finish
               </Typography>
             </Button>
           ) : null}
-
+          <Dialog
+            open={confirmOpen}
+            onClose={handleCloseConfirmDialog}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                This action will finish the request. Do you want to proceed?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => handelAcceptOtherRequest(row.ticketId)} color="primary" autoFocus>
+                Yes
+              </Button>
+              <Button onClick={handleCloseConfirmDialog} color="primary">
+                No
+              </Button>
+            </DialogActions>
+          </Dialog>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -191,7 +230,7 @@ function Row(props) {
                             <CloseIcon />
                             <Typography color="#000">{request_row.requestStatus}</Typography>
                           </Box>
-                        ) : null }
+                        ) : null}
                       </TableCell>
                       <TableCell key={request_row.userId}
                       >{request_row.receiverFirstName} {request_row.receiverLastName}</TableCell>
@@ -246,7 +285,7 @@ const TableRowsLoader = ({ rowsNum }) => {
   ))
 }
 export default function RequestListAdmin() {
- const currentUser = useSelector((state) => state.auth.login?.currentUser);
+  const currentUser = useSelector((state) => state.auth.login?.currentUser);
   const [listRequestAndTicket, setListRequestAndTicket] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
@@ -284,10 +323,10 @@ export default function RequestListAdmin() {
           />
         </Paper>
         <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '16px' }}>
-        <Link to="/create-request">
-          <Button variant="contained">
-            <Typography>Create Ticket</Typography>
-          </Button>
+          <Link to="/create-request">
+            <Button variant="contained">
+              <Typography>Create Ticket</Typography>
+            </Button>
           </Link>
         </Box>
 
@@ -295,7 +334,7 @@ export default function RequestListAdmin() {
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
-                <TableCell style={{ width: '10px' }} /> 
+                <TableCell style={{ width: '10px' }} />
                 <TableCell style={{ width: '160px', fontWeight: 'bold', fontSize: '18px' }}>
                   TicketID
                 </TableCell>
