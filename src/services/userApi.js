@@ -17,8 +17,8 @@ const userApi = {
 
   getAllDepartment: () => {
     try {
-    const res =  axiosClient.get(`${BASE_URL}/getAllDepartment`)
-    return res;
+      const res = axiosClient.get(`${BASE_URL}/getAllDepartment`)
+      return res;
     } catch (error) {
       console.log(error)
     }
@@ -26,12 +26,12 @@ const userApi = {
 
   getAllUserByUserId: (data) => {
     try {
-    const res =  axiosClient.get(`${BASE_URL}/getUserAccount`, {
-      params: {
-        userId: data
-      }
-    })
-    return res;
+      const res = axiosClient.get(`${BASE_URL}/getUserAccount`, {
+        params: {
+          userId: data
+        }
+      })
+      return res;
     } catch (error) {
       console.log(error)
     }
@@ -39,16 +39,16 @@ const userApi = {
 
   getAllDepartmentManager: () => {
     try {
-    const res =  axiosClient.get(`${BASE_URL}/getDepartmentWithManager`)
-    return res;
+      const res = axiosClient.get(`${BASE_URL}/getDepartmentWithManager`)
+      return res;
     } catch (error) {
       console.log(error)
     }
   },
   getChangeInfoDetail: (data) => {
     try {
-    const res =  axiosClient.post(`${BASE_URL}/getChangeInfoDetail`,data)
-    return res;
+      const res = axiosClient.post(`${BASE_URL}/getChangeInfoDetail`, data)
+      return res;
     } catch (error) {
       console.log(error)
     }
@@ -75,7 +75,7 @@ const userApi = {
       const response = await axiosClient.post(`${BASE_URL}/getInfoUser`, data)
       dispatch(getUserInfoSuccess(response))
       return response
-      
+
     } catch (error) {
       if (error.response.status === 404) {
         toast.error('User not found!')
@@ -88,7 +88,7 @@ const userApi = {
     try {
       const response = await axiosClient.post(`${BASE_URL}/getInfoUser`, data)
       return response
-      
+
     } catch (error) {
       if (error.response.status === 404) {
         toast.error('User not found!')
@@ -115,7 +115,7 @@ const userApi = {
       if (error.response.status === 404) {
         toast.error('Status not found!')
         dispatch(changeUserStatusFailed())
-      }else if (error.response.status === 409) {
+      } else if (error.response.status === 409) {
         toast.error(`You can't change status role manager!`)
         dispatch(changeUserStatusFailed())
       }
@@ -131,7 +131,7 @@ const userApi = {
       if (error.response.status === 404) {
         toast.error('Role not found!')
         dispatch(changeRoleAccountFailed())
-      }else if (error.response.status === 400) {
+      } else if (error.response.status === 400) {
         toast.error('Your department has manager already')
         dispatch(changeRoleAccountFailed())
       }
@@ -172,7 +172,7 @@ const userApi = {
   },
   getAllEmployeeByDepartmentId: (data) => {
     try {
-      let res =  axiosClient.get(`${BASE_URL}/getAllDepartmentEmployee`,{
+      let res = axiosClient.get(`${BASE_URL}/getAllDepartmentEmployee`, {
         params: {
           department_id: data,
         }
@@ -184,9 +184,29 @@ const userApi = {
       }
     }
   },
+
+  getAllEmployeeNames: async (department_id, month, year) => {
+    try {
+      const response = await axiosClient.get(`${BASE_URL}/getEmployeeEvaluateRemain`, {
+        params: {
+          department_id: department_id,
+          month: month,
+          year: year
+        }
+      });
+      return response;
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        toast.error("This account hasn't had log yet!");
+      }
+      return [];
+    }
+  },
+
+
   getManagerByDepartment: (data) => {
     try {
-      let res =  axiosClient.get(`${BASE_URL}/getManagerByDepartment`,{
+      let res = axiosClient.get(`${BASE_URL}/getManagerByDepartment`, {
         params: {
           department: data,
         }
