@@ -1,11 +1,10 @@
-import { Box, FormControl, IconButton, InputAdornment, Link, TextField } from '@mui/material'
+import ChatIcon from '@mui/icons-material/Chat'
+import { Box, FormControl, IconButton, Link } from '@mui/material'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import userApi from '../services/userApi'
 import AccountPopover from './AccountPopover'
 import NotificationsPopover from './NotificationsPopover'
-import SearchIcon from '@mui/icons-material/Search'
-import ChatIcon from '@mui/icons-material/Chat'
-import userApi from '../services/userApi'
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react';
 
 const Topbar = () => {
   const userId = useSelector((state) => state.auth.login?.currentUser?.accountId)
@@ -22,23 +21,6 @@ const Topbar = () => {
       height="65px"
       bgcolor="#fff">
       <FormControl sx={{ width: '400px', bgcolor: '#fff', borderRadius: '10px', px: 2 }}>
-        <TextField
-          size="small"
-          variant="outlined"
-          sx={{ color: '#000', borderRadius: '10px', input: { color: '#000' }, width: '100%' }}
-          placeholder="Search..."
-          InputProps={{
-            style: {
-              borderRadius: '10px'
-            },
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon sx={{ color: '#000' }} />
-                {userId.role}
-              </InputAdornment>
-            )
-          }}
-        />
       </FormControl>
       <Box display="flex" gap="10px" alignItems="center">
         <NotificationsPopover />

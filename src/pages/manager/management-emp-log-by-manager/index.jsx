@@ -306,9 +306,8 @@ const EmpLogManagement = () => {
       </Box>
 
       <Box display="flex" alignItems="center" mt={3} sx={{ marginLeft: 'auto' }}>
-
-
-        {isSearchClicked ? (
+     
+        {isSearchClicked && (
           <FormControl sx={{ width: '280px' }}>
             <InputLabel id="demo-simple-select-label">Employee Remaining</InputLabel>
             <Select
@@ -328,25 +327,8 @@ const EmpLogManagement = () => {
               ))}
             </Select>
           </FormControl>
-        ) : (
-          <FormControl sx={{ width: '280px' }}>
-            <InputLabel id="demo-simple-select-label">Employee Remaining</InputLabel>
-
-            <Select
-              labelId="demo-simple-select-label"
-              label="Employee Remaining"
-              value=""
-            >
-
-              <MenuItem>
-                null
-              </MenuItem>
-
-            </Select>
-          </FormControl>
         )}
-
-        {isSearchClicked && listLog.length > 0 && listLog[0].department && listLog[0].department.departmentName && (
+           {isSearchClicked && listLog.length > 0 && listLog[0].department && listLog[0].department.departmentName && (
           <Typography variant="h6" sx={{ marginLeft: '30px' }}>
             <span>Department: </span>
             <span style={{ color: 'red' }}>{listLog[0].department.departmentName}</span>
@@ -369,3 +351,40 @@ const EmpLogManagement = () => {
 }
 
 export default EmpLogManagement
+// {isSearchClicked ? (
+//   <FormControl sx={{ width: '280px' }}>
+//     <InputLabel id="demo-simple-select-label">Employee Remaining</InputLabel>
+//     <Select
+//       labelId="demo-simple-select-label"
+//       label="Employee Remaining"
+//       value={employee}
+//       onChange={(event) => {
+//         const selectedEmployeeId = event.target.value;
+//         setEmployee(selectedEmployeeId);
+//         navigate(`/create-evaluate/${selectedEmployeeId}/${format(month, 'yyyy-MM')}`);
+//       }}
+//     >
+//       {employeeNames.map((item, index) => (
+//         <MenuItem key={index} value={item.employeeId}>
+//           {item.userName}
+//         </MenuItem>
+//       ))}
+//     </Select>
+//   </FormControl>
+// ) : (
+//   <FormControl sx={{ width: '280px' }}>
+//     <InputLabel id="demo-simple-select-label">Employee Remaining</InputLabel>
+
+//     <Select
+//       labelId="demo-simple-select-label"
+//       label="Employee Remaining"
+//       value=""
+//     >
+
+//       <MenuItem>
+//         null
+//       </MenuItem>
+
+//     </Select>
+//   </FormControl>
+// )}

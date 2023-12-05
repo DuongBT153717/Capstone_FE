@@ -103,12 +103,7 @@ export default function Login() {
                       />
                     </Stack>
                     <Stack direction="row" justifyContent="space-between" mt={1}>
-                      <FormControlLabel
-                        sx={{ width: '60%' }}
-                        onClick={() => setRemember(!remember)}
-                        control={<Checkbox checked={remember} />}
-                        label="Remember Me"
-                      />
+                    
                       <Typography
                         variant="body1"
                         component="span"
