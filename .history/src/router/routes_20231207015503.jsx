@@ -89,7 +89,6 @@ import ListNotificationSendSecurity from '../pages/security/security-notificatio
 import ListNotificationReceiveSecurity from '../pages/security/security-notification-receive'
 import ListNotficationDepartmentSecurity from '../pages/security/security-notification-department'
 import ListNotificationScheduleSecurity from '../pages/security/security-notification-scheduled'
-import VerifyHoliday from '../pages/hr/verify-holiday'
 
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
@@ -342,7 +341,7 @@ export default function Router() {
           path: HR_PATH.VERIFY_HOLIDAY_CODE,
           element: (
             <Suspense fallback={<>Loading...</>}>
-              <VerifyHoliday />
+              <AttendanceLogDetailHR />
             </Suspense>
           )
         },

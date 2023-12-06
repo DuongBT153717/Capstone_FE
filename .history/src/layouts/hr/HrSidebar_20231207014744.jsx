@@ -84,7 +84,7 @@ const HrSidebar = () => {
       confirmButtonColor: 'green'
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate('/verify-holiday-code')
+        navigate('/change-log-view')
         setActiveIndex(12)
       }
     })

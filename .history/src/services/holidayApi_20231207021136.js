@@ -35,26 +35,14 @@ const holidayApi = {
     }
   },
 
-  verifyCode : (data) => {
+  verifyCOde : async (data) => {
     try {
-       const res = axiosClient.post(`${BASE_URL}/validateHolidayEmail`, data)
-       return res
-    } catch (error) {
-      if (error.response.status === 404) {
-        toast.error(`Your account hasn't had email yet`)
-      }
-    }
-  },
-
-  checkCode : (code, userId) => {
-    try {
-       const res = axiosClient.get(`${BASE_URL}/checkHolidayCode`, {
+      await axiosClient.post(`${BASE_URL}/validateHolidayEmail`, {
         params: {
-          code: code,
-          user_id: userId
+          user_name: data
         }
-       })
-       return res
+      })
+      toast.success('Delete holiday successfully')
     } catch (error) {
       console.log(error);
     }

@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import authApi from '../../../services/authApi'
 export default function Login() {
   // const [open, setOpen] = useState(false);
+  const [remember, setRemember] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const isLoading = useSelector((state) => state.auth.login?.isFetching)
   console.log(isLoading)

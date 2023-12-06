@@ -24,6 +24,7 @@ const ChangeLogView = () => {
   }
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
   const decoded = jwtDecode(currentUser?.jwtToken)
+  console.log(decoded)
   useEffect(() => {
     const fetchAllHolidays = async () => {
       const res = await holidayApi.getAllHoliday()
@@ -123,6 +124,7 @@ const ChangeLogView = () => {
         let newData = [...prevData]
         holidayApi.deleteHoliday(deleted)
         newData = newData.filter((appointment) => appointment.id !== deleted)
+        console.log('asd')
         return newData
       })
     }

@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Header from '../../../components/Header'
 import userApi from '../../../services/userApi'
 import { validationSchema } from './util/validationSchema'
@@ -19,7 +19,7 @@ import { validationSchema } from './util/validationSchema'
 const AdminChanagePassword = () => {
   const isLoading = useSelector((state) => state.user.changePassword?.isFetching)
   const accountId = useSelector((state) => state.auth.login?.currentUser?.accountId)
-  const currentUser = useSelector((state) => state.auth.login?.currentUser)
+  const navigate = useNavigate()
   // console.log(accountId)
   const dispatch = useDispatch()
 
@@ -107,39 +107,12 @@ const AdminChanagePassword = () => {
                 </CardContent>
                 <Divider />
                 <CardActions sx={{ justifyContent: 'space-between', py: '8px' }}>
-                  {currentUser?.role === 'hr' ? (
-                    <Link to="/manage-user">
-                      <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                        Back to Dashboard
-                      </Button>
-                    </Link>
-                  ) : currentUser?.role === 'employee' ? (
-                    <Link to="/request-list-employee">
-                      <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                        Back to Dashboard
-                      </Button>
-                    </Link>
-                  ) : currentUser?.role === 'manager' ? (
-                    <Link to="/request-list-manager">
-                      <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                        Back to Dashboard
-                      </Button>
-                    </Link>
-                  ) : currentUser?.role === 'admin' ? (
-                    <Link to="/request-list-admin">
-                      <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                        Back to Dashboard
-                      </Button>
-                    </Link>
-                  ) : currentUser?.role === 'security' ? (
-                    <Link to="/manage-user">
-                      <Button variant="contained" sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
-                        Back to Dashboard
-                      </Button>
-                    </Link>
-                  ) : (
-                    <></>
-                  )}
+                  <Button
+                    variant="contained"
+                    onClick={() => navigate(-1)}
+                    sx={{ bgcolor: 'rgb(100, 149, 237)' }}>
+                    Back to Dashboard
+                  </Button>
                   <LoadingButton
                     type="submit"
                     loading={isLoading}

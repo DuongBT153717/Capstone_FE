@@ -1,62 +1,95 @@
 import { Suspense, lazy } from 'react'
 import { useRoutes } from 'react-router-dom'
+import BookRoom from '../components/BookRoom'
 import NotFoundPage from '../components/NotFoundPage'
 import RequireAuth from '../components/RequireAuth'
 import UnAuthorized from '../components/UnAuthorized'
-import { ADMIN_PATH, EMPLOYEE_PATH, HR_PATH, MANAGER_PATH, PUBLIC_PATH } from '../constants/path'
+import { ADMIN_PATH, EMPLOYEE_PATH, HR_PATH, MANAGER_PATH, PUBLIC_PATH, SECURITY } from '../constants/path'
 import { ROLES } from '../constants/role'
 import AdminLayout from '../layouts/admin'
 import EmployeeLayout from '../layouts/employee'
 import HrLayout from '../layouts/hr'
+import ManagerLayout from '../layouts/manager'
+import ListNotficationDepartmentAdmin from '../pages/admin/admin-notification-department'
+import ListNotificationDraftAdmin from '../pages/admin/admin-notification-draft'
+import ListAllNotificationAdmin from '../pages/admin/admin-notification-list-all'
+import ListNotificationReceiveAdmin from '../pages/admin/admin-notification-receive'
+import ListNotificationScheduleAdmin from '../pages/admin/admin-notification-scheduled'
+import ListNotificationSendAdmin from '../pages/admin/admin-notification-send'
+import CheckBookRoom from '../pages/admin/check-book-room'
+import ManageTicketListAdmin from '../pages/admin/manage-ticket-list'
 import Login from '../pages/auth/login/login'
 import ResetPassword from '../pages/auth/resetpassword'
 import AdminChanagePassword from '../pages/common/change-password'
 import Chat from '../pages/common/chat'
-import CreateTicketRequest from '../pages/common/create-request'
-import Profile from '../pages/common/profile'
-import ManagerLayout from '../layouts/manager'
-import ManageTicketListAdmin from '../pages/admin/manage-ticket-list'
-import CreateTicketExistRequest from '../pages/common/create-request-exist'
-import CheckAttendance from '../pages/employee/check-attendance'
-import RequestListEmployee from '../pages/employee/request-list'
-import ManageProfile from '../pages/hr/manage-profile'
-import RequestListHr from '../pages/hr/request-list'
-import RequestListManager from '../pages/manager/request-list'
-import RequestManagerList from '../pages/manager/request-manager-list'
-import CheckHrList from '../pages/hr/check-hr-ticket'
-import BookRoom from '../components/BookRoom'
-import BookRoomManager from '../pages/manager/book-room-manager'
-import BookRoomHr from '../pages/hr/book-room-hr'
-import BookListDetailManager from '../pages/manager/request-manager-list/components/BookRoomDetail'
-import CheckBookRoom from '../pages/admin/check-book-room'
-import NotificationsList from '../pages/common/list-all-notification'
-import NotificationsHrList from '../pages/hr/hr-notification-list'
 import CreateNotification from '../pages/common/create-notification'
+import CreateTicketRequest from '../pages/common/create-request'
+import CreateTicketExistRequest from '../pages/common/create-request-exist'
 import EditNotification from '../pages/common/edit-notification'
+import NotificationsList from '../pages/common/list-all-notification'
+import Profile from '../pages/common/profile'
+
+import CheckAttendance from '../pages/employee/check-attendance'
+import ListNotificationDarfEmp from '../pages/employee/employee-notification-draft'
+import ListAllNotificationEmp from '../pages/employee/employee-notification-list-all'
+import ListNoitificationRecive from '../pages/employee/employee-notification-recive'
+import ListNOtificationSchedulePersonal from '../pages/employee/employee-notification-schedule'
+import ListNotificationSend from '../pages/employee/employee-notification-send'
+import RequestListEmployee from '../pages/employee/request-list'
+import BookRoomHr from '../pages/hr/book-room-hr'
+import CheckHrList from '../pages/hr/check-hr-ticket'
+import ListNotificationDepartmentHR from '../pages/hr/hr-notification-deparment'
+import NotificationDraftListHr from '../pages/hr/hr-notification-draft-list'
+import NotificationsHrList from '../pages/hr/hr-notification-list'
+import NotificationScheduleListHr from '../pages/hr/hr-notification-scheduled-list'
 import NotificationUploadReceiveHR from '../pages/hr/hr-notification-upload-receive'
 import NotificationUploadSentHR from '../pages/hr/hr-notification-upload-sent'
-import NotificationDraftListHr from '../pages/hr/hr-notification-draft-list'
-import NotificationScheduleList from '../pages/common/notification-scheduled'
-import NotificationScheduleListHr from '../pages/hr/hr-notification-scheduled-list'
-import ListAllNotificationEmp from '../pages/employee/employee-notification-list-all'
-import ListNotificationDarfEmp from '../pages/employee/employee-notification-draft'
-import ListNoitificationRecive from '../pages/employee/employee-notification-recive'
-import ListNotificationSend from '../pages/employee/employee-notification-send'
-import ListNOtificationSchedulePersonal from '../pages/employee/employee-notification-schedule'
-import ListAllNotificationAdmin from '../pages/admin/admin-notification-list-all'
-import ListNotificationDraftAdmin from '../pages/admin/admin-notification-draft'
-import ListNotificationSendAdmin from '../pages/admin/admin-notification-send'
-import ListNotificationReceiveAdmin from '../pages/admin/admin-notification-receive'
-import ListNotificationScheduleAdmin from '../pages/admin/admin-notification-scheduled'
-import ListAllNotificationManager from '../pages/manager/manager-notification-list-all'
-import ListAllNotificationDraftAdmin from '../pages/manager/manager-notification-draft'
-import ListAllNotificationDraftManager from '../pages/manager/manager-notification-draft'
-import ListAllNotificationReceiveManager from '../pages/manager/manager-notification-receive'
-import ListAllNotificationSendManager from '../pages/manager/manager-notification-send'
-import ListAllNotificationScheduleManager from '../pages/manager/manager-notification-schedule'
-import ListNotificationDepartmentHR from '../pages/hr/hr-notification-deparment'
+import ManageProfile from '../pages/hr/manage-profile'
+import RequestListHr from '../pages/hr/request-list'
+import BookRoomManager from '../pages/manager/book-room-manager'
 import ListNotifcationDeparmentManager from '../pages/manager/manager-notification-deparment'
-import ListNotficationDepartmentAdmin from '../pages/admin/admin-notification-department'
+import ListAllNotificationDraftManager from '../pages/manager/manager-notification-draft'
+import ListAllNotificationManager from '../pages/manager/manager-notification-list-all'
+import ListAllNotificationReceiveManager from '../pages/manager/manager-notification-receive'
+import ListAllNotificationScheduleManager from '../pages/manager/manager-notification-schedule'
+import ListAllNotificationSendManager from '../pages/manager/manager-notification-send'
+import RequestListManager from '../pages/manager/request-list'
+import RequestManagerList from '../pages/manager/request-manager-list'
+import BookListDetailManager from '../pages/manager/request-manager-list/components/BookRoomDetail'
+import AttendanceDetail from '../pages/common/attendance-detail'
+import CheckOvertime from '../pages/employee/check-overtime'
+import EvaluateReport from '../pages/employee/attendance-evaluate-report'
+import CheckAttendanceManager from '../pages/manager/check-attendance'
+import CreateEvaluate from '../pages/manager/create-evaluate'
+import AttendanceLogDetail from '../pages/manager/attendance-log-detail'
+import LogManagement from '../pages/manager/log-management'
+import EmpLogManagement from '../pages/manager/management-emp-log-by-manager'
+import LogEmpAttendanceById from '../pages/manager/log-emp-attendance-by-id'
+import EvaluateManagement from '../pages/hr/evaluate-management'
+import EmployeeAttendanceDetail from '../pages/manager/emp-attendance-detail'
+import UpdateEvaluate from '../pages/manager/update-evaluate'
+import ViewLogAttendance from '../pages/hr/attendance-log'
+import AttendanceLogDetailHR from '../pages/hr/attendance-log-detail'
+import ChangeLogDetail from '../pages/hr/change-log-detail'
+import LogEmpAttendanceByIdList from '../pages/manager/log-emp-attendance-by-id-list'
+import ViewEmpEvaluateReport from '../pages/hr/view-evaluate-of-emp'
+import ChangeLogEditProfileDetail from '../pages/hr/change-log-edit-profile-detail'
+import CheckEmpProfile from '../pages/hr/check-employee-info-by-id'
+import CheckEmpEvaluateReport from '../pages/hr/check-evaluate-report'
+import ChangeLogView from '../pages/hr/change-log-view'
+import ManageUserByManager from '../pages/manager/manage-user-by-manager'
+import CheckEmpProfileByManager from '../pages/manager/manager-check-emp-info'
+import ViewEmpEvaluateReportByManager from '../pages/manager/view-emp-evaluate'
+import SecurityTicket from '../pages/security/security-ticket'
+import SecurityLayout from '../layouts/security'
+import TicketManageSecurity from '../pages/security/security-ticket-manage'
+import ListAllNotificationSecurity from '../pages/security/security-notification-list-all'
+import ListNotificationDraftSecurity from '../pages/security/security-notification-draft'
+import ListNotificationSendSecurity from '../pages/security/security-notification-send'
+import ListNotificationReceiveSecurity from '../pages/security/security-notification-receive'
+import ListNotficationDepartmentSecurity from '../pages/security/security-notification-department'
+import ListNotificationScheduleSecurity from '../pages/security/security-notification-scheduled'
+
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
 const TicketDetail = lazy(() => import('../pages/common/request-detail'))
@@ -223,14 +256,111 @@ export default function Router() {
       path: '/',
       element: <RequireAuth allowedRoles={ROLES.MANAGER} />,
       children: [
+        
         {
-          path: MANAGER_PATH.BOOK_ROOM_DETAIL_MANAGER,
+          path: MANAGER_PATH.VIEW_EMP_EVALUATE_MANAGER,
           element: (
             <Suspense fallback={<>Loading...</>}>
-              <BookListDetailManager />
+              <ViewEmpEvaluateReportByManager />
             </Suspense>
           )
-        }
+        },
+        {
+          path: MANAGER_PATH.EMPLOYEE_ATTENDANCE_DETAIL,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <EmployeeAttendanceDetail />
+            </Suspense>
+          )
+        },
+        {
+          path: MANAGER_PATH.UPDATE_EVALUATE,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <UpdateEvaluate />
+            </Suspense>
+          )
+        },
+        {
+          path: MANAGER_PATH.CHECK_EMP_INFO_BY_MANAGER,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <CheckEmpProfileByManager />
+            </Suspense>
+          )
+        },
+        
+      ]
+    },
+
+    {
+      path: '/',
+      element: <RequireAuth allowedRoles={ROLES.HR} />,
+      children: [
+        {
+          path: HR_PATH.VIEW_LOG_ATTENDANCE,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <ViewLogAttendance/>
+            </Suspense>
+          )
+        },
+        {
+          path: HR_PATH.CHECK_EMP_INFO,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <CheckEmpProfile/>
+            </Suspense>
+          )
+        },
+        {
+          path: HR_PATH.VIEW_ATTENDANCE_EVALUATE_REPORT,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <ViewEmpEvaluateReport />
+            </Suspense>
+          )
+        },
+        {
+          path: HR_PATH.CHECK_EVALUATE_REPORT_FROM_EMP,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <CheckEmpEvaluateReport />
+            </Suspense>
+          )
+        },
+        {
+          path: HR_PATH.ATTENDANCE_LOG_DETAIL,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <AttendanceLogDetailHR />
+            </Suspense>
+          )
+        },
+        {
+          path: HR_PATH.VERIFY_HOLIDAY_CODE,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <VerifyHoliday />
+            </Suspense>
+          )
+        },
+        {
+          path: HR_PATH.CHANGE_LOG_DETAIL,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <ChangeLogDetail />
+            </Suspense>
+          )
+        },
+        {
+          path: HR_PATH.CHANGE_LOG_EDIT_PROFILE_DETAIL,
+          element: (
+            <Suspense fallback={<>Loading...</>}>
+              <ChangeLogEditProfileDetail />
+            </Suspense>
+          )
+        },
       ]
     },
     {
@@ -248,7 +378,14 @@ export default function Router() {
                 </Suspense>
               )
             },
-
+            {
+              path: HR_PATH.CHANGE_LOG_VIEW,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ChangeLogView />
+                </Suspense>
+              )
+            },
             {
               path: HR_PATH.MANAGE_PROFILE,
               element: (
@@ -277,6 +414,14 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <NotificationsHrList />
+                </Suspense>
+              )
+            },
+            {
+              path: HR_PATH.EVALUATE_MANAGEMENT,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <EvaluateManagement />
                 </Suspense>
               )
             },
@@ -312,6 +457,7 @@ export default function Router() {
                 </Suspense>
               )
             },
+         
             {
               path: HR_PATH.NOTIFICATION_SCHEDULED_DEPARTMENT_HR,
               element: (
@@ -340,10 +486,18 @@ export default function Router() {
           element: <RequireAuth allowedRoles={ROLES.EMPLOYEE} />,
           children: [
             {
-              path: EMPLOYEE_PATH.CHECK_ATTENDACE,
+              path: EMPLOYEE_PATH.CHECK_ATTENDACE_EMPLOYEE,
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <CheckAttendance />
+                </Suspense>
+              )
+            },
+            {
+              path: EMPLOYEE_PATH.OVERTIME_LOG,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <CheckOvertime />
                 </Suspense>
               )
             },
@@ -395,11 +549,60 @@ export default function Router() {
                 </Suspense>
               )
             },
+            {
+              path: EMPLOYEE_PATH.ATTENDANCE_EVALUATE_REPORT,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <EvaluateReport />
+                </Suspense>
+              )
+            },
+
           ]
         }
       ]
     },
 
+    {
+      path: '/',
+      children: [
+        {
+          element: (
+            <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.EMPLOYEE]} />
+          ),
+          children: [
+            {
+              path: EMPLOYEE_PATH.ATTENDANCE_DETAIL,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <AttendanceDetail />
+                </Suspense>
+              )
+            }
+          ]
+        },
+      ]
+    },
+    {
+      path: '/',
+      children: [
+        {
+          element: (
+            <RequireAuth allowedRoles={[ROLES.MANAGER]} />
+          ),
+          children: [
+            {
+              path: MANAGER_PATH.LOG_ATTENDACE_OF_EMP,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <LogEmpAttendanceById />
+                </Suspense>
+              )
+            },
+          ]
+        },
+      ]
+    },
     {
       path: MANAGER_PATH.LAYOUT,
       element: <ManagerLayout />,
@@ -416,10 +619,52 @@ export default function Router() {
               )
             },
             {
+              path: MANAGER_PATH.CHECK_ATTENDACE_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <CheckAttendanceManager />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.MANAGE_USER_BY_MANAGER,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ManageUserByManager />
+                </Suspense>
+              )
+            },
+         
+            {
               path: MANAGER_PATH.REQUEST_LIST_MANAGER,
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <RequestManagerList />
+                </Suspense>
+              )
+            },
+            
+            {
+              path: MANAGER_PATH.LOG_MANAGEMENT,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <LogManagement />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.EMP_LOG_MANAGEMENT,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <EmpLogManagement />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.EMPLOYEE_ATTENDANCE_LOG_LIST,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <LogEmpAttendanceByIdList />
                 </Suspense>
               )
             },
@@ -481,6 +726,7 @@ export default function Router() {
             </Suspense>
           )
         },
+      
       ]
     },
     {
@@ -533,6 +779,7 @@ export default function Router() {
             },
           ]
         },
+        
       ]
     },
     {
@@ -550,7 +797,120 @@ export default function Router() {
                   <NotificationDetail />
                 </Suspense>
               )
-            }
+            },
+            {
+              path: MANAGER_PATH.BOOK_ROOM_DETAIL,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <BookListDetailManager />
+                </Suspense>
+              )
+            },
+          ]
+        },
+      ]
+    },
+    {
+      path: '/',
+      children: [
+        {
+          element: (
+            <RequireAuth allowedRoles={[ROLES.MANAGER]} />
+          ),
+          children: [
+            {
+              path: MANAGER_PATH.CREATE_EVALUATE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <CreateEvaluate />
+                </Suspense>
+              )
+            },
+            {
+              path: MANAGER_PATH.ATTENDANCE_LOG_DETAIL,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <AttendanceLogDetail />
+                </Suspense>
+              )
+            },
+          ]
+        },
+      ]
+    },
+    {
+      path: SECURITY.LAYOUT,
+      element: <SecurityLayout />,
+      children: [
+        {
+          element: (
+            <RequireAuth allowedRoles={[ROLES.SECURITY]} />
+          ),
+          children: [
+            {
+              path: SECURITY.TICKET_SECURITY_LIST,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <SecurityTicket />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.TICKET_SECURITY_LIST_MANAGE,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <TicketManageSecurity />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.NOTIFICATION_LIST_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllNotificationSecurity />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.NOTIFICATION_DRAFT_LIST_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationDraftSecurity />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.NOTIFICATION_UPLOAD_SENT_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationSendSecurity />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.NOTIFICATION_UPLOAD_RECEIVE_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationReceiveSecurity />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.NOTIFICATION_SCHEDULED_DEPARTMENT_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotficationDepartmentSecurity />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.NOTIFICATION_SCHEDULED_LIST_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListNotificationScheduleSecurity />
+                </Suspense>
+              )
+            },
           ]
         },
       ]

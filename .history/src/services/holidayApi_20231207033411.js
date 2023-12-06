@@ -40,7 +40,7 @@ const holidayApi = {
        const res = axiosClient.post(`${BASE_URL}/validateHolidayEmail`, data)
        return res
     } catch (error) {
-      if (error.response.status === 404) {
+      if (error.response.status === 500) {
         toast.error(`Your account hasn't had email yet`)
       }
     }
@@ -56,7 +56,9 @@ const holidayApi = {
        })
        return res
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 500) {
+        toast.error(`Your account hasn't had email yet`)
+      }
     }
   },
 }

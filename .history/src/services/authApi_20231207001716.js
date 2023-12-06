@@ -49,9 +49,6 @@ const authApi = {
       if (error.response.status === 500) {
         toast.error(`Your account hasn't had gmail yet!`)
       }
-      if (error.response.status === 400) {
-        toast.error(`Username can't be blank!`)
-      }
     }
   },
 }

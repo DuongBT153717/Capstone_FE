@@ -56,7 +56,9 @@ const holidayApi = {
        })
        return res
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 400) {
+        toast.error(`Your account hasn't had email yet`)
+      }
     }
   },
 }

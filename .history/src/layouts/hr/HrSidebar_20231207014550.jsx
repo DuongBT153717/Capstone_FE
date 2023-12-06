@@ -76,7 +76,7 @@ const HrSidebar = () => {
 
   const handleCheckHoliday = () => {
     Swal.fire({
-      title: 'You need to verify code to access this page?',
+      title: 'Are you sure to change this status?',
       icon: 'info',
       cancelButtonText: 'Cancel!',
       showCancelButton: true,
@@ -84,8 +84,10 @@ const HrSidebar = () => {
       confirmButtonColor: 'green'
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate('/verify-holiday-code')
+        navigate('/change-log-view')
         setActiveIndex(12)
+      } else {
+        navigate('/manage-user')
       }
     })
   }

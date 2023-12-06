@@ -40,23 +40,20 @@ const holidayApi = {
        const res = axiosClient.post(`${BASE_URL}/validateHolidayEmail`, data)
        return res
     } catch (error) {
-      if (error.response.status === 404) {
+      if (error.response.status === 500) {
         toast.error(`Your account hasn't had email yet`)
       }
     }
   },
 
-  checkCode : (code, userId) => {
+  checkCode : (data) => {
     try {
-       const res = axiosClient.get(`${BASE_URL}/checkHolidayCode`, {
-        params: {
-          code: code,
-          user_id: userId
-        }
-       })
+       const res = axiosClient.post(`${BASE_URL}/checkHolidayCode`, data)
        return res
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 500) {
+        toast.error(`Your account hasn't had email yet`)
+      }
     }
   },
 }

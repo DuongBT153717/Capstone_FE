@@ -123,6 +123,7 @@ const ChangeLogView = () => {
         let newData = [...prevData]
         holidayApi.deleteHoliday(deleted)
         newData = newData.filter((appointment) => appointment.id !== deleted)
+        console.log('asd')
         return newData
       })
     }

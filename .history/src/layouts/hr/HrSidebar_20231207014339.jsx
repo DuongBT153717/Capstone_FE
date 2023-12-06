@@ -11,7 +11,7 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
 import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox'
 import MenuIcon from '@mui/icons-material/Menu'
 import NotificationsIcon from '@mui/icons-material/Notifications'
-import ListAltIcon from '@mui/icons-material/ListAlt'
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import UploadIcon from '@mui/icons-material/Upload'
 import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
@@ -21,10 +21,9 @@ import { Menu, MenuItem, Sidebar, SubMenu, useProSidebar } from 'react-pro-sideb
 import { Link, useNavigate } from 'react-router-dom'
 import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
-import FactCheckIcon from '@mui/icons-material/FactCheck'
-import EventBusyIcon from '@mui/icons-material/EventBusy'
-import Swal from 'sweetalert2'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
+import EventBusyIcon from '@mui/icons-material/EventBusy';
 const HrSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const navigate = useNavigate()
@@ -33,30 +32,29 @@ const HrSidebar = () => {
       window.location.pathname === '/manage-user'
         ? 0
         : window.location.pathname === '/manage-profile'
-        ? 1
-        : window.location.pathname === '/request-list-hr'
-        ? 2
-        : window.location.pathname === '/request-hr-list'
-        ? 3
-        : window.location.pathname === '/book-room-hr'
-        ? 4
-        : window.location.pathname === '/notification-list-hr'
-        ? 5
-        : window.location.pathname === '/notification-draftlist'
-        ? 6
-        : window.location.pathname === '/notification-uploadsent'
-        ? 7
-        : window.location.pathname === '/notification-uploadreceive'
-        ? 8
-        : window.location.pathname === '/notification-schedulelist'
-        ? 10
-        : window.location.pathname === '/notification-department-hr'
-        ? 9
-        : window.location.pathname === '/view-list-evaluate'
-        ? 11
-        : window.location.pathname === '/change-log-view'
-        ? 12
-        : 0
+          ? 1
+          : window.location.pathname === '/request-list-hr'
+            ? 2
+            : window.location.pathname === '/request-hr-list'
+              ? 3
+              : window.location.pathname === '/book-room-hr'
+                ? 4
+                : window.location.pathname === '/notification-list-hr'
+                  ? 5
+                  : window.location.pathname === '/notification-draftlist'
+                    ? 6
+                    : window.location.pathname === '/notification-uploadsent'
+                      ? 7
+                      : window.location.pathname === '/notification-uploadreceive'
+                        ? 8
+                        : window.location.pathname === '/notification-schedulelist'
+                          ? 10
+                          : window.location.pathname === '/notification-department-hr'
+                            ? 9
+                            : window.location.pathname === '/view-list-evaluate'
+                              ? 11 : window.location.pathname === '/change-log-view'
+                              ? 12
+                              : 0
     return initialIndex
   })
   const [userProfileImage, setUserProfileImage] = useState('')
@@ -75,19 +73,8 @@ const HrSidebar = () => {
   }
 
   const handleCheckHoliday = () => {
-    Swal.fire({
-      title: 'You need to verify code to access this page?',
-      icon: 'info',
-      cancelButtonText: 'Cancel!',
-      showCancelButton: true,
-      cancelButtonColor: 'red',
-      confirmButtonColor: 'green'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigate('/verify-holiday-code')
-        setActiveIndex(12)
-      }
-    })
+    navigate('/change-log-view')
+    setActiveIndex(12)
   }
   return (
     <>
@@ -275,6 +262,7 @@ const HrSidebar = () => {
                 Personal
               </MenuItem>
             </SubMenu>
+
           </SubMenu>
           <MenuItem
             active={activeIndex === 4}
