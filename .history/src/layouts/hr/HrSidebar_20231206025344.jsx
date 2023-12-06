@@ -174,7 +174,7 @@ const HrSidebar = () => {
             Manage Profile
           </MenuItem>
 
-          <SubMenu label="Attendence" icon={<CalendarMonthIcon />}>
+          <SubMenu label="Attendence Management" icon={<CalendarMonthIcon />}>
             <MenuItem
               active={activeIndex === 11}
               icon={<ListAltIcon />}

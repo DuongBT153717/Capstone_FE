@@ -15,7 +15,7 @@ import moment from 'moment'
 import { useEffect, useState } from 'react'
 import holidayApi from '../../../services/holidayApi'
 import { useSelector } from 'react-redux'
-import { Typography, Grid, Divider } from '@mui/material'
+import { Typography, Grid, Divider, Box } from '@mui/material'
 import { jwtDecode } from 'jwt-decode'
 const ChangeLogView = () => {
   const [holidays, setHolidays] = useState([])
@@ -158,12 +158,10 @@ const ChangeLogView = () => {
 
   const Header = ({ ...restProps }) => {
     return (
-      <AppointmentTooltip.Header style={{flexDirection: 'column', paddingLeft: '0px', alignItems: 'flex-end'}} {...restProps}>
-        <Grid container>
-          <Grid item xs={12}>
+      <AppointmentTooltip.Header {...restProps}>
+        <Box>   
             <Divider />
-          </Grid>
-        </Grid>
+        </Box>
         <Divider />
       </AppointmentTooltip.Header>
     )

@@ -133,39 +133,32 @@ const ChangeLogView = () => {
   const Content = ({ appointmentData }) => {
     console.log(appointmentData)
     return (
-      <Grid mt={1} container alignItems="center">
-        <Grid display="flex" gap="8px" ml="25px" item xs={10}>
-          <Typography>Title: </Typography>
-          <Typography>{appointmentData.title}</Typography>
+        <Grid mt={1} container alignItems="center">
+          <Grid display="flex" gap="8px" ml="25px" item xs={10}>
+            <Typography>Title: </Typography>
+            <Typography>{appointmentData.title}</Typography>
+          </Grid>
+          <Grid display="flex" gap="8px" ml="25px"  mt={1} item xs={10}>
+            <Typography>Date: </Typography>
+            <Typography>{appointmentData.startDate} - {appointmentData.endDate}</Typography>
+          </Grid>
+          <Grid display="flex" gap="8px" ml="25px"  mt={1} item xs={10}>
+            <Typography>Created By: </Typography>
+            <Typography>{appointmentData.username}</Typography>
+          </Grid>
+          <Grid display="flex" gap="8px" ml="25px" mt={1} pb={3} item xs={10}>
+            <Typography>Content: </Typography>
+            <Typography>{appointmentData.content}</Typography>
+          </Grid>
         </Grid>
-        <Grid display="flex" gap="8px" ml="25px" mt={1} item xs={10}>
-          <Typography>Date: </Typography>
-          <Typography>
-            {appointmentData.startDate} - {appointmentData.endDate}
-          </Typography>
-        </Grid>
-        <Grid display="flex" gap="8px" ml="25px" mt={1} item xs={10}>
-          <Typography>Created By: </Typography>
-          <Typography>{appointmentData.username}</Typography>
-        </Grid>
-        <Grid display="flex" gap="8px" ml="25px" mt={1} pb={3} item xs={10}>
-          <Typography>Content: </Typography>
-          <Typography>{appointmentData.content}</Typography>
-        </Grid>
-      </Grid>
     )
   }
 
   const Header = ({ ...restProps }) => {
     return (
-      <AppointmentTooltip.Header style={{flexDirection: 'column', paddingLeft: '0px', alignItems: 'flex-end'}} {...restProps}>
-        <Grid container>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-        </Grid>
-        <Divider />
-      </AppointmentTooltip.Header>
+        <AppointmentTooltip.Header {...restProps}>
+          <Divider />
+        </AppointmentTooltip.Header>
     )
   }
   return (
@@ -179,7 +172,7 @@ const ChangeLogView = () => {
         <DateNavigator />
         <TodayButton />
         <Appointments />
-        <AppointmentTooltip contentComponent={Content} headerComponent={Header} showDeleteButton />
+        <AppointmentTooltip contentComponent={Content} headerComponent={Header}  showDeleteButton />
         <ConfirmationDialog
           messages={{
             confirmDeleteMessage: () => (

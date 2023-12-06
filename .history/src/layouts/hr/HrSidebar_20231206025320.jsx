@@ -23,7 +23,6 @@ import { storage } from '../../firebase/config'
 import useAuth from '../../hooks/useAuth'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
-import EventBusyIcon from '@mui/icons-material/EventBusy';
 const HrSidebar = () => {
   const { collapseSidebar, toggleSidebar, broken, collapsed } = useProSidebar()
   const [activeIndex, setActiveIndex] = useState(() => {
@@ -174,7 +173,7 @@ const HrSidebar = () => {
             Manage Profile
           </MenuItem>
 
-          <SubMenu label="Attendence" icon={<CalendarMonthIcon />}>
+          <SubMenu label="Attendence Management" icon={<CalendarMonthIcon />}>
             <MenuItem
               active={activeIndex === 11}
               icon={<ListAltIcon />}
@@ -267,7 +266,7 @@ const HrSidebar = () => {
           </MenuItem>
           <MenuItem
             active={activeIndex === 12}
-            icon={<EventBusyIcon />}
+            icon={<CalendarMonthIcon />}
             component={<Link to="/book-room-hr" onClick={() => setActiveIndex(12)} />}>
             {' '}
             Check Holiday

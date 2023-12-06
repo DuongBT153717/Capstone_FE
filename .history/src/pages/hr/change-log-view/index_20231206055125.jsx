@@ -158,9 +158,9 @@ const ChangeLogView = () => {
 
   const Header = ({ ...restProps }) => {
     return (
-      <AppointmentTooltip.Header style={{flexDirection: 'column', paddingLeft: '0px', alignItems: 'flex-end'}} {...restProps}>
+      <AppointmentTooltip.Header {...restProps}>
         <Grid container>
-          <Grid item xs={12}>
+          <Grid item xs={10}>
             <Divider />
           </Grid>
         </Grid>

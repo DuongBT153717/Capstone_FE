@@ -15,16 +15,16 @@ import moment from 'moment'
 import { useEffect, useState } from 'react'
 import holidayApi from '../../../services/holidayApi'
 import { useSelector } from 'react-redux'
-import { Typography, Grid, Divider } from '@mui/material'
-import { jwtDecode } from 'jwt-decode'
+import { Typography,Grid } from '@mui/material';
+import { jwtDecode } from "jwt-decode";
 const ChangeLogView = () => {
   const [holidays, setHolidays] = useState([])
   const BoolEditor = () => {
     return null
   }
   const currentUser = useSelector((state) => state.auth.login?.currentUser)
-  const decoded = jwtDecode(currentUser?.jwtToken)
-  console.log(decoded)
+  const decoded = jwtDecode(currentUser?.jwtToken);
+  console.log(decoded);
   useEffect(() => {
     const fetchAllHolidays = async () => {
       const res = await holidayApi.getAllHoliday()
@@ -49,7 +49,10 @@ const ChangeLogView = () => {
     <MonthView.DayScaleCell {...props} onClick={() => console.log(props.startDate)} />
   )
   const DateEditor = ({ ...restProps }) => {
-    return <AppointmentForm.DateEditor {...restProps} excludeTime></AppointmentForm.DateEditor>
+    return (
+      <AppointmentForm.DateEditor
+        {...restProps} excludeTime></AppointmentForm.DateEditor>
+    )
   }
 
   const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
@@ -130,42 +133,25 @@ const ChangeLogView = () => {
     }
   }
 
-  const Content = ({ appointmentData }) => {
+  const Content = ({ appointmentData, ...restProps }) => {
     console.log(appointmentData)
     return (
-      <Grid mt={1} container alignItems="center">
+      <AppointmentTooltip.Content {...restProps} appointmentData={appointmentData}>
+        <Grid mt={1} container alignItems="center">
         <Grid display="flex" gap="8px" ml="25px" item xs={10}>
-          <Typography>Title: </Typography>
-          <Typography>{appointmentData.title}</Typography>
-        </Grid>
-        <Grid display="flex" gap="8px" ml="25px" mt={1} item xs={10}>
-          <Typography>Date: </Typography>
-          <Typography>
-            {appointmentData.startDate} - {appointmentData.endDate}
-          </Typography>
-        </Grid>
-        <Grid display="flex" gap="8px" ml="25px" mt={1} item xs={10}>
-          <Typography>Created By: </Typography>
-          <Typography>{appointmentData.username}</Typography>
-        </Grid>
-        <Grid display="flex" gap="8px" ml="25px" mt={1} pb={3} item xs={10}>
-          <Typography>Content: </Typography>
-          <Typography>{appointmentData.content}</Typography>
-        </Grid>
-      </Grid>
-    )
-  }
-
-  const Header = ({ ...restProps }) => {
-    return (
-      <AppointmentTooltip.Header style={{flexDirection: 'column', paddingLeft: '0px', alignItems: 'flex-end'}} {...restProps}>
-        <Grid container>
-          <Grid item xs={12}>
-            <Divider />
+            <Typography>Created By: </Typography>
+            <Typography>
+              {appointmentData.username}
+            </Typography>
+          </Grid>
+          <Grid display="flex" gap="8px" ml="25px" mt={1} item xs={10}>
+            <Typography>Content: </Typography>
+            <Typography>
+              {appointmentData.content}
+            </Typography>
           </Grid>
         </Grid>
-        <Divider />
-      </AppointmentTooltip.Header>
+      </AppointmentTooltip.Content>
     )
   }
   return (
@@ -179,14 +165,8 @@ const ChangeLogView = () => {
         <DateNavigator />
         <TodayButton />
         <Appointments />
-        <AppointmentTooltip contentComponent={Content} headerComponent={Header} showDeleteButton />
-        <ConfirmationDialog
-          messages={{
-            confirmDeleteMessage: () => (
-              <Typography fontSize="20px">Are you sure to delete this holiday?</Typography>
-            )
-          }}
-        />
+        <AppointmentTooltip contentComponent={Content} showDeleteButton />
+        <ConfirmationDialog messages={{confirmDeleteMessage: () => <Typography fontSize='20px'>Are you sure to delete this holiday?</Typography>}} />
         <AppointmentForm
           booleanEditorComponent={BoolEditor}
           labelComponent={LabelComponent}
