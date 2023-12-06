@@ -20,22 +20,22 @@ const ManageUserByManager = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-        try {
-            const response = await userApi.getUserInfo2(userId);
-            setInfo(response)
-            console.log(response);
-        } catch (error) {
-            if (error.response && error.response.status === 404) {
-                console.error('User not found!');
-            } else {
-                console.error('Error fetching user info:', error.message);
-            }
+      try {
+        const response = await userApi.getUserInfo2(userId);
+        setInfo(response)
+        console.log(response);
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          console.error('User not found!');
+        } else {
+          console.error('Error fetching user info:', error.message);
         }
+      }
     };
 
     fetchData();
-}, [userId]);
-const departmentName = info?.departmentName
+  }, [userId]);
+  const departmentName = info?.departmentName
   useEffect(() => {
     setIsLoading(true)
     const fetchAllUser = async () => {
@@ -54,7 +54,7 @@ const departmentName = info?.departmentName
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      width:250,
+      width: 150,
     },
     {
       field: 'name',
@@ -62,29 +62,29 @@ const departmentName = info?.departmentName
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      width:400,
+      width: 250,
       renderCell: (params) => (
         <div style={{ color: 'black' }}>
           {params.row.firstName} {params.row.lastName}
         </div>
       ),
     },
-    {
-      field: 'createdBy',
-      headerName: 'Created By',
-      cellClassName: 'name-column--cell',
-      headerAlign: 'center',
-      align: 'center',
-      width:250,
+    // {
+    //   field: 'createdBy',
+    //   headerName: 'Created By',
+    //   cellClassName: 'name-column--cell',
+    //   headerAlign: 'center',
+    //   align: 'center',
+    //   width: 250,
 
-    },
+    // },
     {
       field: 'createdDate',
-      headerName: 'Created Date',
+      headerName: 'Hire Date',
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      width:250,
+      width: 235,
       renderCell: (params) => {
         return (
           <Typography color='#000'>
@@ -94,12 +94,36 @@ const departmentName = info?.departmentName
       }
     },
     {
+      field: 'phone',
+      headerName: 'Phone Number',
+      cellClassName: 'name-column--cell',
+      headerAlign: 'center',
+      align: 'center',
+      width: 150,
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      cellClassName: 'name-column--cell',
+      headerAlign: 'center',
+      align: 'center',
+      width: 250,
+    },
+    {
+      field: 'gender',
+      headerName: 'Gender',
+      cellClassName: 'name-column--cell',
+      headerAlign: 'center',
+      align: 'center',
+      width: 120,
+    },
+    {
       field: 'detail',
       headerName: 'View',
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',
-      width:250,
+      width: 250,
       renderCell: (params) => {
         return (
           <Box
@@ -121,7 +145,7 @@ const departmentName = info?.departmentName
   ]
   return (
     <>
-     <Header title={`TEAM - ${departmentName}`} subtitle="Managing the team Members" />
+      <Header title={`TEAM - ${departmentName}`} subtitle="Managing the team Members" />
 
       <DataTableManageUser
         rows={allUser}
@@ -129,7 +153,7 @@ const departmentName = info?.departmentName
         isLoading={isLoading}
         departmentName={departmentName}
       />
-      <RoleModal setAllUser={setAllUser}  open={open} handleClose={handleClose} />
+      <RoleModal setAllUser={setAllUser} open={open} handleClose={handleClose} />
     </>
   )
 }

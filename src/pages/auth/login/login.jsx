@@ -3,8 +3,6 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { LoadingButton } from '@mui/lab'
 import { IconButton } from '@mui/material'
 import Box from '@mui/material/Box'
-import Checkbox from '@mui/material/Checkbox'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
@@ -15,7 +13,6 @@ import { useNavigate } from 'react-router-dom'
 import authApi from '../../../services/authApi'
 export default function Login() {
   // const [open, setOpen] = useState(false);
-  const [remember, setRemember] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const isLoading = useSelector((state) => state.auth.login?.isFetching)
   console.log(isLoading)
