@@ -80,7 +80,7 @@ const ManageUserByManager = () => {
     // },
     {
       field: 'createdDate',
-      headerName: 'Hire Date',
+      headerName: 'Create Date',
       cellClassName: 'name-column--cell',
       headerAlign: 'center',
       align: 'center',

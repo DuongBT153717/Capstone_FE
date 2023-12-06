@@ -5,7 +5,7 @@ import {
 
 
 const DataTableManageUser = ({ rows, columns, isLoading,departmentName }) => {
-  const filteredRows = rows.filter(row => row.departmentName === departmentName && row.roleName === 'employee');
+  const filteredRows = rows.filter(row => row.departmentName === departmentName && row.roleName === 'employee' && row.statusName === 'active') ;
 
   console.log(filteredRows);
   console.log(rows);
