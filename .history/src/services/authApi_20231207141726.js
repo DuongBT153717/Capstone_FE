@@ -38,9 +38,9 @@ const authApi = {
       }
     }
   },
-  resetPassword: async (data, navigate) => {
+  resetPassword: (data, navigate) => {
     try {
-      await axios.post(`${BASE_URL}/resetPassword`, data)
+       axios.post(`${BASE_URL}/resetPassword`, data)
       toast.success('Your new password will be sent to your gmail!')
       navigate('/login')
     } catch (error) {

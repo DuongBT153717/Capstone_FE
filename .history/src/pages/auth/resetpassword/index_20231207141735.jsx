@@ -11,13 +11,13 @@ const ResetPassword = () => {
   const [username, setUsername] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     setIsLoading(true)
     e.preventDefault()
     let data = {
         username: username
     }
-    authApi.resetPassword(data, navigate)
+    await authApi.resetPassword(data, navigate)
     setIsLoading(false)
   }
   return (

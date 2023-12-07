@@ -9,6 +9,7 @@ export const validationSchema = Yup.object({
     .matches(phoneRegExp, 'Phone number is not valid')
     .min(10, "Your phone number must contain 10 digits")
     .max(10, "Your phone number must contain 10 digits"),
+    address: Yup.string().required('Address is required').matches(/^[#.0-9a-zA-Z\s,-]+$/, 'Address is invalid'),
     country: Yup.string().required('Country is required').matches(/^[a-zA-Z ]+$/, 'Country is invalid'),
     city: Yup.string().required('City is required').matches(/^[a-zA-Z ]+$/, 'City is invalid'),
     gender: Yup.string().required('Gender is required'),

@@ -6,18 +6,16 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { useState } from 'react'
 import authApi from '../../../services/authApi'
-import { useNavigate } from 'react-router-dom';
 const ResetPassword = () => {
   const [username, setUsername] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const navigate = useNavigate()
   const handleSubmit = (e) => {
     setIsLoading(true)
     e.preventDefault()
     let data = {
         username: username
     }
-    authApi.resetPassword(data, navigate)
+    authApi.resetPassword(data)
     setIsLoading(false)
   }
   return (

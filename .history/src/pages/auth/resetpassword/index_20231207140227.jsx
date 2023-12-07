@@ -17,7 +17,8 @@ const ResetPassword = () => {
     let data = {
         username: username
     }
-    authApi.resetPassword(data, navigate)
+    authApi.resetPassword(data)
+    navigate('/login')
     setIsLoading(false)
   }
   return (
