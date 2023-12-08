@@ -216,8 +216,23 @@ const SecuritySideBar = () => {
                                 {' '}
                                 Personal
                             </MenuItem>
-                        </SubMenu>
+                        </SubMenu> 
+
                     </SubMenu>
+                    
+                        <SubMenu
+                            label='LOG'
+                            icon={<CalendarTodayIcon />}
+                        >
+                            <MenuItem
+                                active={activeIndex === 11}
+                                icon={<DensitySmallIcon />}
+                                component={<Link to="/security-viewlog-staff" onClick={() => setActiveIndex(11)} />}>
+                                {' '}
+                                View Log
+                            </MenuItem>
+                          
+                        </SubMenu> 
                 </Menu>
             </Sidebar>
         </>

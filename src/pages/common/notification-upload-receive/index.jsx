@@ -367,7 +367,7 @@ const NotificationUploadReceive = () => {
               </Button>
             )}
             <Button variant="contained" onClick={() => handleHidden(params.row)} style={{ fontSize: '12px' }}>
-              Hidden
+              Delete
             </Button>
           </Box>
         )

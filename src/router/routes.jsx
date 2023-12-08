@@ -90,6 +90,7 @@ import ListNotificationReceiveSecurity from '../pages/security/security-notifica
 import ListNotficationDepartmentSecurity from '../pages/security/security-notification-department'
 import ListNotificationScheduleSecurity from '../pages/security/security-notification-scheduled'
 import VerifyHoliday from '../pages/hr/verify-holiday'
+import ListAllControlLogByStaff from '../pages/security/security-listall-controlLog-byStaff'
 
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
@@ -909,6 +910,14 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <ListNotificationScheduleSecurity />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.LIST_CONTROL_LOG_BY_STAFF_SEC,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllControlLogByStaff />
                 </Suspense>
               )
             },

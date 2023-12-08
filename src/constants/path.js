@@ -106,5 +106,6 @@ export const SECURITY = {
     NOTIFICATION_DRAFT_LIST_SECURITY: 'notification-draft-security',
     NOTIFICATION_SCHEDULED_LIST_SECURITY: 'notification-schedule-security',
     NOTIFICATION_SCHEDULED_DEPARTMENT_SECURITY: '/notification-department-security',
+    LIST_CONTROL_LOG_BY_STAFF_SEC:'/security-viewlog-staff',
     
 }
