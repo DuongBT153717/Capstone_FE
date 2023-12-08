@@ -38,6 +38,10 @@ const SecuritySideBar = () => {
                                         ? 8
                                         : window.location.pathname === '/notification-department-manager'
                                             ? 7
+                                            : window.location.pathname === '/control-log-security'
+                                            ? 9
+                                            : window.location.pathname === '/stranger-log-security'
+                                            ? 10
                                             : 0
         return initialIndex
     })
@@ -218,6 +222,52 @@ const SecuritySideBar = () => {
                             </MenuItem>
                         </SubMenu>
                     </SubMenu>
+                </Menu>
+                
+
+                <Menu
+                    menuItemStyles={{
+                        button: ({ active }) => {
+                            return {
+                                backgroundColor: active ? 'rgb(237, 231, 246)' : undefined,
+                                color: '#000',
+                                '&:hover': {
+                                    backgroundColor: 'rgb(237, 231, 246)',
+                                    color: 'rgb(94, 53, 177)',
+                                    borderRadius: '10px'
+                                }
+                            }
+                        }
+                    }}>
+                    <MenuItem
+                                active={activeIndex === 9}
+                                icon={<ContactMailIcon />}
+                                component={<Link to="/control-log-security" onClick={() => setActiveIndex(9)} />}>
+                                {' '}
+                                Control Log
+                            </MenuItem>
+                </Menu>
+                <Menu
+                    menuItemStyles={{
+                        button: ({ active }) => {
+                            return {
+                                backgroundColor: active ? 'rgb(237, 231, 246)' : undefined,
+                                color: '#000',
+                                '&:hover': {
+                                    backgroundColor: 'rgb(237, 231, 246)',
+                                    color: 'rgb(94, 53, 177)',
+                                    borderRadius: '10px'
+                                }
+                            }
+                        }
+                    }}>
+                    <MenuItem
+                                active={activeIndex ===10}
+                                icon={<ContactMailIcon />}
+                                component={<Link to="/stranger-log-security" onClick={() => setActiveIndex(10)} />}>
+                                {' '}
+                                Stranger Log
+                            </MenuItem>
                 </Menu>
             </Sidebar>
         </>
