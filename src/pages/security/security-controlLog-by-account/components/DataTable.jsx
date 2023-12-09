@@ -4,7 +4,7 @@ import {
 } from "@mui/x-data-grid";
 
 
-const DataTableManageLog = ({ rows, columns }) => {
+const DataTableManageLog = ({ rows, columns, isLoading }) => {
   
   function CustomToolbar() {
     return (
@@ -73,6 +73,7 @@ const DataTableManageLog = ({ rows, columns }) => {
         showColumnVerticalBorder
         rows={rows}
         columns={columns}
+        loading={isLoading}
         slots={{ toolbar: CustomToolbar, loadingOverlay: LinearProgress }}
         initialState={{
           pagination: { paginationModel: { pageSize: 10 } },

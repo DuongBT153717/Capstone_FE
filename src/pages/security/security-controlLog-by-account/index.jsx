@@ -17,6 +17,7 @@ const ListAllControlLogByAccount = () => {
   const [info, setInfo] = useState('')
   const { username } = useParams();
   const [userProfileImage, setUserProfileImage] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   console.log(username);
   const navigate = useNavigate()
   useEffect(() => {
@@ -39,17 +40,21 @@ const ListAllControlLogByAccount = () => {
 
   // Fetch by controlLogByAccountResponseList
   useEffect(() => {
+    setIsLoading(true)
     const fetchAllUser = async () => {
       try {
         const response = await securityApi.getControlListByAccount(username);
         const controlLogs = response.controlLogByAccountResponseList || [];
         setAllControlLog(controlLogs)
+        setIsLoading(false)
         console.log(response);
       } catch (error) {
         if (error.response && error.response.status === 404) {
           console.error('Log not found!');
+          setIsLoading(false)
         } else {
           console.error('Error fetching user info:', error.message);
+          setIsLoading(false)
         }
       }
 
@@ -69,6 +74,7 @@ const ListAllControlLogByAccount = () => {
       } catch (error) {
         if (error.response && error.response.status === 404) {
           console.error('Log not found!');
+
         } else {
           console.error('Error fetching user info:', error.message);
         }
@@ -260,7 +266,7 @@ const ListAllControlLogByAccount = () => {
                         Full Name:
                       </Typography>
                       <Typography gutterBottom fontSize="15px" fontWeight="600">
-                        Account: <span style={{ color: 'red' }}> {allUser?.account} </span>
+                        Account: <span style={{ color: 'red' }}> {allUser.account} </span>
                       </Typography>
                       <Typography sx={{ textTransform: 'capitalize' }} fontSize="15px" variant="body2">
                         Role: <span style={{ color: 'red' }}>{allUser.role}</span>
@@ -268,7 +274,7 @@ const ListAllControlLogByAccount = () => {
                     </Box>
                     <Box ml={2} mt={8.6}>
                       <Typography gutterBottom fontSize="15px" fontWeight="600">
-                        Hire Date: <span style={{ color: 'red' }}> {allUser?.hireDate} </span>
+                        Hire Date: <span style={{ color: 'red' }}> {allUser.hireDate} </span>
                       </Typography>
                       <Typography sx={{ textTransform: 'capitalize' }} fontSize="15px" variant="body2">
                         Department: <span style={{ color: 'red' }}>{allUser.department}</span>
@@ -285,7 +291,7 @@ const ListAllControlLogByAccount = () => {
         <DataTableManageLog
           rows={allControlLog}
           columns={columns}
-
+          isLoading={isLoading}
         />
       </Box>
     </>
