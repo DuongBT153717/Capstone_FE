@@ -346,11 +346,10 @@ const requestApi = {
       } 
     }
   },
-  requestLeaveForm: async (data, navigate) => {
+  requestLeaveForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/requestLeaveForm`, data)
       toast.success('Send request successfully')
-      navigate(-1)
     } catch (error) {
       if (error.response.status === 400) {
         toast.error('Wrong date format or date to must be after date from!')
@@ -363,14 +362,13 @@ const requestApi = {
     }
   },
 
-  requestOverTimeForm: async (data, navigate) => {
+  requestOverTimeForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/overTimeForm`, data)
       toast.success('Send request successfully')
-      navigate(-1)
     } catch (error) {
       if (error.response.status === 400) {
-        toast.error('Wrong Date format or date from must be after system check in!')
+        toast.error('Date from must be after system check in!')
       }
       if (error.response.status === 404) {
         toast.error('User not found!')
@@ -381,11 +379,10 @@ const requestApi = {
       }
     }
   },
-  requestOutSideWorkForm: async (data, navigate ) => {
+  requestOutSideWorkForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/workingOutForm`, data)
       toast.success('Send request successfully')
-      navigate(-1)
     } catch (error) {
       if (error.response.status === 400) {
         toast.error('Date from must be after system check in!')
@@ -415,11 +412,10 @@ const requestApi = {
       }
     }
   },
-  requestOtherForm: async (data, navigate) => {
+  requestOtherForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/otherForm`, data)
       toast.success('Send request successfully')
-      navigate(-1)
     } catch (error) {
       if (error.response.status === 400) {
         toast.error('Request fail!')

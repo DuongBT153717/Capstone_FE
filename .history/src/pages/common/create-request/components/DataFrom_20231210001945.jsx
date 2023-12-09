@@ -62,7 +62,7 @@ const AttendenceFrom = ({ userId }) => {
       content: ''
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       try {
         let data = {
           userId: userId,
@@ -79,7 +79,10 @@ const AttendenceFrom = ({ userId }) => {
           return
         }
         console.log(data)
-        requestApi.requestAttendanceForm(data, navigate)
+        await requestApi.requestAttendanceForm(data)
+        setTimeout(() => {
+          navigate(-1)
+        }, 800)
       } catch (error) {
         toast.warning('Error!')
       }
@@ -226,7 +229,7 @@ const OtFrom = () => {
       content: ''
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       try {
         let data = {
           userId: userId,
@@ -241,7 +244,10 @@ const OtFrom = () => {
         }
 
         console.log(data)
-       requestApi.requestOverTimeForm(data, navigate)
+        await requestApi.requestOverTimeForm(data)
+        setTimeout(() => {
+          navigate(-1)
+        }, 800)
       } catch (error) {
         toast.warning('Error!!')
       }
@@ -417,7 +423,7 @@ const OtherRequest = ({ userId }) => {
     setTitle('')
     setContent('')
     setDepartment('')
-    requestApi.requestOtherForm(data, navigate)
+    requestApi.requestOtherForm(data)
   }
 
   const callApiToManager = (e, departmentId) => {
@@ -681,7 +687,7 @@ const LateRequest = () => {
       lateDuration: ''
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       try {
         let data = {
           userId: userId,
@@ -695,9 +701,21 @@ const LateRequest = () => {
         }
 
         console.log(data)
-       requestApi.requestLateForm(data, navigate)
+        await requestApi.requestLateForm(data)
+        navigate(-1)
       } catch (error) {
-       console.log(error);
+        if (error.response.status === 400) {
+          toast.error('Wrong date format or date to must be after date from!')
+        }
+        if (error.response.status === 404) {
+          toast.error('User not found!')
+        }
+        if (error.response.status === 422) {
+          toast.error('Evaluate existed')
+        }
+        if (error.response.status === 500) {
+          toast.error('Wrong date format')
+        }
       }
     }
   })
@@ -824,7 +842,7 @@ const LeaveRequest = ({ userId }) => {
       durationEvaluation: 0
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       try {
         let data
         if (dateFrom.format('YYYY-MM-DD') === dateTo.format('YYYY-MM-DD')) {
@@ -854,7 +872,11 @@ const LeaveRequest = ({ userId }) => {
         }
 
         console.log(data)
-       requestApi.requestLeaveForm(data,navigate)
+        await requestApi.requestLeaveForm(data)
+
+        setTimeout(() => {
+          navigate(-1)
+        }, 800)
       } catch (error) {
         toast.warning('Error!!')
       }
@@ -1020,7 +1042,10 @@ const WorkingOutSideRequest = () => {
         }
 
         console.log(data)
-        await requestApi.requestOutSideWorkForm(data, navigate)
+        await requestApi.requestOutSideWorkForm(data)
+        setTimeout(() => {
+          navigate(-1)
+        }, 800)
       } catch (error) {
         toast.warning('Error!!')
       }

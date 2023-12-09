@@ -226,7 +226,7 @@ const OtFrom = () => {
       content: ''
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       try {
         let data = {
           userId: userId,
@@ -241,7 +241,10 @@ const OtFrom = () => {
         }
 
         console.log(data)
-       requestApi.requestOverTimeForm(data, navigate)
+        await requestApi.requestOverTimeForm(data)
+        setTimeout(() => {
+          navigate(-1)
+        }, 800)
       } catch (error) {
         toast.warning('Error!!')
       }
@@ -417,7 +420,7 @@ const OtherRequest = ({ userId }) => {
     setTitle('')
     setContent('')
     setDepartment('')
-    requestApi.requestOtherForm(data, navigate)
+    requestApi.requestOtherForm(data)
   }
 
   const callApiToManager = (e, departmentId) => {
@@ -824,7 +827,7 @@ const LeaveRequest = ({ userId }) => {
       durationEvaluation: 0
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       try {
         let data
         if (dateFrom.format('YYYY-MM-DD') === dateTo.format('YYYY-MM-DD')) {
@@ -854,7 +857,11 @@ const LeaveRequest = ({ userId }) => {
         }
 
         console.log(data)
-       requestApi.requestLeaveForm(data,navigate)
+        await requestApi.requestLeaveForm(data)
+
+        setTimeout(() => {
+          navigate(-1)
+        }, 800)
       } catch (error) {
         toast.warning('Error!!')
       }
@@ -1020,7 +1027,10 @@ const WorkingOutSideRequest = () => {
         }
 
         console.log(data)
-        await requestApi.requestOutSideWorkForm(data, navigate)
+        await requestApi.requestOutSideWorkForm(data)
+        setTimeout(() => {
+          navigate(-1)
+        }, 800)
       } catch (error) {
         toast.warning('Error!!')
       }

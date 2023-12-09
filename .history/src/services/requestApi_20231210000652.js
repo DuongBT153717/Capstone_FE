@@ -2,7 +2,6 @@ import { toast } from 'react-toastify'
 import axiosClient from '../utils/axios-config'
 import { BASE_URL } from './constraint'
 
-
 const requestApi = {
   getAllRequestAndTicket: (data) => {
     try {
@@ -210,12 +209,7 @@ const requestApi = {
       await axiosClient.post(`${BASE_URL}/changeReceiveId`, data)
       toast.success('Accept Request success')
     } catch (error) {
-      if (error.response.status === 400) {
-        toast.error('Wrong date format or date to must be after date from!')
-      }
-      if (error.response.status === 404) {
-        toast.error('Receiver not found!')
-      }
+      console.log(error)
     }
   },
 
@@ -289,14 +283,13 @@ const requestApi = {
       }
     }
   },
-  requestAttendanceForm: async (data, navigate) => {
+  requestAttendanceForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/requestAttendanceForm`, data)
       toast.success('Send request successfully')
-      navigate(-1)
     } catch (error) {
       if (error.response.status === 400) {
-        toast.error('Wrong date format or date to must be after date from')
+        toast.error('Date to must be after date from')
       }
       if (error.response.status === 404) {
         toast.error('User not found!')
@@ -313,7 +306,7 @@ const requestApi = {
       toast.success('Send request successfully')
     } catch (error) {
       if (error.response.status === 400) {
-        toast.error('Wrong date format or date to must be after date from!')
+        toast.error('Date to must be after date from!')
       }
       if (error.response.status === 404) {
         toast.error('User not found!')
@@ -339,95 +332,76 @@ const requestApi = {
       toast.success('Send request successfully')
     } catch (error) {
       if (error.response.status === 400) {
-        toast.error('Wrong date format or date to must be after date from!')
+        toast.error('Date to must be after date from!')
       }
       if (error.response.status === 404) {
         toast.error('User not found!')
-      } 
+      }
     }
   },
-  requestLeaveForm: async (data, navigate) => {
+  requestLeaveForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/requestLeaveForm`, data)
       toast.success('Send request successfully')
-      navigate(-1)
     } catch (error) {
       if (error.response.status === 400) {
-        toast.error('Wrong date format or date to must be after date from!')
+        toast.error('Date to must be after date from!')
       }
       if (error.response.status === 404) {
         toast.error('User not found!')
-      } if (error.response.status === 422) {
-        toast.error('Evaluate existed')
       }
     }
   },
 
-  requestOverTimeForm: async (data, navigate) => {
+  requestOverTimeForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/overTimeForm`, data)
       toast.success('Send request successfully')
-      navigate(-1)
-    } catch (error) {
-      if (error.response.status === 400) {
-        toast.error('Wrong Date format or date from must be after system check in!')
-      }
-      if (error.response.status === 404) {
-        toast.error('User not found!')
-      } if (error.response.status === 422) {
-        toast.error('Evaluate existed')
-      }  if (error.response.status === 409) {
-        toast.error('Request overtime is only created for the previous day')
-      }
-    }
-  },
-  requestOutSideWorkForm: async (data, navigate ) => {
-    try {
-      await axiosClient.post(`${BASE_URL}/workingOutForm`, data)
-      toast.success('Send request successfully')
-      navigate(-1)
     } catch (error) {
       if (error.response.status === 400) {
         toast.error('Date from must be after system check in!')
       }
       if (error.response.status === 404) {
         toast.error('User not found!')
-      } if (error.response.status === 422) {
-        toast.error('Evaluate existed')
       }
     }
   },
-  requestLateForm: async (data, navigate) => {
+  requestOutSideWorkForm: async (data) => {
     try {
-      await axiosClient.post(`${BASE_URL}/lateForm`, data)
+      await axiosClient.post(`${BASE_URL}/workingOutForm`, data)
       toast.success('Send request successfully')
-      navigate(-1)
     } catch (error) {
       if (error.response.status === 400) {
-        toast.error('Wrong date format or date to must be after date from!')
+        toast.error('Date from must be after system check in!')
       }
       if (error.response.status === 404) {
         toast.error('User not found!')
-      } if (error.response.status === 422) {
-        toast.error('Evaluate existed')
-      } if (error.response.status === 500) {
-        toast.error('Wrong date format')
       }
     }
   },
-  requestOtherForm: async (data, navigate) => {
+  requestLateForm: async (data) => {
+    try {
+      await axiosClient.post(`${BASE_URL}/lateForm`, data)
+      toast.success('Send request successfully')
+    } catch (error) {
+      if (error.response.status === 400) {
+        toast.error('Date to must be after date from!')
+      }
+      if (error.response.status === 404) {
+        toast.error('User not found!')
+      }
+    }
+  },
+  requestOtherForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/otherForm`, data)
       toast.success('Send request successfully')
-      navigate(-1)
     } catch (error) {
       if (error.response.status === 400) {
         toast.error('Request fail!')
       }
       if (error.response.status === 404) {
         toast.error('User not found!')
-      } if (error.response.status === 422) {
-        toast.error('Evaluate existed')
       }
     }
   },

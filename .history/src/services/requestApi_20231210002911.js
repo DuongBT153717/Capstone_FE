@@ -370,7 +370,7 @@ const requestApi = {
       navigate(-1)
     } catch (error) {
       if (error.response.status === 400) {
-        toast.error('Wrong Date format or date from must be after system check in!')
+        toast.error('Date from must be after system check in!')
       }
       if (error.response.status === 404) {
         toast.error('User not found!')

@@ -346,11 +346,10 @@ const requestApi = {
       } 
     }
   },
-  requestLeaveForm: async (data, navigate) => {
+  requestLeaveForm: async (data) => {
     try {
       await axiosClient.post(`${BASE_URL}/requestLeaveForm`, data)
       toast.success('Send request successfully')
-      navigate(-1)
     } catch (error) {
       if (error.response.status === 400) {
         toast.error('Wrong date format or date to must be after date from!')
@@ -370,7 +369,7 @@ const requestApi = {
       navigate(-1)
     } catch (error) {
       if (error.response.status === 400) {
-        toast.error('Wrong Date format or date from must be after system check in!')
+        toast.error('Date from must be after system check in!')
       }
       if (error.response.status === 404) {
         toast.error('User not found!')
