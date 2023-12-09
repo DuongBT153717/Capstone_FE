@@ -91,6 +91,10 @@ import ListNotficationDepartmentSecurity from '../pages/security/security-notifi
 import ListNotificationScheduleSecurity from '../pages/security/security-notification-scheduled'
 import VerifyHoliday from '../pages/hr/verify-holiday'
 import ListAllControlLogByStaff from '../pages/security/security-listall-controlLog-byStaff'
+import ControlLogSecurity from '../pages/security/control-log-security'
+import StrangerLogSecurity from '../pages/security/stranger-log-security'
+import ControlLogDetail from '../pages/security/control-log-detail'
+import ListAllControlLogByAccount from '../pages/security/security-controlLog-by-account'
 
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
@@ -841,6 +845,34 @@ export default function Router() {
       ]
     },
     {
+      path: '/',
+      children: [
+        {
+          element: (
+            <RequireAuth allowedRoles={[ROLES.SECURITY]} />
+          ),
+          children: [
+            {
+              path: SECURITY.CONTROL_LOG_DETAIL_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ControlLogDetail />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.LIST_CONTROL_LOG_BY_ACCOUNT,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ListAllControlLogByAccount />
+                </Suspense>
+              )
+            },
+          ]
+        },
+      ]
+    },
+    {
       path: SECURITY.LAYOUT,
       element: <SecurityLayout />,
       children: [
@@ -854,6 +886,22 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <SecurityTicket />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.CONTROL_LOG_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <ControlLogSecurity />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.STRANGER_LOG_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <StrangerLogSecurity />
                 </Suspense>
               )
             },

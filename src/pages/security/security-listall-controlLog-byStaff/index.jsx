@@ -160,7 +160,7 @@ const ListAllControlLogByStaff = () => {
             borderRadius="4px">
             <Button
               variant='contained'
-              onClick={() => navigate(`/check-emp-info-by-manager/${params.row.accountId}`)}
+              onClick={() => navigate(`/list-control-log-by-account/${params.row.username}`)}
             >
               Detail
             </Button>

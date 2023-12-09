@@ -107,5 +107,10 @@ export const SECURITY = {
     NOTIFICATION_SCHEDULED_LIST_SECURITY: 'notification-schedule-security',
     NOTIFICATION_SCHEDULED_DEPARTMENT_SECURITY: '/notification-department-security',
     LIST_CONTROL_LOG_BY_STAFF_SEC:'/security-viewlog-staff',
+    LIST_CONTROL_LOG_BY_ACCOUNT:'/list-control-log-by-account/:username',
+    CONTROL_LOG_SECURITY: '/control-log-security',
+    CONTROL_LOG_DETAIL_SECURITY: '/control-log-detail-security/:username/:controlLogId',
+    // CONTROL_LOG_DETAIL_SECURITY: '/control-log-detail-security',
+    STRANGER_LOG_SECURITY: '/stranger-log-security',
     
 }
