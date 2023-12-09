@@ -918,7 +918,23 @@ const LeaveRequest = ({ userId }) => {
                 <Typography fontWeight="500">Duration Evaluation (h)</Typography>
                 <TextField
                   name="durationEvaluation"
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    const inputValue = parseInt(e.target.value, 10);
+                    let newValue;
+                    if (inputValue > 8) {
+                      newValue = 8;
+                    } else if (inputValue < 1) {
+                      newValue = 1;
+                    } else {
+                      newValue = inputValue;
+                    }
+                    formik.handleChange({
+                      target: {
+                        name: 'durationEvaluation',
+                        value: newValue,
+                      },
+                    });
+                  }}
                   onBlur={formik.handleBlur}
                   value={checked ? 4 : formik.values.durationEvaluation}
                   sx={{ width: '60%' }}
