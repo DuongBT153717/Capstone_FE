@@ -91,14 +91,14 @@ export const HR_PATH = {
     ATTENDANCE_LOG_DETAIL: '/attendance-log-detail-hr/:employee_id/:date',
     CHANGE_LOG_DETAIL: '/change-log-detail-hr/:employee_id/:date',
     CHECK_EMP_INFO: '/check-employee-info/:user_id',
-    CHANGE_LOG_EDIT_PROFILE_DETAIL:'/change-log-edit-profile-detail/:userId',    
-    CHANGE_LOG_VIEW:'/change-log-view',
+    CHANGE_LOG_EDIT_PROFILE_DETAIL: '/change-log-edit-profile-detail/:userId',
+    CHANGE_LOG_VIEW: '/change-log-view',
 }
 
 export const SECURITY = {
     LAYOUT: "/",
-    TICKET_SECURITY_LIST:'/ticket-list-security',
-    TICKET_SECURITY_LIST_MANAGE:'/security-ticket',
+    TICKET_SECURITY_LIST: '/ticket-list-security',
+    TICKET_SECURITY_LIST_MANAGE: '/security-ticket',
     NOTIFICATION_LIST_SECURITY: '/notification-list-security',
     NOTIFICATION_UPLOAD_SENT_SECURITY: 'notification-send-security',
     NOTIFICATION_UPLOAD_RECEIVE_SECURITY: 'notification-receive-security',
@@ -109,5 +109,6 @@ export const SECURITY = {
     CONTROL_LOG_DETAIL_SECURITY: '/control-log-detail-security/:username/:controlLogId',
     // CONTROL_LOG_DETAIL_SECURITY: '/control-log-detail-security',
     STRANGER_LOG_SECURITY: '/stranger-log-security',
-    
+    DEVICE_MANAGE_SECURITY: '/device-manage-security',
+
 }

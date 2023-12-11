@@ -92,6 +92,7 @@ import ListNotificationScheduleSecurity from '../pages/security/security-notific
 import ControlLogSecurity from '../pages/security/control-log-security'
 import StrangerLogSecurity from '../pages/security/stranger-log-security'
 import ControlLogDetail from '../pages/security/control-log-detail'
+import DeviceManage from '../pages/security/device-manage'
 
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
@@ -868,6 +869,14 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <SecurityTicket />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.DEVICE_MANAGE_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <DeviceManage />
                 </Suspense>
               )
             },
