@@ -91,8 +91,9 @@ export const HR_PATH = {
     ATTENDANCE_LOG_DETAIL: '/attendance-log-detail-hr/:employee_id/:date',
     CHANGE_LOG_DETAIL: '/change-log-detail-hr/:employee_id/:date',
     CHECK_EMP_INFO: '/check-employee-info/:user_id',
-    CHANGE_LOG_EDIT_PROFILE_DETAIL: '/change-log-edit-profile-detail/:userId',
-    CHANGE_LOG_VIEW: '/change-log-view',
+    CHANGE_LOG_EDIT_PROFILE_DETAIL:'/change-log-edit-profile-detail/:userId',    
+    CHANGE_LOG_VIEW:'/change-log-view',
+    VERIFY_HOLIDAY_CODE: 'verify-holiday-code'
 }
 
 export const SECURITY = {
@@ -105,10 +106,12 @@ export const SECURITY = {
     NOTIFICATION_DRAFT_LIST_SECURITY: 'notification-draft-security',
     NOTIFICATION_SCHEDULED_LIST_SECURITY: 'notification-schedule-security',
     NOTIFICATION_SCHEDULED_DEPARTMENT_SECURITY: '/notification-department-security',
+    LIST_CONTROL_LOG_BY_STAFF_SEC:'/security-viewlog-staff',
+    LIST_CONTROL_LOG_BY_ACCOUNT:'/list-control-log-by-account/:username',
     CONTROL_LOG_SECURITY: '/control-log-security',
     CONTROL_LOG_DETAIL_SECURITY: '/control-log-detail-security/:username/:controlLogId',
     // CONTROL_LOG_DETAIL_SECURITY: '/control-log-detail-security',
     STRANGER_LOG_SECURITY: '/stranger-log-security',
     DEVICE_MANAGE_SECURITY: '/device-manage-security',
-
+    DEVICE_DETAIL_SECURITY: '/device-detail-security/:device_id',
 }

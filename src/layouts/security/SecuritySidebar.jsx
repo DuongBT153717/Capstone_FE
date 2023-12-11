@@ -1,3 +1,4 @@
+import AodIcon from '@mui/icons-material/Aod'
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl'
@@ -11,6 +12,9 @@ import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox'
 import MenuIcon from '@mui/icons-material/Menu'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import UploadIcon from '@mui/icons-material/Upload'
+import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
+import CameraFrontIcon from '@mui/icons-material/CameraFront';
+import NoAccountsIcon from '@mui/icons-material/NoAccounts';
 import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useState } from 'react'
@@ -223,54 +227,40 @@ const SecuritySideBar = () => {
                                 Personal
                             </MenuItem>
                         </SubMenu>
+
+                    </SubMenu>
+
+                    <SubMenu
+                        label='LCD Log'
+                        icon={<AodIcon />}
+                    >
+                        <MenuItem
+                            active={activeIndex === 11}
+                            icon={<CameraFrontIcon />}
+                            component={<Link to="/security-viewlog-staff" onClick={() => setActiveIndex(11)} />}>
+                            {' '}
+                            View Log
+                        </MenuItem>
+
+                        <MenuItem
+                            active={activeIndex === 9}
+                            icon={<DirectionsWalkIcon />}
+                            component={<Link to="/control-log-security" onClick={() => setActiveIndex(9)} />}>
+                            {' '}
+                            Control Log
+                        </MenuItem>
+                        <MenuItem
+                            active={activeIndex === 10}
+                            icon={<NoAccountsIcon />}
+                            component={<Link to="/stranger-log-security" onClick={() => setActiveIndex(10)} />}>
+                            {' '}
+                            Stranger Log
+                        </MenuItem>
+
                     </SubMenu>
                 </Menu>
-                
 
-                <Menu
-                    menuItemStyles={{
-                        button: ({ active }) => {
-                            return {
-                                backgroundColor: active ? 'rgb(237, 231, 246)' : undefined,
-                                color: '#000',
-                                '&:hover': {
-                                    backgroundColor: 'rgb(237, 231, 246)',
-                                    color: 'rgb(94, 53, 177)',
-                                    borderRadius: '10px'
-                                }
-                            }
-                        }
-                    }}>
-                    <MenuItem
-                                active={activeIndex === 9}
-                                icon={<ContactMailIcon />}
-                                component={<Link to="/control-log-security" onClick={() => setActiveIndex(9)} />}>
-                                {' '}
-                                Control Log
-                            </MenuItem>
-                </Menu>
-                <Menu
-                    menuItemStyles={{
-                        button: ({ active }) => {
-                            return {
-                                backgroundColor: active ? 'rgb(237, 231, 246)' : undefined,
-                                color: '#000',
-                                '&:hover': {
-                                    backgroundColor: 'rgb(237, 231, 246)',
-                                    color: 'rgb(94, 53, 177)',
-                                    borderRadius: '10px'
-                                }
-                            }
-                        }
-                    }}>
-                    <MenuItem
-                                active={activeIndex ===10}
-                                icon={<ContactMailIcon />}
-                                component={<Link to="/stranger-log-security" onClick={() => setActiveIndex(10)} />}>
-                                {' '}
-                                Stranger Log
-                            </MenuItem>
-                </Menu>
+               
                 <Menu
                     menuItemStyles={{
                         button: ({ active }) => {

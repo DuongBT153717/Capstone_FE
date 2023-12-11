@@ -54,7 +54,7 @@ const DeviceManage = () => {
             }
         }
         listAllDevice()
-    }, [])
+    }, [id])
 
     useEffect(() => {
         const getAllRoom = async () => {
@@ -182,7 +182,8 @@ const DeviceManage = () => {
                                 <Button variant='contained'
                                     onClick={() => handleOpenView(params.row)} >View</Button>
                             </>)}
-                            <Button variant='contained'>Detail</Button>
+                            <Button variant='contained' 
+                            onClick={() => navigate(`/device-detail-security/${params.row.deviceId}`)}>Detail</Button>
 
                         </Box>
                     </Box>
@@ -348,7 +349,7 @@ const DeviceManage = () => {
                         onClick={handleSaveChangeUpdate} variant='contained'>Save</Button>
                 </Box>
             </Modal>
-{/* Modal show not  */}
+{/* Modal show note  */}
             <Modal
                 open={isShowView}
                 onClose={handleCloseView}

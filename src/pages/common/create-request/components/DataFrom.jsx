@@ -62,7 +62,7 @@ const AttendenceFrom = ({ userId }) => {
       content: ''
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       try {
         let data = {
           userId: userId,
@@ -75,19 +75,16 @@ const AttendenceFrom = ({ userId }) => {
           receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
         }
         if (!isFrom && !isTo) {
-          toast.warning("The 'From' and 'To' cannot be null at the same time.");
-          return;
+          toast.warning("The 'From' and 'To' cannot be null at the same time.")
+          return
         }
-        console.log(data);
-        await requestApi.requestAttendanceForm(data);
-        setTimeout(() => {
-          navigate(-1);
-        }, 800);
+        console.log(data)
+        requestApi.requestAttendanceForm(data, navigate)
       } catch (error) {
-        toast.warning("Error!")
+        toast.warning('Error!')
       }
     }
-  });
+  })
 
   return (
     <Box p={3} pl={0}>
@@ -132,7 +129,7 @@ const AttendenceFrom = ({ userId }) => {
           <Grid item xs={4} mb={2}>
             <Box display="flex" gap="5px">
               <Typography fontWeight="500">From</Typography>
-              <Checkbox sx={{ p: 0 }} checked={isFrom} onChange={handleChangeFrom}  />
+              <Checkbox sx={{ p: 0 }} checked={isFrom} onChange={handleChangeFrom} />
             </Box>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <TimePicker
@@ -226,10 +223,10 @@ const OtFrom = () => {
   const formik = useFormik({
     initialValues: {
       title: '',
-      content: '',
+      content: ''
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       try {
         let data = {
           userId: userId,
@@ -241,18 +238,15 @@ const OtFrom = () => {
           toTime: to.format('HH:mm:ss'),
           departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
           receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
-        };
+        }
 
-        console.log(data);
-        await requestApi.requestOverTimeForm(data);
-        setTimeout(() => {
-          navigate(-1);
-        }, 800);
+        console.log(data)
+       requestApi.requestOverTimeForm(data, navigate)
       } catch (error) {
-        toast.warning("Error!!")
+        toast.warning('Error!!')
       }
     }
-  });
+  })
 
   return (
     <Box p={3} pl={0}>
@@ -423,7 +417,7 @@ const OtherRequest = ({ userId }) => {
     setTitle('')
     setContent('')
     setDepartment('')
-    requestApi.requestOtherForm(data)
+    requestApi.requestOtherForm(data, navigate)
   }
 
   const callApiToManager = (e, departmentId) => {
@@ -457,49 +451,49 @@ const OtherRequest = ({ userId }) => {
   }
   console.log(department)
   const handleCreateRequest = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
       if (currentUser?.role === 'employee' && role === 'manager') {
-        await callApiEmployee(e, receiveIdAndDepartment?.managerInfoResponse?.managerId);
+        await callApiEmployee(e, receiveIdAndDepartment?.managerInfoResponse?.managerId)
       } else if (currentUser?.role === 'employee' && role === 'hr') {
-        await callApiOther(e, 3);
+        await callApiOther(e, 3)
       } else if (currentUser?.role === 'employee' && role === 'security') {
-        await callApiOther(e, 10);
+        await callApiOther(e, 10)
       } else if (currentUser?.role === 'employee' && role === 'admin') {
-        await callApiOther(e, 9);
+        await callApiOther(e, 9)
       } else if (currentUser?.role === 'manager' && role === 'admin') {
-        await callApiOther(e, 9);
+        await callApiOther(e, 9)
       } else if (currentUser?.role === 'manager' && role === 'security') {
-        await callApiOther(e, 10);
+        await callApiOther(e, 10)
       } else if (currentUser?.role === 'manager' && role === 'hr') {
-        await callApiOther(e, 3);
+        await callApiOther(e, 3)
       } else if (currentUser?.role === 'hr' && role === 'admin') {
-        await callApiOther(e, 9);
+        await callApiOther(e, 9)
       } else if (currentUser?.role === 'hr' && role === 'security') {
-        await callApiOther(e, 10);
+        await callApiOther(e, 10)
       } else if (currentUser?.role === 'hr' && role === 'manager') {
-        await callApiToManager(e, department);
+        await callApiToManager(e, department)
       } else if (currentUser?.role === 'security' && role === 'admin') {
-        await callApiOther(e, 9);
+        await callApiOther(e, 9)
       } else if (currentUser?.role === 'security' && role === 'hr') {
-        await callApiOther(e, 3);
+        await callApiOther(e, 3)
       } else if (currentUser?.role === 'security' && role === 'manager') {
-        await callApiToManager(e, department);
+        await callApiToManager(e, department)
       } else if (currentUser?.role === 'admin' && role === 'security') {
-        await callApiOther(e, 10);
+        await callApiOther(e, 10)
       } else if (currentUser?.role === 'admin' && role === 'hr') {
-        await callApiOther(e, 3);
+        await callApiOther(e, 3)
       } else if (currentUser?.role === 'admin' && role === 'manager') {
-        await callApiToManager(e, department);
+        await callApiToManager(e, department)
       }
       setTimeout(() => {
-        navigate(-1);
-      }, 800);
+        navigate(-1)
+      }, 800)
     } catch (error) {
       // Handle errors if needed
     }
-  };
+  }
 
   useEffect(() => {
     if (getAllManagerDepartment.length !== 0) {
@@ -510,8 +504,6 @@ const OtherRequest = ({ userId }) => {
       getManagerByDepartment()
     }
   }, [department])
-
-
 
   const handleDepartment = () => {
     if (currentUser?.role === 'admin' && role === 'manager') {
@@ -689,7 +681,7 @@ const LateRequest = () => {
       lateDuration: ''
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       try {
         let data = {
           userId: userId,
@@ -700,18 +692,15 @@ const LateRequest = () => {
           requestDate: date.format('YYYY-MM-DD'),
           departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
           receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
-        };
+        }
 
-        console.log(data);
-        await requestApi.requestLateForm(data);
-        setTimeout(() => {
-          navigate(-1);
-        }, 800);
+        console.log(data)
+       requestApi.requestLateForm(data, navigate)
       } catch (error) {
-        toast.warning("Error!!")
+       console.log(error);
       }
     }
-  });
+  })
 
   return (
     <Box p={3} pl={0}>
@@ -835,9 +824,9 @@ const LeaveRequest = ({ userId }) => {
       durationEvaluation: 0
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       try {
-        let data;
+        let data
         if (dateFrom.format('YYYY-MM-DD') === dateTo.format('YYYY-MM-DD')) {
           data = {
             userId: userId,
@@ -849,7 +838,7 @@ const LeaveRequest = ({ userId }) => {
             durationEvaluation: values.durationEvaluation,
             departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
             receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
-          };
+          }
         } else {
           data = {
             userId: userId,
@@ -861,20 +850,16 @@ const LeaveRequest = ({ userId }) => {
             durationEvaluation: 0,
             departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
             receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
-          };
+          }
         }
 
-        console.log(data);
-        await requestApi.requestLeaveForm(data);
-
-        setTimeout(() => {
-          navigate(-1);
-        }, 800);
+        console.log(data)
+       requestApi.requestLeaveForm(data,navigate)
       } catch (error) {
-        toast.warning("Error!!")
+        toast.warning('Error!!')
       }
     }
-  });
+  })
 
   console.log(dateFrom.format('YYYY-MM-DD'))
   console.log(dateTo.format('YYYY-MM-DD'))
@@ -933,7 +918,23 @@ const LeaveRequest = ({ userId }) => {
                 <Typography fontWeight="500">Duration Evaluation (h)</Typography>
                 <TextField
                   name="durationEvaluation"
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    const inputValue = parseInt(e.target.value, 10);
+                    let newValue;
+                    if (inputValue > 8) {
+                      newValue = 8;
+                    } else if (inputValue < 1) {
+                      newValue = 1;
+                    } else {
+                      newValue = inputValue;
+                    }
+                    formik.handleChange({
+                      target: {
+                        name: 'durationEvaluation',
+                        value: newValue,
+                      },
+                    });
+                  }}
                   onBlur={formik.handleBlur}
                   value={checked ? 4 : formik.values.durationEvaluation}
                   sx={{ width: '60%' }}
@@ -1032,18 +1033,15 @@ const WorkingOutSideRequest = () => {
           date: date.format('YYYY-MM-DD'),
           departmentId: receiveIdAndDepartment?.managerInfoResponse?.managerDepartmentId,
           receivedId: receiveIdAndDepartment?.managerInfoResponse?.managerId
-        };
+        }
 
-        console.log(data);
-        await requestApi.requestOutSideWorkForm(data);
-        setTimeout(() => {
-          navigate(-1);
-        }, 800);
+        console.log(data)
+        await requestApi.requestOutSideWorkForm(data, navigate)
       } catch (error) {
-        toast.warning("Error!!")
+        toast.warning('Error!!')
       }
     }
-  });
+  })
 
   return (
     <Box p={3} pl={0}>
