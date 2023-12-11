@@ -17,7 +17,6 @@ import holidayApi from '../../../services/holidayApi'
 import { useSelector } from 'react-redux'
 import { Typography, Grid, Divider } from '@mui/material'
 import { jwtDecode } from 'jwt-decode'
-import { toast } from 'react-toastify';
 const ChangeLogView = () => {
   const [holidays, setHolidays] = useState([])
   const BoolEditor = () => {
@@ -86,7 +85,7 @@ const ChangeLogView = () => {
   }
 
   const commitChanges = async ({ added, deleted }) => {
-    if (added && added.title !== '' && added.content !== '') {
+    if (added && added.title === '' && added.content !== '') {
       const dateStart = moment(added.startDate.toString())
       const timeStart = dateStart.format('YYYY-MM-DD')
       const dateEnd = moment(added.endDate.toString())
@@ -117,9 +116,9 @@ const ChangeLogView = () => {
 
         return newData
       })
-    }else if(added && added.title === '' || added && added.content === ''){
-      toast.error(`All field can't be blank`)
-    }else if (deleted !== undefined) {
+    }
+
+    if (deleted !== undefined) {
       setHolidays((prevData) => {
         let newData = [...prevData]
         holidayApi.deleteHoliday(deleted)

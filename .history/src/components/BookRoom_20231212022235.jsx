@@ -24,7 +24,6 @@ import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import requestApi from '../services/requestApi'
-import { toast } from 'react-toastify';
 
 const BoolEditor = () => {
   return null
@@ -124,45 +123,42 @@ const BookRoom = () => {
     }
   ])
   const commitChanges = async ({ added }) => {
-    if (added.title !== '' && added.content !== '' && added.departmentId !== 0) {
-      const dateStart = moment(added.startDate.toString())
-      const timeStart = dateStart.format('HH:mm:ss')
-      const dateEnd = moment(added.endDate.toString())
-      const timeEnd = dateEnd.format('HH:mm:ss')
+    const dateStart = moment(added.startDate.toString())
+        const timeStart = dateStart.format('HH:mm:ss')
+        const dateEnd = moment(added.endDate.toString())
+        const timeEnd = dateEnd.format('HH:mm:ss')
 
-      let data = {
-        userId: currentUser?.accountId,
-        departmentSenderId: added.departmentId.toString(),
-        roomId: added.roomId,
-        title: added.title,
-        content: added.content,
-        bookingDate: dateStart.format('YYYY-MM-DD'),
-        startTime: timeStart,
-        endTime: timeEnd,
-        departmentReceiverId: '9'
-      }
-
-      let dataAdd = {
-        id: currentUser?.accountId,
-        startDate: dateStart.format('YYYY-MM-DD HH:mm'),
-        endDate: dateEnd.format('YYYY-MM-DD HH:mm'),
-        title: added.title,
-        roomId: added.roomId,
-        bookingStatus: 'PENDING'
-      }
-
-      const res = await requestApi.createRoomBookingTicket(data)
-      console.log(res)
-      setData((prevData) => {
-        let newData = [...prevData]
-        if (added && res === 1) {
-          newData = [...newData, dataAdd]
+        let data = {
+          userId: currentUser?.accountId,
+          departmentSenderId: added.departmentId.toString(),
+          roomId: added.roomId,
+          title: added.title,
+          content: added.content,
+          bookingDate: dateStart.format('YYYY-MM-DD'),
+          startTime: timeStart,
+          endTime: timeEnd,
+          departmentReceiverId: '9'
         }
-        return newData
-      })
-    }else{
-      toast.error(`All field can't be blank`)
-    }
+
+        let dataAdd = {
+          id: currentUser?.accountId,
+          startDate: dateStart.format('YYYY-MM-DD HH:mm'),
+          endDate: dateEnd.format('YYYY-MM-DD HH:mm'),
+          title: added.title,
+          roomId: added.roomId,
+          bookingStatus: 'PENDING'
+        }
+
+
+        const res = await requestApi.createRoomBookingTicket(data)
+        console.log(res);
+     setData((prevData) => {
+      let newData = [...prevData]
+      if (added && res === 1) {
+        newData = [...newData, dataAdd]
+      }
+      return newData
+    })
   }
 
   const DateEditor = ({ ...restProps }) => {

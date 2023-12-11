@@ -43,10 +43,12 @@ const SecuritySideBar = () => {
                                         : window.location.pathname === '/notification-department-security'
                                             ? 7
                                             : window.location.pathname === '/control-log-security'
-                                                ? 9
-                                                : window.location.pathname === '/stranger-log-security'
-                                                    ? 10
-                                                    : 0
+                                            ? 9
+                                            : window.location.pathname === '/stranger-log-security'
+                                            ? 10
+                                            : window.location.pathname === '/device-manage-security'
+                                            ? 20
+                                            : 0
         return initialIndex
     })
     const [userProfileImage, setUserProfileImage] = useState('')
@@ -258,9 +260,29 @@ const SecuritySideBar = () => {
                     </SubMenu>
                 </Menu>
 
-
-
-              
+               
+                <Menu
+                    menuItemStyles={{
+                        button: ({ active }) => {
+                            return {
+                                backgroundColor: active ? 'rgb(237, 231, 246)' : undefined,
+                                color: '#000',
+                                '&:hover': {
+                                    backgroundColor: 'rgb(237, 231, 246)',
+                                    color: 'rgb(94, 53, 177)',
+                                    borderRadius: '10px'
+                                }
+                            }
+                        }
+                    }}>
+                    <MenuItem
+                                active={activeIndex ===20}
+                                icon={<ContactMailIcon />}
+                                component={<Link to="/device-manage-security" onClick={() => setActiveIndex(20)} />}>
+                                {' '}
+                                Device Management
+                            </MenuItem>
+                </Menu>
             </Sidebar>
         </>
     )

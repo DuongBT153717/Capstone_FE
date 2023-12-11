@@ -117,7 +117,7 @@ const ChangeLogView = () => {
 
         return newData
       })
-    }else if(added && added.title === '' || added && added.content === ''){
+    }if(added && (added.title === '' || added.content === '')){
       toast.error(`All field can't be blank`)
     }else if (deleted !== undefined) {
       setHolidays((prevData) => {

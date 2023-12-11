@@ -1,8 +1,6 @@
 import { Box, LinearProgress } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import {
-  DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton
-} from "@mui/x-data-grid";
+import { DataGrid } from '@mui/x-data-grid'
 const StripedDataGrid = styled(DataGrid)(() => ({
   '.late-checkin-cell .MuiDataGrid-cellContent': {
     color: 'red'
@@ -15,18 +13,6 @@ const StripedDataGrid = styled(DataGrid)(() => ({
   }
 }))
 const DataTableControlLog = ({  columns,rows, isLoading }) => {
-  function CustomToolbar() {
-    return (
-      <GridToolbarContainer>
-        <Box display="flex" justifyContent="space-between" width="100%">
-          <Box display="flex" gap={1}>
-            <GridToolbarFilterButton />
-            <GridToolbarExport />
-          </Box>
-        </Box>
-      </GridToolbarContainer>
-    )
-  }
   return (
     <>
       <Box
@@ -76,7 +62,7 @@ const DataTableControlLog = ({  columns,rows, isLoading }) => {
           rowHeight={180}
           autoHeight
           disableRowSelectionOnClick
-          slots={{ toolbar: CustomToolbar, loadingOverlay: LinearProgress }}
+          slots={{loadingOverlay: LinearProgress }}
           showCellVerticalBorder
           showColumnVerticalBorder
           rowsPerPageOptions={[50]}

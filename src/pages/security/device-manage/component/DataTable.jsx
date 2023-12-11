@@ -1,8 +1,7 @@
 import { Box, LinearProgress } from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
+import Header from '../../../../components/Header'
 import { styled } from '@mui/material/styles'
-import {
-  DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton
-} from "@mui/x-data-grid";
 const StripedDataGrid = styled(DataGrid)(() => ({
   '.late-checkin-cell .MuiDataGrid-cellContent': {
     color: 'red'
@@ -14,19 +13,7 @@ const StripedDataGrid = styled(DataGrid)(() => ({
     color: '#DAA520	'
   }
 }))
-const DataTableControlLog = ({  columns,rows, isLoading }) => {
-  function CustomToolbar() {
-    return (
-      <GridToolbarContainer>
-        <Box display="flex" justifyContent="space-between" width="100%">
-          <Box display="flex" gap={1}>
-            <GridToolbarFilterButton />
-            <GridToolbarExport />
-          </Box>
-        </Box>
-      </GridToolbarContainer>
-    )
-  }
+const DataTableDeviceManage = ({  columns,rows }) => {
   return (
     <>
       <Box
@@ -73,21 +60,31 @@ const DataTableControlLog = ({  columns,rows, isLoading }) => {
           }
         }}>
         <StripedDataGrid
-          rowHeight={180}
           autoHeight
           disableRowSelectionOnClick
-          slots={{ toolbar: CustomToolbar, loadingOverlay: LinearProgress }}
+          slots={{loadingOverlay: LinearProgress }}
           showCellVerticalBorder
           showColumnVerticalBorder
           rowsPerPageOptions={[50]}
-          loading={isLoading}
+          getRowClassName={(params) => {
+            const isLateCheckin = params.row.lateCheckin === true;
+            const isEarlyCheckout = params.row.earlyCheckout === true;
+            const isWeekend =
+              params.row.dateDaily &&
+              (params.row.dateDaily.startsWith('Sunday') ||
+                params.row.dateDaily.startsWith('Saturday'));
+          
+            return (isLateCheckin ? 'late-checkin-cell ' : '') + (isWeekend ? 'weekend-cell' : '') +  (isEarlyCheckout ? 'early-checkout-cell' : '');
+          }}
+          
+        //   loading={isLoading}
           columns={columns}
           rows={rows}
-          getRowId={(row) => row.controlLogId}
+          getRowId={(row) => row.deviceId + row.roomId}
         />  
       </Box>
     </>
   )
 }
 
-export default DataTableControlLog
+export default DataTableDeviceManage

@@ -94,7 +94,9 @@ import ListAllControlLogByStaff from '../pages/security/security-listall-control
 import ControlLogSecurity from '../pages/security/control-log-security'
 import StrangerLogSecurity from '../pages/security/stranger-log-security'
 import ControlLogDetail from '../pages/security/control-log-detail'
+import DeviceManage from '../pages/security/device-manage'
 import ListAllControlLogByAccount from '../pages/security/security-controlLog-by-account'
+import DeviceDetail from '../pages/security/device-detail'
 
 const ManageUser = lazy(() => import('../pages/hr/manage-user'))
 const NotificationDetail = lazy(() => import('../pages/common/notification-detail'))
@@ -868,6 +870,14 @@ export default function Router() {
                 </Suspense>
               )
             },
+            {
+              path: SECURITY.DEVICE_DETAIL_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <DeviceDetail />
+                </Suspense>
+              )
+            },
           ]
         },
       ]
@@ -886,6 +896,14 @@ export default function Router() {
               element: (
                 <Suspense fallback={<>Loading...</>}>
                   <SecurityTicket />
+                </Suspense>
+              )
+            },
+            {
+              path: SECURITY.DEVICE_MANAGE_SECURITY,
+              element: (
+                <Suspense fallback={<>Loading...</>}>
+                  <DeviceManage />
                 </Suspense>
               )
             },

@@ -76,7 +76,7 @@ const DataTableControlLog = ({  columns,rows, isLoading }) => {
           rowHeight={180}
           autoHeight
           disableRowSelectionOnClick
-          slots={{ toolbar: CustomToolbar, loadingOverlay: LinearProgress }}
+          slots={{loadingOverlay: LinearProgress }}
           showCellVerticalBorder
           showColumnVerticalBorder
           rowsPerPageOptions={[50]}

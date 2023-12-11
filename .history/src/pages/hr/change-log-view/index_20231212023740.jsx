@@ -86,7 +86,7 @@ const ChangeLogView = () => {
   }
 
   const commitChanges = async ({ added, deleted }) => {
-    if (added && added.title !== '' && added.content !== '') {
+    if (added && added.title === '' && added.content !== '') {
       const dateStart = moment(added.startDate.toString())
       const timeStart = dateStart.format('YYYY-MM-DD')
       const dateEnd = moment(added.endDate.toString())
@@ -117,7 +117,7 @@ const ChangeLogView = () => {
 
         return newData
       })
-    }else if(added && added.title === '' || added && added.content === ''){
+    }else if(added && (added.title === '' || added.content === '')){
       toast.error(`All field can't be blank`)
     }else if (deleted !== undefined) {
       setHolidays((prevData) => {

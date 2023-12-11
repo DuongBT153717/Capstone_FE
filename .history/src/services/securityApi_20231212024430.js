@@ -73,7 +73,7 @@ const securityApi = {
             let res =  axiosClient.post(`${BASE_URL}/updateDevice`,data)
             return res;
         } catch (error) {
-         console.log(error);
+         
         }
     },
     getDeviceDetail:  (data) => {
@@ -85,15 +85,15 @@ const securityApi = {
             })
             return res;
         } catch (error) {
-            console.log(error);
+         
         }
     },
-    createDeviceAccount: (data) => {
+    createDeviceAccount:  (data) => {
         try {
             let res =  axiosClient.post(`${BASE_URL}/createDeviceAccount`,data)
             return res;
         } catch (error) {
-            console.log(error);
+         
         }
     },
     // getControlListByAccount: async (username) => {

@@ -124,7 +124,7 @@ const BookRoom = () => {
     }
   ])
   const commitChanges = async ({ added }) => {
-    if (added.title !== '' && added.content !== '' && added.departmentId !== 0) {
+    if (added.title !== '' && added.content !== '') {
       const dateStart = moment(added.startDate.toString())
       const timeStart = dateStart.format('HH:mm:ss')
       const dateEnd = moment(added.endDate.toString())
@@ -160,7 +160,7 @@ const BookRoom = () => {
         }
         return newData
       })
-    }else{
+    }else if(added.title === ''){
       toast.error(`All field can't be blank`)
     }
   }

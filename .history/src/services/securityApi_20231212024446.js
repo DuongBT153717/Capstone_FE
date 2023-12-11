@@ -88,7 +88,7 @@ const securityApi = {
             console.log(error);
         }
     },
-    createDeviceAccount: (data) => {
+    createDeviceAccount:  (data) => {
         try {
             let res =  axiosClient.post(`${BASE_URL}/createDeviceAccount`,data)
             return res;
