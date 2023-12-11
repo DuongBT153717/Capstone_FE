@@ -3,7 +3,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react'
 import { Box, Button, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import requestApi from '../../../../services/requestApi'
 ClassicEditor.defaultConfig = {
   toolbar: {
@@ -53,9 +53,11 @@ const OtherRequest = ({ userId }) => {
       }
       fetchAllManagerDepartment()
   }, [])
-
+  const navigate = useNavigate()
   console.log(department);
   const handleCreateRequest = (e) => {
+    e.preventDefault()
+    try{
     if (currentUser?.role === 'employee' && role === 'manager') {
       callApiEmployee(e, receiveIdAndDepartment?.managerInfoResponse?.managerId)
     } else if (currentUser?.role === 'employee' && role === 'hr') {
@@ -89,8 +91,14 @@ const OtherRequest = ({ userId }) => {
     } else if (currentUser?.role === 'admin' && role === 'manager') {
       callApiToManager(e, department)
     }
+    setTimeout(() => {
+      navigate(-1)
+    }, 800)
   }
-
+  catch{
+    alert('ERROR!')
+  }
+  }
   useEffect(() => {
     if (getAllManagerDepartment.length !== 0) {
       const getManagerByDepartment = async () => {

@@ -140,7 +140,7 @@ const AttendanceLogDetail = () => {
                           <Typography mb={1}>{userAttendanceDetail?.checkinChange === null ? 'none' : userAttendanceDetail?.checkinChange} </Typography>
                           <Typography mb={1}>{userAttendanceDetail?.checkoutChange === null ? 'none' : userAttendanceDetail?.checkoutChange} </Typography>
                           <Typography mb={1}>{userAttendanceDetail?.dateDailyChange} </Typography>
-                          <Typography mb={1}>{userAttendanceDetail?.changeFrom === 'manager' ? 'Manager Edit' : 'Employee Request'} </Typography>
+                          <Typography mb={1}>{userAttendanceDetail?.changeFrom === 'FROM_EDIT' ? 'Manager Edit' : 'Employee Request'} </Typography>
                         </Box>
                       </Box>
                     </Box>

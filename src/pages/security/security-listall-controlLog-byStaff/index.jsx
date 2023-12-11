@@ -150,6 +150,11 @@ const ListAllControlLogByStaff = () => {
       align: 'center',
       width: 250,
       renderCell: (params) => {
+      
+        if (params.row.verifyType === 'NOT-FOUND') {
+         
+          return null;
+        }
         return (
           <Box
             margin="0 auto"
@@ -157,7 +162,8 @@ const ListAllControlLogByStaff = () => {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            borderRadius="4px">
+            borderRadius="4px"
+          >
             <Button
               variant='contained'
               onClick={() => navigate(`/list-control-log-by-account/${params.row.username}`)}
@@ -165,9 +171,9 @@ const ListAllControlLogByStaff = () => {
               Detail
             </Button>
           </Box>
-        )
-      }
-    },
+        );
+      },
+    }
   ]
   return (
     <>

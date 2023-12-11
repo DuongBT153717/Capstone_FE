@@ -267,7 +267,7 @@ const ManageUser = () => {
       align: 'center',
       width: 150,
       renderCell: (params) => {
-        const isDeleteButtonVisible = formatDateNotTime(params.row.createdDate) >= formatDateNotTime(currentDate);
+        const isDeleteButtonVisible = formatDateNotTime(params.row.createdDate) == formatDateNotTime(currentDate);
         console.log(params.row.createdDate);
         console.log(currentDate);
         return (
