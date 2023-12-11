@@ -25,7 +25,6 @@ import { BASE_URL } from '../../../services/constraint'
 import axiosClient from '../../../utils/axios-config'
 import { useSelector } from 'react-redux'
 import { format } from 'date-fns'
-import { useNavigate } from 'react-router-dom';
 
 const DeviceDetail = () => {
   const currentUserId = useSelector((state) => state.auth.login.currentUser.accountId)
@@ -43,7 +42,6 @@ const DeviceDetail = () => {
   const [endDate, setEndDate] = useState(new Date())
   const [isStart, setIsStart] = useState(true)
   const [isEnd, setIsEnd] = useState(true)
-  const navigate = useNavigate() 
 
   useEffect(() => {
     const getDeviceDetail = async () => {
@@ -52,7 +50,7 @@ const DeviceDetail = () => {
       setAccountLCD(res.accountLcdResponses)
     }
     getDeviceDetail()
-  }, [])
+  }, [deviceAccId])
 
   useEffect(() => {
     const fetchAllUser = async () => {
@@ -63,6 +61,8 @@ const DeviceDetail = () => {
     fetchAllUser()
   }, [])
 
+  console.log(allUser)
+  console.log(device)
 
   const columns = [
     {
@@ -190,7 +190,7 @@ const DeviceDetail = () => {
         status: status
       }
       await securityApi.changeRecordStatus(data)
-      toast.success('Update successfully ')
+      toast.success('Update success ')
       handleCloseStatus()
     } catch (error) {
       console.log(error)
@@ -210,22 +210,18 @@ const DeviceDetail = () => {
       const data = {
         accountId: accId,
         roomIdString: device?.rooms[0]?.roomId.toString(),
-        startDate: format(startDate, 'yyyy-MM-dd HH:mm:ss'),
-        endDate: format(endDate, 'yyyy-MM-dd HH:mm:ss')
+        startDate: format(startDate, 'yyyy-MM-dd'),
+        endDate: format(endDate, 'yyyy-MM-dd')
       }
-      const res = await securityApi.createDeviceAccount(data)
-      const updateAcountLcd = [res, ...accountLcd]
-      console.log(updateAcountLcd);
-      setAccountLCD(updateAcountLcd)
-      toast.success('Create successfully')
+      await securityApi.createDeviceAccount(data)
+      toast.success('Create success')
       handleCloseAddNew()
     }
   }
 
-  console.log(accountLcd);
-
   return (
     <Box>
+      {/* add new  */}
       <Modal
         open={isShowAddNew}
         onClose={handleCloseAddNew}
@@ -339,7 +335,6 @@ const DeviceDetail = () => {
         <Box marginTop="20px">
           <DataTableDeviceDetail rows={accountLcd} columns={columns} />
         </Box>
-        <Button variant='contained' onClick={() => navigate(-1)}>Back</Button>
       </Box>
       {/* Change status   */}
       <Modal
@@ -348,11 +343,11 @@ const DeviceDetail = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
         <Box sx={style}>
-          <Typography id="modal-modal-title" fontSize='25px'>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
             Change Status
           </Typography>
 
-          <FormControl sx={{ width: '100%', my: 2}}>
+          <FormControl sx={{ width: '100%' }}>
             <InputLabel id="demo-simple-select-label">Device</InputLabel>
             <Select
               
@@ -365,11 +360,9 @@ const DeviceDetail = () => {
               <MenuItem value="WHITE_LIST">WHITE LIST</MenuItem>
             </Select>
           </FormControl>
-          <Box display='flex' justifyContent='flex-end'>
           <Button onClick={handleSaveChangeStatus} variant="contained">
             Save
           </Button>
-          </Box>
         </Box>
       </Modal>
     </Box>

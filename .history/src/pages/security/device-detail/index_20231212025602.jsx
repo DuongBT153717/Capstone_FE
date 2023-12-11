@@ -52,7 +52,7 @@ const DeviceDetail = () => {
       setAccountLCD(res.accountLcdResponses)
     }
     getDeviceDetail()
-  }, [])
+  }, [deviceAccId])
 
   useEffect(() => {
     const fetchAllUser = async () => {
@@ -190,7 +190,7 @@ const DeviceDetail = () => {
         status: status
       }
       await securityApi.changeRecordStatus(data)
-      toast.success('Update successfully ')
+      toast.success('Update success ')
       handleCloseStatus()
     } catch (error) {
       console.log(error)
@@ -214,15 +214,11 @@ const DeviceDetail = () => {
         endDate: format(endDate, 'yyyy-MM-dd HH:mm:ss')
       }
       const res = await securityApi.createDeviceAccount(data)
-      const updateAcountLcd = [res, ...accountLcd]
-      console.log(updateAcountLcd);
-      setAccountLCD(updateAcountLcd)
-      toast.success('Create successfully')
+      setAccountLCD(res, ...accountLcd)
+      toast.success('Create success')
       handleCloseAddNew()
     }
   }
-
-  console.log(accountLcd);
 
   return (
     <Box>

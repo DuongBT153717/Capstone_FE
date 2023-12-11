@@ -214,8 +214,7 @@ const DeviceDetail = () => {
         endDate: format(endDate, 'yyyy-MM-dd HH:mm:ss')
       }
       const res = await securityApi.createDeviceAccount(data)
-      const updateAcountLcd = [res, ...accountLcd]
-      console.log(updateAcountLcd);
+      const updateAcountLcd = accountLcd.unshift(res)
       setAccountLCD(updateAcountLcd)
       toast.success('Create successfully')
       handleCloseAddNew()

@@ -216,9 +216,9 @@ const DeviceDetail = () => {
       const res = await securityApi.createDeviceAccount(data)
       const updateAcountLcd = [res, ...accountLcd]
       console.log(updateAcountLcd);
-      setAccountLCD(updateAcountLcd)
-      toast.success('Create successfully')
-      handleCloseAddNew()
+    //   setAccountLCD(updateAcountLcd)
+    //   toast.success('Create successfully')
+    //   handleCloseAddNew()
     }
   }
 

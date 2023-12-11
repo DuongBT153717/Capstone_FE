@@ -86,7 +86,7 @@ const ChangeLogView = () => {
   }
 
   const commitChanges = async ({ added, deleted }) => {
-    if (added && added.title !== '' && added.content !== '') {
+    if (added && added.title === '' && added.content !== '') {
       const dateStart = moment(added.startDate.toString())
       const timeStart = dateStart.format('YYYY-MM-DD')
       const dateEnd = moment(added.endDate.toString())

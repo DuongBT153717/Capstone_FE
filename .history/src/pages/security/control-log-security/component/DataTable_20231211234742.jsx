@@ -12,7 +12,7 @@ const StripedDataGrid = styled(DataGrid)(() => ({
     color: '#DAA520	'
   }
 }))
-const DataTableDeviceDetail = ({  columns,rows, isLoading }) => {
+const DataTableControlLog = ({  columns,rows, isLoading }) => {
   return (
     <>
       <Box
@@ -59,23 +59,21 @@ const DataTableDeviceDetail = ({  columns,rows, isLoading }) => {
           }
         }}>
         <StripedDataGrid
+          rowHeight={180}
           autoHeight
           disableRowSelectionOnClick
           slots={{loadingOverlay: LinearProgress }}
           showCellVerticalBorder
           showColumnVerticalBorder
-          initialState={{
-            pagination: { paginationModel: { pageSize: 5 } },
-          }}
-          pageSizeOptions={[5, 10, 20, 50]}
+          rowsPerPageOptions={[50]}
           loading={isLoading}
           columns={columns}
           rows={rows}
-          getRowId={(row) => row.accountId}
+          getRowId={(row) => row.controlLogId}
         />  
       </Box>
     </>
   )
 }
 
-export default DataTableDeviceDetail
+export default DataTableControlLog

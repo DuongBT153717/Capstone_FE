@@ -49,7 +49,7 @@ const DeviceManage = () => {
 
   const [isShowView, setIsShowView] = useState(false)
   const [note, setNote] = useState('')
-  const [noteAdd, setNoteAdd] = useState('')
+  const [noteAdd, setNoteAdd] = useState('')  
   useEffect(() => {
     const listAllDevice = async () => {
       try {
@@ -236,15 +236,16 @@ const DeviceManage = () => {
   }
 
   const handleSaveChangeStatus = async () => {
-    let data = {
-      id: id,
-      status: changeStatus,
-      deviceNote: noteAdd
-    }
-    await securityApi.updateDeviceStatus(data)
-    toast.success('Change status successfully')
-    handleCloseStatus()
-    setNoteAdd('')
+        let data = {
+            id: id,
+            status: changeStatus,
+            deviceNote: noteAdd
+          }
+          await securityApi.updateDeviceStatus(data)
+          toast.success('Change status successfully')
+          handleCloseStatus()
+          setNoteAdd('')
+    
   }
 
   const handleCloseUpdate = () => {
@@ -280,18 +281,7 @@ const DeviceManage = () => {
       deviceUrl: url
     }
     try {
-      const res = await securityApi.updateDevice(data)
-      setListDevice((prevDevice) =>
-        prevDevice.map((device) => {
-          if (device.deviceId === id) {
-            return {
-              res
-            }
-          } else {
-            return device
-          }
-        })
-      )
+      await securityApi.updateDevice(data)
       handleCloseUpdate()
       toast.success('Update device successfully')
     } catch (error) {
@@ -299,7 +289,7 @@ const DeviceManage = () => {
         toast.error('Not found')
       }
       if (error.response.status === 409) {
-        toast.error('Conflict')
+        toast.error('Conflic')
       }
     }
   }
@@ -338,12 +328,7 @@ const DeviceManage = () => {
               <Typography id="modal-modal-title" fontSize="20px" mb={1}>
                 Note
               </Typography>
-              <textarea
-                value={noteAdd}
-                onChange={(e) => setNoteAdd(e.target.value)}
-                style={{ width: '100%' }}
-                rows={8}
-              />
+              <textarea value={noteAdd} onChange={(e) => setNoteAdd(e.target.value)} style={{ width: '100%' }} rows={8} />
             </>
           )}
           <Box display="flex" justifyContent="flex-end">
@@ -360,10 +345,8 @@ const DeviceManage = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
         <Box sx={style}>
-          <Box>
-            <Typography id="modal-modal-title" fontSize="25px">
-              Change Status
-            </Typography>
+          <Box mt={2}>
+            <Typography fontSize="20px">Change Infomation Device</Typography>
             <TextField
               sx={{ marginTop: '10px', width: '100%' }}
               id="outlined-basic"
@@ -375,30 +358,28 @@ const DeviceManage = () => {
 
             {changeStatus === 'INACTIVE' && (
               <>
-                <FormControl sx={{ width: '100%', my: 2 }}>
-                  <InputLabel id="demo-simple-select-label">Room</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={roomDevice}
-                    label="Room"
-                    onChange={(e) => setRoomDevice(e.target.value)}>
-                    {listRoom.map((item) => (
-                      <MenuItem key={item.roomId} value={item.roomId}>
-                        {item.roomName}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <Select
+                  sx={{ width: '100%', marginTop: '20px', marginRight: '50px' }}
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={roomDevice}
+                  label="Device room"
+                  onChange={(e) => setRoomDevice(e.target.value)}>
+                  {listRoom.map((item) => (
+                    <MenuItem key={item.roomId} value={item.roomId}>
+                      {item.roomName}
+                    </MenuItem>
+                  ))}
+                </Select>
               </>
             )}
 
             <TextField
-              sx={{ marginTop: '10px', width: '100%', mb: '10px' }}
+              sx={{ marginTop: '10px', width: '100%' }}
               id="outlined-basic"
               onChange={(e) => setDeviceLcdId(e.target.value)}
               value={deviceLcdId}
-              label="Device Lcd Id"
+              label="Device LcdId"
               variant="outlined"
             />
 
@@ -411,12 +392,9 @@ const DeviceManage = () => {
               variant="outlined"
             />
           </Box>
-          <Box display="flex" justifyContent="flex-end">
-            <Button sx={{ marginTop: '10px' }} onClick={handleSaveChangeUpdate} variant="contained">
-              Save
-            </Button>
-          </Box>
-
+          <Button sx={{ marginTop: '10px' }} onClick={handleSaveChangeUpdate} variant="contained">
+            Save
+          </Button>
         </Box>
       </Modal>
       {/* Modal show note  */}

@@ -1,6 +1,8 @@
 import { Box, LinearProgress } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { DataGrid } from '@mui/x-data-grid'
+import {
+  DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton
+} from "@mui/x-data-grid";
 const StripedDataGrid = styled(DataGrid)(() => ({
   '.late-checkin-cell .MuiDataGrid-cellContent': {
     color: 'red'
@@ -12,7 +14,19 @@ const StripedDataGrid = styled(DataGrid)(() => ({
     color: '#DAA520	'
   }
 }))
-const DataTableDeviceDetail = ({  columns,rows, isLoading }) => {
+const DataTableControlLog = ({  columns,rows, isLoading }) => {
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <Box display="flex" justifyContent="space-between" width="100%">
+          <Box display="flex" gap={1}>
+            <GridToolbarFilterButton />
+            <GridToolbarExport />
+          </Box>
+        </Box>
+      </GridToolbarContainer>
+    )
+  }
   return (
     <>
       <Box
@@ -59,23 +73,21 @@ const DataTableDeviceDetail = ({  columns,rows, isLoading }) => {
           }
         }}>
         <StripedDataGrid
+          rowHeight={180}
           autoHeight
           disableRowSelectionOnClick
           slots={{loadingOverlay: LinearProgress }}
           showCellVerticalBorder
           showColumnVerticalBorder
-          initialState={{
-            pagination: { paginationModel: { pageSize: 5 } },
-          }}
-          pageSizeOptions={[5, 10, 20, 50]}
+          rowsPerPageOptions={[50]}
           loading={isLoading}
           columns={columns}
           rows={rows}
-          getRowId={(row) => row.accountId}
+          getRowId={(row) => row.controlLogId}
         />  
       </Box>
     </>
   )
 }
 
-export default DataTableDeviceDetail
+export default DataTableControlLog

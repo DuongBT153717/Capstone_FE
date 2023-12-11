@@ -361,9 +361,9 @@ const DeviceManage = () => {
         aria-describedby="modal-modal-description">
         <Box sx={style}>
           <Box>
-            <Typography id="modal-modal-title" fontSize="25px">
-              Change Status
-            </Typography>
+          <Typography id="modal-modal-title" fontSize="25px">
+            Change Status
+          </Typography>
             <TextField
               sx={{ marginTop: '10px', width: '100%' }}
               id="outlined-basic"
@@ -411,12 +411,9 @@ const DeviceManage = () => {
               variant="outlined"
             />
           </Box>
-          <Box display="flex" justifyContent="flex-end">
-            <Button sx={{ marginTop: '10px' }} onClick={handleSaveChangeUpdate} variant="contained">
-              Save
-            </Button>
-          </Box>
-
+          <Button sx={{ marginTop: '10px' }} onClick={handleSaveChangeUpdate} variant="contained">
+            Save
+          </Button>
         </Box>
       </Modal>
       {/* Modal show note  */}

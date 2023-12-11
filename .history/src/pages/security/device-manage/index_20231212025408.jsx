@@ -410,11 +410,11 @@ const DeviceManage = () => {
               label="Device Url"
               variant="outlined"
             />
-          </Box>
           <Box display="flex" justifyContent="flex-end">
             <Button sx={{ marginTop: '10px' }} onClick={handleSaveChangeUpdate} variant="contained">
               Save
             </Button>
+          </Box>
           </Box>
 
         </Box>
