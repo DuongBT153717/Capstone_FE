@@ -235,6 +235,13 @@ const ManageUser = () => {
       headerAlign: 'center',
       align: 'center',
       width: 200,
+      renderCell: (params) => {
+        return (
+          <Typography color='#000' textTransform='capitalize'>
+            {params.row.departmentName}
+          </Typography>
+        )
+      }
     },
     {
       field: 'phone',
@@ -259,6 +266,13 @@ const ManageUser = () => {
       headerAlign: 'center',
       align: 'center',
       width: 120,
+      renderCell: (params) => {
+        return (
+          <Typography color='#000' textTransform='capitalize'>
+            {params.row.gender}
+          </Typography>
+        )
+      }
     },
     {
       field: 'action',

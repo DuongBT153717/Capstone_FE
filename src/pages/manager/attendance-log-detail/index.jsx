@@ -5,7 +5,6 @@ import {
   CircularProgress,
   Divider,
   Paper,
-  TextField,
   Typography
 } from '@mui/material'
 import { useEffect, useState } from 'react'
@@ -18,7 +17,7 @@ const AttendanceLogDetail = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [controlLog, setControlLog] = useState([])
   const [userAttendanceDetail, setUserAttendanceDetail] = useState({})
-  console.log(logId);
+  console.log(logId)
   useEffect(() => {
     const getChangeLogByEmployeeAndMonth = async () => {
       setIsLoading(true)
@@ -30,6 +29,33 @@ const AttendanceLogDetail = () => {
     getChangeLogByEmployeeAndMonth()
   }, [])
 
+  const handleExportLogDetail = async () => {
+    const res = await logApi.exportChangeLogReportDetail(employee_id, date, logId)
+    console.log(res);
+    const base64Data = res?.file
+    if (!base64Data) {
+      return
+    }
+
+    const binaryData = atob(base64Data)
+    const byteNumbers = new Array(binaryData.length)
+    for (let i = 0; i < binaryData.length; i++) {
+      byteNumbers[i] = binaryData.charCodeAt(i)
+    }
+    const uint8Array = new Uint8Array(byteNumbers)
+
+    const blob = new Blob([uint8Array], {
+      type: res?.fileContentType
+    })
+
+    const blobUrl = URL.createObjectURL(blob)
+
+    const downloadLink = document.createElement('a')
+    downloadLink.href = blobUrl
+    downloadLink.download = res?.fileName
+    downloadLink.click()
+  }
+
   console.log(userAttendanceDetail)
   console.log(userAttendanceDetail?.violate)
   return (
@@ -37,6 +63,14 @@ const AttendanceLogDetail = () => {
       {userAttendanceDetail && (
         <>
           <ChatTopbar />
+          <Box ml="40px" mt={2}>
+            <Button
+              onClick={handleExportLogDetail}
+              variant="contained"
+              sx={{ bgcolor: 'yellow', color: '#000' }}>
+              Export
+            </Button>
+          </Box>
           <Box display="flex">
             <Box flex="1.8">
               <Paper sx={{ margin: '25px 0px 0px 40px', p: '15px' }} elevation={4}>
@@ -137,8 +171,16 @@ const AttendanceLogDetail = () => {
                           <Typography mb={1}>Change from</Typography>
                         </Box>
                         <Box flex="1" ml={1}>
-                          <Typography mb={1}>{userAttendanceDetail?.checkinChange === null ? 'none' : userAttendanceDetail?.checkinChange} </Typography>
-                          <Typography mb={1}>{userAttendanceDetail?.checkoutChange === null ? 'none' : userAttendanceDetail?.checkoutChange} </Typography>
+                          <Typography mb={1}>
+                            {userAttendanceDetail?.checkinChange === null
+                              ? 'none'
+                              : userAttendanceDetail?.checkinChange}{' '}
+                          </Typography>
+                          <Typography mb={1}>
+                            {userAttendanceDetail?.checkoutChange === null
+                              ? 'none'
+                              : userAttendanceDetail?.checkoutChange}{' '}
+                          </Typography>
                           <Typography mb={1}>{userAttendanceDetail?.dateDailyChange} </Typography>
                           <Typography mb={1}>{userAttendanceDetail?.changeFrom === 'FROM_EDIT' ? 'Manager Edit' : 'Employee Request'} </Typography>
                         </Box>
@@ -154,7 +196,11 @@ const AttendanceLogDetail = () => {
                           <Typography mb={1}>Violate </Typography>
                         </Box>
                         <Box flex="1" ml={2}>
-                          <Typography mb={1}>{userAttendanceDetail?.outSideWork === -1 ? 'none' : userAttendanceDetail?.outSideWork} </Typography>
+                          <Typography mb={1}>
+                            {userAttendanceDetail?.outSideWork === -1
+                              ? 'none'
+                              : userAttendanceDetail?.outSideWork}{' '}
+                          </Typography>
                           <Checkbox
                             checked={userAttendanceDetail?.violate}
                             disabled
@@ -169,15 +215,8 @@ const AttendanceLogDetail = () => {
                   <Typography fontWeight="700" fontSize="25px" mb={3}>
                     Reason{' '}
                   </Typography>
-                  <TextField
-                    value={userAttendanceDetail?.reason == null ? '' : userAttendanceDetail?.reason}
-                    id="outlined-multiline-static"
-                    multiline
-                    rows={4}
-                    disabled
-                    sx={{ width: '100%' }}
-                    defaultValue="Default Value"
-                  />
+                  <Typography dangerouslySetInnerHTML={{ __html: userAttendanceDetail?.reason == null ? 'None' : userAttendanceDetail?.reason }}>
+                  </Typography>
                 </Paper>
               </Box>
             </Box>
