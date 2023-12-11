@@ -44,6 +44,58 @@ const securityApi = {
             console.log(error);
         }
     },
+    getAllDevice: async () => {
+        try {
+            let res = await axiosClient.get(`${BASE_URL}/getAllDevice`)
+            return res;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    updateDeviceStatus: async (data) => {
+        try {
+            let res = await axiosClient.post(`${BASE_URL}/updateDeviceStatus`,data)
+            return res;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    changeRecordStatus: async (data) => {
+        try {
+            let res = await axiosClient.post(`${BASE_URL}/changeRecordStatus`,data)
+            return res;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    updateDevice:  (data) => {
+        try {
+            let res =  axiosClient.post(`${BASE_URL}/updateDevice`,data)
+            return res;
+        } catch (error) {
+         
+        }
+    },
+    getDeviceDetail:  (data) => {
+        try {
+            let res =  axiosClient.get(`${BASE_URL}/getDeviceDetail`,{
+                params :{
+                    device_id : data 
+                }
+            })
+            return res;
+        } catch (error) {
+         
+        }
+    },
+    createDeviceAccount:  (data) => {
+        try {
+            let res =  axiosClient.post(`${BASE_URL}/createDeviceAccount`,data)
+            return res;
+        } catch (error) {
+         
+        }
+    },
     // getControlListByAccount: async (username) => {
     //     try {
     //         let res = await axiosClient.get(`${BASE_URL}/getListControlLogByAccount`,

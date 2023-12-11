@@ -98,8 +98,8 @@ export const HR_PATH = {
 
 export const SECURITY = {
     LAYOUT: "/",
-    TICKET_SECURITY_LIST:'/ticket-list-security',
-    TICKET_SECURITY_LIST_MANAGE:'/security-ticket',
+    TICKET_SECURITY_LIST: '/ticket-list-security',
+    TICKET_SECURITY_LIST_MANAGE: '/security-ticket',
     NOTIFICATION_LIST_SECURITY: '/notification-list-security',
     NOTIFICATION_UPLOAD_SENT_SECURITY: 'notification-send-security',
     NOTIFICATION_UPLOAD_RECEIVE_SECURITY: 'notification-receive-security',
@@ -112,5 +112,6 @@ export const SECURITY = {
     CONTROL_LOG_DETAIL_SECURITY: '/control-log-detail-security/:username/:controlLogId',
     // CONTROL_LOG_DETAIL_SECURITY: '/control-log-detail-security',
     STRANGER_LOG_SECURITY: '/stranger-log-security',
-    
+    DEVICE_MANAGE_SECURITY: '/device-manage-security',
+    DEVICE_DETAIL_SECURITY: '/device-detail-security/:device_id',
 }
