@@ -124,7 +124,7 @@ const DeviceDetail = () => {
       flex: 1,
       headerName: 'Status'
     },
-    {
+    { 
       field: 'action',
       width: '280',
       headerName: 'Action',
