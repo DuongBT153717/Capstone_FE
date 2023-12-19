@@ -30,17 +30,17 @@ const SecuritySideBar = () => {
                 ? 0
                 : window.location.pathname === '/security-ticket'
                     ? 2
-                    : window.location.pathname === '/notification-list-manager'
+                    : window.location.pathname === '/notification-list-security'
                         ? 3
-                        : window.location.pathname === '/notification-draft-manager'
+                        : window.location.pathname === '/notification-draft-security'
                             ? 4
-                            : window.location.pathname === '/notification-send-manager'
+                            : window.location.pathname === '/notification-send-security'
                                 ? 5
-                                : window.location.pathname === '/notification-receive-manager'
+                                : window.location.pathname === '/notification-receive-security'
                                     ? 6
-                                    : window.location.pathname === '/notification-scheduled-manager'
+                                    : window.location.pathname === '/notification-scheduled-security'
                                         ? 8
-                                        : window.location.pathname === '/notification-department-manager'
+                                        : window.location.pathname === '/notification-department-security'
                                             ? 7
                                             : window.location.pathname === '/control-log-security'
                                             ? 9

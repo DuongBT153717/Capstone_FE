@@ -78,7 +78,7 @@ const ChangeLogDetail = () => {
                       <Typography mb={2} color='red'>{userAttendanceDetail?.checkin}</Typography>
                       <Typography mb={2} color='red'>{userAttendanceDetail?.checkout} </Typography>
                       <Typography mb={2}>{userAttendanceDetail?.dateDailyChange} </Typography>
-                      <Typography mb={2}>{userAttendanceDetail?.changeFrom} </Typography>
+                      <Typography mb={2}>{userAttendanceDetail?.changeFrom === 'FROM_EDIT' ? 'Manager Edit' : 'Employee Request'} </Typography>
                     </Box>
                   </Box>
                 </Paper>
